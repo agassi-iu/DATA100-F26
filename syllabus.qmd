@@ -4,7 +4,7 @@ title: "Syllabus"
 
 ## Course Description
 
-DATA100 introduces students to the practice of data analysis: how to formulate questions, work with data in R, and communicate findings clearly and responsibly.
+This course provides a broad overview of modern methods and tools for big data analytics. Different stages of data analytics lifecycle, including diagnosing, cleaning, preparing, transforming, visualizing and modelling data, are considered. Numerical and graphical methods of descriptive statistics are introduced. Data analytic methods are demonstrated using the statistical computing software R.
 
 ## Instructor
 
@@ -27,30 +27,10 @@ Wilfrid Laurier University
 - **R & RStudio** — all labs, assignments, and even exams use R.
 - **MyLearningSpace** — announcements, submissions, and discussions.
 
-## Policies
-
-::: {.callout-note}
-## In-Class
-- Be respectful to the instructor and your fellow classmates.
-- Laptops/tablets are welcome for note-taking and participation only.
-:::
-
-::: {.callout-tip}
-## Out-of-Class
-- Start assignments early — technical work takes time to debug.
-- Academic integrity and independent work are expected.
-:::
-
-::: {.callout-warning}
-## Artificial Intelligence
-See [Laurier's Generative AI Policy](https://www.wlu.ca/about/governance/senior-leadership/vice-president-academic/generative-artificial-intelligence/index.html).
-
-My own policy: spend at least **15 minutes** diagnosing a problem yourself before turning to AI tools. Later in the course, using AI will actually be a *required* component of the final project.
-:::
 
 ## First-Year Success Tips
 
 - **Start early** — avoid last-minute coding stress.
 - **Practice daily** — even 30 minutes a day beats cramming.
-- **Ask questions early** — reach out after 15 minutes of being stuck. Use office hours.
-- **Form study groups** — accountability helps.
+- **Ask questions early** — reach out after 15 minutes of being stuck. Use office hours. I have an open door policy ;)
+- **Form study groups** — teach among yourselves! This is the best way to learn.

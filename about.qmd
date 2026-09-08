@@ -9,54 +9,9 @@ Wilfrid Laurier University
 
 - **Education:** Closely finishing my PhD in the Math department at WLU (previously in BBA/Fin Math DD).
 - **Experience:** Previously taught ST474/674 Monte Carlo Methods in Spring 2025.
-- **Hobbies:** Cooking, dancing, soccer, badminton.
 
 ::: {.callout-important}
 ## Office Hours
 Wednesdays 14:00–16:00, LH3073, or by appointment.
 :::
 
-## Teaching Philosophy
-
-::: {.columns}
-::: {.column width="48%"}
-::: {.callout-note}
-## 🧑‍🏫 Teaching Approach
-- **Hands-on Learning:** Real datasets, critical inquiry, practical problem-solving.
-- **Active Classroom:** Interactive coding sessions and collaborative experimentation.
-:::
-:::
-
-::: {.column width="48%"}
-::: {.callout-tip}
-## 🚪 Open Door Policy
-- **First-Year Support:** Transitioning to university can be challenging — support is always available.
-- **Open Discussion:** Office hours and discussion forums are safe spaces to clarify concepts.
-:::
-:::
-:::
-
-## What I Hope to Teach
-
-::: {.columns}
-::: {.column width="31%"}
-::: {.callout-note}
-## 🧠 Analytical Mindset
-Formulate precise questions, structure complex problems, and analyze data objectively without bias.
-:::
-:::
-
-::: {.column width="31%"}
-::: {.callout-tip}
-## 💻 Technical Fluency
-Build confidence with modern open-source tools, repeatable workflows, and clean coding principles.
-:::
-:::
-
-::: {.column width="31%"}
-::: {.callout-warning}
-## 💬 Data Communication
-Translate statistical results into compelling visual narratives for technical and business audiences.
-:::
-:::
-:::

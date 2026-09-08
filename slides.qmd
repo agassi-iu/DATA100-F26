@@ -7,11 +7,11 @@ Slide decks are posted here as the term progresses. PDF versions are for referen
 ## Lecture 1: Course Introduction, R Basics, R Markdown, Data Types
 
 - [📄 PDF (Beamer)](slides/lecture1.pdf)
-- [💻 Live-coding version (reveal.js)](slides/lecture1-live.html)
+- [💻 Live-coding version (reveal.js)](../DATA100-Slides/docs/DATA100 F26 Lecture 1.html)
 
 ::: {.callout-tip}
 ## Using the live-coding slides
-The live-coding version lets you edit and run real R code directly in the browser — no install required. Give it a few seconds to load on first open (it downloads a small R runtime).
+The live-coding version lets you edit and run real R code directly in the browser. No installation required! Give it a few seconds to load when it first opens (it basically downloads a small R run-time).
 :::
 
 ## Lecture 2
