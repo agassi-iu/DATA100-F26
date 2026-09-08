@@ -3,7 +3,7 @@ title: "Schedule"
 ---
 
 ::: {.callout-note}
-This schedule is a template — update week numbers, dates, and topics to match your actual term calendar.
+This schedule is a tentative schedule. It may subject to change depending on the speed or circumstances of our lectures.
 :::
 
 ## Course Schedule

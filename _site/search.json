@@ -4,14 +4,14 @@
     "href": "syllabus.html",
     "title": "Syllabus",
     "section": "",
-    "text": "DATA100 introduces students to the practice of data analysis: how to formulate questions, work with data in R, and communicate findings clearly and responsibly."
+    "text": "This course provides a broad overview of modern methods and tools for big data analytics. Different stages of data analytics lifecycle, including diagnosing, cleaning, preparing, transforming, visualizing and modelling data, are considered. Numerical and graphical methods of descriptive statistics are introduced. Data analytic methods are demonstrated using the statistical computing software R."
   },
   {
     "objectID": "syllabus.html#course-description",
     "href": "syllabus.html#course-description",
     "title": "Syllabus",
     "section": "",
-    "text": "DATA100 introduces students to the practice of data analysis: how to formulate questions, work with data in R, and communicate findings clearly and responsibly."
+    "text": "This course provides a broad overview of modern methods and tools for big data analytics. Different stages of data analytics lifecycle, including diagnosing, cleaning, preparing, transforming, visualizing and modelling data, are considered. Numerical and graphical methods of descriptive statistics are introduced. Data analytic methods are demonstrated using the statistical computing software R."
   },
   {
     "objectID": "syllabus.html#instructor",
@@ -35,25 +35,25 @@
     "text": "Tools\n\nR & RStudio — all labs, assignments, and even exams use R.\nMyLearningSpace — announcements, submissions, and discussions."
   },
   {
-    "objectID": "syllabus.html#policies",
-    "href": "syllabus.html#policies",
-    "title": "Syllabus",
-    "section": "Policies",
-    "text": "Policies\n\n\n\n\n\n\nNoteIn-Class\n\n\n\n\nBe respectful to the instructor and your fellow classmates.\nLaptops/tablets are welcome for note-taking and participation only.\n\n\n\n\n\n\n\n\n\nTipOut-of-Class\n\n\n\n\nStart assignments early — technical work takes time to debug.\nAcademic integrity and independent work are expected.\n\n\n\n\n\n\n\n\n\nWarningArtificial Intelligence\n\n\n\nSee Laurier’s Generative AI Policy.\nMy own policy: spend at least 15 minutes diagnosing a problem yourself before turning to AI tools. Later in the course, using AI will actually be a required component of the final project."
-  },
-  {
     "objectID": "syllabus.html#first-year-success-tips",
     "href": "syllabus.html#first-year-success-tips",
     "title": "Syllabus",
     "section": "First-Year Success Tips",
-    "text": "First-Year Success Tips\n\nStart early — avoid last-minute coding stress.\nPractice daily — even 30 minutes a day beats cramming.\nAsk questions early — reach out after 15 minutes of being stuck. Use office hours.\nForm study groups — accountability helps."
+    "text": "First-Year Success Tips\n\nStart early — avoid last-minute coding stress.\nPractice daily — even 30 minutes a day beats cramming.\nAsk questions early — reach out after 15 minutes of being stuck. Use office hours. I have an open door policy ;)\nForm study groups — teach among yourselves! This is the best way to learn."
   },
   {
     "objectID": "schedule.html",
     "href": "schedule.html",
     "title": "Schedule",
     "section": "",
-    "text": "Note\n\n\n\nThis schedule is a template — update week numbers, dates, and topics to match your actual term calendar.\n\n\n\n\n\n\n\n\n\n\n\nWeek\nDate\nTopic\nNotes\n\n\n\n\n1\nSep 10\nCourse Introduction, R Basics, R Markdown/Quarto, Data Types\nLab 1 assigned\n\n\n2\nSep 17\nData Wrangling I\nLab 2 due\n\n\n3\nSep 24\nData Wrangling II\nLab 3 due\n\n\n4\nOct 1\nData Visualization\nLab 4 due\n\n\n5\nOct 8\nMidterm 1\n\n\n\n6\nOct 15\nSummary Statistics\nLab 5 due\n\n\n7\nOct 22\nReading Week — no class\n\n\n\n8\nOct 29\nProbability & Sampling\nLab 6 due\n\n\n9\nNov 5\nStatistical Inference I\nLab 7 due\n\n\n10\nNov 12\nStatistical Inference II\nLab 8 due\n\n\n11\nNov 19\nMidterm 2\n\n\n\n12\nNov 26\nRegression Basics\nLab 9 due\n\n\n13\nDec 3\nCapstone Presentations\nCapstone due"
+    "text": "Note\n\n\n\nThis schedule is a template — update week numbers, dates, and topics to match your actual term calendar."
+  },
+  {
+    "objectID": "schedule.html#course-schedule",
+    "href": "schedule.html#course-schedule",
+    "title": "Schedule",
+    "section": "Course Schedule",
+    "text": "Course Schedule\n\n\n\nWeek\nDay 1 (Tuesdays)\nDay 2 (Thursdays)\nAssessment\n\n\n\n\n1\n–\nIntroduction\nL0\n\n\n2\nWhole Game 1\nWhole Game 2\nL1\n\n\n3\nVisualization 1\nVisualization 2\nL2\n\n\n4\nVisualization 3\nVisualization recap\nL3\n\n\n5\nMidterm 1\nGroup project\nM1, GP1\n\n\n6\nLogical vectors\nWords and numbers\nL4\n\n\n7\nFancy words and numbers\nMissing values and joins\nL5\n\n\n8\nPivot and Review\nCase study\nL6\n\n\n9\nMidterm 2 (no class)\nImport\nM2\n\n\n10\nData science in practice\nGroup project\nL7, GP2\n\n\n11\nRelationship between variables\nStructured relationships\nL8\n\n\n12\nPredictive modelling\nModelling workflow\nL9\n\n\n13\nReview\n–\nL10"
   },
   {
     "objectID": "assignments.html",
@@ -67,7 +67,7 @@
     "href": "assignments.html#labs",
     "title": "Assignments",
     "section": "Labs",
-    "text": "Labs\n\n\n\nLab\nTopic\nAssigned\nDue\n\n\n\n\nLab 1\nR Basics & Data Types\nSep 10\nSep 17\n\n\nLab 2\nData Wrangling I\nSep 17\nSep 24\n\n\nLab 3\nData Wrangling II\nSep 24\nOct 1\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nLabs are worth 30% of your final grade, submitted weekly on Mondays. See the Syllabus for full grading breakdown."
+    "text": "Labs\n\n\n\nLab\nTopic\nDate\n\n\n\n\nLab 1\nR Basics & Data Types\nSept 14\n\n\nLab 2\n—\nSept 21\n\n\nLab 3\n—\nSept 28\n\n\nLab 4\n—\nOct 05\n\n\nLab 5\n—\nOct 19\n\n\nLab 6\n—\nOct 26\n\n\nLab 7\n—\nNov 02\n\n\nLab 8\n—\nNov 16\n\n\nLab 9\n—\nNov 23\n\n\nLab 10\n—\nNov 30\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nLabs are worth 30% of your final grade, to be submitted during labs weekly on Mondays. See the Syllabus for full grading breakdown."
   },
   {
     "objectID": "assignments.html#capstone-project",
@@ -81,28 +81,14 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation: Closely finishing my PhD in the Math department at WLU (previously in BBA/Fin Math DD).\nExperience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\nHobbies: Cooking, dancing, soccer, badminton.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nWednesdays 14:00–16:00, LH3073, or by appointment."
+    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation: Closely finishing my PhD in the Math department at WLU (previously in BBA/Fin Math DD).\nExperience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nWednesdays 14:00–16:00, LH3073, or by appointment."
   },
   {
     "objectID": "about.html#about-me",
     "href": "about.html#about-me",
     "title": "About",
     "section": "",
-    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation: Closely finishing my PhD in the Math department at WLU (previously in BBA/Fin Math DD).\nExperience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\nHobbies: Cooking, dancing, soccer, badminton.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nWednesdays 14:00–16:00, LH3073, or by appointment."
-  },
-  {
-    "objectID": "about.html#teaching-philosophy",
-    "href": "about.html#teaching-philosophy",
-    "title": "About",
-    "section": "Teaching Philosophy",
-    "text": "Teaching Philosophy\n\n\n\n\n\n\n\n\nNote🧑‍🏫 Teaching Approach\n\n\n\n\nHands-on Learning: Real datasets, critical inquiry, practical problem-solving.\nActive Classroom: Interactive coding sessions and collaborative experimentation.\n\n\n\n\n\n\n\n\n\n\nTip🚪 Open Door Policy\n\n\n\n\nFirst-Year Support: Transitioning to university can be challenging — support is always available.\nOpen Discussion: Office hours and discussion forums are safe spaces to clarify concepts."
-  },
-  {
-    "objectID": "about.html#what-i-hope-to-teach",
-    "href": "about.html#what-i-hope-to-teach",
-    "title": "About",
-    "section": "What I Hope to Teach",
-    "text": "What I Hope to Teach\n\n\n\n\n\n\n\n\nNote🧠 Analytical Mindset\n\n\n\nFormulate precise questions, structure complex problems, and analyze data objectively without bias.\n\n\n\n\n\n\n\n\n\nTip💻 Technical Fluency\n\n\n\nBuild confidence with modern open-source tools, repeatable workflows, and clean coding principles.\n\n\n\n\n\n\n\n\n\nWarning💬 Data Communication\n\n\n\nTranslate statistical results into compelling visual narratives for technical and business audiences."
+    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation: Closely finishing my PhD in the Math department at WLU (previously in BBA/Fin Math DD).\nExperience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nWednesdays 14:00–16:00, LH3073, or by appointment."
   },
   {
     "objectID": "courses.html",
@@ -172,7 +158,7 @@
     "href": "slides.html#lecture-1-course-introduction-r-basics-r-markdown-data-types",
     "title": "Slides",
     "section": "Lecture 1: Course Introduction, R Basics, R Markdown, Data Types",
-    "text": "Lecture 1: Course Introduction, R Basics, R Markdown, Data Types\n\n📄 PDF (Beamer)\n💻 Live-coding version (reveal.js)\n\n\n\n\n\n\n\nTipUsing the live-coding slides\n\n\n\nThe live-coding version lets you edit and run real R code directly in the browser — no install required. Give it a few seconds to load on first open (it downloads a small R runtime)."
+    "text": "Lecture 1: Course Introduction, R Basics, R Markdown, Data Types\n\n📄 PDF (Beamer)\n💻 Live-coding version (reveal.js)\n\n\n\n\n\n\n\nTipUsing the live-coding slides\n\n\n\nThe live-coding version lets you edit and run real R code directly in the browser. No installation required! Give it a few seconds to load when it first opens (it basically downloads a small R run-time)."
   },
   {
     "objectID": "slides.html#lecture-2",
