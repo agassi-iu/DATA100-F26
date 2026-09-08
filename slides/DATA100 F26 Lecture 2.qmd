@@ -1,7 +1,9 @@
 ---
-title: "Lecture 2: Data Analysis - The Whole Game"
-subtitle: "Day 1 of Playing the Whole Game"
+title: "DATA100 Introduction to Data Analysis"
+subtitle: "Lecture 2: The Whole Game - Day 1"
 author: "Agassi Iu"
+institute: "Wilfrid Laurier University"
+date: "September 10, 2026"
 format: 
   revealjs:
     theme: sky
