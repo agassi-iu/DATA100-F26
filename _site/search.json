@@ -56,41 +56,6 @@
     "text": "Course Schedule\n\n\n\nWeek\nDay 1 (Tuesdays)\nDay 2 (Thursdays)\nAssessment\n\n\n\n\n1\n–\nIntroduction\nL0\n\n\n2\nWhole Game 1\nWhole Game 2\nL1\n\n\n3\nVisualization 1\nVisualization 2\nL2\n\n\n4\nVisualization 3\nVisualization recap\nL3\n\n\n5\nMidterm 1\nGroup project\nM1, GP1\n\n\n6\nLogical vectors\nWords and numbers\nL4\n\n\n7\nFancy words and numbers\nMissing values and joins\nL5\n\n\n8\nPivot and Review\nCase study\nL6\n\n\n9\nMidterm 2 (no class)\nImport\nM2\n\n\n10\nData science in practice\nGroup project\nL7, GP2\n\n\n11\nRelationship between variables\nStructured relationships\nL8\n\n\n12\nPredictive modelling\nModelling workflow\nL9\n\n\n13\nReview\n–\nL10"
   },
   {
-    "objectID": "assignments.html",
-    "href": "assignments.html",
-    "title": "Assignments",
-    "section": "",
-    "text": "All labs and the capstone project are submitted through MyLearningSpace. This page tracks what’s due and when."
-  },
-  {
-    "objectID": "assignments.html#labs",
-    "href": "assignments.html#labs",
-    "title": "Assignments",
-    "section": "Labs",
-    "text": "Labs\n\n\n\nLab\nTopic\nDate\n\n\n\n\nLab 1\nR Basics & Data Types\nSept 14\n\n\nLab 2\n—\nSept 21\n\n\nLab 3\n—\nSept 28\n\n\nLab 4\n—\nOct 05\n\n\nLab 5\n—\nOct 19\n\n\nLab 6\n—\nOct 26\n\n\nLab 7\n—\nNov 02\n\n\nLab 8\n—\nNov 16\n\n\nLab 9\n—\nNov 23\n\n\nLab 10\n—\nNov 30\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nLabs are worth 30% of your final grade, to be submitted during labs weekly on Mondays. See the Syllabus for full grading breakdown."
-  },
-  {
-    "objectID": "assignments.html#capstone-project",
-    "href": "assignments.html#capstone-project",
-    "title": "Assignments",
-    "section": "Capstone Project",
-    "text": "Capstone Project\nThe capstone project (15%) has multiple checkpoints across the term. Details and rubric will be posted here as each checkpoint approaches.\n\n\n\nCheckpoint\nDescription\nDue\n\n\n\n\nProposal\nDataset + research question\nTBD\n\n\nProgress Check\nDraft analysis\nTBD\n\n\nFinal Submission\nReport + presentation\nDec 3"
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation: Closely finishing my PhD in the Math department at WLU (previously in BBA/Fin Math DD).\nExperience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nWednesdays 14:00–16:00, LH3073, or by appointment."
-  },
-  {
-    "objectID": "about.html#about-me",
-    "href": "about.html#about-me",
-    "title": "About",
-    "section": "",
-    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation: Closely finishing my PhD in the Math department at WLU (previously in BBA/Fin Math DD).\nExperience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nWednesdays 14:00–16:00, LH3073, or by appointment."
-  },
-  {
     "objectID": "courses.html",
     "href": "courses.html",
     "title": "Teaching Experience",
@@ -117,6 +82,41 @@
     "title": "Teaching Experience",
     "section": "Graduate TA Experience",
     "text": "Graduate TA Experience\n\nMA307/507 (Numerical Analysis)\nMA451/651 (Stochastic Calculus)\nMA477/677 (Quantitative Financial Risk Management)\nST359/559 (Probability II)\nST462/662 (Advanced Regression)\nST473/674 (Financial Data Analysis)\nST494/694 (Statistical Learning)"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation: Closely finishing my PhD in the Math department at WLU (previously in BBA/Fin Math DD).\nExperience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nWednesdays 14:00–16:00, LH3073, or by appointment."
+  },
+  {
+    "objectID": "about.html#about-me",
+    "href": "about.html#about-me",
+    "title": "About",
+    "section": "",
+    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation: Closely finishing my PhD in the Math department at WLU (previously in BBA/Fin Math DD).\nExperience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nWednesdays 14:00–16:00, LH3073, or by appointment."
+  },
+  {
+    "objectID": "assignments.html",
+    "href": "assignments.html",
+    "title": "Assignments",
+    "section": "",
+    "text": "All labs and the capstone project are submitted through MyLearningSpace. This page tracks what’s due and when."
+  },
+  {
+    "objectID": "assignments.html#labs",
+    "href": "assignments.html#labs",
+    "title": "Assignments",
+    "section": "Labs",
+    "text": "Labs\n\n\n\nLab\nTopic\nDate\n\n\n\n\nLab 1\nR Basics & Data Types\nSept 14\n\n\nLab 2\n—\nSept 21\n\n\nLab 3\n—\nSept 28\n\n\nLab 4\n—\nOct 05\n\n\nLab 5\n—\nOct 19\n\n\nLab 6\n—\nOct 26\n\n\nLab 7\n—\nNov 02\n\n\nLab 8\n—\nNov 16\n\n\nLab 9\n—\nNov 23\n\n\nLab 10\n—\nNov 30\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nLabs are worth 30% of your final grade, to be submitted during labs weekly on Mondays. See the Syllabus for full grading breakdown."
+  },
+  {
+    "objectID": "assignments.html#capstone-project",
+    "href": "assignments.html#capstone-project",
+    "title": "Assignments",
+    "section": "Capstone Project",
+    "text": "Capstone Project\nThe capstone project (15%) has multiple checkpoints across the term. Details and rubric will be posted here as each checkpoint approaches.\n\n\n\nCheckpoint\nDescription\nDue\n\n\n\n\nProposal\nDataset + research question\nTBD\n\n\nProgress Check\nDraft analysis\nTBD\n\n\nFinal Submission\nReport + presentation\nDec 3"
   },
   {
     "objectID": "index.html",
