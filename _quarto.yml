@@ -1,21 +1,49 @@
 project:
   type: website
-  output-dir: docs
+  output-dir: _site
 
 website:
-  title: "Agassi Iu's Website"
-  navbar: 
+  title: "DATA100"
+  site-url: "https://yourusername.github.io/data100-course"
+  description: "Introduction to Data Analytics — Course Website"
+  favicon: favicon.ico
+
+  navbar:
+    background: primary
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
+      - href: syllabus.qmd
+        text: Syllabus
+      - href: schedule.qmd
+        text: Schedule
+      - href: slides.qmd
+        text: Slides
+      - href: assignments.qmd
+        text: Assignments
+      - href: about.qmd
+        text: About
+    right:
+      - icon: github
+        href: https://github.com/yourusername/data100-course
+        aria-label: Course GitHub repository
+
+  page-footer:
+    left: "© 2026 Agassi Iu · Wilfrid Laurier University"
+    right: "Built with [Quarto](https://quarto.org)"
+    background: light
 
 format:
   html:
     theme:
       - cosmo
-      - brand
     css: styles.css
     toc: true
+    toc-location: right
+    grid:
+      sidebar-width: 250px
+      body-width: 850px
+      margin-width: 250px
 
-
+execute:
+  freeze: auto

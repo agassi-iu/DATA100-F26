@@ -1,0 +1,27 @@
+/* DATA100 course site custom styles */
+
+:root {
+  --data100-primary: #8b0000; /* rose/maroon accent, echoing your Beamer color theme */
+}
+
+.navbar {
+  background-color: var(--data100-primary) !important;
+}
+
+.navbar .nav-link,
+.navbar-brand {
+  color: #ffffff !important;
+}
+
+h1, h2, h3 {
+  color: var(--data100-primary);
+}
+
+/* A plain, non-colored box to mirror Beamer's default \block styling */
+.plain-block {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 0.75em 1em;
+  margin-bottom: 1em;
+  background-color: #fafafa;
+}

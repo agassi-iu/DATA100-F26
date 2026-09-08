@@ -1,0 +1,31 @@
+---
+title: "DATA100: Introduction to Data Analytics"
+subtitle: "Fall 2026 · Wilfrid Laurier University"
+---
+
+## Welcome
+
+Welcome to **DATA100 — Introduction to Data Analytics**! This course introduces you to the fundamentals of data analysis using R, covering everything from R basics and data types to R Markdown/Quarto reporting, data wrangling, and communicating results.
+
+::: {.callout-note}
+## Instructor
+**Agassi Iu** · Wilfrid Laurier University
+**Office Hours:** Wednesdays 14:00–16:00, LH3073 (or by appointment)
+:::
+
+## Quick Links
+
+- [📄 Syllabus](syllabus.qmd) — grading breakdown, policies, and expectations
+- [🗓️ Schedule](schedule.qmd) — weekly topics and readings
+- [📊 Slides](slides.qmd) — lecture slide decks
+- [📝 Assignments](assignments.qmd) — labs, capstone project, and due dates
+- [👋 About](about.qmd) — more about your instructor
+
+## Course Hub
+
+Announcements, submissions, and discussions happen on **MyLearningSpace** — this site is your reference hub for slides, schedule, and syllabus details.
+
+::: {.callout-tip}
+## Before the first class
+Please install R and RStudio *before* our first lab. See the [Slides](slides.qmd) page for the Lecture 1 walkthrough on installation.
+:::

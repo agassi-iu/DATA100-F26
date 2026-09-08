@@ -1,0 +1,27 @@
+---
+title: "Assignments"
+---
+
+All labs and the capstone project are submitted through **MyLearningSpace**. This page tracks what's due and when.
+
+## Labs
+
+| Lab | Topic | Assigned | Due |
+|---|---|---|---|
+| Lab 1 | R Basics & Data Types | Sep 10 | Sep 17 |
+| Lab 2 | Data Wrangling I | Sep 17 | Sep 24 |
+| Lab 3 | Data Wrangling II | Sep 24 | Oct 1 |
+
+::: {.callout-note}
+Labs are worth **30%** of your final grade, submitted weekly on Mondays. See the [Syllabus](syllabus.qmd) for full grading breakdown.
+:::
+
+## Capstone Project
+
+The capstone project (**15%**) has multiple checkpoints across the term. Details and rubric will be posted here as each checkpoint approaches.
+
+| Checkpoint | Description | Due |
+|---|---|---|
+| Proposal | Dataset + research question | TBD |
+| Progress Check | Draft analysis | TBD |
+| Final Submission | Report + presentation | Dec 3 |

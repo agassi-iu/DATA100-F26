@@ -1,0 +1,23 @@
+---
+title: "Schedule"
+---
+
+::: {.callout-note}
+This schedule is a template — update week numbers, dates, and topics to match your actual term calendar.
+:::
+
+| Week | Date | Topic | Notes |
+|:---:|---|---|---|
+| 1 | Sep 10 | Course Introduction, R Basics, R Markdown/Quarto, Data Types | Lab 1 assigned |
+| 2 | Sep 17 | Data Wrangling I | Lab 2 due |
+| 3 | Sep 24 | Data Wrangling II | Lab 3 due |
+| 4 | Oct 1 | Data Visualization | Lab 4 due |
+| 5 | Oct 8 | *Midterm 1* | |
+| 6 | Oct 15 | Summary Statistics | Lab 5 due |
+| 7 | Oct 22 | Reading Week — no class | |
+| 8 | Oct 29 | Probability & Sampling | Lab 6 due |
+| 9 | Nov 5 | Statistical Inference I | Lab 7 due |
+| 10 | Nov 12 | Statistical Inference II | Lab 8 due |
+| 11 | Nov 19 | *Midterm 2* | |
+| 12 | Nov 26 | Regression Basics | Lab 9 due |
+| 13 | Dec 3 | Capstone Presentations | Capstone due |

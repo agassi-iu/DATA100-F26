@@ -1,0 +1,19 @@
+---
+title: "Slides"
+---
+
+Slide decks are posted here as the term progresses. PDF versions are for reference/printing; live-coding versions run R directly in your browser.
+
+## Lecture 1: Course Introduction, R Basics, R Markdown, Data Types
+
+- [📄 PDF (Beamer)](slides/lecture1.pdf)
+- [💻 Live-coding version (reveal.js)](slides/lecture1-live.html)
+
+::: {.callout-tip}
+## Using the live-coding slides
+The live-coding version lets you edit and run real R code directly in the browser — no install required. Give it a few seconds to load on first open (it downloads a small R runtime).
+:::
+
+## Lecture 2
+
+*Coming soon.*

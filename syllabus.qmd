@@ -1,0 +1,56 @@
+---
+title: "Syllabus"
+---
+
+## Course Description
+
+DATA100 introduces students to the practice of data analysis: how to formulate questions, work with data in R, and communicate findings clearly and responsibly.
+
+## Instructor
+
+**Agassi Iu**
+Wilfrid Laurier University
+**Office Hours:** Wednesdays 14:00–16:00, LH3073, or by appointment
+
+## Assessments & Evaluation
+
+| Category | Weight | Frequency |
+|---|:---:|---|
+| **Laboratories** | 30% | Weekly on Mondays |
+| **Participation** | 5% | Every class |
+| **Capstone Project** | 15% | Multiple due-dates |
+| **Midterm Exams** | 20% | Twice (see [Schedule](schedule.qmd)) |
+| **Final Exam** | 20% | Final exam period in December |
+
+## Tools
+
+- **R & RStudio** — all labs, assignments, and even exams use R.
+- **MyLearningSpace** — announcements, submissions, and discussions.
+
+## Policies
+
+::: {.callout-note}
+## In-Class
+- Be respectful to the instructor and your fellow classmates.
+- Laptops/tablets are welcome for note-taking and participation only.
+:::
+
+::: {.callout-tip}
+## Out-of-Class
+- Start assignments early — technical work takes time to debug.
+- Academic integrity and independent work are expected.
+:::
+
+::: {.callout-warning}
+## Artificial Intelligence
+See [Laurier's Generative AI Policy](https://www.wlu.ca/about/governance/senior-leadership/vice-president-academic/generative-artificial-intelligence/index.html).
+
+My own policy: spend at least **15 minutes** diagnosing a problem yourself before turning to AI tools. Later in the course, using AI will actually be a *required* component of the final project.
+:::
+
+## First-Year Success Tips
+
+- **Start early** — avoid last-minute coding stress.
+- **Practice daily** — even 30 minutes a day beats cramming.
+- **Ask questions early** — reach out after 15 minutes of being stuck. Use office hours.
+- **Form study groups** — accountability helps.

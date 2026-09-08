@@ -1,0 +1,21 @@
+---
+title: "Teaching Experience"
+---
+
+
+## Current Courses
+- DATA100 (Introduction to Data Analytics)
+- ST230 (Introduction to Probability and Statistics in Sciences)
+
+## Past Courses
+- ST474/674 (Monte Carlo Methods)
+
+
+## Graduate TA Experience
+- MA307/507 (Numerical Analysis)
+- MA451/651 (Stochastic Calculus)
+- MA477/677 (Quantitative Financial Risk Management)
+- ST359/559 (Probability II)
+- ST462/662 (Advanced Regression)
+- ST473/674 (Financial Data Analysis)
+- ST494/694 (Statistical Learning)
