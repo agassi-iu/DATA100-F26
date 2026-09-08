@@ -1,1 +1,0 @@
-Sitemap: https://yourusername.github.io/data100-course/sitemap.xml
