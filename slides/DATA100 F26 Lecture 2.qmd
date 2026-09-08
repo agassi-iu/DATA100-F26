@@ -1,0 +1,116 @@
+---
+title: "Lecture 2: Data Analysis - The Whole Game"
+subtitle: "Day 1 of Playing the Whole Game"
+author: "Agassi Iu"
+format: 
+  revealjs:
+    theme: sky
+    slide-number: true
+    transition: slide
+    width: 1280
+    height: 720
+    embed-resources: true # Embeds figures and libraries into a single portable HTML file
+execute:
+  echo: false      # Hides the R code on the slides (shows only the plots)
+  warning: false   # Hides warnings and package loading messages
+  message: false
+---
+
+```{r setup}
+#| include: false
+library(tidyverse)
+library(scales)
+
+# Load CSV files (Ensure these are in your project/data folder)
+survey_2017 <- read_csv("../data/survey_2017.csv")
+survey_2022 <- read_csv("../data/survey_2022.csv")
+survey <- bind_rows(survey_2017, survey_2022)
+
+# Set Likert Levels
+likert_levels <- c(
+  "Very difficult", "Difficult", "Somewhat difficult", "Neither",
+  "Somewhat manageable", "Manageable", "Very manageable"
+)
+
+# Mutate factors and buckets
+survey <- survey %>%
+  mutate(
+    paycheque_delay_difficulty = factor(paycheque_delay_difficulty, levels = likert_levels, ordered = TRUE),
+    emergency_fund_likelihood  = factor(emergency_fund_likelihood, levels = likert_levels, ordered = TRUE),
+    financial_wellness_cluster = factor(financial_wellness_cluster, levels = c("Stressed", "Coping", "Comfortable")),
+    paycheque_delay_score      = as.numeric(paycheque_delay_difficulty),
+    emergency_fund_score       = as.numeric(emergency_fund_likelihood),
+    age_bucket = cut(age, breaks = c(18, 25, 35, 45, 55, 66), labels = c("18-24", "25-34", "35-44", "45-54", "55-65"), right = FALSE, include.lowest = TRUE),
+    income_bucket = cut(income, breaks = c(30000, 50000, 75000, 100000, 150000, Inf), labels = c("$30k-49k", "$50k-74k", "$75k-99k", "$100k-149k","$150k+"), right = FALSE, include.lowest = TRUE),
+    province_bucket = case_when(
+      province == "Alberta" ~ "AB",
+      province == "British Columbia" ~ "BC",
+      province == "Ontario" ~ "ON",
+      province == "Quebec" ~ "QC",
+      TRUE ~ "Other"
+    )
+  )
+
+survey_2017 <- survey %>% filter(year == 2017)
+survey_2022 <- survey %>% filter(year == 2022)
+```
+
+# Section 1: Demographics
+
+---
+
+## Income Distribution
+
+```{r}
+#| fig-width: 9
+#| fig-height: 5
+ggplot(survey, aes(x = income)) +
+  geom_histogram(aes(y = after_stat(count / sum(count))), binwidth = 10000, fill = "steelblue", color = "white") +
+  labs(title = "Distribution of Income", x = "Income ($)", y = "Frequency") +
+  scale_y_continuous(labels = scales::percent) +
+  theme_minimal(base_size = 14)
+```
+
+---
+
+## Age Distribution
+
+```{r}
+#| fig-width: 9
+#| fig-height: 5
+ggplot(survey, aes(x = age)) +
+  geom_histogram(aes(y = after_stat(count / sum(count))), binwidth = 5, fill = "darkorange", color = "white") +
+  labs(title = "Distribution of Age", x = "Age", y = "Frequency") +
+  scale_y_continuous(labels = scales::percent) +
+  theme_minimal(base_size = 14)
+```
+
+# Section 2: Financial Wellness Clusters
+
+---
+
+## Savings Rate by Cluster (2017 vs 2022)
+
+```{r}
+#| fig-width: 9
+#| fig-height: 5
+ggplot(survey, aes(x = financial_wellness_cluster, y = savings_pct, fill = factor(year))) +
+  geom_boxplot(position = position_dodge(width = 0.8)) +
+  labs(title = "Savings Rate by Cluster: 2017 vs 2022", x = "Cluster", y = "Savings (% of paycheque)", fill = "Year") +
+  theme_minimal(base_size = 14)
+```
+
+---
+
+## Paycheque Delay Difficulty
+
+```{r}
+#| fig-width: 9
+#| fig-height: 5
+ggplot(survey, aes(x = financial_wellness_cluster, y = paycheque_delay_score, fill = factor(year))) +
+  geom_boxplot(position = position_dodge(width = 0.8)) +
+  labs(title = "Paycheque Delay Difficulty by Cluster: 2017 vs 2022",
+       subtitle = "Score: 1 = Very difficult ... 7 = Very manageable",
+       x = "Cluster", y = "Difficulty Score", fill = "Year") +
+  theme_minimal(base_size = 14)
+```

@@ -6,8 +6,9 @@ Slide decks are posted here as the term progresses. PDF versions are for referen
 
 ## Lecture 1: Course Introduction, R Basics, R Markdown, Data Types
 
-- [📄 PDF (Beamer)](slides/lecture1.pdf)
-- [💻 Live-coding version (reveal.js)](../DATA100-Slides/docs/DATA100 F26 Lecture 1.html)
+% Comment out PDF for 1st class
+% - [📄 PDF (Beamer)](slides/lecture1.pdf)
+- [💻 Live-coding version (reveal.js)](../DATA100-Slides/docs/slides/DATA100 F26 Lecture 1.html)
 
 ::: {.callout-tip}
 ## Using the live-coding slides

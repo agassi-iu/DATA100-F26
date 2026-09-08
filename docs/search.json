@@ -42,6 +42,34 @@
     "text": "First-Year Success Tips\n\nStart early — avoid last-minute coding stress.\nPractice daily — even 30 minutes a day beats cramming.\nAsk questions early — reach out after 15 minutes of being stuck. Use office hours. I have an open door policy ;)\nForm study groups — teach among yourselves! This is the best way to learn."
   },
   {
+    "objectID": "slides/DATA100 F26 Lecture 2.html#income-distribution",
+    "href": "slides/DATA100 F26 Lecture 2.html#income-distribution",
+    "title": "Lecture 2: Data Analysis - The Whole Game",
+    "section": "Income Distribution",
+    "text": "Income Distribution"
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 2.html#age-distribution",
+    "href": "slides/DATA100 F26 Lecture 2.html#age-distribution",
+    "title": "Lecture 2: Data Analysis - The Whole Game",
+    "section": "Age Distribution",
+    "text": "Age Distribution"
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 2.html#savings-rate-by-cluster-2017-vs-2022",
+    "href": "slides/DATA100 F26 Lecture 2.html#savings-rate-by-cluster-2017-vs-2022",
+    "title": "Lecture 2: Data Analysis - The Whole Game",
+    "section": "Savings Rate by Cluster (2017 vs 2022)",
+    "text": "Savings Rate by Cluster (2017 vs 2022)"
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 2.html#paycheque-delay-difficulty",
+    "href": "slides/DATA100 F26 Lecture 2.html#paycheque-delay-difficulty",
+    "title": "Lecture 2: Data Analysis - The Whole Game",
+    "section": "Paycheque Delay Difficulty",
+    "text": "Paycheque Delay Difficulty"
+  },
+  {
     "objectID": "schedule.html",
     "href": "schedule.html",
     "title": "Schedule",
@@ -147,6 +175,202 @@
     "text": "Course Hub\nAnnouncements, submissions, and discussions happen on MyLearningSpace — this site is your reference hub for slides, schedule, and syllabus details.\n\n\n\n\n\n\nTipBefore the first class\n\n\n\nPlease install R and RStudio before our first lab. See the Slides page for the Lecture 1 walkthrough on installation."
   },
   {
+    "objectID": "slides/DATA100 F26 Lecture 1.html#outline",
+    "href": "slides/DATA100 F26 Lecture 1.html#outline",
+    "title": "DATA100 Introduction to Data Analysis",
+    "section": "Outline",
+    "text": "Outline\n\nDATA100 Course\nIntroduction\nR Basics"
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 1.html#about-me",
+    "href": "slides/DATA100 F26 Lecture 1.html#about-me",
+    "title": "DATA100 Introduction to Data Analysis",
+    "section": "About Me",
+    "text": "About Me\n\nInstructor: Agassi Iu\nEducation: Closely finishing my PhD in the math department at WLU (previously in BBA/Fin Math DD)\nExperience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025\nHobbies: Cooking, dancing, soccer, badminton\n\n\n\n\n\n\n\n\nOffice Hours\n\n\nWednesdays 14:00–16:00 in LH3073, or by appointment."
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 1.html#my-teaching-philosophy",
+    "href": "slides/DATA100 F26 Lecture 1.html#my-teaching-philosophy",
+    "title": "DATA100 Introduction to Data Analysis",
+    "section": "My Teaching Philosophy",
+    "text": "My Teaching Philosophy\n\n\n\n\n\n\n\n\n🧑‍🏫 Teaching Approach\n\n\n\nHands-on Learning: Focus on real datasets, critical inquiry, and practical problem-solving.\nActive Classroom: Expect interactive coding sessions and collaborative experimentation.\n\n\n\n\n\n\n\n\n\n\n\n\n🚪 Open Door Policy\n\n\n\nFirst-Year Support: Transitioning to university can be challenging; support is always available.\nOpen Discussion: Office hours and discussion forums are safe spaces to clarify concepts."
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 1.html#what-i-hope-to-teach",
+    "href": "slides/DATA100 F26 Lecture 1.html#what-i-hope-to-teach",
+    "title": "DATA100 Introduction to Data Analysis",
+    "section": "What I Hope to Teach",
+    "text": "What I Hope to Teach\n\n\n\n\n\n\n\n\n🧠 Analytical Mindset\n\n\nFormulate precise questions, structure complex problems, and analyze data objectively without bias.\n\n\n\n\n\n\n\n\n\n\n\n💻 Technical Fluency\n\n\nBuild confidence with modern open-source tools, repeatable workflows, and clean coding principles.\n\n\n\n\n\n\n\n\n\n\n\n\n💬 Data Communication\n\n\nTranslate statistical results into compelling visual narratives for technical and business audiences."
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 1.html#assessments-evaluation",
+    "href": "slides/DATA100 F26 Lecture 1.html#assessments-evaluation",
+    "title": "DATA100 Introduction to Data Analysis",
+    "section": "Assessments & Evaluation",
+    "text": "Assessments & Evaluation\n\n\n\nCategory\nWeight\nFrequency\n\n\n\n\nLaboratories\n30%\nWeekly on Mondays\n\n\nParticipation\n5%\nEvery class\n\n\nCapstone Project\n15%\nMultiple due-dates\n\n\nMidterm Exams\n20%\nTwice (see syllabus)\n\n\nFinal Exam\n20%\nFinal exam period in December"
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 1.html#important-tools",
+    "href": "slides/DATA100 F26 Lecture 1.html#important-tools",
+    "title": "DATA100 Introduction to Data Analysis",
+    "section": "Important Tools",
+    "text": "Important Tools\n\n\n\n\n\n\n\n\n🐍 Coding Environment\n\n\nI will teach the course using the software R. You will be asked to complete assignments, labs, projects, and even exams in R.\n\n\n\n\n\n\n\n\n\n\n\n✉️ Communications\n\n\nPlease always check your emails. I will send you emails with updates on the course assessments, should there be any.\n\n\n\n\n\n\n\n\n\n\n\n\n🌐 Course Hub\n\n\nAccess announcements, submit assignments, and engage in peer discussions via MyLearningSpace. I will also update a new course webpage throughout the semester."
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 1.html#keys-to-first-year-success",
+    "href": "slides/DATA100 F26 Lecture 1.html#keys-to-first-year-success",
+    "title": "DATA100 Introduction to Data Analysis",
+    "section": "Keys to First-Year Success",
+    "text": "Keys to First-Year Success\n\n\n\n\n\n\n\n\n📅 Start Early\n\n\nTechnical assignments take time to debug. Avoid last-minute coding stress.\n\n\n\n\n\n\n\n\n\n\n🏋️ Practice Daily (I hope)\n\n\nProgramming is a muscle. Practicing 30 minutes daily is far better than cramming every last-minute.\n\n\n\n\n\n\n\n\n\n\n\n\n❓ Ask Questions Early\n\n\nReach out when stuck for more than 15 minutes. Use office hours liberally.\n\n\n\n\n\n\n\n\n\n\n\n👥 Form Study Groups\n\n\nConnect with classmates to discuss ideas and keep each other accountable."
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 1.html#my-expectation",
+    "href": "slides/DATA100 F26 Lecture 1.html#my-expectation",
+    "title": "DATA100 Introduction to Data Analysis",
+    "section": "My Expectation",
+    "text": "My Expectation\n\n\n\n\n\n\nIn-Class\n\n\n\nBe respectful to the instructor and your fellow classmates.\nBring your laptop or tablet.\n\nOnly use it for note-taking and participation.\nIf you want to watch a movie, sit at the back.\n\n\n\n\n\n\n\n\n\n\n\n\nOut-of-Class\n\n\n\nProactive work habits: start early.\nAcademic integrity and working independently\nAI usage."
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 1.html#artificial-intelligence",
+    "href": "slides/DATA100 F26 Lecture 1.html#artificial-intelligence",
+    "title": "DATA100 Introduction to Data Analysis",
+    "section": "Artificial Intelligence",
+    "text": "Artificial Intelligence\n\n\n\n\n\n\nUniversity Policy\n\n\nLaurier’s Gen AI Policy\n\n\n\n\n\n\n\n\n\n\nMy Policy\n\n\n\nI know what you guys do at home!\nAll I am asking for is to spend 15 minutes diagnosing the problem before going to AI.\nLater on in this course, I will actually ask you to use AI as a mandatory component of your final project.\n\n\n\n\n\n\n\n\n\n\n\n\nMy Goal\n\n\nI hope to give you an enjoyable learning experience, by showing you that this AI (Agassi Iu) is better at teaching than the AI you use at home."
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 1.html#data-project-work-flow",
+    "href": "slides/DATA100 F26 Lecture 1.html#data-project-work-flow",
+    "title": "DATA100 Introduction to Data Analysis",
+    "section": "Data project work flow",
+    "text": "Data project work flow\n\n\n\n\n\n\n\n\nDATA100 Specifically\n\n\nData Analysis (for this course at least) mostly concentrates on Preparation and Refinement."
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 1.html#data-science",
+    "href": "slides/DATA100 F26 Lecture 1.html#data-science",
+    "title": "DATA100 Introduction to Data Analysis",
+    "section": "Data Science",
+    "text": "Data Science\nA concept that is still in the making, may take many shapes and forms for different people. Key ideas:\n\nLook at data from the point of view of a scientist: do experiments, make hypothesis, test hypothesis by more experiments, rinse and repeat, …, arrive at some conclusion\nLook at decision making of all kinds from the point of view of data: tell / refute a story with data, make / break a decision by data, persuade / disillusion using data…"
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 1.html#data-science-1",
+    "href": "slides/DATA100 F26 Lecture 1.html#data-science-1",
+    "title": "DATA100 Introduction to Data Analysis",
+    "section": "Data Science",
+    "text": "Data Science\nData science is a tool. The correctness of the conclusion not only depends on the correctness of the inputs, but also depends on interpretation. It is also important that the tool is used responsibly.\n\nThe science: math, statistics, computer programming, etc.\nThe output: figures, diagrams, reports, presentation, etc.\nThe hope: try to be useful, and hopefully helpful. (to whom?)"
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 1.html#data-analytics",
+    "href": "slides/DATA100 F26 Lecture 1.html#data-analytics",
+    "title": "DATA100 Introduction to Data Analysis",
+    "section": "Data Analytics",
+    "text": "Data Analytics\n\nData needs statistics\nData needs programming"
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 1.html#introduction-1",
+    "href": "slides/DATA100 F26 Lecture 1.html#introduction-1",
+    "title": "DATA100 Introduction to Data Analysis",
+    "section": "Introduction",
+    "text": "Introduction\n\nR is a programming language for statistical computing and graphics\n\nR is software is open source unlike some other statistical software.\nR can be downloaded at https://www.r-project.org/.\n\nRStudio is an integrated development environment for R\n\nRStudio will be used in this course.\nCan be downloaded at https://posit.co/download/rstudio-desktop/.\nPlease install R before RStudio, otherwise RStudio will not work."
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 1.html#user-interface-i",
+    "href": "slides/DATA100 F26 Lecture 1.html#user-interface-i",
+    "title": "DATA100 Introduction to Data Analysis",
+    "section": "User Interface I",
+    "text": "User Interface I\n\nR Console\n\nCan give R direct instructions via the R console.\n\nR script\n\nA text file containing a set of commands and comments.\nCan create an R script, with the file extension ‘.R’.\nUsed to run a sequence of commands in R.\nOther types of scripts such as R markdown files can be created.\nGood idea to save your script or R markdown file periodically.\n\nEnvironment\n\nWhere variables are created and stored.\nServes as a Workspace."
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 1.html#user-interface-ii",
+    "href": "slides/DATA100 F26 Lecture 1.html#user-interface-ii",
+    "title": "DATA100 Introduction to Data Analysis",
+    "section": "User Interface II",
+    "text": "User Interface II\n\nHistory\n\nStores the code that has been ran.\nNext to the Environment tab.\n\nWorking Directory\n\nR scripts are stored here by default.\nCan be important when importing data.\nPermanently change working directory: Tools ⇒ Global Options ⇒ General ⇒ Default working directory\nTemporarily change working directory: Session ⇒ Set working directory ⇒ Choose Directory\nThe working directory resets to the default when RStudio restarts."
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 1.html#base-r-r-packages",
+    "href": "slides/DATA100 F26 Lecture 1.html#base-r-r-packages",
+    "title": "DATA100 Introduction to Data Analysis",
+    "section": "Base R & R packages",
+    "text": "Base R & R packages\n\nBase R\n\nContains some basic functions and visualization tools.\nThe base R functions contain only a tiny fraction of what is actually available.\n\nR packages\n\nA package is essentially a suite of related functions that were created by one or more R users.\nCurrently over 19000 R packages available at https://cran.r-project.org/.\n\nThe main packages we will use:\n\ntidyverse."
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 1.html#initializing-r-packages",
+    "href": "slides/DATA100 F26 Lecture 1.html#initializing-r-packages",
+    "title": "DATA100 Introduction to Data Analysis",
+    "section": "Initializing R packages",
+    "text": "Initializing R packages\n\nUse install.packages(\"package_name\") in the console to install R packages on your own machine.\n\nExample: install.packages(\"ggplot2\") to install ggplot2.\n\nUse library(package_name) to initialize already installed packages.\n\nExample: library(ggplot2) to load ggplot2.\n\nTo install the package if it isn’t already installed and then initialize it after installation:\n\nif(!require(package_name)) install.packages(\"package_name\")\nlibrary(package_name)"
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 1.html#arithmetic-operations",
+    "href": "slides/DATA100 F26 Lecture 1.html#arithmetic-operations",
+    "title": "DATA100 Introduction to Data Analysis",
+    "section": "Arithmetic Operations",
+    "text": "Arithmetic Operations\n\nOrder of arithmetic operations (BEDMAS) applies in R.\nBasic operations:\n\n\n\n\nOperation\nDescription\n\n\n\n\n+\nAddition\n\n\n-\nSubtraction\n\n\n*\nMultiplication\n\n\n/\nDivision\n\n\n^\nExponent\n\n\n%%\nModulus (Remainder from division)\n\n\n%/%\nInteger Division\n\n\n\n\n# is used to add comments to R scripts."
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 1.html#relational-operators",
+    "href": "slides/DATA100 F26 Lecture 1.html#relational-operators",
+    "title": "DATA100 Introduction to Data Analysis",
+    "section": "Relational Operators",
+    "text": "Relational Operators\nRelational operators are used to compare between values:\n\n\n\nOperation\nDescription\n\n\n\n\n&lt;\nLess than\n\n\n&gt;\nGreater than\n\n\n&lt;=\nLess than or equal to\n\n\n&gt;=\nGreater than or equal to\n\n\n==\nEqual to\n\n\n!=\nNot equal to"
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 1.html#assigning-variables",
+    "href": "slides/DATA100 F26 Lecture 1.html#assigning-variables",
+    "title": "DATA100 Introduction to Data Analysis",
+    "section": "Assigning Variables",
+    "text": "Assigning Variables\n\nThe operators =, &lt;-, and -&gt; can be used to assign values to variables\n\nIf we want to assign x = 2; x=2, x&lt;-2, and 2-&gt;x are equivalent.\nCommon convention is to use &lt;- but feel free to use =.\n\nRules for variable names.\n\nStart with a letter (x5 is OK but 5x is NOT.)\nConsist of letters, numbers, underscores, and periods (x_5 and x.5 are OK but not x-5).\nCase sensitive (x and X would be different variables).\n\nVariable naming conventions\n\nTry to use meaningful names."
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 1.html#displaying-output",
+    "href": "slides/DATA100 F26 Lecture 1.html#displaying-output",
+    "title": "DATA100 Introduction to Data Analysis",
+    "section": "Displaying Output",
+    "text": "Displaying Output\n\nR will display the outputs of unassigned calculations\n\nexp(3) would compute \\(e^3\\) (approximately) and display the result.\n\nR suppresses the output of assigned calculations\n\nx&lt;-exp(3) would compute \\(e^3\\) and store the result in x but would not display anything.\nTo see that value of x we would need to run print(x) or just x."
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 1.html#workspace-environment",
+    "href": "slides/DATA100 F26 Lecture 1.html#workspace-environment",
+    "title": "DATA100 Introduction to Data Analysis",
+    "section": "Workspace (Environment)",
+    "text": "Workspace (Environment)\n\nUse ls() or objects() to generate a list of objects. in workspace.\nUse rm() to remove objects from the current workspace.\n\nThe call rm(x,y,z) will remove the variables x, y, and z from the workspace.\nThe call rm(list=ls()) will remove all objects from the workspace.\nThe workspace is automatically cleared when RStudio is exited."
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 1.html#some-useful-functions",
+    "href": "slides/DATA100 F26 Lecture 1.html#some-useful-functions",
+    "title": "DATA100 Introduction to Data Analysis",
+    "section": "Some Useful Functions",
+    "text": "Some Useful Functions\n\n\n\nFunction\nDescription\n\n\n\n\nexp(x)\nComputes the exponential function \\(e^x\\).\n\n\nlog(x)\nComputes the logarithmic function \\(\\log_e(x)\\).\n\n\nsqrt(x)\nComputes the square root \\(\\sqrt{x}\\).\n\n\nfactorial(x)\nComputes the factorial of a positive integer \\(x!\\).\n\n\nsin(x)\nComputes the sine of x in radians.\n\n\nabs(x)\nComputes the absolute value of x."
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 1.html#useful-r-resources",
+    "href": "slides/DATA100 F26 Lecture 1.html#useful-r-resources",
+    "title": "DATA100 Introduction to Data Analysis",
+    "section": "Useful R Resources",
+    "text": "Useful R Resources\n\nUse ? to learn more about how a function works.\n\nFor example, ?sqrt would produce a brief explanation of the sqrt function in a separate window.\nYou can also go to the Help tab and search for the function or command you need help with.\n\nIt may be more useful to use Google\n\nhttps://stackoverflow.com/\nhttps://www.r-bloggers.com/"
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 1.html#live-coding-try-it-yourself",
+    "href": "slides/DATA100 F26 Lecture 1.html#live-coding-try-it-yourself",
+    "title": "DATA100 Introduction to Data Analysis",
+    "section": "Live Coding: Try it Yourself",
+    "text": "Live Coding: Try it Yourself\nEdit and run this cell right here in the slide — no local R install needed for anyone in the room."
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 1.html#exercise",
+    "href": "slides/DATA100 F26 Lecture 1.html#exercise",
+    "title": "DATA100 Introduction to Data Analysis",
+    "section": "Exercise",
+    "text": "Exercise\nWhat are the final values of x and y after following this sequence of commands? Predict first, then try it below to confirm.\n\n\n\n\n\n\n\n\n\nNotes:"
+  },
+  {
+    "objectID": "slides/DATA100 F26 Lecture 1.html#next-time-next-week",
+    "href": "slides/DATA100 F26 Lecture 1.html#next-time-next-week",
+    "title": "DATA100 Introduction to Data Analysis",
+    "section": "Next Time (Next Week)",
+    "text": "Next Time (Next Week)\n\nWe are going to look at a very simple example of:\n\nWhat can we do with data?\nHow do we work with data?\nWhy might this course be useful (at all)?"
+  },
+  {
     "objectID": "slides.html",
     "href": "slides.html",
     "title": "Slides",
@@ -158,7 +382,7 @@
     "href": "slides.html#lecture-1-course-introduction-r-basics-r-markdown-data-types",
     "title": "Slides",
     "section": "Lecture 1: Course Introduction, R Basics, R Markdown, Data Types",
-    "text": "Lecture 1: Course Introduction, R Basics, R Markdown, Data Types\n\n📄 PDF (Beamer)\n💻 Live-coding version (reveal.js)\n\n\n\n\n\n\n\nTipUsing the live-coding slides\n\n\n\nThe live-coding version lets you edit and run real R code directly in the browser. No installation required! Give it a few seconds to load when it first opens (it basically downloads a small R run-time)."
+    "text": "Lecture 1: Course Introduction, R Basics, R Markdown, Data Types\n% Comment out PDF for 1st class % - 📄 PDF (Beamer) - 💻 Live-coding version (reveal.js)\n\n\n\n\n\n\nTipUsing the live-coding slides\n\n\n\nThe live-coding version lets you edit and run real R code directly in the browser. No installation required! Give it a few seconds to load when it first opens (it basically downloads a small R run-time)."
   },
   {
     "objectID": "slides.html#lecture-2",
