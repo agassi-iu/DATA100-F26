@@ -1,0 +1,1001 @@
+respondent_id,year,age,province,income,savings_pct,benefits_preference,paycheque_delay_difficulty,debt_overwhelmed,emergency_fund_likelihood,financial_wellness_cluster
+2022-0001,2022,38,Ontario,87200,5.2,Higher wages,Very manageable,Yes,Manageable,Coping
+2022-0002,2022,35,British Columbia,210100,9.1,Work-life balance,Very manageable,Yes,Somewhat difficult,Coping
+2022-0003,2022,23,Ontario,45100,15.5,Work-life balance,Somewhat difficult,Yes,Somewhat difficult,Coping
+2022-0004,2022,32,Manitoba,94200,7.6,Work-life balance,Very manageable,Yes,Difficult,Coping
+2022-0005,2022,35,Alberta,224000,6.4,Health benefits,Very difficult,Yes,Somewhat manageable,Stressed
+2022-0006,2022,41,Ontario,101200,13.4,Higher wages,Very manageable,Yes,Difficult,Coping
+2022-0007,2022,47,Alberta,97100,13.3,Work-life balance,Manageable,No,Neither,Coping
+2022-0008,2022,37,Ontario,36200,12.5,Better retirement funding,Somewhat difficult,No,Somewhat difficult,Coping
+2022-0009,2022,37,Alberta,161900,7.1,Higher wages,Neither,No,Very manageable,Coping
+2022-0010,2022,19,New Brunswick,30000,3.2,Work-life balance,Neither,No,Somewhat difficult,Stressed
+2022-0011,2022,46,Ontario,120400,10.1,Work-life balance,Somewhat manageable,No,Somewhat manageable,Comfortable
+2022-0012,2022,32,Alberta,54300,1.6,Work-life balance,Neither,No,Manageable,Coping
+2022-0013,2022,49,Ontario,94000,5.4,Work-life balance,Somewhat difficult,No,Manageable,Stressed
+2022-0014,2022,56,Ontario,42800,15.9,NA,Difficult,No,Neither,Coping
+2022-0015,2022,38,Quebec,154200,2.7,More time off,Difficult,Yes,Somewhat manageable,Coping
+2022-0016,2022,28,Alberta,58100,12.6,Work-life balance,Somewhat difficult,Yes,Neither,Coping
+2022-0017,2022,40,Ontario,30000,9.9,Work-life balance,Neither,No,Somewhat difficult,Stressed
+2022-0018,2022,44,Nova Scotia,158600,0.0,Work-life balance,Difficult,Yes,Very difficult,Stressed
+2022-0019,2022,36,New Brunswick,58800,4.6,Better retirement funding,Somewhat difficult,Yes,Neither,Stressed
+2022-0020,2022,33,Manitoba,96200,14.2,Higher wages,Difficult,Yes,Neither,Stressed
+2022-0021,2022,47,Manitoba,142600,8.8,More time off,Difficult,No,Very difficult,Stressed
+2022-0022,2022,46,Ontario,122700,4.9,Work-life balance,Manageable,No,Somewhat difficult,Comfortable
+2022-0023,2022,36,Alberta,30000,15.0,More time off,Difficult,No,Somewhat manageable,Coping
+2022-0024,2022,20,New Brunswick,94800,6.5,Work-life balance,Somewhat manageable,No,Difficult,Coping
+2022-0025,2022,45,Ontario,92500,15.1,Work-life balance,Neither,No,Somewhat manageable,Coping
+2022-0026,2022,31,Ontario,60000,6.9,Health benefits,Somewhat manageable,Yes,Somewhat manageable,Coping
+2022-0027,2022,43,Alberta,89000,5.7,Work-life balance,Difficult,No,Difficult,Stressed
+2022-0028,2022,42,Manitoba,30000,3.3,More time off,Neither,Yes,Difficult,Stressed
+2022-0029,2022,18,Northwest Territories and Nunavut,66600,6.0,Health benefits,Very difficult,No,Somewhat difficult,Stressed
+2022-0030,2022,41,Ontario,30000,7.6,More time off,Manageable,No,Somewhat difficult,Coping
+2022-0031,2022,46,Quebec,84700,9.7,More time off,Somewhat difficult,No,Neither,Coping
+2022-0032,2022,48,Ontario,109800,3.9,Work-life balance,Very difficult,No,Somewhat manageable,Coping
+2022-0033,2022,41,Ontario,145200,13.9,Higher wages,Neither,No,Manageable,Coping
+2022-0034,2022,18,Alberta,30000,19.2,Better retirement funding,Somewhat manageable,No,Very difficult,Comfortable
+2022-0035,2022,55,Saskatchewan,185100,1.3,Health benefits,Neither,No,Somewhat manageable,Coping
+2022-0036,2022,45,British Columbia,144800,17.0,Work-life balance,Manageable,No,Somewhat difficult,Coping
+2022-0037,2022,26,British Columbia,47500,9.9,Work-life balance,Somewhat manageable,No,Manageable,Coping
+2022-0038,2022,31,British Columbia,30000,12.0,Health benefits,Somewhat manageable,Yes,Difficult,Coping
+2022-0039,2022,43,Alberta,30000,15.6,Work-life balance,Very manageable,Yes,Neither,Coping
+2022-0040,2022,48,Ontario,115600,13.0,Educational funding,Neither,Yes,Neither,Coping
+2022-0041,2022,34,British Columbia,44100,11.8,Health benefits,Very difficult,No,Difficult,Stressed
+2022-0042,2022,50,British Columbia,165000,9.2,Health benefits,Manageable,No,Very manageable,Coping
+2022-0043,2022,18,Alberta,30000,25.2,Work-life balance,Somewhat manageable,No,Difficult,Comfortable
+2022-0044,2022,27,Saskatchewan,30000,11.7,Work-life balance,Somewhat difficult,Yes,Difficult,Coping
+2022-0045,2022,18,Ontario,68700,21.6,Better retirement funding,Somewhat difficult,No,Manageable,Comfortable
+2022-0046,2022,29,Quebec,39200,13.4,Work-life balance,Somewhat difficult,Yes,Neither,Coping
+2022-0047,2022,58,Ontario,117400,18.4,More time off,Somewhat difficult,No,Somewhat difficult,Coping
+2022-0048,2022,65,Quebec,176800,15.3,Work-life balance,Somewhat difficult,No,Somewhat difficult,Coping
+2022-0049,2022,43,Ontario,100400,8.3,Work-life balance,Neither,No,Difficult,Coping
+2022-0050,2022,32,Alberta,84000,13.5,Work-life balance,Very manageable,No,Very manageable,Comfortable
+2022-0051,2022,37,British Columbia,95800,5.8,Educational funding,Somewhat manageable,No,Somewhat difficult,Stressed
+2022-0052,2022,46,British Columbia,30000,6.4,Health benefits,Difficult,No,Somewhat difficult,Coping
+2022-0053,2022,21,Ontario,81100,4.7,Work-life balance,Somewhat difficult,Yes,Somewhat difficult,Coping
+2022-0054,2022,33,Alberta,87500,3.1,Work-life balance,Manageable,No,Very manageable,Comfortable
+2022-0055,2022,57,Alberta,160100,1.7,Health benefits,Difficult,Yes,Manageable,Coping
+2022-0056,2022,27,Ontario,100800,30.0,Work-life balance,Somewhat manageable,No,Difficult,Comfortable
+2022-0057,2022,31,Alberta,66400,13.4,Work-life balance,Manageable,No,Manageable,Comfortable
+2022-0058,2022,40,Alberta,141600,22.4,Work-life balance,Somewhat manageable,No,Difficult,Coping
+2022-0059,2022,43,Alberta,79900,20.8,Work-life balance,Neither,No,Somewhat difficult,Comfortable
+2022-0060,2022,32,Ontario,90400,17.7,Educational funding,Manageable,No,Very manageable,Comfortable
+2022-0061,2022,41,Alberta,75900,0.0,Work-life balance,Somewhat difficult,No,Somewhat manageable,Stressed
+2022-0062,2022,47,Alberta,123600,11.0,NA,Manageable,No,Difficult,Coping
+2022-0063,2022,64,British Columbia,107200,15.5,Better retirement funding,Difficult,No,Somewhat manageable,Stressed
+2022-0064,2022,38,Ontario,169400,20.3,Health benefits,Somewhat manageable,Yes,Somewhat manageable,Coping
+2022-0065,2022,40,British Columbia,190900,7.4,Work-life balance,Neither,No,Neither,Stressed
+2022-0066,2022,58,Alberta,160700,4.1,Health benefits,Somewhat difficult,No,Somewhat manageable,Coping
+2022-0067,2022,33,Quebec,156600,5.3,Better retirement funding,Somewhat manageable,Yes,Neither,Coping
+2022-0068,2022,24,Quebec,30000,5.9,Health benefits,Somewhat manageable,Yes,Very manageable,Coping
+2022-0069,2022,43,Alberta,30000,12.4,Health benefits,Difficult,No,Difficult,Stressed
+2022-0070,2022,53,British Columbia,93400,20.8,Better retirement funding,Neither,No,Neither,Coping
+2022-0071,2022,44,Alberta,98100,12.2,Work-life balance,Neither,No,Somewhat difficult,Coping
+2022-0072,2022,39,Ontario,78600,9.2,Work-life balance,Somewhat manageable,No,Manageable,Coping
+2022-0073,2022,23,British Columbia,30000,20.3,Work-life balance,Very difficult,No,Difficult,Coping
+2022-0074,2022,39,Quebec,146100,1.1,Better retirement funding,Somewhat difficult,No,Somewhat difficult,Stressed
+2022-0075,2022,55,Ontario,220200,11.3,Health benefits,Somewhat difficult,Yes,Somewhat manageable,Coping
+2022-0076,2022,25,Ontario,131500,21.2,Health benefits,Manageable,No,Neither,Comfortable
+2022-0077,2022,37,Alberta,139800,1.7,Work-life balance,Somewhat difficult,No,Difficult,Stressed
+2022-0078,2022,35,Quebec,93800,7.2,NA,Neither,No,Somewhat difficult,Coping
+2022-0079,2022,32,Ontario,35900,2.4,Higher wages,Somewhat difficult,No,Neither,Stressed
+2022-0080,2022,43,Ontario,98100,19.5,NA,Somewhat difficult,No,Somewhat difficult,Coping
+2022-0081,2022,45,Alberta,202800,15.6,Better retirement funding,Difficult,No,Somewhat difficult,Stressed
+2022-0082,2022,45,Ontario,79900,11.7,Health benefits,Somewhat manageable,No,Neither,Coping
+2022-0083,2022,28,Ontario,49300,9.4,Work-life balance,Difficult,Yes,Very manageable,Coping
+2022-0084,2022,20,Saskatchewan,115400,3.0,Higher wages,Neither,No,Neither,Stressed
+2022-0085,2022,43,Ontario,153200,11.0,Work-life balance,Somewhat manageable,Yes,Difficult,Coping
+2022-0086,2022,34,Ontario,38600,7.7,Health benefits,Manageable,No,Manageable,Coping
+2022-0087,2022,62,New Brunswick,109900,10.4,Work-life balance,Somewhat difficult,Yes,Manageable,Coping
+2022-0088,2022,63,Ontario,99400,20.9,Better retirement funding,Manageable,No,Manageable,Comfortable
+2022-0089,2022,64,Quebec,129500,8.6,Better retirement funding,Very difficult,No,Neither,Coping
+2022-0090,2022,29,Ontario,128700,16.7,Higher wages,Very manageable,Yes,Difficult,Comfortable
+2022-0091,2022,47,British Columbia,60300,9.9,NA,Somewhat manageable,No,Somewhat manageable,Coping
+2022-0092,2022,50,Alberta,159500,4.4,Higher wages,Somewhat difficult,No,Somewhat difficult,Stressed
+2022-0093,2022,49,Ontario,108600,3.8,Work-life balance,Neither,Yes,Difficult,Stressed
+2022-0094,2022,36,Prince Edward Island,200300,15.6,Better retirement funding,Somewhat difficult,No,Very difficult,Coping
+2022-0095,2022,55,Alberta,128400,0.4,Better retirement funding,Somewhat manageable,No,Somewhat difficult,Coping
+2022-0096,2022,40,Manitoba,85200,29.0,Better retirement funding,Very manageable,No,Somewhat manageable,Comfortable
+2022-0097,2022,42,Saskatchewan,121700,11.8,Work-life balance,Difficult,No,Difficult,Coping
+2022-0098,2022,22,Ontario,46100,14.7,Health benefits,Very manageable,Yes,Somewhat manageable,Coping
+2022-0099,2022,48,British Columbia,30000,15.4,Health benefits,Manageable,No,Somewhat manageable,Coping
+2022-0100,2022,37,British Columbia,73500,6.8,Work-life balance,Very manageable,No,Somewhat difficult,Coping
+2022-0101,2022,46,Manitoba,86200,5.5,Work-life balance,Manageable,No,Difficult,Coping
+2022-0102,2022,43,Alberta,30000,0.8,Higher wages,Difficult,Yes,Difficult,Stressed
+2022-0103,2022,42,Ontario,89300,4.8,Better retirement funding,Somewhat difficult,Yes,Difficult,Stressed
+2022-0104,2022,39,Ontario,30000,15.2,Higher wages,Difficult,No,Somewhat manageable,Coping
+2022-0105,2022,49,Ontario,86100,3.1,Work-life balance,Neither,Yes,Neither,Stressed
+2022-0106,2022,38,Ontario,99200,14.6,Health benefits,Somewhat difficult,No,Manageable,Coping
+2022-0107,2022,23,Alberta,69300,0.0,Work-life balance,Neither,No,Very manageable,Stressed
+2022-0108,2022,47,Alberta,79900,4.1,Better retirement funding,Difficult,Yes,Difficult,Stressed
+2022-0109,2022,30,Alberta,70700,26.2,Work-life balance,Neither,Yes,Manageable,Comfortable
+2022-0110,2022,24,Alberta,30000,16.8,NA,Somewhat difficult,Yes,Somewhat manageable,Comfortable
+2022-0111,2022,28,Ontario,72500,6.0,Better retirement funding,Somewhat manageable,No,Neither,Coping
+2022-0112,2022,43,Alberta,97400,7.1,Higher wages,Somewhat difficult,Yes,Somewhat difficult,Coping
+2022-0113,2022,39,Ontario,43500,0.0,Higher wages,Neither,No,Neither,Comfortable
+2022-0114,2022,18,Alberta,70400,0.9,Work-life balance,Difficult,No,Neither,Stressed
+2022-0115,2022,35,Alberta,95600,17.3,More time off,Somewhat difficult,Yes,Neither,Coping
+2022-0116,2022,54,Alberta,102700,3.1,Higher wages,Somewhat manageable,No,Difficult,Stressed
+2022-0117,2022,35,Ontario,203600,8.2,Educational funding,Neither,No,Difficult,Coping
+2022-0118,2022,38,Ontario,80000,1.7,Better retirement funding,Somewhat manageable,Yes,Somewhat manageable,Comfortable
+2022-0119,2022,53,Ontario,95500,6.6,More time off,Neither,No,Manageable,Comfortable
+2022-0120,2022,50,Alberta,83900,26.3,Higher wages,Very difficult,No,Somewhat manageable,Comfortable
+2022-0121,2022,52,Ontario,59500,14.7,Work-life balance,Neither,No,Very difficult,Coping
+2022-0122,2022,18,Ontario,91300,3.2,Work-life balance,Difficult,Yes,Somewhat difficult,Coping
+2022-0123,2022,61,British Columbia,87200,13.6,Higher wages,Difficult,No,Manageable,Comfortable
+2022-0124,2022,48,Alberta,73600,10.8,More time off,Difficult,No,Somewhat manageable,Coping
+2022-0125,2022,65,Alberta,100600,3.8,Work-life balance,Somewhat difficult,No,Very difficult,Coping
+2022-0126,2022,31,Alberta,30000,0.0,Work-life balance,Neither,No,Somewhat difficult,Stressed
+2022-0127,2022,19,Quebec,30000,10.0,Work-life balance,Difficult,Yes,Neither,Coping
+2022-0128,2022,40,Manitoba,66900,8.9,NA,Somewhat difficult,No,Neither,Stressed
+2022-0129,2022,37,Ontario,129200,14.6,Higher wages,Somewhat manageable,No,Difficult,Coping
+2022-0130,2022,48,Ontario,111800,10.4,Work-life balance,Somewhat manageable,Yes,Somewhat difficult,Stressed
+2022-0131,2022,53,Manitoba,187500,1.7,More time off,Somewhat difficult,Yes,Very manageable,Coping
+2022-0132,2022,39,Ontario,126000,6.3,Educational funding,Neither,No,Somewhat difficult,Stressed
+2022-0133,2022,37,Alberta,111700,4.7,Work-life balance,Neither,No,Difficult,Stressed
+2022-0134,2022,46,Ontario,193100,10.5,Higher wages,Very manageable,Yes,Very difficult,Coping
+2022-0135,2022,37,Alberta,80600,4.9,Higher wages,Neither,No,Very difficult,Stressed
+2022-0136,2022,36,British Columbia,87200,13.4,Educational funding,Neither,No,Very manageable,Comfortable
+2022-0137,2022,52,British Columbia,107400,0.0,Work-life balance,Very manageable,No,Very manageable,Coping
+2022-0138,2022,55,Ontario,189700,18.0,More time off,Manageable,No,Very difficult,Coping
+2022-0139,2022,53,Ontario,109600,7.6,Health benefits,Difficult,No,Somewhat manageable,Stressed
+2022-0140,2022,38,Ontario,54600,7.6,Educational funding,Neither,No,Somewhat difficult,Comfortable
+2022-0141,2022,18,Alberta,86400,13.8,More time off,Very manageable,No,Neither,Coping
+2022-0142,2022,38,Yukon,46200,8.3,Better retirement funding,Somewhat difficult,No,Somewhat manageable,Coping
+2022-0143,2022,31,Alberta,103200,3.9,Health benefits,Neither,Yes,Difficult,Stressed
+2022-0144,2022,38,Ontario,107700,6.4,Higher wages,Neither,No,Neither,Coping
+2022-0145,2022,32,Ontario,68500,21.8,Work-life balance,Manageable,No,Manageable,Comfortable
+2022-0146,2022,40,Ontario,118300,6.2,Higher wages,Difficult,No,Difficult,Coping
+2022-0147,2022,28,New Brunswick,30000,0.5,Work-life balance,Somewhat difficult,Yes,Very manageable,Stressed
+2022-0148,2022,25,Ontario,75600,11.7,Work-life balance,Somewhat difficult,No,Difficult,Stressed
+2022-0149,2022,55,Ontario,89400,5.1,Health benefits,Somewhat manageable,No,Very difficult,Stressed
+2022-0150,2022,28,Alberta,215100,10.1,Work-life balance,Somewhat difficult,No,Very manageable,Coping
+2022-0151,2022,40,Ontario,97800,22.8,Educational funding,Somewhat difficult,Yes,Somewhat manageable,Comfortable
+2022-0152,2022,51,Alberta,76700,13.3,Educational funding,Neither,No,Neither,Comfortable
+2022-0153,2022,51,Ontario,37600,14.7,Better retirement funding,Somewhat difficult,No,Neither,Comfortable
+2022-0154,2022,50,Ontario,170300,7.5,Higher wages,Manageable,No,Very difficult,Stressed
+2022-0155,2022,44,Ontario,78500,7.2,NA,Neither,Yes,Neither,Comfortable
+2022-0156,2022,49,Nova Scotia,63900,12.3,Work-life balance,Somewhat difficult,No,Somewhat difficult,Coping
+2022-0157,2022,56,British Columbia,130800,6.5,Higher wages,Manageable,No,Neither,Coping
+2022-0158,2022,45,Ontario,130000,16.1,Health benefits,Somewhat difficult,No,Neither,Coping
+2022-0159,2022,18,British Columbia,88700,8.7,Work-life balance,Difficult,No,Somewhat manageable,Stressed
+2022-0160,2022,34,Ontario,82000,20.9,More time off,Manageable,No,Very manageable,Comfortable
+2022-0161,2022,48,Nova Scotia,110000,6.8,Health benefits,Somewhat manageable,No,Neither,Comfortable
+2022-0162,2022,32,Ontario,89600,17.3,NA,Very manageable,No,Very manageable,Comfortable
+2022-0163,2022,59,British Columbia,135300,9.8,Health benefits,Manageable,No,Very manageable,Comfortable
+2022-0164,2022,39,British Columbia,109700,10.8,Higher wages,Somewhat difficult,No,Manageable,Coping
+2022-0165,2022,41,Ontario,146200,0.0,Better retirement funding,Somewhat difficult,No,Neither,Stressed
+2022-0166,2022,53,Alberta,112300,7.2,Better retirement funding,Very manageable,No,Somewhat difficult,Comfortable
+2022-0167,2022,38,British Columbia,46200,18.1,Work-life balance,Neither,No,Difficult,Coping
+2022-0168,2022,42,British Columbia,85800,20.6,More time off,Manageable,No,Very manageable,Comfortable
+2022-0169,2022,51,Ontario,144200,4.2,NA,Difficult,Yes,Somewhat difficult,Stressed
+2022-0170,2022,22,British Columbia,30000,5.5,Better retirement funding,Neither,No,Manageable,Coping
+2022-0171,2022,37,Ontario,30000,4.5,Work-life balance,Somewhat manageable,No,Somewhat manageable,Coping
+2022-0172,2022,50,Quebec,150900,12.2,More time off,Difficult,No,Somewhat difficult,Coping
+2022-0173,2022,41,Ontario,167500,15.6,Work-life balance,Manageable,No,Neither,Comfortable
+2022-0174,2022,58,British Columbia,53700,28.8,Health benefits,Somewhat difficult,No,Very manageable,Comfortable
+2022-0175,2022,21,Alberta,66500,5.1,Work-life balance,Somewhat difficult,No,Very difficult,Stressed
+2022-0176,2022,20,Alberta,40000,11.4,Work-life balance,Somewhat manageable,No,Somewhat manageable,Coping
+2022-0177,2022,49,Ontario,90500,0.0,Work-life balance,Difficult,Yes,Manageable,Stressed
+2022-0178,2022,50,Ontario,120300,4.2,Better retirement funding,Very difficult,No,Very difficult,Stressed
+2022-0179,2022,38,Alberta,30000,12.1,Higher wages,Very manageable,Yes,Somewhat difficult,Coping
+2022-0180,2022,45,Alberta,42100,8.8,Work-life balance,Somewhat difficult,No,Neither,Coping
+2022-0181,2022,49,British Columbia,88400,8.1,Health benefits,Somewhat difficult,No,Manageable,Coping
+2022-0182,2022,30,British Columbia,67700,13.0,Educational funding,Difficult,No,Neither,Coping
+2022-0183,2022,32,Saskatchewan,30000,20.1,NA,Neither,Yes,Very difficult,Coping
+2022-0184,2022,42,British Columbia,132500,19.0,Educational funding,Somewhat manageable,Yes,Somewhat difficult,Comfortable
+2022-0185,2022,51,Alberta,85600,11.7,Better retirement funding,Neither,Yes,Somewhat difficult,Stressed
+2022-0186,2022,26,British Columbia,47900,14.7,Work-life balance,Somewhat manageable,No,Somewhat difficult,Coping
+2022-0187,2022,38,Alberta,101100,17.5,Better retirement funding,Very difficult,No,Somewhat difficult,Coping
+2022-0188,2022,37,Alberta,79100,13.7,Better retirement funding,Manageable,No,Manageable,Comfortable
+2022-0189,2022,45,Manitoba,139400,16.6,Better retirement funding,Somewhat manageable,No,Very difficult,Comfortable
+2022-0190,2022,40,British Columbia,43300,5.0,Educational funding,Very difficult,Yes,Somewhat manageable,Stressed
+2022-0191,2022,33,Alberta,30000,14.3,Higher wages,Somewhat manageable,Yes,Manageable,Coping
+2022-0192,2022,55,Ontario,97000,23.5,Work-life balance,Neither,No,Manageable,Comfortable
+2022-0193,2022,34,Ontario,84000,11.8,Health benefits,Manageable,No,Neither,Coping
+2022-0194,2022,36,Alberta,30000,16.3,Higher wages,Neither,Yes,Difficult,Coping
+2022-0195,2022,21,Other,30000,14.1,Work-life balance,Neither,No,Somewhat manageable,Comfortable
+2022-0196,2022,31,British Columbia,85600,10.4,Health benefits,Manageable,No,Somewhat difficult,Stressed
+2022-0197,2022,46,Saskatchewan,61100,17.1,Higher wages,Neither,No,Somewhat difficult,Coping
+2022-0198,2022,44,Quebec,30000,22.7,Higher wages,Neither,Yes,Somewhat manageable,Comfortable
+2022-0199,2022,47,New Brunswick,148800,6.7,Health benefits,Somewhat difficult,No,Very difficult,Stressed
+2022-0200,2022,47,British Columbia,68900,15.3,Higher wages,Very manageable,Yes,Somewhat difficult,Coping
+2022-0201,2022,65,Ontario,185000,5.6,Better retirement funding,Neither,No,Somewhat manageable,Coping
+2022-0202,2022,31,Manitoba,77900,19.4,Work-life balance,Manageable,No,Somewhat manageable,Comfortable
+2022-0203,2022,21,Alberta,76200,20.1,NA,Manageable,No,Somewhat difficult,Comfortable
+2022-0204,2022,27,Ontario,59900,8.7,Work-life balance,Somewhat manageable,No,Very difficult,Comfortable
+2022-0205,2022,32,Ontario,30000,8.4,Better retirement funding,Difficult,Yes,Difficult,Stressed
+2022-0206,2022,28,Ontario,30000,9.3,Work-life balance,Manageable,No,Somewhat manageable,Comfortable
+2022-0207,2022,41,Ontario,85200,15.0,Work-life balance,Very manageable,No,Somewhat manageable,Comfortable
+2022-0208,2022,55,Quebec,130700,11.2,Better retirement funding,Somewhat manageable,No,Difficult,Coping
+2022-0209,2022,58,Ontario,30000,6.6,Work-life balance,Difficult,No,Neither,Coping
+2022-0210,2022,46,Ontario,96300,6.4,Work-life balance,Difficult,No,Very manageable,Stressed
+2022-0211,2022,65,Ontario,71400,18.5,Better retirement funding,Very difficult,No,Somewhat manageable,Comfortable
+2022-0212,2022,36,Yukon,95700,1.9,NA,Difficult,Yes,Somewhat difficult,Stressed
+2022-0213,2022,20,Saskatchewan,59000,14.4,Educational funding,Somewhat manageable,No,Neither,Coping
+2022-0214,2022,53,Ontario,146700,12.7,Health benefits,Somewhat manageable,No,Very manageable,Comfortable
+2022-0215,2022,18,Ontario,110300,30.0,Educational funding,Very manageable,No,Very manageable,Comfortable
+2022-0216,2022,31,Ontario,99400,17.2,Educational funding,Manageable,No,Difficult,Comfortable
+2022-0217,2022,46,British Columbia,142000,4.0,NA,Somewhat manageable,No,Somewhat difficult,Coping
+2022-0218,2022,39,Quebec,71000,1.1,Work-life balance,Somewhat manageable,No,Very difficult,Stressed
+2022-0219,2022,38,Alberta,228200,17.9,Health benefits,Somewhat manageable,No,Somewhat manageable,Coping
+2022-0220,2022,26,British Columbia,30000,4.0,Work-life balance,Somewhat manageable,Yes,Very difficult,Stressed
+2022-0221,2022,40,Manitoba,63600,8.5,Work-life balance,Very manageable,No,Very manageable,Comfortable
+2022-0222,2022,52,Ontario,153100,16.1,Work-life balance,Neither,No,Very difficult,Coping
+2022-0223,2022,40,Ontario,127600,8.5,Work-life balance,Somewhat difficult,No,Neither,Coping
+2022-0224,2022,30,Alberta,99400,9.3,Work-life balance,Difficult,Yes,Difficult,Stressed
+2022-0225,2022,25,Alberta,101300,16.6,Work-life balance,Manageable,No,Neither,Coping
+2022-0226,2022,30,British Columbia,30000,19.9,Health benefits,Somewhat difficult,No,Somewhat manageable,Comfortable
+2022-0227,2022,45,British Columbia,177000,25.4,Work-life balance,Very manageable,No,Somewhat manageable,Coping
+2022-0228,2022,44,Alberta,85800,0.0,Educational funding,Difficult,No,Somewhat difficult,Stressed
+2022-0229,2022,30,Ontario,137300,1.9,Educational funding,Neither,No,Somewhat difficult,Stressed
+2022-0230,2022,18,British Columbia,30000,9.5,Higher wages,Somewhat difficult,No,Somewhat manageable,Coping
+2022-0231,2022,45,British Columbia,110300,17.3,Health benefits,Somewhat manageable,Yes,Manageable,Stressed
+2022-0232,2022,29,British Columbia,45300,30.0,Work-life balance,Difficult,No,Manageable,Comfortable
+2022-0233,2022,48,Ontario,130600,18.7,Work-life balance,Neither,Yes,Somewhat manageable,Coping
+2022-0234,2022,31,Ontario,92400,2.0,More time off,Neither,Yes,Somewhat difficult,Stressed
+2022-0235,2022,28,Alberta,90300,13.3,More time off,Somewhat manageable,No,Very manageable,Comfortable
+2022-0236,2022,42,British Columbia,40100,6.0,Higher wages,Somewhat difficult,No,Neither,Coping
+2022-0237,2022,65,Ontario,124700,2.1,More time off,Somewhat manageable,No,Manageable,Stressed
+2022-0238,2022,49,Alberta,94500,20.0,Better retirement funding,Manageable,Yes,Somewhat manageable,Coping
+2022-0239,2022,42,Ontario,117800,4.8,Better retirement funding,Very difficult,No,Difficult,Stressed
+2022-0240,2022,44,Saskatchewan,145500,10.3,Work-life balance,Neither,No,Very difficult,Coping
+2022-0241,2022,19,Ontario,66000,23.4,More time off,Somewhat manageable,No,Manageable,Comfortable
+2022-0242,2022,27,Saskatchewan,30000,6.4,Higher wages,Neither,No,Manageable,Comfortable
+2022-0243,2022,18,Manitoba,62400,11.3,Health benefits,Somewhat manageable,No,Neither,Coping
+2022-0244,2022,61,New Brunswick,252100,4.4,Better retirement funding,Difficult,No,Very manageable,Coping
+2022-0245,2022,58,Alberta,199300,4.5,More time off,Somewhat difficult,No,Somewhat difficult,Stressed
+2022-0246,2022,45,Alberta,30000,7.5,Higher wages,Somewhat difficult,No,Somewhat difficult,Coping
+2022-0247,2022,42,British Columbia,96200,2.8,Higher wages,Neither,No,Somewhat difficult,Stressed
+2022-0248,2022,21,Ontario,108100,12.4,Work-life balance,Neither,No,Very difficult,Coping
+2022-0249,2022,37,Ontario,76400,7.1,Work-life balance,Difficult,Yes,Somewhat difficult,Stressed
+2022-0250,2022,62,British Columbia,100000,16.5,Better retirement funding,Very manageable,No,Very manageable,Comfortable
+2022-0251,2022,42,Ontario,79700,20.6,Work-life balance,Very manageable,No,Very difficult,Comfortable
+2022-0252,2022,33,Alberta,107100,5.8,Educational funding,Somewhat difficult,No,Manageable,Coping
+2022-0253,2022,19,British Columbia,30000,22.8,Educational funding,Very manageable,No,Manageable,Comfortable
+2022-0254,2022,57,Alberta,174900,5.0,More time off,Difficult,No,Very difficult,Stressed
+2022-0255,2022,39,Ontario,85700,8.1,Educational funding,Somewhat difficult,No,Manageable,Coping
+2022-0256,2022,19,Ontario,30000,2.0,Health benefits,Difficult,Yes,Neither,Stressed
+2022-0257,2022,29,Ontario,129700,4.8,Work-life balance,Difficult,No,Somewhat difficult,Stressed
+2022-0258,2022,25,Alberta,30000,22.2,Work-life balance,Somewhat manageable,No,Somewhat difficult,Coping
+2022-0259,2022,38,New Brunswick,59200,10.6,Work-life balance,Neither,No,Somewhat difficult,Coping
+2022-0260,2022,42,Saskatchewan,64400,4.1,Work-life balance,Manageable,No,Neither,Coping
+2022-0261,2022,34,Alberta,188200,16.5,Health benefits,Somewhat difficult,No,Somewhat difficult,Coping
+2022-0262,2022,49,New Brunswick,69200,3.6,Work-life balance,Difficult,Yes,Difficult,Stressed
+2022-0263,2022,41,Alberta,30000,7.4,Higher wages,Difficult,No,Manageable,Stressed
+2022-0264,2022,53,Alberta,80400,7.4,More time off,Difficult,No,Somewhat manageable,Coping
+2022-0265,2022,36,Nova Scotia,106800,18.7,Health benefits,Very manageable,Yes,Somewhat manageable,Coping
+2022-0266,2022,65,Alberta,166700,3.0,Better retirement funding,Somewhat difficult,No,Manageable,Stressed
+2022-0267,2022,33,Ontario,193300,19.4,Better retirement funding,Somewhat manageable,No,Very difficult,Coping
+2022-0268,2022,29,Quebec,143800,4.7,Work-life balance,Somewhat manageable,No,Somewhat difficult,Coping
+2022-0269,2022,28,British Columbia,81400,9.2,Better retirement funding,Somewhat difficult,No,Somewhat manageable,Coping
+2022-0270,2022,37,Alberta,40900,27.8,Work-life balance,Neither,No,Somewhat manageable,Comfortable
+2022-0271,2022,19,Ontario,139700,12.0,Work-life balance,Neither,No,Difficult,Coping
+2022-0272,2022,44,Nova Scotia,77600,24.6,Work-life balance,Manageable,No,Somewhat manageable,Coping
+2022-0273,2022,18,Quebec,30000,9.4,Higher wages,Somewhat difficult,No,Very difficult,Coping
+2022-0274,2022,42,British Columbia,72100,12.5,Educational funding,Very difficult,Yes,Neither,Coping
+2022-0275,2022,24,Ontario,30000,15.5,Work-life balance,Somewhat difficult,No,Somewhat difficult,Stressed
+2022-0276,2022,35,Quebec,59200,0.0,More time off,Difficult,No,Neither,Stressed
+2022-0277,2022,47,Alberta,88800,6.5,Higher wages,Manageable,No,Neither,Comfortable
+2022-0278,2022,65,Ontario,164000,2.0,Work-life balance,Very difficult,No,Very difficult,Stressed
+2022-0279,2022,27,Ontario,51100,15.9,Health benefits,Neither,No,Manageable,Coping
+2022-0280,2022,38,Ontario,30000,1.3,Higher wages,Neither,Yes,Manageable,Coping
+2022-0281,2022,31,Alberta,30000,14.6,Educational funding,Manageable,No,Neither,Coping
+2022-0282,2022,30,New Brunswick,85500,21.7,Educational funding,Manageable,Yes,Very difficult,Comfortable
+2022-0283,2022,31,Alberta,80100,23.1,Higher wages,Very difficult,Yes,Neither,Coping
+2022-0284,2022,50,Saskatchewan,77300,11.2,More time off,Neither,Yes,Difficult,Stressed
+2022-0285,2022,34,Alberta,57600,20.5,Health benefits,Very manageable,No,Somewhat difficult,Comfortable
+2022-0286,2022,65,Alberta,146900,19.2,More time off,Somewhat manageable,Yes,Difficult,Coping
+2022-0287,2022,45,Quebec,167000,14.2,Work-life balance,Very manageable,No,Difficult,Coping
+2022-0288,2022,28,British Columbia,33000,8.2,Work-life balance,Manageable,No,Somewhat difficult,Coping
+2022-0289,2022,36,Ontario,88400,4.1,Better retirement funding,Somewhat difficult,Yes,Somewhat difficult,Coping
+2022-0290,2022,30,British Columbia,122900,7.6,Work-life balance,Neither,No,Manageable,Coping
+2022-0291,2022,50,Ontario,66200,17.7,Better retirement funding,Somewhat manageable,No,Somewhat manageable,Comfortable
+2022-0292,2022,20,Alberta,59200,12.1,Work-life balance,Neither,No,Neither,Coping
+2022-0293,2022,24,Nova Scotia,64100,0.0,Higher wages,Very manageable,No,Difficult,Coping
+2022-0294,2022,33,Ontario,30000,4.9,Work-life balance,Somewhat difficult,Yes,Somewhat manageable,Stressed
+2022-0295,2022,48,British Columbia,110400,6.1,Health benefits,Difficult,Yes,Very difficult,Stressed
+2022-0296,2022,55,British Columbia,114100,14.3,Higher wages,Very manageable,No,Somewhat difficult,Coping
+2022-0297,2022,57,Alberta,143300,20.8,Better retirement funding,Somewhat manageable,Yes,Neither,Coping
+2022-0298,2022,46,Ontario,39700,12.1,Educational funding,Somewhat difficult,No,Somewhat manageable,Coping
+2022-0299,2022,39,Alberta,89000,11.6,Work-life balance,Very manageable,Yes,Manageable,Comfortable
+2022-0300,2022,50,British Columbia,174100,0.0,Better retirement funding,Difficult,No,Somewhat difficult,Stressed
+2022-0301,2022,26,British Columbia,172900,15.1,Work-life balance,Neither,No,Somewhat difficult,Coping
+2022-0302,2022,18,Nova Scotia,121000,11.9,Work-life balance,Manageable,Yes,Neither,Comfortable
+2022-0303,2022,45,Ontario,38600,24.1,Work-life balance,Very manageable,Yes,Somewhat manageable,Comfortable
+2022-0304,2022,28,New Brunswick,94600,27.8,Work-life balance,Somewhat manageable,No,Neither,Comfortable
+2022-0305,2022,39,Quebec,64300,7.2,Work-life balance,Somewhat manageable,No,Neither,Comfortable
+2022-0306,2022,41,Ontario,105700,8.8,Work-life balance,Somewhat difficult,No,Very difficult,Stressed
+2022-0307,2022,43,Ontario,55900,18.8,Better retirement funding,Manageable,Yes,Very manageable,Coping
+2022-0308,2022,51,Ontario,30000,25.1,Higher wages,Somewhat difficult,No,Difficult,Comfortable
+2022-0309,2022,50,Alberta,87800,0.0,Work-life balance,Somewhat difficult,Yes,Somewhat difficult,Coping
+2022-0310,2022,42,Saskatchewan,129100,1.7,Health benefits,Somewhat manageable,No,Manageable,Stressed
+2022-0311,2022,35,Ontario,96900,9.0,Health benefits,Very manageable,No,Manageable,Comfortable
+2022-0312,2022,41,Ontario,111600,8.6,Health benefits,Difficult,No,Somewhat difficult,Stressed
+2022-0313,2022,33,Alberta,90300,13.5,Work-life balance,Neither,No,Somewhat manageable,Coping
+2022-0314,2022,38,Alberta,107200,0.0,Higher wages,Somewhat difficult,Yes,Very difficult,Stressed
+2022-0315,2022,65,Ontario,154000,9.2,More time off,Somewhat manageable,No,Somewhat manageable,Coping
+2022-0316,2022,42,New Brunswick,79300,15.8,Work-life balance,Neither,No,Somewhat difficult,Coping
+2022-0317,2022,45,Ontario,101600,11.9,Work-life balance,Somewhat manageable,Yes,Very manageable,Coping
+2022-0318,2022,32,Manitoba,165200,19.0,Health benefits,Somewhat difficult,Yes,Somewhat difficult,Comfortable
+2022-0319,2022,52,Ontario,115100,8.8,Work-life balance,Manageable,No,Neither,Coping
+2022-0320,2022,49,Alberta,105600,4.6,Work-life balance,Difficult,No,Neither,Coping
+2022-0321,2022,49,Alberta,108600,17.9,Educational funding,Very manageable,No,Somewhat difficult,Comfortable
+2022-0322,2022,43,Alberta,83600,18.4,Educational funding,Difficult,No,Neither,Comfortable
+2022-0323,2022,52,Ontario,86200,9.1,Better retirement funding,Very difficult,Yes,Neither,Stressed
+2022-0324,2022,55,Ontario,122900,9.5,Work-life balance,Difficult,Yes,Difficult,Stressed
+2022-0325,2022,43,Saskatchewan,69200,11.5,Health benefits,Somewhat difficult,No,Very manageable,Coping
+2022-0326,2022,39,Ontario,81200,25.7,Better retirement funding,Somewhat manageable,No,Neither,Comfortable
+2022-0327,2022,51,Ontario,67000,8.8,Better retirement funding,Somewhat manageable,Yes,Neither,Coping
+2022-0328,2022,29,Ontario,78900,0.0,Better retirement funding,Somewhat manageable,No,Somewhat difficult,Stressed
+2022-0329,2022,31,Ontario,105700,13.9,Higher wages,Neither,No,Neither,Coping
+2022-0330,2022,39,Saskatchewan,77900,11.8,Work-life balance,Neither,No,Somewhat manageable,Coping
+2022-0331,2022,19,Ontario,30000,14.0,Higher wages,Somewhat difficult,No,Somewhat manageable,Coping
+2022-0332,2022,50,Alberta,134500,9.1,Work-life balance,Very manageable,No,Somewhat manageable,Comfortable
+2022-0333,2022,28,Ontario,78000,30.0,Better retirement funding,Somewhat difficult,No,Somewhat manageable,Comfortable
+2022-0334,2022,34,Alberta,31300,15.3,More time off,Somewhat difficult,No,Neither,Coping
+2022-0335,2022,37,Alberta,124200,9.3,Work-life balance,Difficult,No,Neither,Coping
+2022-0336,2022,40,Ontario,30000,5.4,Work-life balance,Somewhat difficult,No,Difficult,Coping
+2022-0337,2022,36,Ontario,136300,17.5,Work-life balance,Neither,No,Difficult,Coping
+2022-0338,2022,39,Alberta,85600,4.4,Health benefits,Difficult,Yes,Neither,Coping
+2022-0339,2022,39,Alberta,30000,24.6,More time off,Difficult,No,Manageable,Coping
+2022-0340,2022,35,Quebec,91400,7.3,Work-life balance,Manageable,No,Very difficult,Coping
+2022-0341,2022,31,Alberta,56200,21.3,Educational funding,Difficult,No,Neither,Coping
+2022-0342,2022,53,Alberta,81700,5.1,Work-life balance,Somewhat difficult,No,Difficult,Stressed
+2022-0343,2022,18,Ontario,30000,20.5,Health benefits,Neither,No,Neither,Coping
+2022-0344,2022,38,Ontario,80600,6.6,Better retirement funding,Manageable,No,Somewhat manageable,Coping
+2022-0345,2022,34,Ontario,56700,11.1,Work-life balance,Somewhat manageable,No,Somewhat manageable,Coping
+2022-0346,2022,45,Ontario,30000,15.8,Work-life balance,Difficult,Yes,Somewhat manageable,Coping
+2022-0347,2022,23,British Columbia,128100,9.3,Work-life balance,Somewhat manageable,No,Neither,Stressed
+2022-0348,2022,34,British Columbia,68800,25.7,Work-life balance,Somewhat manageable,No,Difficult,Comfortable
+2022-0349,2022,39,Ontario,51900,14.6,Health benefits,Somewhat manageable,Yes,Somewhat manageable,Comfortable
+2022-0350,2022,53,Ontario,53100,11.5,Higher wages,Somewhat manageable,No,Somewhat difficult,Coping
+2022-0351,2022,44,British Columbia,134500,18.5,NA,Somewhat manageable,No,Manageable,Coping
+2022-0352,2022,26,British Columbia,30000,6.8,Health benefits,Somewhat difficult,No,Somewhat manageable,Coping
+2022-0353,2022,34,British Columbia,87700,14.4,More time off,Neither,No,Difficult,Coping
+2022-0354,2022,51,Alberta,77300,16.5,Work-life balance,Neither,No,Neither,Comfortable
+2022-0355,2022,26,British Columbia,42700,7.0,Better retirement funding,Somewhat difficult,No,Somewhat difficult,Stressed
+2022-0356,2022,39,Alberta,33300,6.4,Work-life balance,Somewhat manageable,Yes,Manageable,Stressed
+2022-0357,2022,40,Ontario,59000,6.3,More time off,Neither,Yes,Difficult,Coping
+2022-0358,2022,35,British Columbia,82900,4.7,Work-life balance,Very manageable,No,Somewhat difficult,Stressed
+2022-0359,2022,65,Ontario,139300,11.9,Higher wages,Somewhat difficult,No,Somewhat difficult,Coping
+2022-0360,2022,35,Ontario,43200,17.3,Work-life balance,Very manageable,No,Manageable,Comfortable
+2022-0361,2022,45,Ontario,93000,13.9,Work-life balance,Somewhat manageable,Yes,Neither,Stressed
+2022-0362,2022,31,Saskatchewan,120900,17.1,Better retirement funding,Somewhat manageable,Yes,Somewhat difficult,Coping
+2022-0363,2022,46,Manitoba,30000,12.7,Work-life balance,Difficult,No,Somewhat manageable,Coping
+2022-0364,2022,50,Alberta,104700,12.7,Work-life balance,Somewhat manageable,Yes,Difficult,Comfortable
+2022-0365,2022,33,Ontario,32000,6.1,NA,Difficult,No,Somewhat manageable,Coping
+2022-0366,2022,39,Alberta,35900,15.9,NA,Somewhat difficult,Yes,Difficult,Stressed
+2022-0367,2022,29,British Columbia,86600,4.9,Work-life balance,Very manageable,No,Neither,Coping
+2022-0368,2022,26,Alberta,41700,11.7,Work-life balance,Neither,No,Somewhat difficult,Coping
+2022-0369,2022,52,Quebec,47200,20.5,Higher wages,Neither,Yes,Somewhat manageable,Comfortable
+2022-0370,2022,33,Alberta,145700,9.1,Work-life balance,Somewhat difficult,No,Somewhat difficult,Coping
+2022-0371,2022,18,Ontario,103000,1.0,Work-life balance,Somewhat difficult,No,Somewhat difficult,Stressed
+2022-0372,2022,61,New Brunswick,30000,12.5,Better retirement funding,Manageable,No,Very difficult,Comfortable
+2022-0373,2022,30,Ontario,30000,7.7,Better retirement funding,Somewhat difficult,No,Somewhat difficult,Coping
+2022-0374,2022,37,British Columbia,115200,2.5,Work-life balance,Neither,No,Somewhat manageable,Stressed
+2022-0375,2022,60,Quebec,105800,19.0,Better retirement funding,Difficult,No,Neither,Coping
+2022-0376,2022,38,Ontario,162000,17.9,Health benefits,Manageable,Yes,Somewhat manageable,Comfortable
+2022-0377,2022,38,New Brunswick,117800,7.9,Educational funding,Neither,No,Neither,Coping
+2022-0378,2022,25,British Columbia,82500,6.5,Work-life balance,Very difficult,Yes,Somewhat difficult,Stressed
+2022-0379,2022,20,Ontario,30000,15.0,NA,Somewhat manageable,No,Manageable,Coping
+2022-0380,2022,38,Ontario,111600,4.3,Work-life balance,Somewhat difficult,No,Somewhat difficult,Stressed
+2022-0381,2022,44,Manitoba,32200,16.4,NA,Neither,Yes,Very manageable,Coping
+2022-0382,2022,44,British Columbia,161300,3.4,Work-life balance,Somewhat manageable,Yes,Manageable,Coping
+2022-0383,2022,34,Alberta,102100,11.9,Health benefits,Somewhat difficult,Yes,Somewhat difficult,Stressed
+2022-0384,2022,40,Alberta,48800,10.9,Educational funding,Somewhat difficult,Yes,Somewhat difficult,Coping
+2022-0385,2022,18,Alberta,97200,17.7,Health benefits,Very manageable,No,Manageable,Comfortable
+2022-0386,2022,46,Alberta,211100,2.5,Better retirement funding,Somewhat manageable,Yes,Neither,Stressed
+2022-0387,2022,42,Alberta,82100,9.4,Work-life balance,Somewhat difficult,No,Somewhat difficult,Comfortable
+2022-0388,2022,64,Ontario,153500,1.0,Better retirement funding,Very manageable,No,Somewhat difficult,Coping
+2022-0389,2022,40,Ontario,68400,6.4,Work-life balance,Somewhat manageable,No,Difficult,Coping
+2022-0390,2022,29,Ontario,77800,8.9,Work-life balance,Very difficult,Yes,Neither,Stressed
+2022-0391,2022,39,Ontario,30000,1.2,Higher wages,Somewhat difficult,No,Neither,Stressed
+2022-0392,2022,36,Ontario,84000,0.0,NA,Very difficult,No,Difficult,Stressed
+2022-0393,2022,45,Alberta,99700,5.5,NA,Neither,No,Neither,Coping
+2022-0394,2022,40,Ontario,179900,15.3,Work-life balance,Very manageable,Yes,Manageable,Comfortable
+2022-0395,2022,25,British Columbia,30000,15.6,Work-life balance,Somewhat manageable,No,Very manageable,Comfortable
+2022-0396,2022,20,Ontario,46000,5.4,NA,Somewhat difficult,No,Difficult,Stressed
+2022-0397,2022,43,Saskatchewan,158900,11.2,Work-life balance,Difficult,Yes,Difficult,Stressed
+2022-0398,2022,57,Quebec,103400,12.2,Work-life balance,Somewhat difficult,No,Difficult,Stressed
+2022-0399,2022,41,British Columbia,82900,30.0,Better retirement funding,Very manageable,No,Manageable,Comfortable
+2022-0400,2022,50,Ontario,63300,0.0,Higher wages,Difficult,No,Difficult,Stressed
+2022-0401,2022,52,Alberta,61400,1.7,Health benefits,Somewhat difficult,Yes,Difficult,Stressed
+2022-0402,2022,43,Alberta,30000,15.2,Better retirement funding,Neither,No,Somewhat manageable,Coping
+2022-0403,2022,30,Alberta,43500,8.3,Better retirement funding,Somewhat manageable,Yes,Neither,Coping
+2022-0404,2022,42,Alberta,43500,10.3,Better retirement funding,Somewhat difficult,No,Difficult,Stressed
+2022-0405,2022,54,Ontario,116900,12.2,Better retirement funding,Somewhat manageable,Yes,Somewhat difficult,Coping
+2022-0406,2022,46,Manitoba,59600,13.9,Better retirement funding,Difficult,No,Difficult,Stressed
+2022-0407,2022,49,Alberta,79500,11.2,Higher wages,Somewhat difficult,No,Difficult,Stressed
+2022-0408,2022,34,Yukon,58400,11.3,Work-life balance,Somewhat difficult,No,Somewhat difficult,Stressed
+2022-0409,2022,38,Ontario,84600,8.5,Work-life balance,Somewhat manageable,No,Difficult,Coping
+2022-0410,2022,39,Manitoba,62100,17.3,Work-life balance,Manageable,Yes,Difficult,Comfortable
+2022-0411,2022,39,Ontario,35400,9.2,Better retirement funding,Manageable,Yes,Manageable,Coping
+2022-0412,2022,54,Ontario,115300,7.5,Work-life balance,Somewhat manageable,No,Very manageable,Comfortable
+2022-0413,2022,18,Ontario,110400,19.8,Educational funding,Difficult,No,Very difficult,Coping
+2022-0414,2022,40,Ontario,96400,15.5,Health benefits,Very manageable,Yes,Somewhat manageable,Coping
+2022-0415,2022,39,Quebec,58000,15.6,More time off,Somewhat difficult,No,Difficult,Comfortable
+2022-0416,2022,24,British Columbia,59800,18.8,Work-life balance,Manageable,No,Somewhat manageable,Coping
+2022-0417,2022,48,Ontario,30000,13.6,NA,Manageable,Yes,Very manageable,Comfortable
+2022-0418,2022,31,Alberta,69500,0.0,Work-life balance,Manageable,No,Neither,Coping
+2022-0419,2022,36,Ontario,64000,17.0,Work-life balance,Neither,No,Neither,Coping
+2022-0420,2022,62,British Columbia,76300,0.0,Health benefits,Neither,No,Somewhat difficult,Stressed
+2022-0421,2022,52,British Columbia,70400,9.8,More time off,Somewhat manageable,Yes,Somewhat difficult,Coping
+2022-0422,2022,47,Yukon,80000,12.2,Educational funding,Neither,No,Neither,Coping
+2022-0423,2022,45,Ontario,147100,20.7,Health benefits,Somewhat manageable,No,Somewhat difficult,Comfortable
+2022-0424,2022,38,Alberta,141600,23.9,NA,Very difficult,Yes,Manageable,Comfortable
+2022-0425,2022,64,British Columbia,79600,14.5,NA,Somewhat difficult,No,Neither,Coping
+2022-0426,2022,50,British Columbia,79100,21.8,Better retirement funding,Very manageable,No,Somewhat difficult,Comfortable
+2022-0427,2022,31,Yukon,51900,12.5,Health benefits,Somewhat manageable,No,Somewhat manageable,Comfortable
+2022-0428,2022,23,New Brunswick,105000,12.8,Health benefits,Somewhat manageable,Yes,Somewhat manageable,Coping
+2022-0429,2022,47,British Columbia,107800,0.0,More time off,Somewhat difficult,No,Somewhat difficult,Stressed
+2022-0430,2022,39,Ontario,93100,13.8,Health benefits,Difficult,Yes,Somewhat difficult,Stressed
+2022-0431,2022,23,Manitoba,91300,0.0,Work-life balance,Very manageable,Yes,Somewhat manageable,Stressed
+2022-0432,2022,45,Alberta,67700,4.3,Better retirement funding,Very difficult,Yes,Very difficult,Stressed
+2022-0433,2022,37,Ontario,153700,8.8,Better retirement funding,Manageable,No,Somewhat manageable,Comfortable
+2022-0434,2022,46,Alberta,98900,2.3,Health benefits,Somewhat difficult,Yes,Somewhat difficult,Stressed
+2022-0435,2022,45,Quebec,54700,11.1,Work-life balance,Difficult,No,Difficult,Coping
+2022-0436,2022,33,Ontario,68000,7.8,Health benefits,Somewhat difficult,No,Very manageable,Coping
+2022-0437,2022,48,Alberta,163600,17.9,More time off,Somewhat manageable,Yes,Neither,Coping
+2022-0438,2022,34,Ontario,59700,7.1,Work-life balance,Very difficult,No,Difficult,Stressed
+2022-0439,2022,35,Ontario,130000,8.2,Work-life balance,Manageable,No,Difficult,Coping
+2022-0440,2022,34,Ontario,49700,10.2,Health benefits,Somewhat manageable,Yes,Very manageable,Coping
+2022-0441,2022,54,Ontario,72700,18.3,More time off,Difficult,No,Manageable,Coping
+2022-0442,2022,37,Alberta,118500,10.5,Health benefits,Difficult,No,Very difficult,Stressed
+2022-0443,2022,56,Alberta,70300,4.2,Higher wages,Difficult,No,Neither,Coping
+2022-0444,2022,61,Ontario,162600,2.6,Health benefits,Neither,No,Difficult,Stressed
+2022-0445,2022,31,Alberta,94100,13.8,Work-life balance,Neither,No,Somewhat manageable,Coping
+2022-0446,2022,18,British Columbia,30000,13.1,NA,Very difficult,No,Neither,Coping
+2022-0447,2022,53,Ontario,105900,0.7,Work-life balance,Somewhat difficult,Yes,Very difficult,Stressed
+2022-0448,2022,36,Alberta,56600,23.2,Work-life balance,Manageable,No,Somewhat manageable,Comfortable
+2022-0449,2022,30,Ontario,92400,1.5,Educational funding,Somewhat difficult,No,Somewhat manageable,Stressed
+2022-0450,2022,33,Ontario,173900,27.1,Work-life balance,Difficult,No,Neither,Comfortable
+2022-0451,2022,35,Ontario,64000,21.7,Educational funding,Difficult,No,Difficult,Comfortable
+2022-0452,2022,56,Alberta,140700,4.2,Better retirement funding,Somewhat difficult,Yes,Very manageable,Coping
+2022-0453,2022,42,New Brunswick,94200,7.8,More time off,Somewhat manageable,No,Difficult,Coping
+2022-0454,2022,55,Ontario,113700,3.3,Work-life balance,Somewhat difficult,No,Somewhat difficult,Stressed
+2022-0455,2022,46,Manitoba,90700,19.1,Work-life balance,Somewhat manageable,No,Somewhat manageable,Comfortable
+2022-0456,2022,36,Ontario,41100,9.8,Work-life balance,Somewhat difficult,Yes,Somewhat difficult,Coping
+2022-0457,2022,35,Ontario,99300,0.3,More time off,Somewhat difficult,Yes,Difficult,Stressed
+2022-0458,2022,47,British Columbia,86100,2.6,Work-life balance,Very difficult,Yes,Difficult,Coping
+2022-0459,2022,50,British Columbia,59800,8.7,Work-life balance,Somewhat difficult,No,Very difficult,Stressed
+2022-0460,2022,52,Ontario,158700,12.7,Work-life balance,Neither,Yes,Neither,Coping
+2022-0461,2022,37,Alberta,90500,11.6,Health benefits,Somewhat difficult,No,Manageable,Coping
+2022-0462,2022,42,Ontario,81600,7.4,More time off,Somewhat difficult,Yes,Very difficult,Stressed
+2022-0463,2022,47,Ontario,167500,13.7,Work-life balance,Neither,Yes,Manageable,Comfortable
+2022-0464,2022,35,Alberta,30000,6.9,NA,Somewhat difficult,No,Somewhat difficult,Stressed
+2022-0465,2022,26,Ontario,132600,26.2,Better retirement funding,Difficult,No,Very difficult,Coping
+2022-0466,2022,30,New Brunswick,31000,18.0,Health benefits,Neither,No,Neither,Coping
+2022-0467,2022,37,British Columbia,96100,16.0,Health benefits,Manageable,Yes,Neither,Comfortable
+2022-0468,2022,48,Saskatchewan,72600,7.9,Health benefits,Very difficult,No,Neither,Coping
+2022-0469,2022,55,Ontario,66300,0.0,Work-life balance,Manageable,No,Neither,Comfortable
+2022-0470,2022,24,Ontario,131700,17.4,Better retirement funding,Somewhat manageable,No,Somewhat manageable,Coping
+2022-0471,2022,33,Ontario,172300,23.5,Higher wages,Very manageable,No,Very manageable,Comfortable
+2022-0472,2022,36,Ontario,72900,3.3,Work-life balance,Difficult,No,Difficult,Stressed
+2022-0473,2022,50,Newfoundland and Labrador,121800,2.4,Health benefits,Somewhat difficult,No,Manageable,Coping
+2022-0474,2022,34,Alberta,83800,0.2,Educational funding,Difficult,No,Difficult,Stressed
+2022-0475,2022,35,Alberta,169000,21.1,Work-life balance,Very manageable,No,Difficult,Comfortable
+2022-0476,2022,23,New Brunswick,30000,17.4,More time off,Somewhat manageable,No,Somewhat difficult,Comfortable
+2022-0477,2022,46,Nova Scotia,117900,15.1,NA,Somewhat difficult,No,Somewhat manageable,Coping
+2022-0478,2022,38,Ontario,50600,11.5,Work-life balance,Somewhat manageable,No,Somewhat manageable,Coping
+2022-0479,2022,32,Northwest Territories and Nunavut,30000,16.8,NA,Very difficult,Yes,Very manageable,Coping
+2022-0480,2022,37,Ontario,67500,7.8,Educational funding,Somewhat difficult,No,Neither,Stressed
+2022-0481,2022,54,Ontario,203400,16.0,Work-life balance,Neither,No,Neither,Coping
+2022-0482,2022,28,Yukon,39200,0.0,More time off,Somewhat manageable,No,Manageable,Coping
+2022-0483,2022,30,British Columbia,114500,3.6,Work-life balance,Somewhat manageable,Yes,Very manageable,Coping
+2022-0484,2022,55,Quebec,172400,4.2,Health benefits,Difficult,Yes,Neither,Stressed
+2022-0485,2022,41,Ontario,90900,25.6,Health benefits,Manageable,Yes,Somewhat manageable,Comfortable
+2022-0486,2022,48,Alberta,108000,15.4,Better retirement funding,Somewhat difficult,Yes,Somewhat manageable,Stressed
+2022-0487,2022,45,British Columbia,30000,10.0,Work-life balance,Difficult,Yes,Difficult,Coping
+2022-0488,2022,40,British Columbia,54200,2.9,Work-life balance,Somewhat manageable,Yes,Somewhat manageable,Stressed
+2022-0489,2022,36,Ontario,129400,0.0,Educational funding,Neither,No,Very manageable,Stressed
+2022-0490,2022,50,Ontario,108000,10.3,Higher wages,Somewhat manageable,No,Neither,Stressed
+2022-0491,2022,54,Ontario,129400,7.7,Work-life balance,Somewhat manageable,No,Difficult,Coping
+2022-0492,2022,53,Ontario,116200,28.8,Higher wages,Somewhat difficult,No,Difficult,Coping
+2022-0493,2022,26,British Columbia,178600,6.6,Health benefits,Neither,Yes,Very manageable,Coping
+2022-0494,2022,56,Manitoba,92500,23.6,Work-life balance,Neither,No,Manageable,Coping
+2022-0495,2022,36,Quebec,164300,15.5,Work-life balance,Very difficult,No,Somewhat manageable,Coping
+2022-0496,2022,31,Saskatchewan,83200,0.9,Work-life balance,Difficult,Yes,Manageable,Stressed
+2022-0497,2022,38,Ontario,171700,7.2,Work-life balance,Difficult,No,Somewhat difficult,Stressed
+2022-0498,2022,50,British Columbia,43800,15.6,More time off,Very difficult,No,Manageable,Coping
+2022-0499,2022,46,Alberta,108200,9.6,Educational funding,Manageable,No,Difficult,Coping
+2022-0500,2022,37,British Columbia,65800,16.0,Work-life balance,Difficult,No,Difficult,Coping
+2022-0501,2022,50,New Brunswick,112000,10.1,Better retirement funding,Somewhat difficult,No,Somewhat difficult,Stressed
+2022-0502,2022,42,British Columbia,154100,22.2,Work-life balance,Very manageable,No,Neither,Comfortable
+2022-0503,2022,33,Quebec,98400,5.9,Work-life balance,Somewhat difficult,No,Somewhat difficult,Stressed
+2022-0504,2022,32,Ontario,139000,4.0,Work-life balance,Somewhat difficult,No,Somewhat manageable,Coping
+2022-0505,2022,45,New Brunswick,64000,5.6,Work-life balance,Somewhat difficult,Yes,Very difficult,Stressed
+2022-0506,2022,39,British Columbia,47400,12.1,Educational funding,Somewhat manageable,No,Somewhat manageable,Coping
+2022-0507,2022,23,Manitoba,65300,0.0,Higher wages,Manageable,No,Difficult,Coping
+2022-0508,2022,50,Ontario,103100,12.0,Higher wages,Somewhat difficult,No,Manageable,Coping
+2022-0509,2022,34,Ontario,71700,5.5,Better retirement funding,Very difficult,Yes,Difficult,Stressed
+2022-0510,2022,59,Alberta,70600,3.2,Better retirement funding,Somewhat manageable,No,Somewhat manageable,Coping
+2022-0511,2022,23,Ontario,124400,4.3,NA,Difficult,No,Somewhat difficult,Stressed
+2022-0512,2022,38,Alberta,68900,9.1,Health benefits,Somewhat manageable,Yes,Somewhat difficult,Coping
+2022-0513,2022,32,British Columbia,149300,15.7,Higher wages,Somewhat difficult,No,Difficult,Stressed
+2022-0514,2022,28,Yukon,72600,7.1,Health benefits,Neither,No,Very difficult,Stressed
+2022-0515,2022,34,Alberta,113400,17.2,Work-life balance,Very manageable,Yes,Somewhat difficult,Coping
+2022-0516,2022,61,Alberta,149400,5.4,Health benefits,Somewhat difficult,No,Difficult,Stressed
+2022-0517,2022,42,Ontario,51800,0.0,Work-life balance,Somewhat manageable,Yes,Difficult,Stressed
+2022-0518,2022,30,Manitoba,93400,22.7,More time off,Manageable,No,Manageable,Comfortable
+2022-0519,2022,18,Alberta,153400,13.4,Better retirement funding,Neither,No,Somewhat difficult,Comfortable
+2022-0520,2022,19,Alberta,71100,15.7,More time off,Very manageable,Yes,Somewhat difficult,Comfortable
+2022-0521,2022,34,Alberta,126100,4.7,Better retirement funding,Somewhat manageable,No,Somewhat difficult,Coping
+2022-0522,2022,32,Ontario,112700,11.4,Work-life balance,Very manageable,No,Neither,Coping
+2022-0523,2022,37,British Columbia,100900,25.5,Educational funding,Somewhat manageable,No,Somewhat manageable,Comfortable
+2022-0524,2022,18,Ontario,66300,10.7,Health benefits,Difficult,No,Neither,Stressed
+2022-0525,2022,39,Ontario,115900,20.5,Higher wages,Manageable,No,Neither,Coping
+2022-0526,2022,52,Alberta,146200,14.6,Better retirement funding,Very difficult,No,Somewhat difficult,Stressed
+2022-0527,2022,59,British Columbia,50900,3.7,Health benefits,Manageable,Yes,Neither,Comfortable
+2022-0528,2022,18,Alberta,69400,3.8,Higher wages,Neither,No,Somewhat difficult,Coping
+2022-0529,2022,30,British Columbia,65800,0.2,NA,Somewhat difficult,No,Somewhat manageable,Coping
+2022-0530,2022,30,British Columbia,55400,14.8,Better retirement funding,Somewhat difficult,No,Somewhat difficult,Coping
+2022-0531,2022,42,Ontario,157800,2.5,Work-life balance,Neither,No,Somewhat manageable,Stressed
+2022-0532,2022,25,British Columbia,30800,8.1,Work-life balance,Very difficult,No,Neither,Coping
+2022-0533,2022,60,Ontario,50300,9.7,Better retirement funding,Somewhat manageable,No,Neither,Coping
+2022-0534,2022,41,Ontario,131300,13.3,Work-life balance,Somewhat manageable,No,Neither,Coping
+2022-0535,2022,39,Ontario,30000,2.1,Work-life balance,Somewhat manageable,No,Manageable,Coping
+2022-0536,2022,59,British Columbia,30000,0.0,Work-life balance,Difficult,No,Somewhat difficult,Stressed
+2022-0537,2022,40,British Columbia,135400,11.0,Work-life balance,Very difficult,No,Neither,Coping
+2022-0538,2022,45,Saskatchewan,105400,18.2,Work-life balance,Manageable,No,Manageable,Coping
+2022-0539,2022,31,British Columbia,100100,5.9,Higher wages,Very difficult,No,Somewhat difficult,Stressed
+2022-0540,2022,24,Ontario,43900,12.5,Work-life balance,Somewhat manageable,No,Somewhat manageable,Comfortable
+2022-0541,2022,33,Ontario,30000,0.0,Health benefits,Very manageable,No,Somewhat difficult,Coping
+2022-0542,2022,65,Ontario,68200,16.7,Higher wages,Somewhat difficult,No,Somewhat difficult,Coping
+2022-0543,2022,48,British Columbia,88400,12.8,Work-life balance,Somewhat manageable,No,Manageable,Comfortable
+2022-0544,2022,43,Alberta,30900,4.1,Work-life balance,Very manageable,No,Somewhat difficult,Coping
+2022-0545,2022,28,Ontario,87400,6.0,Work-life balance,Somewhat difficult,Yes,Very difficult,Comfortable
+2022-0546,2022,51,Ontario,83400,2.4,Better retirement funding,Somewhat difficult,No,Very difficult,Coping
+2022-0547,2022,24,Ontario,75300,5.2,Work-life balance,Neither,No,Very manageable,Coping
+2022-0548,2022,21,Ontario,69300,4.8,Educational funding,Neither,Yes,Somewhat difficult,Stressed
+2022-0549,2022,33,Quebec,98800,0.0,Work-life balance,Somewhat manageable,No,Somewhat difficult,Stressed
+2022-0550,2022,63,Saskatchewan,149500,12.1,More time off,Somewhat manageable,No,Manageable,Coping
+2022-0551,2022,63,Ontario,107300,4.8,Better retirement funding,Manageable,Yes,Difficult,Stressed
+2022-0552,2022,35,Alberta,91700,17.1,Work-life balance,Very difficult,Yes,Neither,Stressed
+2022-0553,2022,32,Manitoba,89800,0.8,Higher wages,Somewhat manageable,No,Somewhat manageable,Coping
+2022-0554,2022,20,Ontario,30000,12.0,More time off,Difficult,No,Neither,Coping
+2022-0555,2022,41,Ontario,123800,6.9,NA,Somewhat manageable,Yes,Neither,Stressed
+2022-0556,2022,42,Alberta,100500,4.8,Work-life balance,Very manageable,Yes,Very manageable,Coping
+2022-0557,2022,49,Ontario,131700,18.7,Work-life balance,Somewhat manageable,Yes,Somewhat difficult,Comfortable
+2022-0558,2022,51,British Columbia,42200,15.6,Better retirement funding,Manageable,No,Very difficult,Coping
+2022-0559,2022,38,British Columbia,71200,18.7,Educational funding,Manageable,No,Manageable,Comfortable
+2022-0560,2022,47,Ontario,45900,19.3,Better retirement funding,Difficult,No,Neither,Coping
+2022-0561,2022,32,New Brunswick,115200,0.0,Health benefits,Somewhat difficult,Yes,Somewhat difficult,Stressed
+2022-0562,2022,46,Ontario,30000,5.9,Health benefits,Very manageable,No,Somewhat difficult,Coping
+2022-0563,2022,34,Ontario,34600,28.3,More time off,Somewhat manageable,No,Manageable,Comfortable
+2022-0564,2022,46,Ontario,125700,16.5,Work-life balance,Very difficult,No,Somewhat manageable,Coping
+2022-0565,2022,45,British Columbia,66000,21.8,Educational funding,Very manageable,Yes,Very manageable,Comfortable
+2022-0566,2022,41,Ontario,45100,26.6,Work-life balance,Somewhat manageable,No,Somewhat manageable,Comfortable
+2022-0567,2022,50,British Columbia,150300,0.0,Work-life balance,Difficult,No,Manageable,Stressed
+2022-0568,2022,21,Ontario,108900,15.8,Educational funding,Somewhat manageable,No,Neither,Coping
+2022-0569,2022,27,Alberta,106600,17.4,Work-life balance,Somewhat manageable,Yes,Neither,Coping
+2022-0570,2022,37,Yukon,127900,2.7,Better retirement funding,Difficult,Yes,Neither,Stressed
+2022-0571,2022,23,Ontario,52900,26.8,More time off,Difficult,No,Neither,Coping
+2022-0572,2022,35,New Brunswick,72300,19.4,Work-life balance,Very manageable,No,Somewhat manageable,Comfortable
+2022-0573,2022,36,British Columbia,51600,0.0,Better retirement funding,Neither,No,Somewhat difficult,Coping
+2022-0574,2022,56,Manitoba,122400,7.9,Better retirement funding,Somewhat difficult,Yes,Difficult,Stressed
+2022-0575,2022,42,Ontario,66600,6.7,Work-life balance,Manageable,Yes,Somewhat manageable,Coping
+2022-0576,2022,52,Ontario,86300,11.8,Better retirement funding,Very difficult,No,Very difficult,Stressed
+2022-0577,2022,44,Ontario,126000,21.8,Work-life balance,Very manageable,No,Manageable,Comfortable
+2022-0578,2022,34,Quebec,140200,3.0,Work-life balance,Neither,Yes,Difficult,Stressed
+2022-0579,2022,42,Nova Scotia,112900,28.5,Educational funding,Very manageable,No,Neither,Comfortable
+2022-0580,2022,49,Ontario,193200,16.6,Work-life balance,Somewhat difficult,No,Somewhat manageable,Coping
+2022-0581,2022,54,Newfoundland and Labrador,75700,6.0,Health benefits,Somewhat difficult,No,Somewhat difficult,Coping
+2022-0582,2022,38,Ontario,30000,10.1,Educational funding,Somewhat manageable,Yes,Very manageable,Coping
+2022-0583,2022,20,Ontario,95700,8.6,NA,Somewhat manageable,No,Very manageable,Stressed
+2022-0584,2022,19,Ontario,30000,8.8,More time off,Very manageable,No,Neither,Coping
+2022-0585,2022,36,Alberta,70300,15.7,Work-life balance,Somewhat manageable,Yes,Neither,Comfortable
+2022-0586,2022,18,British Columbia,30000,18.3,Health benefits,Manageable,No,Difficult,Comfortable
+2022-0587,2022,62,British Columbia,78000,0.7,Better retirement funding,Difficult,No,Neither,Stressed
+2022-0588,2022,47,Saskatchewan,30000,0.0,Work-life balance,Somewhat manageable,No,Difficult,Coping
+2022-0589,2022,32,Ontario,56300,19.7,Work-life balance,Very manageable,No,Very manageable,Comfortable
+2022-0590,2022,27,Manitoba,50800,4.1,Health benefits,Very manageable,No,Very manageable,Comfortable
+2022-0591,2022,52,Manitoba,112500,5.0,Work-life balance,Somewhat difficult,No,Difficult,Coping
+2022-0592,2022,27,Nova Scotia,132500,0.0,More time off,Manageable,No,Neither,Stressed
+2022-0593,2022,28,Quebec,105800,6.5,Health benefits,Neither,No,Somewhat manageable,Comfortable
+2022-0594,2022,31,Saskatchewan,30000,13.6,Work-life balance,Neither,No,Neither,Coping
+2022-0595,2022,41,Ontario,121900,9.7,Work-life balance,Neither,No,Difficult,Coping
+2022-0596,2022,47,Ontario,106100,16.2,More time off,Manageable,No,Manageable,Comfortable
+2022-0597,2022,54,British Columbia,106100,0.0,Work-life balance,Neither,No,Difficult,Stressed
+2022-0598,2022,53,British Columbia,108400,13.4,Higher wages,Manageable,No,Very manageable,Comfortable
+2022-0599,2022,40,Ontario,100200,7.9,Work-life balance,Very difficult,Yes,Somewhat difficult,Stressed
+2022-0600,2022,52,Ontario,73400,10.7,Work-life balance,Somewhat difficult,No,Neither,Coping
+2022-0601,2022,32,British Columbia,68900,23.8,Higher wages,Manageable,Yes,Very manageable,Comfortable
+2022-0602,2022,18,Ontario,116200,24.8,Higher wages,Manageable,No,Manageable,Comfortable
+2022-0603,2022,32,British Columbia,42800,16.2,NA,Manageable,No,Somewhat manageable,Comfortable
+2022-0604,2022,30,British Columbia,30000,5.0,Work-life balance,Somewhat manageable,No,Neither,Comfortable
+2022-0605,2022,32,British Columbia,74900,2.2,Educational funding,Very difficult,Yes,Somewhat difficult,Stressed
+2022-0606,2022,28,Ontario,30000,17.3,Health benefits,Very manageable,No,Neither,Comfortable
+2022-0607,2022,34,Ontario,30000,12.6,Higher wages,Manageable,No,Very manageable,Comfortable
+2022-0608,2022,47,Ontario,83300,4.7,Work-life balance,Neither,No,Somewhat difficult,Coping
+2022-0609,2022,61,Ontario,193900,11.4,Work-life balance,Neither,No,Neither,Coping
+2022-0610,2022,19,Ontario,56600,18.2,Work-life balance,Difficult,No,Neither,Stressed
+2022-0611,2022,25,Manitoba,76400,8.1,Health benefits,Somewhat difficult,No,Somewhat difficult,Coping
+2022-0612,2022,31,Ontario,30000,11.0,Work-life balance,Difficult,No,Manageable,Coping
+2022-0613,2022,49,British Columbia,125400,3.1,Better retirement funding,Somewhat manageable,No,Somewhat difficult,Coping
+2022-0614,2022,38,Ontario,91700,18.5,Higher wages,Somewhat difficult,No,Very difficult,Coping
+2022-0615,2022,31,Alberta,43300,16.2,Higher wages,Somewhat difficult,No,Neither,Coping
+2022-0616,2022,49,New Brunswick,112500,10.0,More time off,Very manageable,No,Somewhat difficult,Stressed
+2022-0617,2022,51,Ontario,115000,27.5,Higher wages,Somewhat manageable,No,Very manageable,Comfortable
+2022-0618,2022,40,Alberta,37000,3.9,Health benefits,Somewhat difficult,Yes,Somewhat difficult,Stressed
+2022-0619,2022,30,Nova Scotia,91600,4.5,Educational funding,Difficult,No,Difficult,Stressed
+2022-0620,2022,43,Ontario,154400,14.5,Work-life balance,Difficult,No,Difficult,Stressed
+2022-0621,2022,37,Ontario,74100,22.4,Better retirement funding,Very difficult,Yes,Neither,Comfortable
+2022-0622,2022,37,Alberta,42100,2.5,More time off,Very manageable,No,Somewhat manageable,Comfortable
+2022-0623,2022,34,Alberta,72100,8.3,Educational funding,Somewhat difficult,No,Difficult,Stressed
+2022-0624,2022,51,British Columbia,149200,3.1,Better retirement funding,Somewhat difficult,Yes,Somewhat difficult,Stressed
+2022-0625,2022,43,Ontario,33200,16.4,Health benefits,Very manageable,No,Manageable,Coping
+2022-0626,2022,52,Quebec,136900,8.0,More time off,Very difficult,No,Somewhat difficult,Stressed
+2022-0627,2022,56,British Columbia,80100,0.6,Health benefits,Somewhat manageable,No,Somewhat manageable,Coping
+2022-0628,2022,46,Ontario,111100,7.3,Health benefits,Very difficult,Yes,Difficult,Stressed
+2022-0629,2022,34,Ontario,52800,12.3,Work-life balance,Neither,No,Somewhat manageable,Coping
+2022-0630,2022,52,Saskatchewan,79600,13.2,Better retirement funding,Manageable,No,Somewhat difficult,Coping
+2022-0631,2022,46,Alberta,175200,14.5,Work-life balance,Difficult,No,Neither,Coping
+2022-0632,2022,65,Ontario,57000,20.0,Better retirement funding,Very manageable,No,Somewhat difficult,Coping
+2022-0633,2022,44,Ontario,120300,8.1,Work-life balance,Somewhat difficult,No,Very difficult,Stressed
+2022-0634,2022,48,British Columbia,188600,6.1,Better retirement funding,Difficult,Yes,Difficult,Stressed
+2022-0635,2022,43,Alberta,128800,11.7,More time off,Very difficult,No,Difficult,Stressed
+2022-0636,2022,39,Alberta,30000,17.2,Work-life balance,Somewhat difficult,No,Somewhat manageable,Stressed
+2022-0637,2022,37,Nova Scotia,30000,24.4,Work-life balance,Manageable,Yes,Neither,Comfortable
+2022-0638,2022,44,Ontario,58400,7.0,Work-life balance,Difficult,Yes,Manageable,Stressed
+2022-0639,2022,46,Ontario,106900,13.6,Educational funding,Neither,No,Neither,Coping
+2022-0640,2022,54,Alberta,122300,7.3,Health benefits,Very difficult,No,Difficult,Stressed
+2022-0641,2022,44,Ontario,32400,18.1,Work-life balance,Very manageable,No,Neither,Comfortable
+2022-0642,2022,34,Manitoba,37400,30.0,Work-life balance,Somewhat manageable,Yes,Somewhat difficult,Comfortable
+2022-0643,2022,36,Saskatchewan,43400,12.8,More time off,Manageable,No,Manageable,Comfortable
+2022-0644,2022,24,Alberta,57000,17.9,More time off,Somewhat manageable,Yes,Difficult,Coping
+2022-0645,2022,60,Ontario,219200,17.1,Work-life balance,Manageable,No,Very manageable,Comfortable
+2022-0646,2022,34,Quebec,34300,2.1,Work-life balance,Manageable,No,Very difficult,Coping
+2022-0647,2022,52,Ontario,59200,16.7,Work-life balance,Very manageable,No,Neither,Comfortable
+2022-0648,2022,43,Ontario,37800,14.2,Work-life balance,Neither,No,Somewhat difficult,Comfortable
+2022-0649,2022,44,Manitoba,127800,8.9,Higher wages,Difficult,No,Neither,Stressed
+2022-0650,2022,39,Ontario,86400,11.5,Work-life balance,Somewhat manageable,No,Neither,Coping
+2022-0651,2022,31,Ontario,31700,0.9,More time off,Very difficult,No,Manageable,Stressed
+2022-0652,2022,28,New Brunswick,53900,13.4,Educational funding,Somewhat difficult,No,Difficult,Stressed
+2022-0653,2022,61,Yukon,81900,25.6,Work-life balance,Very difficult,No,Difficult,Comfortable
+2022-0654,2022,41,British Columbia,106300,13.9,Work-life balance,Somewhat manageable,No,Neither,Stressed
+2022-0655,2022,54,Manitoba,245200,12.4,Better retirement funding,Somewhat manageable,No,Neither,Coping
+2022-0656,2022,57,Quebec,143000,17.7,More time off,Manageable,No,Manageable,Comfortable
+2022-0657,2022,35,British Columbia,77900,15.2,Health benefits,Neither,Yes,Neither,Coping
+2022-0658,2022,45,Alberta,64300,7.5,Better retirement funding,Very manageable,No,Somewhat manageable,Coping
+2022-0659,2022,41,British Columbia,30000,11.8,Work-life balance,Somewhat manageable,Yes,Difficult,Coping
+2022-0660,2022,26,Ontario,105700,16.8,Work-life balance,Very manageable,No,Very manageable,Comfortable
+2022-0661,2022,38,Ontario,121000,0.0,More time off,Neither,No,Difficult,Stressed
+2022-0662,2022,47,Alberta,77200,6.6,Better retirement funding,Very difficult,Yes,Somewhat manageable,Stressed
+2022-0663,2022,34,Ontario,141700,8.4,Work-life balance,Difficult,No,Somewhat difficult,Coping
+2022-0664,2022,36,Ontario,85100,16.3,Better retirement funding,Neither,No,Manageable,Comfortable
+2022-0665,2022,38,Ontario,125700,7.8,Work-life balance,Somewhat difficult,No,Somewhat manageable,Stressed
+2022-0666,2022,65,Ontario,142300,18.6,Better retirement funding,Somewhat manageable,No,Manageable,Coping
+2022-0667,2022,18,Saskatchewan,48100,12.1,Work-life balance,Somewhat manageable,No,Somewhat manageable,Comfortable
+2022-0668,2022,46,British Columbia,51300,4.3,Better retirement funding,Manageable,No,Somewhat difficult,Stressed
+2022-0669,2022,37,British Columbia,78200,2.2,Better retirement funding,Very difficult,No,Somewhat manageable,Stressed
+2022-0670,2022,32,Ontario,120100,6.0,Higher wages,Somewhat manageable,No,Neither,Coping
+2022-0671,2022,37,New Brunswick,60100,3.0,Work-life balance,Somewhat difficult,No,Somewhat difficult,Stressed
+2022-0672,2022,48,Ontario,124000,5.0,NA,Difficult,Yes,Difficult,Stressed
+2022-0673,2022,49,Alberta,49400,14.5,More time off,Very difficult,No,Neither,Coping
+2022-0674,2022,42,Alberta,132000,12.9,Higher wages,Somewhat manageable,No,Somewhat difficult,Coping
+2022-0675,2022,53,Quebec,125100,4.7,Better retirement funding,Somewhat manageable,No,Somewhat manageable,Coping
+2022-0676,2022,55,Alberta,52400,18.8,Higher wages,Somewhat difficult,No,Difficult,Coping
+2022-0677,2022,50,Ontario,93800,16.7,Educational funding,Neither,No,Neither,Coping
+2022-0678,2022,33,Ontario,126100,5.6,Work-life balance,Somewhat manageable,No,Manageable,Coping
+2022-0679,2022,46,Alberta,36000,26.6,More time off,Somewhat manageable,Yes,Somewhat manageable,Comfortable
+2022-0680,2022,46,British Columbia,45500,20.3,Work-life balance,Manageable,No,Very manageable,Comfortable
+2022-0681,2022,30,Manitoba,71500,10.1,Work-life balance,Neither,No,Somewhat difficult,Coping
+2022-0682,2022,21,Ontario,168200,20.5,Better retirement funding,Very manageable,Yes,Somewhat manageable,Comfortable
+2022-0683,2022,18,British Columbia,30000,17.8,Higher wages,Manageable,No,Somewhat manageable,Comfortable
+2022-0684,2022,41,Ontario,116300,8.7,Work-life balance,Very difficult,No,Somewhat difficult,Stressed
+2022-0685,2022,44,British Columbia,109000,19.3,Higher wages,Very manageable,No,Manageable,Comfortable
+2022-0686,2022,26,Alberta,39500,15.6,More time off,Somewhat manageable,No,Somewhat difficult,Comfortable
+2022-0687,2022,53,Alberta,117600,0.0,Work-life balance,Very manageable,Yes,Neither,Coping
+2022-0688,2022,42,British Columbia,70600,8.6,Health benefits,Somewhat difficult,No,Difficult,Stressed
+2022-0689,2022,56,Manitoba,96100,8.8,Work-life balance,Very difficult,No,Neither,Coping
+2022-0690,2022,44,Saskatchewan,30000,15.7,Higher wages,Somewhat manageable,No,Manageable,Coping
+2022-0691,2022,27,Alberta,69300,13.9,Work-life balance,Difficult,No,Very difficult,Coping
+2022-0692,2022,45,Ontario,142500,8.9,Health benefits,Manageable,No,Neither,Coping
+2022-0693,2022,48,Ontario,104900,11.1,More time off,Somewhat manageable,Yes,Somewhat difficult,Stressed
+2022-0694,2022,33,Ontario,134000,7.0,Better retirement funding,Somewhat difficult,No,Neither,Stressed
+2022-0695,2022,23,Ontario,93500,19.1,Better retirement funding,Manageable,No,Difficult,Comfortable
+2022-0696,2022,41,Alberta,88500,5.3,Higher wages,Somewhat difficult,No,Somewhat difficult,Stressed
+2022-0697,2022,28,Ontario,40600,21.1,Health benefits,Neither,No,Somewhat manageable,Coping
+2022-0698,2022,53,British Columbia,85200,2.4,Higher wages,Very difficult,No,Somewhat difficult,Stressed
+2022-0699,2022,35,Ontario,30000,9.1,Better retirement funding,Very manageable,No,Somewhat manageable,Coping
+2022-0700,2022,61,Alberta,108100,3.6,Better retirement funding,Somewhat difficult,Yes,Somewhat difficult,Coping
+2022-0701,2022,18,Ontario,64300,9.6,Health benefits,Difficult,Yes,Manageable,Stressed
+2022-0702,2022,42,Ontario,178800,7.5,Higher wages,Somewhat difficult,Yes,Difficult,Coping
+2022-0703,2022,57,Ontario,141900,8.2,Better retirement funding,Very manageable,Yes,Difficult,Coping
+2022-0704,2022,29,Alberta,30300,3.4,Educational funding,Somewhat manageable,No,Somewhat difficult,Stressed
+2022-0705,2022,38,Ontario,30000,11.4,Work-life balance,Somewhat difficult,No,Neither,Coping
+2022-0706,2022,35,Ontario,72200,3.5,Work-life balance,Somewhat difficult,No,Neither,Coping
+2022-0707,2022,32,Ontario,118600,0.0,Work-life balance,Manageable,Yes,Somewhat difficult,Coping
+2022-0708,2022,43,British Columbia,83500,13.7,Health benefits,Neither,No,Somewhat difficult,Coping
+2022-0709,2022,24,Alberta,93100,3.2,Work-life balance,Very manageable,No,Manageable,Comfortable
+2022-0710,2022,39,British Columbia,79400,10.3,Work-life balance,Somewhat manageable,Yes,Difficult,Stressed
+2022-0711,2022,46,Ontario,134900,13.8,Work-life balance,Neither,Yes,Neither,Stressed
+2022-0712,2022,37,Manitoba,30000,10.0,Health benefits,Difficult,No,Somewhat manageable,Coping
+2022-0713,2022,28,Ontario,152200,18.8,Health benefits,Somewhat manageable,Yes,Difficult,Coping
+2022-0714,2022,52,Ontario,52400,17.8,Health benefits,Very manageable,No,Manageable,Comfortable
+2022-0715,2022,49,Ontario,143200,14.0,Health benefits,Difficult,No,Somewhat manageable,Stressed
+2022-0716,2022,28,Ontario,58400,8.3,Work-life balance,Manageable,No,Somewhat manageable,Coping
+2022-0717,2022,24,Ontario,60200,0.0,Health benefits,Neither,Yes,Very difficult,Coping
+2022-0718,2022,29,Ontario,61400,5.6,Educational funding,Manageable,Yes,Somewhat difficult,Stressed
+2022-0719,2022,47,British Columbia,113300,21.2,Educational funding,Somewhat manageable,No,Manageable,Coping
+2022-0720,2022,43,Ontario,117400,14.2,Educational funding,Difficult,No,Neither,Coping
+2022-0721,2022,49,Saskatchewan,156400,3.4,Higher wages,Somewhat difficult,Yes,Difficult,Stressed
+2022-0722,2022,36,Ontario,154400,13.0,Better retirement funding,Very difficult,No,Difficult,Coping
+2022-0723,2022,29,Quebec,90100,10.9,More time off,Difficult,Yes,Neither,Stressed
+2022-0724,2022,51,Yukon,192200,17.4,Better retirement funding,Very manageable,No,Manageable,Comfortable
+2022-0725,2022,33,Ontario,84100,19.1,More time off,Difficult,No,Somewhat manageable,Stressed
+2022-0726,2022,42,Ontario,146900,3.4,Work-life balance,Somewhat manageable,No,Somewhat manageable,Stressed
+2022-0727,2022,21,Ontario,82900,11.0,Work-life balance,Very difficult,No,Difficult,Stressed
+2022-0728,2022,33,British Columbia,52000,9.8,Work-life balance,Somewhat difficult,No,Somewhat difficult,Stressed
+2022-0729,2022,52,Alberta,117100,2.5,Health benefits,Manageable,No,Very difficult,Stressed
+2022-0730,2022,31,Nova Scotia,101700,8.5,Work-life balance,Somewhat manageable,Yes,Difficult,Coping
+2022-0731,2022,50,Ontario,103400,11.1,Work-life balance,Somewhat manageable,No,Very difficult,Stressed
+2022-0732,2022,18,British Columbia,77600,6.7,More time off,Very manageable,Yes,Manageable,Stressed
+2022-0733,2022,33,Ontario,122800,7.7,Better retirement funding,Somewhat difficult,Yes,Difficult,Stressed
+2022-0734,2022,38,Ontario,85800,1.2,Work-life balance,Somewhat manageable,No,Neither,Coping
+2022-0735,2022,61,Ontario,30000,9.3,Better retirement funding,Very difficult,Yes,Somewhat difficult,Stressed
+2022-0736,2022,26,British Columbia,152900,12.7,Work-life balance,Neither,Yes,Somewhat difficult,Coping
+2022-0737,2022,48,Ontario,87100,10.6,Better retirement funding,Somewhat difficult,No,Neither,Coping
+2022-0738,2022,53,Alberta,68300,13.2,Better retirement funding,Manageable,No,Very difficult,Coping
+2022-0739,2022,31,British Columbia,30000,4.0,Work-life balance,Somewhat difficult,No,Somewhat difficult,Stressed
+2022-0740,2022,36,Alberta,67200,13.9,Work-life balance,Manageable,No,Somewhat manageable,Comfortable
+2022-0741,2022,42,Alberta,64900,9.5,More time off,Very manageable,No,Somewhat manageable,Coping
+2022-0742,2022,22,British Columbia,30000,3.7,Work-life balance,Very difficult,No,Neither,Stressed
+2022-0743,2022,35,Ontario,48400,24.1,Work-life balance,Very manageable,Yes,Manageable,Coping
+2022-0744,2022,55,Newfoundland and Labrador,139000,24.4,Health benefits,Somewhat difficult,No,Neither,Comfortable
+2022-0745,2022,46,British Columbia,200500,5.2,NA,Somewhat difficult,Yes,Difficult,Coping
+2022-0746,2022,38,Ontario,128000,23.2,Higher wages,Somewhat manageable,No,Neither,Coping
+2022-0747,2022,41,Ontario,147600,8.4,Educational funding,Somewhat difficult,No,Very manageable,Coping
+2022-0748,2022,47,Quebec,81600,6.1,Work-life balance,Somewhat difficult,Yes,Difficult,Stressed
+2022-0749,2022,49,Ontario,108700,24.3,Higher wages,Very manageable,Yes,Somewhat difficult,Comfortable
+2022-0750,2022,33,Alberta,100800,0.0,Work-life balance,Neither,No,Manageable,Stressed
+2022-0751,2022,58,Quebec,84000,4.8,Better retirement funding,Difficult,No,Manageable,Stressed
+2022-0752,2022,56,Ontario,92700,3.1,Better retirement funding,Difficult,No,Difficult,Stressed
+2022-0753,2022,48,Ontario,144700,12.2,Better retirement funding,Difficult,No,Somewhat manageable,Coping
+2022-0754,2022,30,Ontario,129500,20.6,Work-life balance,Manageable,No,Somewhat manageable,Comfortable
+2022-0755,2022,28,Nova Scotia,75400,17.5,Work-life balance,Neither,Yes,Somewhat manageable,Comfortable
+2022-0756,2022,36,Ontario,30000,17.1,Higher wages,Somewhat manageable,Yes,Somewhat manageable,Comfortable
+2022-0757,2022,41,Ontario,76700,17.4,Better retirement funding,Manageable,No,Very manageable,Coping
+2022-0758,2022,19,Ontario,30000,12.8,Higher wages,Very manageable,No,Difficult,Coping
+2022-0759,2022,46,Alberta,102800,11.2,Health benefits,Manageable,No,Somewhat manageable,Coping
+2022-0760,2022,55,Alberta,125300,6.7,Higher wages,Very difficult,Yes,Very difficult,Stressed
+2022-0761,2022,47,Alberta,87000,30.0,Work-life balance,Manageable,No,Manageable,Comfortable
+2022-0762,2022,32,British Columbia,90100,12.0,Better retirement funding,Somewhat difficult,No,Somewhat manageable,Coping
+2022-0763,2022,30,Manitoba,95800,7.9,Higher wages,Neither,No,Somewhat manageable,Coping
+2022-0764,2022,44,Quebec,108800,0.0,Work-life balance,Neither,No,Manageable,Coping
+2022-0765,2022,38,British Columbia,30000,8.0,Health benefits,Very manageable,No,Manageable,Comfortable
+2022-0766,2022,45,British Columbia,84800,3.7,Higher wages,Somewhat difficult,Yes,Neither,Stressed
+2022-0767,2022,47,British Columbia,121000,10.3,Work-life balance,Somewhat difficult,No,Somewhat difficult,Coping
+2022-0768,2022,53,Ontario,188400,7.7,Health benefits,Somewhat manageable,No,Very manageable,Coping
+2022-0769,2022,26,Ontario,55400,20.5,Better retirement funding,Very manageable,No,Somewhat manageable,Comfortable
+2022-0770,2022,43,Ontario,122000,3.2,Health benefits,Very difficult,No,Somewhat difficult,Stressed
+2022-0771,2022,36,Saskatchewan,127900,1.4,Work-life balance,Neither,Yes,Somewhat difficult,Stressed
+2022-0772,2022,39,Yukon,78700,14.7,Health benefits,Somewhat difficult,Yes,Somewhat difficult,Coping
+2022-0773,2022,50,Ontario,162400,27.6,Work-life balance,Neither,Yes,Somewhat manageable,Comfortable
+2022-0774,2022,52,Ontario,168100,10.2,Health benefits,Very manageable,Yes,Neither,Comfortable
+2022-0775,2022,57,Manitoba,184500,12.5,Health benefits,Very difficult,Yes,Somewhat difficult,Coping
+2022-0776,2022,45,Ontario,120400,0.0,Work-life balance,Neither,No,Manageable,Stressed
+2022-0777,2022,39,British Columbia,206500,0.0,Higher wages,Very difficult,No,Manageable,Stressed
+2022-0778,2022,37,Ontario,54700,7.5,Health benefits,Somewhat manageable,No,Neither,Coping
+2022-0779,2022,19,Alberta,164700,11.7,Educational funding,Somewhat difficult,No,Manageable,Stressed
+2022-0780,2022,56,British Columbia,152400,6.3,More time off,Manageable,No,Neither,Coping
+2022-0781,2022,36,Alberta,151000,12.3,More time off,Very manageable,No,Neither,Comfortable
+2022-0782,2022,46,Ontario,83000,11.2,Work-life balance,Somewhat manageable,No,Manageable,Coping
+2022-0783,2022,48,Ontario,144200,11.2,Higher wages,Neither,Yes,Neither,Coping
+2022-0784,2022,25,Alberta,138800,2.1,Higher wages,Difficult,Yes,Neither,Stressed
+2022-0785,2022,29,Ontario,30000,15.9,Health benefits,Somewhat difficult,No,Somewhat difficult,Stressed
+2022-0786,2022,59,Manitoba,110300,9.4,Better retirement funding,Neither,Yes,Neither,Coping
+2022-0787,2022,43,Ontario,30000,11.7,Work-life balance,Difficult,No,Difficult,Coping
+2022-0788,2022,33,Alberta,70600,4.0,Better retirement funding,Somewhat manageable,No,Manageable,Stressed
+2022-0789,2022,38,Alberta,46200,8.2,Work-life balance,Difficult,No,Difficult,Stressed
+2022-0790,2022,53,Ontario,98600,12.2,Better retirement funding,Very difficult,No,Somewhat difficult,Stressed
+2022-0791,2022,51,Ontario,252700,21.0,Health benefits,Manageable,No,Difficult,Coping
+2022-0792,2022,22,Ontario,148900,6.4,Better retirement funding,Neither,No,Somewhat manageable,Coping
+2022-0793,2022,60,Ontario,48000,17.6,Work-life balance,Somewhat manageable,No,Somewhat difficult,Coping
+2022-0794,2022,52,Saskatchewan,135800,14.3,Better retirement funding,Somewhat difficult,Yes,Somewhat manageable,Coping
+2022-0795,2022,38,British Columbia,126900,10.9,More time off,Difficult,No,Somewhat difficult,Stressed
+2022-0796,2022,26,Manitoba,52100,10.4,Work-life balance,Somewhat manageable,No,Difficult,Coping
+2022-0797,2022,53,Saskatchewan,118400,5.1,Higher wages,Difficult,Yes,Very difficult,Stressed
+2022-0798,2022,46,Alberta,112800,24.6,Educational funding,Manageable,No,Somewhat difficult,Comfortable
+2022-0799,2022,23,Ontario,30000,10.8,Work-life balance,Difficult,No,Neither,Stressed
+2022-0800,2022,37,Alberta,33900,20.4,Higher wages,Somewhat difficult,No,Manageable,Coping
+2022-0801,2022,65,Ontario,136100,7.0,Better retirement funding,Very difficult,No,Difficult,Stressed
+2022-0802,2022,40,Alberta,95000,17.3,More time off,Somewhat manageable,No,Somewhat manageable,Comfortable
+2022-0803,2022,31,Ontario,41100,0.0,Work-life balance,Difficult,Yes,Difficult,Stressed
+2022-0804,2022,28,Ontario,32300,6.7,Higher wages,Very manageable,Yes,Very manageable,Comfortable
+2022-0805,2022,61,Alberta,117000,4.0,Work-life balance,Somewhat difficult,No,Manageable,Stressed
+2022-0806,2022,50,Alberta,149300,10.3,More time off,Neither,No,Manageable,Comfortable
+2022-0807,2022,57,British Columbia,111700,15.9,Health benefits,Neither,No,Difficult,Coping
+2022-0808,2022,43,British Columbia,175600,0.0,Health benefits,Difficult,No,Somewhat difficult,Stressed
+2022-0809,2022,55,Manitoba,77700,3.5,More time off,Difficult,No,Very manageable,Stressed
+2022-0810,2022,30,Saskatchewan,84700,8.2,Higher wages,Manageable,Yes,Somewhat difficult,Coping
+2022-0811,2022,42,Alberta,75300,26.4,Educational funding,Manageable,Yes,Manageable,Comfortable
+2022-0812,2022,43,New Brunswick,123900,13.7,Health benefits,Manageable,No,Very manageable,Comfortable
+2022-0813,2022,57,Nova Scotia,76400,8.3,Work-life balance,Difficult,No,Neither,Stressed
+2022-0814,2022,44,British Columbia,192400,12.2,Health benefits,Difficult,Yes,Neither,Coping
+2022-0815,2022,32,British Columbia,30000,10.5,Health benefits,Neither,No,Somewhat difficult,Stressed
+2022-0816,2022,41,Ontario,177300,10.3,Educational funding,Somewhat difficult,No,Manageable,Stressed
+2022-0817,2022,20,Ontario,64500,10.8,Better retirement funding,Somewhat manageable,No,Somewhat difficult,Coping
+2022-0818,2022,18,Ontario,84600,0.8,NA,Very manageable,No,Manageable,Coping
+2022-0819,2022,50,Manitoba,171700,4.8,Health benefits,Difficult,No,Somewhat difficult,Stressed
+2022-0820,2022,36,Ontario,126900,17.9,Work-life balance,Very manageable,No,Manageable,Comfortable
+2022-0821,2022,37,Quebec,49000,12.7,Work-life balance,Neither,No,Manageable,Coping
+2022-0822,2022,50,Ontario,135000,12.8,Educational funding,Somewhat manageable,No,Somewhat manageable,Comfortable
+2022-0823,2022,57,Quebec,208900,11.7,Work-life balance,Very difficult,Yes,Difficult,Stressed
+2022-0824,2022,46,British Columbia,54600,18.1,NA,Manageable,No,Difficult,Comfortable
+2022-0825,2022,63,Yukon,230400,5.5,Work-life balance,Somewhat difficult,No,Somewhat manageable,Coping
+2022-0826,2022,46,Ontario,118300,8.3,Work-life balance,Somewhat manageable,No,Neither,Coping
+2022-0827,2022,44,Ontario,74300,15.6,Higher wages,Somewhat difficult,No,Difficult,Stressed
+2022-0828,2022,43,Ontario,49800,22.7,Work-life balance,Manageable,Yes,Very manageable,Comfortable
+2022-0829,2022,25,Saskatchewan,56300,17.3,Better retirement funding,Neither,No,Manageable,Coping
+2022-0830,2022,51,Newfoundland and Labrador,30000,10.7,Work-life balance,Manageable,Yes,Very manageable,Comfortable
+2022-0831,2022,18,Ontario,36200,6.9,Higher wages,Neither,Yes,Neither,Coping
+2022-0832,2022,33,Ontario,66400,13.2,More time off,Very manageable,No,Very manageable,Comfortable
+2022-0833,2022,40,Ontario,36300,12.1,Work-life balance,Difficult,No,Manageable,Coping
+2022-0834,2022,31,Ontario,113900,16.8,Work-life balance,Very manageable,No,Difficult,Comfortable
+2022-0835,2022,35,Alberta,71600,3.6,Better retirement funding,Very difficult,No,Very manageable,Stressed
+2022-0836,2022,62,British Columbia,91200,4.2,More time off,Difficult,Yes,Somewhat difficult,Stressed
+2022-0837,2022,53,Manitoba,93200,6.2,Work-life balance,Somewhat manageable,Yes,Manageable,Coping
+2022-0838,2022,32,Ontario,95800,9.9,Work-life balance,Difficult,Yes,Somewhat manageable,Coping
+2022-0839,2022,34,Ontario,84700,17.7,Work-life balance,Somewhat difficult,No,Somewhat manageable,Coping
+2022-0840,2022,25,Ontario,32500,1.9,Work-life balance,Somewhat difficult,No,Somewhat difficult,Coping
+2022-0841,2022,48,Ontario,108300,13.1,Work-life balance,Somewhat manageable,Yes,Very difficult,Coping
+2022-0842,2022,37,Ontario,83000,27.7,Health benefits,Manageable,No,Neither,Comfortable
+2022-0843,2022,18,Alberta,30000,9.9,More time off,Difficult,No,Somewhat manageable,Coping
+2022-0844,2022,41,Ontario,77100,14.3,Work-life balance,Manageable,No,Very manageable,Comfortable
+2022-0845,2022,45,Quebec,126500,10.6,Work-life balance,Difficult,No,Very difficult,Stressed
+2022-0846,2022,52,Ontario,136600,5.1,Better retirement funding,Very manageable,No,Somewhat difficult,Coping
+2022-0847,2022,39,Quebec,77000,17.8,Educational funding,Somewhat difficult,No,Manageable,Comfortable
+2022-0848,2022,36,Yukon,117800,0.8,Health benefits,Somewhat difficult,No,Difficult,Stressed
+2022-0849,2022,64,Manitoba,77000,0.0,Work-life balance,Neither,No,Difficult,Coping
+2022-0850,2022,40,Ontario,42600,10.1,Work-life balance,Neither,Yes,Difficult,Coping
+2022-0851,2022,49,Ontario,90900,3.4,Work-life balance,Very manageable,No,Neither,Coping
+2022-0852,2022,34,Nova Scotia,155900,10.9,Educational funding,Somewhat difficult,No,Neither,Coping
+2022-0853,2022,48,British Columbia,110200,11.6,Health benefits,Neither,Yes,Somewhat manageable,Stressed
+2022-0854,2022,23,British Columbia,50700,30.0,Work-life balance,Manageable,No,Neither,Comfortable
+2022-0855,2022,34,Alberta,158200,6.5,Health benefits,Somewhat difficult,No,Difficult,Stressed
+2022-0856,2022,26,Ontario,54700,17.1,Better retirement funding,Neither,Yes,Somewhat manageable,Coping
+2022-0857,2022,33,Alberta,191200,13.4,Health benefits,Somewhat difficult,Yes,Very manageable,Coping
+2022-0858,2022,55,New Brunswick,86900,4.1,Work-life balance,Very difficult,No,Difficult,Stressed
+2022-0859,2022,33,Ontario,30000,0.0,More time off,Very difficult,No,Somewhat manageable,Stressed
+2022-0860,2022,49,New Brunswick,95200,29.4,Educational funding,Very manageable,Yes,Manageable,Comfortable
+2022-0861,2022,58,Ontario,104500,4.7,Better retirement funding,Somewhat manageable,No,Manageable,Coping
+2022-0862,2022,40,Northwest Territories and Nunavut,49600,12.9,NA,Difficult,No,Somewhat difficult,Stressed
+2022-0863,2022,52,Alberta,238100,21.8,Health benefits,Manageable,No,Difficult,Comfortable
+2022-0864,2022,46,Yukon,114900,5.1,Higher wages,Somewhat manageable,No,Difficult,Coping
+2022-0865,2022,41,Ontario,114700,7.6,Educational funding,Difficult,Yes,Neither,Stressed
+2022-0866,2022,49,Ontario,80400,23.8,Health benefits,Neither,Yes,Manageable,Coping
+2022-0867,2022,62,Ontario,94100,20.2,Work-life balance,Somewhat manageable,No,Neither,Coping
+2022-0868,2022,32,Alberta,129300,3.4,Work-life balance,Difficult,No,Very difficult,Stressed
+2022-0869,2022,28,Ontario,30000,13.0,Higher wages,Manageable,No,Difficult,Comfortable
+2022-0870,2022,28,British Columbia,30000,6.5,Work-life balance,Difficult,Yes,Somewhat difficult,Stressed
+2022-0871,2022,52,Ontario,95600,5.2,Educational funding,Very difficult,No,Somewhat manageable,Stressed
+2022-0872,2022,54,Alberta,178600,12.0,Work-life balance,Somewhat difficult,No,Somewhat difficult,Stressed
+2022-0873,2022,34,Ontario,62300,23.2,Better retirement funding,Manageable,No,Manageable,Comfortable
+2022-0874,2022,18,British Columbia,77800,0.8,Health benefits,Very manageable,No,Neither,Coping
+2022-0875,2022,32,British Columbia,79400,21.2,Work-life balance,Neither,No,Very manageable,Comfortable
+2022-0876,2022,47,Alberta,165300,5.1,Work-life balance,Neither,Yes,Somewhat manageable,Stressed
+2022-0877,2022,39,Ontario,30000,18.3,Work-life balance,Very manageable,Yes,Somewhat difficult,Comfortable
+2022-0878,2022,42,British Columbia,129800,12.5,Work-life balance,Somewhat manageable,No,Somewhat manageable,Coping
+2022-0879,2022,34,Ontario,71100,18.2,Work-life balance,Very manageable,Yes,Manageable,Coping
+2022-0880,2022,52,British Columbia,154200,10.9,More time off,Very manageable,Yes,Manageable,Stressed
+2022-0881,2022,44,Ontario,55000,12.8,Health benefits,Very manageable,No,Somewhat manageable,Comfortable
+2022-0882,2022,47,British Columbia,101700,5.7,More time off,Very manageable,Yes,Difficult,Stressed
+2022-0883,2022,42,Saskatchewan,87900,8.3,Work-life balance,Somewhat manageable,No,Neither,Coping
+2022-0884,2022,46,British Columbia,48900,0.9,Work-life balance,Neither,No,Somewhat manageable,Coping
+2022-0885,2022,46,Alberta,35000,5.5,Work-life balance,Somewhat manageable,No,Difficult,Stressed
+2022-0886,2022,29,British Columbia,44500,30.0,More time off,Very manageable,Yes,Very manageable,Comfortable
+2022-0887,2022,44,Alberta,102500,6.0,Educational funding,Somewhat difficult,No,Somewhat difficult,Comfortable
+2022-0888,2022,49,Ontario,65700,10.9,Health benefits,Somewhat difficult,No,Manageable,Coping
+2022-0889,2022,54,British Columbia,94500,10.7,Work-life balance,Somewhat difficult,No,Neither,Coping
+2022-0890,2022,45,Quebec,30000,12.7,Better retirement funding,Manageable,No,Very difficult,Coping
+2022-0891,2022,28,Ontario,53500,5.2,Work-life balance,Somewhat difficult,No,Neither,Coping
+2022-0892,2022,30,British Columbia,126200,0.0,Better retirement funding,Difficult,Yes,Somewhat difficult,Stressed
+2022-0893,2022,35,Nova Scotia,117800,2.7,Higher wages,Neither,Yes,Manageable,Coping
+2022-0894,2022,42,Alberta,88700,19.0,Work-life balance,Difficult,No,Neither,Coping
+2022-0895,2022,39,Alberta,100700,5.1,Higher wages,Very manageable,No,Difficult,Coping
+2022-0896,2022,27,British Columbia,30000,8.0,Work-life balance,Neither,No,Manageable,Coping
+2022-0897,2022,26,Alberta,150200,16.5,Better retirement funding,Difficult,Yes,Somewhat difficult,Stressed
+2022-0898,2022,18,Alberta,160400,12.9,More time off,Somewhat manageable,Yes,Neither,Comfortable
+2022-0899,2022,18,Saskatchewan,65200,7.7,Work-life balance,Neither,No,Somewhat manageable,Stressed
+2022-0900,2022,38,Ontario,216500,11.3,Work-life balance,Somewhat difficult,No,Very difficult,Stressed
+2022-0901,2022,65,Quebec,93500,17.1,Better retirement funding,Neither,Yes,Difficult,Coping
+2022-0902,2022,62,British Columbia,60400,3.0,Better retirement funding,Somewhat difficult,No,Neither,Coping
+2022-0903,2022,28,Ontario,36500,2.4,Work-life balance,Somewhat manageable,Yes,Somewhat difficult,Stressed
+2022-0904,2022,42,Manitoba,82000,12.8,NA,Somewhat manageable,Yes,Neither,Coping
+2022-0905,2022,22,Alberta,178600,22.6,Work-life balance,Somewhat manageable,No,Manageable,Coping
+2022-0906,2022,24,Ontario,51900,2.2,Work-life balance,Difficult,Yes,Difficult,Stressed
+2022-0907,2022,26,Alberta,30000,14.5,More time off,Very manageable,No,Very manageable,Comfortable
+2022-0908,2022,37,Manitoba,40600,13.5,More time off,Somewhat manageable,No,Very difficult,Coping
+2022-0909,2022,38,Ontario,144000,14.7,Work-life balance,Neither,No,Difficult,Coping
+2022-0910,2022,43,Ontario,144400,9.4,Work-life balance,Manageable,Yes,Difficult,Stressed
+2022-0911,2022,48,Ontario,77700,5.9,Work-life balance,Manageable,No,Difficult,Coping
+2022-0912,2022,36,British Columbia,30000,14.3,Work-life balance,Manageable,No,Somewhat manageable,Comfortable
+2022-0913,2022,40,Alberta,33600,7.1,Work-life balance,Neither,No,Somewhat manageable,Stressed
+2022-0914,2022,27,Yukon,156600,12.3,Educational funding,Difficult,No,Somewhat manageable,Stressed
+2022-0915,2022,24,Alberta,100400,4.8,Health benefits,Somewhat difficult,No,Neither,Stressed
+2022-0916,2022,22,British Columbia,66300,5.9,NA,Difficult,Yes,Very difficult,Stressed
+2022-0917,2022,48,British Columbia,195400,10.8,More time off,Manageable,No,Very manageable,Comfortable
+2022-0918,2022,36,Quebec,181900,22.2,Educational funding,Neither,No,Somewhat difficult,Coping
+2022-0919,2022,18,Ontario,55200,11.9,More time off,Somewhat difficult,No,Somewhat manageable,Coping
+2022-0920,2022,39,Nova Scotia,87600,25.5,Work-life balance,Very manageable,No,Manageable,Comfortable
+2022-0921,2022,25,Saskatchewan,38400,18.2,Work-life balance,Neither,No,Somewhat difficult,Comfortable
+2022-0922,2022,60,Alberta,105800,18.6,Work-life balance,Very manageable,No,Somewhat manageable,Comfortable
+2022-0923,2022,33,Quebec,30000,2.0,Better retirement funding,Somewhat difficult,Yes,Manageable,Coping
+2022-0924,2022,48,Alberta,30000,0.0,Higher wages,Very difficult,Yes,Somewhat difficult,Coping
+2022-0925,2022,53,Manitoba,30000,12.3,Better retirement funding,Very difficult,No,Neither,Stressed
+2022-0926,2022,29,Alberta,127700,11.5,Work-life balance,Neither,Yes,Very manageable,Coping
+2022-0927,2022,41,Yukon,30000,12.2,Educational funding,Neither,Yes,Somewhat difficult,Coping
+2022-0928,2022,47,Quebec,198000,0.0,Work-life balance,Difficult,Yes,Somewhat difficult,Stressed
+2022-0929,2022,41,Ontario,55000,5.6,Work-life balance,Somewhat manageable,No,Neither,Coping
+2022-0930,2022,44,British Columbia,182900,17.4,Work-life balance,Neither,No,Somewhat manageable,Coping
+2022-0931,2022,24,British Columbia,47700,21.4,More time off,Difficult,Yes,Neither,Coping
+2022-0932,2022,47,Nova Scotia,30000,2.9,Work-life balance,Difficult,No,Somewhat difficult,Stressed
+2022-0933,2022,34,British Columbia,145200,15.0,Work-life balance,Difficult,No,Somewhat difficult,Coping
+2022-0934,2022,44,Alberta,166100,12.1,Better retirement funding,Difficult,Yes,Very manageable,Coping
+2022-0935,2022,51,Ontario,61200,10.3,Educational funding,Somewhat difficult,No,Manageable,Coping
+2022-0936,2022,48,Ontario,85400,22.1,More time off,Somewhat manageable,No,Neither,Coping
+2022-0937,2022,44,Quebec,50700,3.7,Health benefits,Somewhat difficult,No,Manageable,Stressed
+2022-0938,2022,48,Ontario,96000,12.2,Work-life balance,Neither,No,Neither,Stressed
+2022-0939,2022,48,British Columbia,107400,13.3,Health benefits,Somewhat manageable,No,Very manageable,Coping
+2022-0940,2022,58,Ontario,99400,5.9,Work-life balance,Somewhat difficult,Yes,Difficult,Stressed
+2022-0941,2022,40,Alberta,30000,19.2,Educational funding,Somewhat difficult,No,Somewhat difficult,Coping
+2022-0942,2022,42,Ontario,64000,20.0,Work-life balance,Very difficult,No,Very manageable,Comfortable
+2022-0943,2022,51,Ontario,141700,5.5,Better retirement funding,Somewhat difficult,No,Somewhat difficult,Stressed
+2022-0944,2022,34,Alberta,70600,19.3,More time off,Somewhat difficult,No,Somewhat difficult,Coping
+2022-0945,2022,24,British Columbia,49600,18.5,Health benefits,Somewhat difficult,Yes,Somewhat manageable,Coping
+2022-0946,2022,46,Quebec,52500,18.2,Work-life balance,Very manageable,No,Neither,Coping
+2022-0947,2022,38,Ontario,56500,0.0,Health benefits,Difficult,No,Difficult,Stressed
+2022-0948,2022,26,Ontario,139400,8.2,Work-life balance,Very difficult,Yes,Somewhat difficult,Stressed
+2022-0949,2022,46,Ontario,42000,19.5,Work-life balance,Very manageable,No,Neither,Comfortable
+2022-0950,2022,57,Ontario,151500,5.8,NA,Difficult,No,Very difficult,Stressed
+2022-0951,2022,20,Alberta,62400,14.7,Work-life balance,Neither,No,Somewhat difficult,Coping
+2022-0952,2022,52,Ontario,120200,19.8,Higher wages,Somewhat difficult,No,Somewhat manageable,Comfortable
+2022-0953,2022,18,Quebec,30000,9.4,Work-life balance,Difficult,No,Neither,Stressed
+2022-0954,2022,35,Alberta,64900,9.4,Health benefits,Very manageable,No,Neither,Coping
+2022-0955,2022,62,Alberta,122700,13.5,Higher wages,Somewhat difficult,Yes,Somewhat difficult,Stressed
+2022-0956,2022,36,Ontario,58000,9.9,Higher wages,Somewhat difficult,No,Neither,Stressed
+2022-0957,2022,41,Ontario,108100,14.3,Work-life balance,Somewhat difficult,No,Difficult,Coping
+2022-0958,2022,49,Manitoba,126400,21.5,Better retirement funding,Somewhat manageable,No,Neither,Comfortable
+2022-0959,2022,19,Ontario,167100,11.8,Higher wages,Somewhat difficult,Yes,Difficult,Stressed
+2022-0960,2022,41,Ontario,105400,11.1,Work-life balance,Difficult,No,Neither,Stressed
+2022-0961,2022,41,Ontario,30000,17.2,Higher wages,Neither,No,Somewhat difficult,Comfortable
+2022-0962,2022,62,Alberta,181200,11.0,Better retirement funding,Somewhat difficult,Yes,Somewhat difficult,Stressed
+2022-0963,2022,25,Alberta,57300,19.2,Higher wages,Very manageable,No,Somewhat manageable,Comfortable
+2022-0964,2022,35,New Brunswick,183100,22.5,Work-life balance,Manageable,No,Manageable,Coping
+2022-0965,2022,29,Quebec,147000,17.6,Educational funding,Manageable,No,Somewhat manageable,Coping
+2022-0966,2022,28,Ontario,46700,13.6,Higher wages,Manageable,No,Very manageable,Comfortable
+2022-0967,2022,54,British Columbia,147100,25.0,NA,Somewhat manageable,Yes,Somewhat manageable,Coping
+2022-0968,2022,40,Quebec,60300,0.0,Work-life balance,Somewhat manageable,No,Difficult,Stressed
+2022-0969,2022,33,Manitoba,79600,22.5,Better retirement funding,Difficult,No,Somewhat difficult,Comfortable
+2022-0970,2022,34,Ontario,114800,13.1,More time off,Somewhat manageable,No,Difficult,Comfortable
+2022-0971,2022,33,Alberta,135200,30.0,Better retirement funding,Neither,No,Neither,Comfortable
+2022-0972,2022,34,Ontario,125800,12.5,Work-life balance,Very manageable,Yes,Difficult,Coping
+2022-0973,2022,25,Ontario,71200,6.2,Higher wages,Very manageable,No,Somewhat difficult,Coping
+2022-0974,2022,37,Ontario,209700,9.4,Higher wages,Manageable,No,Somewhat manageable,Coping
+2022-0975,2022,36,British Columbia,65700,2.4,Health benefits,Difficult,Yes,Neither,Stressed
+2022-0976,2022,31,New Brunswick,30000,9.2,More time off,Very manageable,No,Somewhat difficult,Coping
+2022-0977,2022,42,Alberta,30000,9.0,Educational funding,Very difficult,No,Neither,Coping
+2022-0978,2022,43,Saskatchewan,168200,6.5,Work-life balance,Somewhat difficult,No,Somewhat difficult,Coping
+2022-0979,2022,33,Alberta,75700,12.6,More time off,Somewhat manageable,No,Neither,Coping
+2022-0980,2022,38,Ontario,95000,13.3,More time off,Somewhat manageable,No,Neither,Coping
+2022-0981,2022,65,Ontario,100400,5.0,Work-life balance,Manageable,No,Somewhat difficult,Coping
+2022-0982,2022,65,Alberta,104900,1.1,Better retirement funding,Somewhat difficult,No,Somewhat difficult,Coping
+2022-0983,2022,27,Manitoba,31100,20.2,Educational funding,Somewhat manageable,No,Very manageable,Comfortable
+2022-0984,2022,29,Alberta,97100,14.2,Higher wages,Neither,Yes,Neither,Coping
+2022-0985,2022,27,Ontario,65600,9.7,Work-life balance,Very difficult,No,Somewhat difficult,Stressed
+2022-0986,2022,53,Yukon,131300,8.8,Better retirement funding,Neither,Yes,Very difficult,Stressed
+2022-0987,2022,35,New Brunswick,99500,20.4,Work-life balance,Somewhat difficult,No,Difficult,Coping
+2022-0988,2022,43,Yukon,73200,17.0,More time off,Somewhat difficult,Yes,Somewhat difficult,Coping
+2022-0989,2022,64,Alberta,53100,30.0,Higher wages,Somewhat manageable,No,Very manageable,Comfortable
+2022-0990,2022,40,Manitoba,30000,21.5,More time off,Somewhat difficult,No,Difficult,Stressed
+2022-0991,2022,48,Quebec,253300,0.0,Better retirement funding,Neither,No,Difficult,Stressed
+2022-0992,2022,46,Quebec,172900,0.0,Health benefits,Somewhat difficult,Yes,Very manageable,Coping
+2022-0993,2022,33,British Columbia,146500,11.0,Work-life balance,Somewhat difficult,No,Neither,Coping
+2022-0994,2022,53,Ontario,75800,21.5,Health benefits,Very manageable,Yes,Neither,Comfortable
+2022-0995,2022,30,Quebec,75500,17.5,More time off,Manageable,No,Manageable,Comfortable
+2022-0996,2022,56,Ontario,73200,15.2,NA,Neither,Yes,Neither,Coping
+2022-0997,2022,33,Ontario,30000,16.1,Better retirement funding,Neither,No,Very manageable,Comfortable
+2022-0998,2022,34,Alberta,51600,2.5,Higher wages,Very manageable,Yes,Very difficult,Stressed
+2022-0999,2022,27,Alberta,136800,7.7,Higher wages,Somewhat manageable,No,Somewhat manageable,Coping
+2022-1000,2022,29,Ontario,115500,16.6,Educational funding,Neither,No,Neither,Comfortable

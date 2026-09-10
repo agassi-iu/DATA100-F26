@@ -8,16 +8,17 @@ All labs and the capstone project are submitted through **MyLearningSpace**. Thi
 
 | Lab | Topic | Date |
 |---|---|---|
-| Lab 1 | R Basics & Data Types | Sept 14 |
-| Lab 2 | --- | Sept 21 |
-| Lab 3 | --- | Sept 28 |
-| Lab 4 | --- | Oct 05 |
-| Lab 5 | --- | Oct 19 |
-| Lab 6 | --- | Oct 26 |
-| Lab 7 | --- | Nov 02 |
-| Lab 8 | --- | Nov 16 |
-| Lab 9 | --- | Nov 23 |
-| Lab 10 | --- | Nov 30 |
+| Lab 0 | Introduction | Sep 14 |
+| Lab 1 | --- | Sep 21 |
+| Lab 2 | --- | Sep 28 |
+| Lab 3 | --- | Oct 05 |
+| Lab 4 | --- | Oct 19 |
+| Lab 5 | --- | Oct 26 |
+| Lab 6 | --- | Nov 02 |
+| Lab 7 | --- | Nov 16 |
+| Lab 8 | --- | Nov 23 |
+| Lab 9 | --- | Nov 30 |
+| Lab 10 | --- | Dec 02 |
 
 
 ::: {.callout-note}

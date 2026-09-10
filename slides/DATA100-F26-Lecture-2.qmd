@@ -1,5 +1,5 @@
 ---
-title: "DATA100 Introduction to Data Analysis"
+title: "DATA100 Introduction to Data Analytics"
 subtitle: "Lecture 2: The Whole Game - Day 1"
 author: "Agassi Iu"
 institute: "Wilfrid Laurier University"
@@ -322,12 +322,19 @@ ggplot(survey, aes(x = financial_wellness_cluster, y = savings_pct, fill = facto
 ```{r echo=FALSE}
 #| fig-width: 9
 #| fig-height: 5
-ggplot(survey_2017, aes(x = financial_wellness_cluster, y = benefits_preference, fill = factor(year))) +
-  geom_bar(position = position_dodge(width = 0.8)) +
-  labs(title = "Paycheque Delay Difficulty by Cluster: 2017 vs 2022",
-       subtitle = "Score: 1 = Very difficult ... 7 = Very manageable",
-       x = "Cluster", y = "Difficulty Score", fill = "Year") +
-  theme_minimal(base_size = 14)
+ggplot(survey, aes(x = financial_wellness_cluster, fill = paycheque_delay_difficulty)) +
+  geom_bar(position = "fill") +
+  facet_wrap(~ year) +
+  scale_y_continuous(labels = scales::percent) +
+  # Generates a sequential dark-to-light blue shade across Likert levels
+  scale_fill_brewer(palette = "Blues", direction = -1) + 
+  labs(
+    title = "How Each Group of People Feel About A Delayed Paycheque",
+    x = "Financial Wellness Cluster",
+    y = "Proportion",
+    fill = "Likert Score"
+  ) +
+  theme_minimal()
 ```
 
 

@@ -1,5 +1,5 @@
 ---
-title: "DATA100 Introduction to Data Analysis"
+title: "DATA100 Introduction to Data Analytics"
 subtitle: "Lecture 1: Course Introduction"
 author: "Agassi Iu"
 institute: "Wilfrid Laurier University"

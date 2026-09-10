@@ -1,0 +1,667 @@
+[
+  {
+    "objectID": "syllabus.html",
+    "href": "syllabus.html",
+    "title": "Syllabus",
+    "section": "",
+    "text": "This course provides a broad overview of modern methods and tools for big data analytics. Different stages of data analytics lifecycle, including diagnosing, cleaning, preparing, transforming, visualizing and modelling data, are considered. Numerical and graphical methods of descriptive statistics are introduced. Data analytic methods are demonstrated using the statistical computing software R."
+  },
+  {
+    "objectID": "syllabus.html#course-description",
+    "href": "syllabus.html#course-description",
+    "title": "Syllabus",
+    "section": "",
+    "text": "This course provides a broad overview of modern methods and tools for big data analytics. Different stages of data analytics lifecycle, including diagnosing, cleaning, preparing, transforming, visualizing and modelling data, are considered. Numerical and graphical methods of descriptive statistics are introduced. Data analytic methods are demonstrated using the statistical computing software R."
+  },
+  {
+    "objectID": "syllabus.html#instructor",
+    "href": "syllabus.html#instructor",
+    "title": "Syllabus",
+    "section": "Instructor",
+    "text": "Instructor\nAgassi Iu Wilfrid Laurier University Office Hours: Wednesdays 14:00–16:00, LH3073, or by appointment"
+  },
+  {
+    "objectID": "syllabus.html#assessments-evaluation",
+    "href": "syllabus.html#assessments-evaluation",
+    "title": "Syllabus",
+    "section": "Assessments & Evaluation",
+    "text": "Assessments & Evaluation\n\n\n\nCategory\nWeight\nFrequency\n\n\n\n\nLaboratories\n30%\nWeekly on Mondays\n\n\nParticipation\n5%\nEvery class\n\n\nCapstone Project\n20%\nMultiple due-dates\n\n\nMidterm Exams\n20%\nTwice (see Schedule)\n\n\nFinal Exam\n25%\nFinal exam period in December"
+  },
+  {
+    "objectID": "syllabus.html#tools",
+    "href": "syllabus.html#tools",
+    "title": "Syllabus",
+    "section": "Tools",
+    "text": "Tools\n\nRStudio — labs, assignments, projects, and (second) midterm.\nMyLearningSpace — announcements, submissions, and in-class quiz participation."
+  },
+  {
+    "objectID": "syllabus.html#first-year-success-tips",
+    "href": "syllabus.html#first-year-success-tips",
+    "title": "Syllabus",
+    "section": "First-Year Success Tips",
+    "text": "First-Year Success Tips\n\nStart early — avoid last-minute coding stress.\nPractice daily — even 30 minutes a day beats cramming.\nAsk questions early — reach out after 15 minutes of being stuck. Use office hours. I have an open door policy ;)\nForm study groups — teach among yourselves! This is the best way to learn."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#recap-day-1",
+    "href": "slides/DATA100-F26-Lecture-3.html#recap-day-1",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Recap: Day 1",
+    "text": "Recap: Day 1\n\nWe toured real findings — income, benefits, paycheque-delay difficulty\nWe ended with three financial wellness clusters: Stressed, Coping, Comfortable\nToday: how we actually got there — including the messy parts"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#before-we-look-at-the-raw-data",
+    "href": "slides/DATA100-F26-Lecture-3.html#before-we-look-at-the-raw-data",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Before we look at the raw data…",
+    "text": "Before we look at the raw data…\n\nWhat do you think could go wrong with real, raw survey data?\n What kinds of problems might it have that yesterday’s polished plots didn’t show?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#the-reveal-heres-the-actual-raw-file",
+    "href": "slides/DATA100-F26-Lecture-3.html#the-reveal-heres-the-actual-raw-file",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "The reveal: here’s the actual raw file",
+    "text": "The reveal: here’s the actual raw file\n\nlibrary(tidyverse)\n\nsurvey_2017_raw &lt;- read_csv(\"data/raw_survey_2017.csv\")\n\n# Note the skip = 1 -- 2022's file has a stray metadata line above the\n# real header (a leftover from the export on the new survey platform)\nsurvey_2022_raw &lt;- read_csv(\"data/raw_survey_2022.csv\", skip = 1)\n\nglimpse(survey_2017_raw)\nglimpse(survey_2022_raw)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#first-things-first-duplicate-rows",
+    "href": "slides/DATA100-F26-Lecture-3.html#first-things-first-duplicate-rows",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "First things first: duplicate rows",
+    "text": "First things first: duplicate rows\nA few respondents show up more than once (simulating a double-submitted survey).\n\nsurvey_2017_raw |&gt; count(respondent_id, sort = TRUE) |&gt; filter(n &gt; 1)\n\nsurvey_2017_raw &lt;- survey_2017_raw |&gt; distinct()\nsurvey_2022_raw &lt;- survey_2022_raw |&gt; distinct()\n\ndistinct() removes exact duplicate rows — simple, but always worth checking for before anything else, since duplicates quietly inflate every count and mean you compute downstream."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#tidy-data-benefits-are-stuck-in-wide-format",
+    "href": "slides/DATA100-F26-Lecture-3.html#tidy-data-benefits-are-stuck-in-wide-format",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Tidy data: benefits are stuck in wide format",
+    "text": "Tidy data: benefits are stuck in wide format\n\nsurvey_2017_raw |&gt;\n  select(respondent_id, starts_with(\"benefit_\")) |&gt;\n  head()\n\nOne respondent, one true preference — but it’s spread across six columns. This needs pivot_longer() before we can do anything useful with it."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#tidy-data-pivot_longer-to-the-rescue",
+    "href": "slides/DATA100-F26-Lecture-3.html#tidy-data-pivot_longer-to-the-rescue",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Tidy data: pivot_longer() to the rescue",
+    "text": "Tidy data: pivot_longer() to the rescue\n\nbenefits_2017_long &lt;- survey_2017_raw |&gt;\n  pivot_longer(\n    cols = starts_with(\"benefit_\"),\n    names_to = \"benefit_type\",\n    values_to = \"response\"\n  ) |&gt;\n  mutate(chosen = response %in% c(\"Yes\", \"Y\", \"yes\")) |&gt;\n  group_by(respondent_id) |&gt;\n  summarize(\n    benefit_preference = if (any(chosen)) benefit_type[chosen][1] else NA_character_,\n    .groups = \"drop\"\n  )\n\nsurvey_2017_clean &lt;- survey_2017_raw |&gt;\n  select(-starts_with(\"benefit_\")) |&gt;\n  left_join(benefits_2017_long, by = \"respondent_id\")\n\n\n\nbenefits_2022_long &lt;- survey_2022_raw |&gt;\n  pivot_longer(\n    cols = starts_with(\"benefit_\"),\n    names_to = \"benefit_type\",\n    values_to = \"response\"\n  ) |&gt;\n  mutate(chosen = response %in% c(\"Yes\", \"Y\", \"yes\")) |&gt;\n  group_by(respondent_id) |&gt;\n  summarize(\n    benefit_preference = if (any(chosen)) benefit_type[chosen][1] else NA_character_,\n    .groups = \"drop\"\n  )\n\nsurvey_2022_clean &lt;- survey_2022_raw |&gt;\n  select(-starts_with(\"benefit_\")) |&gt;\n  left_join(benefits_2022_long, by = \"respondent_id\")"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#strings-expressions-income-is-a-mess",
+    "href": "slides/DATA100-F26-Lecture-3.html#strings-expressions-income-is-a-mess",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Strings & expressions: income is a mess",
+    "text": "Strings & expressions: income is a mess\n\nsurvey_2017_clean |&gt; distinct(income) |&gt; slice_sample(n = 6)\n\nFour different formats mixed together: \"85000\", \"$85,000\", \"85,000\", \"85K\". Before income can be used in any calculation, it needs to become a real number.\n\nclean_income &lt;- function(x) {\n  x &lt;- str_trim(x)\n  is_k &lt;- str_detect(x, \"K$\")\n  numeric_part &lt;- x |&gt;\n    str_remove_all(\"[$,K]\") |&gt;\n    as.numeric()\n  if_else(is_k, numeric_part * 1000, numeric_part)\n}\n\nsurvey_2017_clean &lt;- survey_2017_clean |&gt;\n  mutate(income = clean_income(income))\n\nsurvey_2022_clean &lt;- survey_2022_clean |&gt;\n  mutate(income = clean_income(income))"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#strings-expressions-province-spelling",
+    "href": "slides/DATA100-F26-Lecture-3.html#strings-expressions-province-spelling",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Strings & expressions: province spelling",
+    "text": "Strings & expressions: province spelling\n\nsurvey_2017_clean |&gt; distinct(province)\n\nSame province, several spellings: \"Ontario\", \"ON\", \"ontario \".\n\nstandardize_province &lt;- function(x) {\n  x &lt;- str_trim(x) |&gt; str_to_lower()\n  case_when(\n    x %in% c(\"ontario\", \"on\") ~ \"Ontario\",\n    x %in% c(\"alberta\", \"ab\") ~ \"Alberta\",\n    x %in% c(\"british columbia\", \"bc\") ~ \"British Columbia\",\n    x %in% c(\"quebec\", \"qc\") ~ \"Quebec\",\n    TRUE ~ str_to_title(x)\n  )\n}\n\nsurvey_2017_clean &lt;- survey_2017_clean |&gt; mutate(province = standardize_province(province))\nsurvey_2022_clean &lt;- survey_2022_clean |&gt; mutate(province = standardize_province(province))"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#strings-expressions-yesno-encodings",
+    "href": "slides/DATA100-F26-Lecture-3.html#strings-expressions-yesno-encodings",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Strings & expressions: Yes/No encodings",
+    "text": "Strings & expressions: Yes/No encodings\n\nsurvey_2017_clean |&gt; distinct(debt_overwhelmed)\n\nThree encodings for the same two answers: \"Yes\"/\"No\", \"Y\"/\"N\", \"yes\"/\"no\".\n\nstandardize_yn &lt;- function(x) {\n  x &lt;- str_trim(x) |&gt; str_to_lower()\n  case_when(\n    x %in% c(\"yes\", \"y\") ~ \"Yes\",\n    x %in% c(\"no\", \"n\") ~ \"No\",\n    TRUE ~ NA_character_\n  )\n}\n\nsurvey_2017_clean &lt;- survey_2017_clean |&gt; mutate(debt_overwhelmed = standardize_yn(debt_overwhelmed))\nsurvey_2022_clean &lt;- survey_2022_clean |&gt; mutate(debt_overwhelmed = standardize_yn(debt_overwhelmed))"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#missing-data-how-much-and-where",
+    "href": "slides/DATA100-F26-Lecture-3.html#missing-data-how-much-and-where",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Missing data: how much, and where?",
+    "text": "Missing data: how much, and where?\n\nsurvey_2017_clean |&gt;\n  summarize(across(everything(), ~ mean(is.na(.)))) |&gt;\n  pivot_longer(everything(), names_to = \"column\", values_to = \"pct_missing\") |&gt;\n  arrange(desc(pct_missing))"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#missing-data-two-honest-options",
+    "href": "slides/DATA100-F26-Lecture-3.html#missing-data-two-honest-options",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Missing data: two honest options",
+    "text": "Missing data: two honest options\n\n\nOption 1: Delete\n\nsurvey_2017_nomiss &lt;- survey_2017_clean |&gt;\n  drop_na(income, savings_pct,\n          debt_overwhelmed,\n          emergency_fund_likelihood)\n\nSimple, but shrinks your sample — and if missingness isn’t random, you bias what’s left.\n\nOption 2: Impute\n\nsurvey_2017_imputed &lt;- survey_2017_clean |&gt;\n  mutate(savings_pct = if_else(\n    is.na(savings_pct),\n    median(savings_pct, na.rm = TRUE),\n    savings_pct\n  ))\n\nKeeps every row, but every imputed value is a guess — and a bad guess can quietly distort your results."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#mismatched-response-too-many-response-levels",
+    "href": "slides/DATA100-F26-Lecture-3.html#mismatched-response-too-many-response-levels",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Mismatched response: too many response levels",
+    "text": "Mismatched response: too many response levels\n\nsurvey_2017_clean |&gt; distinct(emergency_fund_likelihood)\nsurvey_2022_clean |&gt; distinct(emergency_fund_likelihood)\n\n2017 has 7 levels. 2022 already collapsed to 5. Neither matches the other, and neither is easy to compare across years as-is.\nThe compromise: collapse both down to 3 levels — Difficult, Neither, Manageable.\n\nsurvey_2017_clean &lt;- survey_2017_clean |&gt;\n  mutate(emergency_fund_3lvl = case_when(\n    emergency_fund_likelihood %in% c(\"Very difficult\", \"Difficult\", \"Somewhat difficult\") ~ \"Difficult\",\n    emergency_fund_likelihood == \"Neither\" ~ \"Neither\",\n    emergency_fund_likelihood %in% c(\"Somewhat manageable\", \"Manageable\", \"Very manageable\") ~ \"Manageable\",\n    TRUE ~ NA_character_\n  ))\n\nsurvey_2022_clean &lt;- survey_2022_clean |&gt;\n  mutate(emergency_fund_3lvl = case_when(\n    emergency_fund_likelihood %in% c(\"Very difficult\", \"Difficult\") ~ \"Difficult\",\n    emergency_fund_likelihood == \"Neither\" ~ \"Neither\",\n    emergency_fund_likelihood %in% c(\"Manageable\", \"Very manageable\") ~ \"Manageable\",\n    TRUE ~ NA_character_\n  ))"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#mismatched-question-same-question-different-name",
+    "href": "slides/DATA100-F26-Lecture-3.html#mismatched-question-same-question-different-name",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Mismatched question: same question, different name",
+    "text": "Mismatched question: same question, different name\n\nnames(survey_2017_clean)\nnames(survey_2022_clean)\n\npaycheque_delay_difficulty (2017) and twoweek_pay_delay_impact (2022) ask the same thing — the survey platform changed, the wording changed, the column name changed. rename() fixes this in one line each.\n\nsurvey_2017_clean &lt;- survey_2017_clean |&gt;\n  rename(pay_delay_response = paycheque_delay_difficulty)\n\nsurvey_2022_clean &lt;- survey_2022_clean |&gt;\n  rename(pay_delay_response = twoweek_pay_delay_impact)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#age-numbers-in-one-year-buckets-in-the-other",
+    "href": "slides/DATA100-F26-Lecture-3.html#age-numbers-in-one-year-buckets-in-the-other",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Age: numbers in one year, buckets in the other",
+    "text": "Age: numbers in one year, buckets in the other\n\nsurvey_2017_clean |&gt; select(age) |&gt; head()\nsurvey_2022_clean |&gt; select(age) |&gt; head()\n\n2017 gives an exact age. 2022 gives a bracket. To compare years, everyone needs to speak the same bucket language.\n\nsurvey_2017_clean &lt;- survey_2017_clean |&gt;\n  mutate(age_bucket = case_when(\n    age &lt;= 30 ~ \"18-30\",\n    age &lt;= 40 ~ \"30-40\",\n    age &lt;= 50 ~ \"40-50\",\n    age &lt;= 65 ~ \"50-65\",\n    TRUE ~ \"65+\"\n  ))\n\nsurvey_2022_clean &lt;- survey_2022_clean |&gt;\n  rename(age_bucket = age)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#removed-benefit-option-aligning-categories",
+    "href": "slides/DATA100-F26-Lecture-3.html#removed-benefit-option-aligning-categories",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Removed benefit option: aligning categories",
+    "text": "Removed benefit option: aligning categories\n\nsurvey_2017_clean |&gt; distinct(benefit_preference)\nsurvey_2022_clean |&gt; distinct(benefit_preference)\n\n“Educational funding” existed as a choice in 2017, but the 2022 platform dropped it. To compare years fairly, we fold anything not offered in both years into a shared “Other” category.\n\nsurvey_2017_clean &lt;- survey_2017_clean |&gt;\n  mutate(benefit_preference = if_else(\n    benefit_preference == \"benefit_education\",\n    \"benefit_other\",\n    benefit_preference\n  ))"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#combine-years",
+    "href": "slides/DATA100-F26-Lecture-3.html#combine-years",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Combine years",
+    "text": "Combine years\n\nsurvey_combined &lt;- bind_rows(survey_2017_clean, survey_2022_clean)\n\nglimpse(survey_combined)\n\nOnly possible now — column names match (rename()), category sets match (the “Other” recode), and the response scales match (the 3-level collapse). Every fix so far existed to make this one line possible."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#a-useful-side-quest-separate",
+    "href": "slides/DATA100-F26-Lecture-3.html#a-useful-side-quest-separate",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "A useful side quest: separate()",
+    "text": "A useful side quest: separate()\n\nsurvey_combined |&gt;\n  separate(respondent_id, into = c(\"survey_year\", \"respondent_num\"), sep = \"-\") |&gt;\n  select(survey_year, respondent_num, everything()) |&gt;\n  head()\n\nrespondent_id (\"2017-0001\") is actually two pieces of information squeezed into one column. separate() is pivot_longer()’s cousin for this specific problem — splitting one messy column into several clean ones."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#pivot_wider-the-mirror-image",
+    "href": "slides/DATA100-F26-Lecture-3.html#pivot_wider-the-mirror-image",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "pivot_wider(): the mirror image",
+    "text": "pivot_wider(): the mirror image\n\nsurvey_combined |&gt;\n  count(financial_wellness_cluster, year) |&gt;\n  pivot_wider(names_from = year, values_from = n)\n\npivot_longer() took wide data and made it long. pivot_wider() does the opposite — useful here for turning a long count table into a clean side-by-side year comparison, exactly the shape you’d want for a report."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#show-concluding-results",
+    "href": "slides/DATA100-F26-Lecture-3.html#show-concluding-results",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Show concluding results",
+    "text": "Show concluding results\n\nsurvey_combined |&gt;\n  ggplot(aes(x = financial_wellness_cluster, y = income, fill = factor(year))) +\n  geom_boxplot(position = position_dodge(width = 0.8)) +\n  labs(title = \"Income by Cluster: 2017 vs 2022\",\n       x = \"Cluster\", y = \"Income ($)\", fill = \"Year\") +\n  theme_minimal()\n\nThis is the exact plot style from Day 1 — except now you’ve watched every step of how the data underneath it got here."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#back-to-your-predictions",
+    "href": "slides/DATA100-F26-Lecture-3.html#back-to-your-predictions",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Back to your predictions",
+    "text": "Back to your predictions\n\nWhich of your guesses from the start of class came true?\n What did we run into that nobody predicted?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#a-few-honest-cautions",
+    "href": "slides/DATA100-F26-Lecture-3.html#a-few-honest-cautions",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "A few honest cautions",
+    "text": "A few honest cautions\n\nEvery cleaning choice was also an analytical choice — a different 3-level collapse, a different age-bucket rule, a different imputation method could all shift what we find downstream\nThis dataset is synthetic — today’s numbers are illustrative, not a claim about real Canadians\nLater this semester: missing-data methods and statistical tests that let you make these calls more rigorously than by eyeballing"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#outline",
+    "href": "slides/DATA100-F26-Lecture-1.html#outline",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Outline",
+    "text": "Outline\n\nDATA100 Course\nIntroduction\nR Basics"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#about-me",
+    "href": "slides/DATA100-F26-Lecture-1.html#about-me",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "About Me",
+    "text": "About Me\n\nInstructor: Agassi Iu\nEducation: Closely finishing my PhD in the math department at WLU (previously in BBA/Fin Math DD)\nExperience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025\nHobbies: Cooking, dancing, soccer, badminton\n\n\n\n\n\n\n\n\nOffice Hours\n\n\nWednesdays 14:00–16:00 in LH3073, or by appointment."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#my-teaching-philosophy",
+    "href": "slides/DATA100-F26-Lecture-1.html#my-teaching-philosophy",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "My Teaching Philosophy",
+    "text": "My Teaching Philosophy\n\n\n\n\n\n\n\n\n🧑‍🏫 Teaching Approach\n\n\n\nHands-on Learning: Focus on real datasets, critical inquiry, and practical problem-solving.\nActive Classroom: Expect interactive coding sessions and collaborative experimentation.\n\n\n\n\n\n\n\n\n\n\n\n\n🚪 Open Door Policy\n\n\n\nFirst-Year Support: Transitioning to university can be challenging; support is always available.\nOpen Discussion: Office hours and discussion forums are safe spaces to clarify concepts."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#what-i-hope-to-teach",
+    "href": "slides/DATA100-F26-Lecture-1.html#what-i-hope-to-teach",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "What I Hope to Teach",
+    "text": "What I Hope to Teach\n\n\n\n\n\n\n\n\n🧠 Analytical Mindset\n\n\nFormulate precise questions, structure complex problems, and analyze data objectively without bias.\n\n\n\n\n\n\n\n\n\n\n\n💻 Technical Fluency\n\n\nBuild confidence with modern open-source tools, repeatable workflows, and clean coding principles.\n\n\n\n\n\n\n\n\n\n\n\n\n💬 Data Communication\n\n\nTranslate statistical results into compelling visual narratives for technical and business audiences."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#assessments-evaluation",
+    "href": "slides/DATA100-F26-Lecture-1.html#assessments-evaluation",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Assessments & Evaluation",
+    "text": "Assessments & Evaluation\n\n\n\nCategory\nWeight\nFrequency\n\n\n\n\nLaboratories\n30%\nWeekly on Mondays\n\n\nParticipation\n5%\nEvery class\n\n\nCapstone Project\n15%\nMultiple due-dates\n\n\nMidterm Exams\n20%\nTwice (see syllabus)\n\n\nFinal Exam\n20%\nFinal exam period in December"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#important-tools",
+    "href": "slides/DATA100-F26-Lecture-1.html#important-tools",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Important Tools",
+    "text": "Important Tools\n\n\n\n\n\n\n\n\n🐍 Coding Environment\n\n\nI will teach the course using the software R. You will be asked to complete assignments, labs, projects, and even exams in R.\n\n\n\n\n\n\n\n\n\n\n\n✉️ Communications\n\n\nPlease always check your emails. I will send you emails with updates on the course assessments, should there be any.\n\n\n\n\n\n\n\n\n\n\n\n\n🌐 Course Hub\n\n\nAccess announcements, submit assignments, and engage in peer discussions via MyLearningSpace. I will also update a new course webpage throughout the semester."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#keys-to-first-year-success",
+    "href": "slides/DATA100-F26-Lecture-1.html#keys-to-first-year-success",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Keys to First-Year Success",
+    "text": "Keys to First-Year Success\n\n\n\n\n\n\n\n\n📅 Start Early\n\n\nTechnical assignments take time to debug. Avoid last-minute coding stress.\n\n\n\n\n\n\n\n\n\n\n🏋️ Practice Daily (I hope you do)\n\n\nProgramming is a muscle. Practicing 30 minutes daily is far better than cramming every last-minute.\n\n\n\n\n\n\n\n\n\n\n\n\n❓ Ask Questions Early\n\n\nReach out when stuck for more than 15 minutes. Use office hours liberally.\n\n\n\n\n\n\n\n\n\n\n\n👥 Form Study Groups\n\n\nConnect with classmates to discuss ideas and keep each other accountable."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#my-expectation",
+    "href": "slides/DATA100-F26-Lecture-1.html#my-expectation",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "My Expectation",
+    "text": "My Expectation\n\n\n\n\n\n\nIn-Class\n\n\n\nBe respectful to the instructor and your fellow classmates.\nBring your laptop or tablet.\n\nOnly use it for note-taking and participation.\nIf you want to watch a movie, sit at the back.\n\n\n\n\n\n\n\n\n\n\n\n\nOut-of-Class\n\n\n\nProactive work habits: start early.\nAcademic integrity and working independently\nAI usage."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#artificial-intelligence",
+    "href": "slides/DATA100-F26-Lecture-1.html#artificial-intelligence",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Artificial Intelligence",
+    "text": "Artificial Intelligence\n\n\n\n\n\n\nUniversity Policy\n\n\nLaurier’s Gen AI Policy\n\n\n\n\n\n\n\n\n\n\nMy Policy\n\n\n\nI know what you guys do at home!\nAll I am asking for is to spend 15 minutes diagnosing the problem before going to AI.\nLater on in this course, I will actually ask you to use AI as a mandatory component of your final project.\n\n\n\n\n\n\n\n\n\n\n\n\nMy Goal\n\n\nI hope to give you an enjoyable learning experience, by showing you that this AI (Agassi Iu) is better at teaching than the AI you use at home."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#data-project-work-flow",
+    "href": "slides/DATA100-F26-Lecture-1.html#data-project-work-flow",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Data project work flow",
+    "text": "Data project work flow\n\n\n\n\n\n\n\n\nDATA100 Specifically\n\n\nData Analysis (for this course at least) mostly concentrates on Preparation and Refinement."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#data-science",
+    "href": "slides/DATA100-F26-Lecture-1.html#data-science",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Data Science",
+    "text": "Data Science\nA concept that is still in the making, may take many shapes and forms for different people. Key ideas:\n\nLook at data from the point of view of a scientist: do experiments, make hypothesis, test hypothesis by more experiments, rinse and repeat, …, arrive at some conclusion.\nLook at decision making of all kinds from the point of view of data: tell / refute a story with data, make / break a decision by data, persuade / disillusion using data…"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#data-science-1",
+    "href": "slides/DATA100-F26-Lecture-1.html#data-science-1",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Data Science",
+    "text": "Data Science\nData science is a tool. The correctness of the conclusion not only depends on the correctness of the inputs, but also depends on interpretation. It is also important that the tool is used responsibly.\n\nThe science: math, statistics, computer programming, etc.\nThe output: figures, diagrams, reports, presentation, etc.\nThe hope: try to be useful, and hopefully helpful. (to whom?)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#data-analytics",
+    "href": "slides/DATA100-F26-Lecture-1.html#data-analytics",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Data Analytics",
+    "text": "Data Analytics\n\nData needs statistics\nData needs programming"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#introduction-1",
+    "href": "slides/DATA100-F26-Lecture-1.html#introduction-1",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Introduction",
+    "text": "Introduction\n\nR is a programming language for statistical computing and graphics\n\nR is software is open source unlike some other statistical software.\nR can be downloaded at https://www.r-project.org/.\n\nRStudio is an integrated development environment for R\n\nRStudio will be used in this course.\nCan be downloaded at https://posit.co/download/rstudio-desktop/.\nPlease install R before RStudio, otherwise RStudio will not work."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#user-interface-i",
+    "href": "slides/DATA100-F26-Lecture-1.html#user-interface-i",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "User Interface I",
+    "text": "User Interface I\n\nR Console\n\nCan give R direct instructions via the R console.\n\nR script\n\nA text file containing a set of commands and comments.\nCan create an R script, with the file extension ‘.R’.\nUsed to run a sequence of commands in R.\nOther types of scripts such as R markdown files can be created.\nGood idea to save your script or R markdown file periodically.\n\nEnvironment\n\nWhere variables are created and stored.\nServes as a Workspace."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#user-interface-ii",
+    "href": "slides/DATA100-F26-Lecture-1.html#user-interface-ii",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "User Interface II",
+    "text": "User Interface II\n\nHistory\n\nStores the code that has been ran.\nNext to the Environment tab.\n\nWorking Directory\n\nR scripts are stored here by default.\nCan be important when importing data.\nPermanently change working directory: Tools ⇒ Global Options ⇒ General ⇒ Default working directory\nTemporarily change working directory: Session ⇒ Set working directory ⇒ Choose Directory\nThe working directory resets to the default when RStudio restarts."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#base-r-r-packages",
+    "href": "slides/DATA100-F26-Lecture-1.html#base-r-r-packages",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Base R & R packages",
+    "text": "Base R & R packages\n\nBase R\n\nContains some basic functions and visualization tools.\nThe base R functions contain only a tiny fraction of what is actually available.\n\nR packages\n\nA package is essentially a suite of related functions that were created by one or more R users.\nCurrently over 19000 R packages available at https://cran.r-project.org/.\n\nThe main packages we will use:\n\ntidyverse."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#initializing-r-packages",
+    "href": "slides/DATA100-F26-Lecture-1.html#initializing-r-packages",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Initializing R packages",
+    "text": "Initializing R packages\n\nUse install.packages(\"package_name\") in the console to install R packages on your own machine.\n\nExample: install.packages(\"ggplot2\") to install ggplot2.\n\nUse library(package_name) to initialize already installed packages.\n\nExample: library(ggplot2) to load ggplot2.\n\nTo install the package if it isn’t already installed and then initialize it after installation:\n\nif(!require(package_name)) install.packages(\"package_name\")\nlibrary(package_name)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#arithmetic-operations",
+    "href": "slides/DATA100-F26-Lecture-1.html#arithmetic-operations",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Arithmetic Operations",
+    "text": "Arithmetic Operations\n\nOrder of arithmetic operations (BEDMAS) applies in R.\nBasic operations:\n\n\n\n\nOperation\nDescription\n\n\n\n\n+\nAddition\n\n\n-\nSubtraction\n\n\n*\nMultiplication\n\n\n/\nDivision\n\n\n^\nExponent\n\n\n%%\nModulus (Remainder from division)\n\n\n%/%\nInteger Division\n\n\n\n\n# is used to add comments to R scripts."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#relational-operators",
+    "href": "slides/DATA100-F26-Lecture-1.html#relational-operators",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Relational Operators",
+    "text": "Relational Operators\nRelational operators are used to compare between values:\n\n\n\nOperation\nDescription\n\n\n\n\n&lt;\nLess than\n\n\n&gt;\nGreater than\n\n\n&lt;=\nLess than or equal to\n\n\n&gt;=\nGreater than or equal to\n\n\n==\nEqual to\n\n\n!=\nNot equal to"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#assigning-variables",
+    "href": "slides/DATA100-F26-Lecture-1.html#assigning-variables",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Assigning Variables",
+    "text": "Assigning Variables\n\nThe operators =, &lt;-, and -&gt; can be used to assign values to variables\n\nIf we want to assign x = 2; x=2, x&lt;-2, and 2-&gt;x are equivalent.\nCommon convention is to use &lt;- but feel free to use =.\n\nRules for variable names.\n\nStart with a letter (x5 is OK but 5x is NOT.)\nConsist of letters, numbers, underscores, and periods (x_5 and x.5 are OK but not x-5).\nCase sensitive (x and X would be different variables).\n\nVariable naming conventions\n\nTry to use meaningful names."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#displaying-output",
+    "href": "slides/DATA100-F26-Lecture-1.html#displaying-output",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Displaying Output",
+    "text": "Displaying Output\n\nR will display the outputs of unassigned calculations\n\nexp(3) would compute \\(e^3\\) (approximately) and display the result.\n\nR suppresses the output of assigned calculations\n\nx&lt;-exp(3) would compute \\(e^3\\) and store the result in x but would not display anything.\nTo see that value of x we would need to run print(x) or just x."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#workspace-environment",
+    "href": "slides/DATA100-F26-Lecture-1.html#workspace-environment",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Workspace (Environment)",
+    "text": "Workspace (Environment)\n\nUse ls() or objects() to generate a list of objects. in workspace.\nUse rm() to remove objects from the current workspace.\n\nThe call rm(x,y,z) will remove the variables x, y, and z from the workspace.\nThe call rm(list=ls()) will remove all objects from the workspace.\nThe workspace is automatically cleared when RStudio is exited."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#some-useful-functions",
+    "href": "slides/DATA100-F26-Lecture-1.html#some-useful-functions",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Some Useful Functions",
+    "text": "Some Useful Functions\n\n\n\nFunction\nDescription\n\n\n\n\nexp(x)\nComputes the exponential function \\(e^x\\).\n\n\nlog(x)\nComputes the logarithmic function \\(\\log_e(x)\\).\n\n\nsqrt(x)\nComputes the square root \\(\\sqrt{x}\\).\n\n\nfactorial(x)\nComputes the factorial of a positive integer \\(x!\\).\n\n\nsin(x)\nComputes the sine of x in radians.\n\n\nabs(x)\nComputes the absolute value of x."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#useful-r-resources",
+    "href": "slides/DATA100-F26-Lecture-1.html#useful-r-resources",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Useful R Resources",
+    "text": "Useful R Resources\n\nUse ? to learn more about how a function works.\n\nFor example, ?sqrt would produce a brief explanation of the sqrt function in a separate window.\nYou can also go to the Help tab and search for the function or command you need help with.\n\nIt may be more useful to use Google\n\nhttps://stackoverflow.com/\nhttps://www.r-bloggers.com/"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#live-coding-try-it-yourself",
+    "href": "slides/DATA100-F26-Lecture-1.html#live-coding-try-it-yourself",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Live Coding: Try it Yourself",
+    "text": "Live Coding: Try it Yourself\nEdit and run this cell right here in the slide — no local R install needed for anyone in the room."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#exercise",
+    "href": "slides/DATA100-F26-Lecture-1.html#exercise",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Exercise",
+    "text": "Exercise\nWhat are the final values of x and y after following this sequence of commands? Predict first, then try it below to confirm.\n\n\n\n\n\n\n\n\n\nNotes:"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#next-time-next-week",
+    "href": "slides/DATA100-F26-Lecture-1.html#next-time-next-week",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Next Time (Next Week)",
+    "text": "Next Time (Next Week)\n\nWe are going to look at a very simple example of:\n\nWhat can we do with data?\nHow do we work with data?\nWhy might this course be useful (at all)?"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "DATA100: Introduction to Data Analytics",
+    "section": "",
+    "text": "Welcome to DATA100 — Introduction to Data Analytics! This course introduces you to the fundamentals of data analysis using R, covering everything from R basics and data types to R Markdown/Quarto reporting, data wrangling, and communicating results.\n\n\n\n\n\n\nNoteInstructor\n\n\n\nAgassi Iu · Wilfrid Laurier University Office Hours: Wednesdays 14:00–16:00, LH3073 (or by appointment)"
+  },
+  {
+    "objectID": "index.html#welcome",
+    "href": "index.html#welcome",
+    "title": "DATA100: Introduction to Data Analytics",
+    "section": "",
+    "text": "Welcome to DATA100 — Introduction to Data Analytics! This course introduces you to the fundamentals of data analysis using R, covering everything from R basics and data types to R Markdown/Quarto reporting, data wrangling, and communicating results.\n\n\n\n\n\n\nNoteInstructor\n\n\n\nAgassi Iu · Wilfrid Laurier University Office Hours: Wednesdays 14:00–16:00, LH3073 (or by appointment)"
+  },
+  {
+    "objectID": "index.html#quick-links",
+    "href": "index.html#quick-links",
+    "title": "DATA100: Introduction to Data Analytics",
+    "section": "Quick Links",
+    "text": "Quick Links\n\n📄 Syllabus — grading breakdown, policies, and expectations\n🗓️ Schedule — weekly topics and readings\n📊 Slides — lecture slide decks\n📝 Assignments — labs, capstone project, and due dates\n👋 About — more about your instructor"
+  },
+  {
+    "objectID": "index.html#course-hub",
+    "href": "index.html#course-hub",
+    "title": "DATA100: Introduction to Data Analytics",
+    "section": "Course Hub",
+    "text": "Course Hub\nAnnouncements, submissions, and discussions happen on MyLearningSpace — this site is your reference hub for slides, schedule, and syllabus details.\n\n\n\n\n\n\nTipBefore the first class\n\n\n\nPlease install R and RStudio before our first lab. See the Slides page for the Lecture 1 walkthrough on installation."
+  },
+  {
+    "objectID": "assignments.html",
+    "href": "assignments.html",
+    "title": "Assignments",
+    "section": "",
+    "text": "All labs and the capstone project are submitted through MyLearningSpace. This page tracks what’s due and when."
+  },
+  {
+    "objectID": "assignments.html#labs",
+    "href": "assignments.html#labs",
+    "title": "Assignments",
+    "section": "Labs",
+    "text": "Labs\n\n\n\nLab\nTopic\nDate\n\n\n\n\nLab 0\nIntroduction\nSep 14\n\n\nLab 1\n—\nSep 21\n\n\nLab 2\n—\nSep 28\n\n\nLab 3\n—\nOct 05\n\n\nLab 4\n—\nOct 19\n\n\nLab 5\n—\nOct 26\n\n\nLab 6\n—\nNov 02\n\n\nLab 7\n—\nNov 16\n\n\nLab 8\n—\nNov 23\n\n\nLab 9\n—\nNov 30\n\n\nLab 10\n—\nDec 02\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nLabs are worth 30% of your final grade, to be submitted during labs weekly on Mondays. See the Syllabus for full grading breakdown."
+  },
+  {
+    "objectID": "assignments.html#capstone-project",
+    "href": "assignments.html#capstone-project",
+    "title": "Assignments",
+    "section": "Capstone Project",
+    "text": "Capstone Project\nThe capstone project (15%) has multiple checkpoints across the term. Details and rubric will be posted here as each checkpoint approaches.\n\n\n\nCheckpoint\nDescription\nDue\n\n\n\n\nProposal\nDataset + research question\nTBD\n\n\nProgress Check\nDraft analysis\nTBD\n\n\nFinal Submission\nReport + presentation\nDec 3"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation:\n\nPhD in Mathematical and Statistical Modelling at Wilfrid Laurier University | 2026\nMMath in Statistics at University of Waterloo | 2020\nBBA/BA Financial Mathematics at Wilfrid Laurier University | 2019\n\nTeaching Experience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nFall 2026: Wednesdays 14:00–16:00 in room LH3073, or by appointment."
+  },
+  {
+    "objectID": "about.html#bio",
+    "href": "about.html#bio",
+    "title": "About",
+    "section": "",
+    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation:\n\nPhD in Mathematical and Statistical Modelling at Wilfrid Laurier University | 2026\nMMath in Statistics at University of Waterloo | 2020\nBBA/BA Financial Mathematics at Wilfrid Laurier University | 2019\n\nTeaching Experience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nFall 2026: Wednesdays 14:00–16:00 in room LH3073, or by appointment."
+  },
+  {
+    "objectID": "courses.html",
+    "href": "courses.html",
+    "title": "Teaching Experience",
+    "section": "",
+    "text": "DATA100 (Introduction to Data Analytics)\nST230 (Introduction to Probability and Statistics in Sciences)"
+  },
+  {
+    "objectID": "courses.html#current-courses",
+    "href": "courses.html#current-courses",
+    "title": "Teaching Experience",
+    "section": "",
+    "text": "DATA100 (Introduction to Data Analytics)\nST230 (Introduction to Probability and Statistics in Sciences)"
+  },
+  {
+    "objectID": "courses.html#past-courses",
+    "href": "courses.html#past-courses",
+    "title": "Teaching Experience",
+    "section": "Past Courses",
+    "text": "Past Courses\n\nST474/674 (Monte Carlo Methods)"
+  },
+  {
+    "objectID": "courses.html#graduate-ta-experience",
+    "href": "courses.html#graduate-ta-experience",
+    "title": "Teaching Experience",
+    "section": "Graduate TA Experience",
+    "text": "Graduate TA Experience\n\nWilfrid Laurier Univesrity\n\nMA307/507 (Numerical Analysis)\nMA451/651 (Stochastic Calculus)\nMA477/677 (Quantitative Financial Risk Management)\nST359/559 (Probability II)\nST462/662 (Advanced Regression)\nST473/674 (Financial Data Analysis)\nST494/694 (Statistical Learning)"
+  },
+  {
+    "objectID": "schedule.html",
+    "href": "schedule.html",
+    "title": "Schedule",
+    "section": "",
+    "text": "Note\n\n\n\nThis schedule is a tentative schedule. It may subject to change depending on the speed or circumstances of our lectures."
+  },
+  {
+    "objectID": "schedule.html#course-schedule",
+    "href": "schedule.html#course-schedule",
+    "title": "Schedule",
+    "section": "Course Schedule",
+    "text": "Course Schedule\n\n\n\n\n\n\n\n\n\nWeek\nDay 1 (Tuesdays)\nDay 2 (Thursdays)\nAssessment\n\n\n\n\n1\n–\nIntroduction\nL0\n\n\n2\nWhole Game 1\nWhole Game 2\nL1\n\n\n3\nVisualization 1\nVisualization 2\nL2\n\n\n4\nVisualization 3\nVisualization recap\nL3\n\n\n5\nMidterm 1\nGroup project guidance 1\nM1\n\n\n6\nLogical vectors\nWords and numbers\nL4\n\n\n7\nFancy words and numbers\nMissing values and joins\nL5\n\n\n8\nPivot and Midterm 2 Review\nCase study\nL6\n\n\n9\nGroup project guidance 2\nImport: Excel, databases, and beyond\nM2\n\n\n10\nData science in practice\nRelationship between variables\nL7 , GP1\n\n\n11\nStructured relationships\nPredictive modelling\nL8 , GP 2\n\n\n12\nGroup project guidance 3\nModelling workflow\nL9\n\n\n13\nReview\n–\nL10 , GP3"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#the-whole-game",
+    "href": "slides/DATA100-F26-Lecture-2.html#the-whole-game",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "The Whole Game",
+    "text": "The Whole Game\nImagine learning baseball by drilling practices into pitching, hitting, and fielding for three months, before ever seeing a new game.\n\n\n\n\n\n\n\nWarning\n\n\nThis sounds exhausting. Nobody learns baseball that way.\n\n\n\n\n\n\n\n\n\n\nInstead, you would play a simplified whole game first. - It is messy, imperfect, but real. - You’d get a feel for what the sport is before drilling into any of the skills."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#this-course-works-the-same-way",
+    "href": "slides/DATA100-F26-Lecture-2.html#this-course-works-the-same-way",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "This course works the same way! :)",
+    "text": "This course works the same way! :)\nWe are going to take a quick glimpse on what you are about to do in this course, over this week.\n\n\n\n\n\n\n\n\nToday\n\n\nPlay the whole game once:\n\nAn open question \\(\\rightarrow\\) some cool results\n\n\n\n\n\n\n\n\n\n\n\n\n\nRest of semester\n\n\nDrill each piece:\n\nCleaning, transformations, modelling, communication\n\n\n\n\n\nBy the end of the course, you’ll play the whole game again (wink wink this time completing the final project by yourself."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#why-does-this-matter",
+    "href": "slides/DATA100-F26-Lecture-2.html#why-does-this-matter",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Why does this matter?",
+    "text": "Why does this matter?\n\nFinancial stress affects health, relationships, and decision-making\nUnderstanding what predicts financial comfort helps policymakers, employers, and individuals\n\n\n\n\n\n\n\n\n\nToday\n\n\nA look at real survey data on Canadians’ financial wellness."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#the-data",
+    "href": "slides/DATA100-F26-Lecture-2.html#the-data",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "The Data",
+    "text": "The Data\n\n\n\n\n\n\n\nData Overview\n\n\nSurvey responses from Canadians regarding income, employment, financial habits, and workplace benefits.\n\nSample: Representative cross-section of Canadians across all provinces\nScale: 1000 total respondents across two survey waves (in 2017 & 2022)\nScope: Captures demographic variables alongside self-reported financial stress metrics (survey responses)\n\n\n\n\n\n\n\nNote: This data set originates from a real research project conducted in partnership with external industrial partners. To preserve confidentiality, the data has been anonymized and structured for teaching purposes."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#survey-questions",
+    "href": "slides/DATA100-F26-Lecture-2.html#survey-questions",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "8 Survey Questions",
+    "text": "8 Survey Questions\n\nWhat is your age?\nWhich province are you currently living in?\nWhat is your annual income in dollars?\nWhat percentage of your paycheck do you put into savings?\nAre you currently overwhelmed by debt?\nHow manageable are you able to come up with $2,000 of emergency fund right now?\nHow manageable are you able to live if your paycheque arrives two weeks late?\nWhat is the most important benefit that you seek from your job?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#glimpse-of-data",
+    "href": "slides/DATA100-F26-Lecture-2.html#glimpse-of-data",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Glimpse of Data",
+    "text": "Glimpse of Data\n\n\n# A tibble: 6 × 16\n  respondent_id  year   age province      income savings_pct benefits_preference\n  &lt;chr&gt;         &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;              \n1 2017-0001      2017    31 Alberta        78300        21.6 More time off      \n2 2017-0002      2017    51 Newfoundland… 149500        21.8 Educational funding\n3 2017-0003      2017    40 Manitoba       97700         8.2 Health benefits    \n4 2017-0004      2017    37 Ontario       102300        13.7 Higher wages       \n5 2017-0005      2017    39 British Colu… 118600         7.8 Health benefits    \n6 2017-0006      2017    43 Alberta        54400        16.9 Health benefits    \n# ℹ 9 more variables: paycheque_delay_difficulty &lt;ord&gt;, debt_overwhelmed &lt;chr&gt;,\n#   emergency_fund_likelihood &lt;ord&gt;, financial_wellness_cluster &lt;fct&gt;,\n#   paycheque_delay_score &lt;dbl&gt;, emergency_fund_score &lt;dbl&gt;, age_bucket &lt;fct&gt;,\n#   income_bucket &lt;fct&gt;, province_bucket &lt;chr&gt;"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#what-does-the-sample-look-like",
+    "href": "slides/DATA100-F26-Lecture-2.html#what-does-the-sample-look-like",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "What does the sample look like?",
+    "text": "What does the sample look like?\n\n\n\n\n\n\n\nWhat do you notice?\n\n\nI am going to show you the demographic-response (i.e. age, income, and province) distributions from the 2017 survey results. Try and answer the following questions\n\nCan you tell me if there are any obvious patterns?\nDo you like the plots that I created?\nBased on those 3 plots, can you tell me about the financial wellness of these groups of respondents?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#income-distribution",
+    "href": "slides/DATA100-F26-Lecture-2.html#income-distribution",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Income Distribution",
+    "text": "Income Distribution"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#age-distribution",
+    "href": "slides/DATA100-F26-Lecture-2.html#age-distribution",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Age Distribution",
+    "text": "Age Distribution"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#province-distribution",
+    "href": "slides/DATA100-F26-Lecture-2.html#province-distribution",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Province Distribution",
+    "text": "Province Distribution"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#checkpoint",
+    "href": "slides/DATA100-F26-Lecture-2.html#checkpoint",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Checkpoint",
+    "text": "Checkpoint\nFor the rest of the lecture, try and think of these questions:\n\nCan you tell me if there are any obvious patterns?\nDo you like the plots that I created?\nBased on those 3 plots, can you tell me about the financial wellness of these groups of respondents?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#age-vs-income",
+    "href": "slides/DATA100-F26-Lecture-2.html#age-vs-income",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Age vs Income",
+    "text": "Age vs Income\nThis is an example of a Linear Model."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#tell-me-about-the-patterns-again",
+    "href": "slides/DATA100-F26-Lecture-2.html#tell-me-about-the-patterns-again",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Tell me about the patterns again?",
+    "text": "Tell me about the patterns again?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#how-we-found-these-groupsclusters",
+    "href": "slides/DATA100-F26-Lecture-2.html#how-we-found-these-groupsclusters",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "How We Found These Groups/Clusters",
+    "text": "How We Found These Groups/Clusters\n\nWe didn’t set the rules manually: The patterns emerged directly from the survey data.\nUnsupervised Learning: We used algorithms to group respondents based on mathematical similarity across many variables at once.\n\nMethods like k-Nearest Neighbors (k-NN) and t-SNE helped us reduce high-dimensional data into distinct clusters.\nDon’t worry! The math behind clustering is out of scope of this course, just think of it as a tool that finds hidden patterns in complex data. If you are interested, you should take ST362 and ST494 in future!"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#clustering-results",
+    "href": "slides/DATA100-F26-Lecture-2.html#clustering-results",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Clustering Results",
+    "text": "Clustering Results\n\nAnalyzed 100+ survey questions across 10+ years of longitudinal project data.\n\nThis is our actual work from the lab. I am only replicating a small subset of the data for this class.\n\n3 groups proved to be the mathematical sweet spot (2 lost key details; 4 added unnecessary noise).\n\nStressed\nCoping\nComfortable\n\nConnects the data outputs directly to the client’s goal of understanding Canadian financial stress and security."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#savings-rate-by-cluster-2017-vs-2022",
+    "href": "slides/DATA100-F26-Lecture-2.html#savings-rate-by-cluster-2017-vs-2022",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Savings Rate by Cluster (2017 vs 2022)",
+    "text": "Savings Rate by Cluster (2017 vs 2022)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#paycheque-delay-difficulty",
+    "href": "slides/DATA100-F26-Lecture-2.html#paycheque-delay-difficulty",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Paycheque Delay Difficulty",
+    "text": "Paycheque Delay Difficulty"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#most-important-benefit",
+    "href": "slides/DATA100-F26-Lecture-2.html#most-important-benefit",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Most Important Benefit",
+    "text": "Most Important Benefit"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#emergency-fund",
+    "href": "slides/DATA100-F26-Lecture-2.html#emergency-fund",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Emergency Fund",
+    "text": "Emergency Fund"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#exercise",
+    "href": "slides/DATA100-F26-Lecture-2.html#exercise",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Exercise",
+    "text": "Exercise\nTry plotting yourself!"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#next-time",
+    "href": "slides/DATA100-F26-Lecture-2.html#next-time",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Next Time:",
+    "text": "Next Time:\nHow to clean the data so that we can work with it?"
+  },
+  {
+    "objectID": "slides.html",
+    "href": "slides.html",
+    "title": "Lecture Slides",
+    "section": "",
+    "text": "Lecture 1 Slides"
+  },
+  {
+    "objectID": "slides.html#lecture-1-course-introduction-r-basics-r-markdown-data-types",
+    "href": "slides.html#lecture-1-course-introduction-r-basics-r-markdown-data-types",
+    "title": "Lecture Slides",
+    "section": "",
+    "text": "Lecture 1 Slides"
+  },
+  {
+    "objectID": "slides.html#lecture-2-day-1-of-the-whole-game",
+    "href": "slides.html#lecture-2-day-1-of-the-whole-game",
+    "title": "Lecture Slides",
+    "section": "Lecture 2: Day 1 of the Whole Game",
+    "text": "Lecture 2: Day 1 of the Whole Game\n\n💻Lecture 2 Slides"
+  },
+  {
+    "objectID": "slides.html#lecture-3-day-2-of-the-whole-game",
+    "href": "slides.html#lecture-3-day-2-of-the-whole-game",
+    "title": "Lecture Slides",
+    "section": "Lecture 3: Day 2 of the Whole Game",
+    "text": "Lecture 3: Day 2 of the Whole Game\nComing soon."
+  }
+]

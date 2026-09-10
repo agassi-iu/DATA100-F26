@@ -1,5 +1,5 @@
 ---
-title: "DATA100 Introduction to Data Analysis"
+title: "DATA100 Introduction to Data Analytics"
 subtitle: "Lecture 3: The Whole Game - Day 2"
 author: "Agassi Iu"
 institute: "Wilfrid Laurier University"

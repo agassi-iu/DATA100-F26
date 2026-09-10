@@ -23,7 +23,7 @@ Welcome to **DATA100 — Introduction to Data Analytics**! This course introduce
 
 ## Course Hub
 
-Announcements, submissions, and discussions happen on **MyLearningSpace** — this site is your reference hub for slides, schedule, and syllabus details.
+Announcements, submissions, and discussions happen on [MyLearningSpace](https://mylearningspace.wlu.ca/d2l/home/655255) — this site is your reference hub for slides, schedule, and syllabus details.
 
 ::: {.callout-tip}
 ## Before the first class
