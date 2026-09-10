@@ -14,12 +14,13 @@ This schedule is a tentative schedule. It may subject to change depending on the
 | 2 | Whole Game 1 | Whole Game 2 | L1 |
 | 3 | Visualization 1 | Visualization 2 | L2 |
 | 4 | Visualization 3 | Visualization recap | L3 |
-| 5 | Midterm 1 | Group project | M1, GP1 |
+| 5 | Midterm 1 | Group project guidance 1 | M1 |
 | 6 | Logical vectors | Words and numbers | L4 |
 | 7 | Fancy words and numbers | Missing values and joins | L5 |
-| 8 | Pivot and Review | Case study | L6 |
-| 9 | Midterm 2 (no class) | Import | M2 |
-| 10 | Data science in practice | Group project | L7, GP2 |
-| 11 | Relationship between variables | Structured relationships | L8 |
-| 12 | Predictive modelling | Modelling workflow | L9 |
-| 13 | Review | – | L10 |
+| 8 | Pivot and Midterm 2 Review | Case study | L6 |
+| 9 | Group project guidance 2 | Import: Excel, databases, and beyond | M2 |
+| 10 | Data science in practice | Relationship between variables | L7 , GP1 |
+| 11 | Structured relationships | Predictive modelling | L8 , GP 2 |
+| 12 | Group project guidance 3 | Modelling workflow | L9 |
+| 13 | Review | – | L10 , GP3 |
+

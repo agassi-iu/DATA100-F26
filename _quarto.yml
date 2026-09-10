@@ -13,6 +13,8 @@ website:
     left:
       - href: index.qmd
         text: Home
+      - href: about.qmd
+        text: About Me
       - href: syllabus.qmd
         text: Syllabus
       - href: schedule.qmd
@@ -21,11 +23,10 @@ website:
         text: Slides
       - href: assignments.qmd
         text: Assignments
-      - href: about.qmd
-        text: About
+
     right:
       - icon: github
-        href: https://github.com/yourusername/data100-course
+        href: https://github.com/agassi-iu/DATA100-F26
         aria-label: Course GitHub repository
 
   page-footer:

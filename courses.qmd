@@ -12,6 +12,9 @@ title: "Teaching Experience"
 
 
 ## Graduate TA Experience
+
+### Wilfrid Laurier Univesrity
+
 - MA307/507 (Numerical Analysis)
 - MA451/651 (Stochastic Calculus)
 - MA477/677 (Quantitative Financial Risk Management)

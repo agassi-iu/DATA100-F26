@@ -1,0 +1,442 @@
+---
+title: "DATA100 Introduction to Data Analysis"
+subtitle: "Lecture 2: The Whole Game - Day 1"
+author: "Agassi Iu"
+institute: "Wilfrid Laurier University"
+date: "September 15, 2026"
+format: 
+  live-revealjs:
+    resources:
+      - data/survey_2017.csv
+      - data/survey_2022.csv
+    theme: sky
+    slide-number: true
+    transition: slide
+    incremental: true
+    embed-resources: true # Embeds figures and libraries into a single portable HTML file
+filters:
+  - live
+execute:
+  warning: false   # Hides warnings and package loading messages
+  message: false
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+
+## The Whole Game
+Imagine learning baseball by drilling practices into pitching, hitting, and fielding for three months, before ever seeing a new game.
+
+::: {.callout-warning title=""}
+This sounds exhausting. Nobody learns baseball that way.
+:::
+
+::: {.callout-tip appearance="simple"}
+Instead, you would play a [simplified whole game]{style="color:red;"} first.
+- It is messy, imperfect, but real.
+- You'd get a feel for what the sport is before drilling into any of the skills.
+:::
+
+
+
+## This course works the same way! :)
+We are going to take a quick glimpse on what you are about to do in this course, over this week.
+
+
+::: {.column width="48%"}
+
+::: {.callout-note title="Today"}
+Play the whole game once:
+
+* An open question $\rightarrow$ some cool results
+:::
+
+:::
+
+::: {.column width="48%"}
+::: {.callout-tip title="Rest of semester"}
+Drill each piece:
+
+* Cleaning, transformations, modelling, communication
+:::
+
+:::
+
+By the end of the course, you'll play the whole game again (*wink wink* this time completing the final project by yourself.
+
+
+
+---
+### {#no-header-slide data-menu-title="Hidden Title for Menu"}
+A very common question that a client might ask is:
+
+- We are going to give you a set of data, can you tell me something about it?
+
+---
+
+## Why does this matter?
+
+- Financial stress affects health, relationships, and decision-making
+- Understanding ***what predicts*** financial comfort helps policymakers, employers, and individuals
+
+. . .
+
+::: {.callout-note title="Today"}
+A look at real survey data on Canadians' financial wellness.
+:::
+
+
+## The Data
+::: {.callout-note title="Data Overview"}
+Survey responses from Canadians regarding income, employment, financial habits, and workplace benefits.
+
+* **Sample:** Representative cross-section of Canadians across all provinces
+* **Scale:** 1000 total respondents across two survey waves (in 2017 & 2022)
+* **Scope:** Captures demographic variables alongside self-reported financial stress metrics (survey responses)
+:::
+
+. . .
+
+::: {.footnote}
+*Note: This data set originates from a real research project conducted in partnership with external industrial partners. To preserve confidentiality, the data has been anonymized and structured for teaching purposes.*
+:::
+
+
+## 8 Survey Questions
+
+1. What is your age?
+2. Which province are you currently living in?
+3. What is your annual income in dollars?
+4. What percentage of your paycheck do you put into savings?
+5. Are you currently overwhelmed by debt?
+6. How manageable are you able to come up with $2,000 of emergency fund right now?
+7. How manageable are you able to live if your paycheque arrives two weeks late?
+8. What is the most important benefit that you seek from your job?
+
+
+<!-- R Set-up -->
+```{r setup}
+#| include: false
+library(tidyverse)
+library(scales)
+
+# Load CSV files (Ensure these are in your project/data folder)
+survey_2017 <- read_csv("data/survey_2017.csv")
+survey_2022 <- read_csv("data/survey_2022.csv")
+survey <- bind_rows(survey_2017, survey_2022)
+
+# Set Likert Levels
+likert_levels <- c(
+  "Very difficult", "Difficult", "Somewhat difficult", "Neither",
+  "Somewhat manageable", "Manageable", "Very manageable"
+)
+
+# Mutate factors and buckets
+survey <- survey %>%
+  mutate(
+    paycheque_delay_difficulty = factor(paycheque_delay_difficulty, levels = likert_levels, ordered = TRUE),
+    emergency_fund_likelihood  = factor(emergency_fund_likelihood, levels = likert_levels, ordered = TRUE),
+    financial_wellness_cluster = factor(financial_wellness_cluster, levels = c("Stressed", "Coping", "Comfortable")),
+    paycheque_delay_score      = as.numeric(paycheque_delay_difficulty),
+    emergency_fund_score       = as.numeric(emergency_fund_likelihood),
+    age_bucket = cut(age, breaks = c(18, 25, 35, 45, 55, 66), labels = c("18-24", "25-34", "35-44", "45-54", "55-65"), right = FALSE, include.lowest = TRUE),
+    income_bucket = cut(income, breaks = c(30000, 50000, 75000, 100000, 150000, Inf), labels = c("$30k-49k", "$50k-74k", "$75k-99k", "$100k-149k","$150k+"), right = FALSE, include.lowest = TRUE),
+    province_bucket = case_when(
+      province == "Alberta" ~ "AB",
+      province == "British Columbia" ~ "BC",
+      province == "Ontario" ~ "ON",
+      province == "Quebec" ~ "QC",
+      TRUE ~ "Other"
+    )
+  )
+
+survey_2017 <- survey %>% filter(year == 2017)
+survey_2022 <- survey %>% filter(year == 2022)
+```
+
+
+## Glimpse of Data
+```{r}
+head(survey_2017)
+```
+
+# Section 1: Demographics
+
+---
+
+
+## What does the sample look like?
+
+::: {.callout-note title="What do you notice?"}
+I am going to show you the demographic-response (i.e. age, income, and province) distributions from the 2017 survey results.  Try and answer the following questions
+
+- Can you tell me if there are any obvious patterns? 
+- Do you like the plots that I created? 
+- Based on those 3 plots, can you tell me about the financial wellness of these groups of respondents?
+:::
+
+
+
+## Income Distribution
+
+```{r echo=FALSE}
+#| fig-width: 9
+#| fig-height: 5
+ggplot(survey, aes(x = income)) +
+  geom_histogram(aes(y = after_stat(count / sum(count))), binwidth = 10000, fill = "steelblue", color = "white") +
+  labs(title = "Distribution of Income", x = "Income ($)", y = "Frequency") +
+  scale_y_continuous(labels = scales::percent) +
+  theme_minimal(base_size = 14)
+```
+
+---
+
+## Age Distribution
+
+```{r echo=FALSE}
+#| fig-width: 9
+#| fig-height: 5
+ggplot(survey, aes(x = age)) +
+  geom_histogram(aes(y = after_stat(count / sum(count))), binwidth = 5, fill = "darkorange", color = "white") +
+  labs(title = "Distribution of Age", x = "Age", y = "Frequency") +
+  scale_y_continuous(labels = scales::percent) +
+  theme_minimal(base_size = 14)
+```
+
+---
+
+## Province Distribution
+
+```{r echo=FALSE}
+#| fig-width: 9
+#| fig-height: 5
+ggplot(survey, aes(x = province_bucket, fill = province_bucket)) +
+  geom_bar(aes(y = after_stat(count / sum(count))), color = "white") +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_brewer(palette = "Set2") + # Beautiful predefined color palette
+  labs(
+    title = "Distribution of Respondents by Province",
+    x = "Province",
+    y = "Percentage",
+    fill = "Province"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "none") # Hides redundant legend since x-axis is already labeled
+```
+
+---
+
+
+
+## Checkpoint
+For the rest of the lecture, try and think of these questions:
+
+- Can you tell me if there are any obvious patterns? 
+
+- Do you like the plots that I created? 
+
+- Based on those 3 plots, can you tell me about the financial wellness of these groups of respondents?
+
+## Age vs Income
+
+This is an example of a *Linear Model*.
+```{r echo=FALSE}
+#| fig-width: 9
+#| fig-height: 5
+ggplot(survey_2017, aes(x = age, y = income)) +
+  geom_point(alpha = 0.5, color = "steelblue") +
+  scale_y_continuous(labels = scales::dollar) +
+  labs(
+    title = "Income vs. Age (2017)",
+    x = "Age",
+    y = "Income ($)"
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+
+## Tell me about the patterns again?
+```{r echo=FALSE}
+#| fig-width: 9
+#| fig-height: 5
+ggplot(survey_2017, aes(x = age, y = income)) +
+  geom_point(alpha = 0.5, color = "steelblue") +
+  geom_smooth(method = "lm", se = FALSE, color = "darkred") + 
+  scale_y_continuous(labels = scales::dollar) +
+  labs(
+    title = "Income vs. Age (2017)",
+    x = "Age",
+    y = "Income ($)"
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+
+
+
+# Section 2: Financial Wellness Clusters
+
+---
+
+## How We Found These Groups/Clusters
+
+- We didn't set the rules manually: The patterns emerged directly from the survey data.
+- *Unsupervised Learning:* We used algorithms to group respondents based on mathematical similarity across many variables at once.
+  - Methods like *k-Nearest Neighbors (k-NN)* and *t-SNE* helped us reduce high-dimensional data into distinct clusters.
+  - Don't worry! The math behind clustering is **out of scope** of this course, just think of it as a tool that finds hidden patterns in complex data. If you are interested, you should take *ST362* and *ST494* in future!
+
+
+## Clustering Results
+- Analyzed 100+ survey questions across 10+ years of longitudinal project data.
+  - This is our *actual* work from the lab. I am only replicating a small subset of the data for this class.
+
+- 3 groups proved to be the mathematical sweet spot (2 lost key details; 4 added unnecessary noise).
+  1. Stressed
+  2. Coping
+  3. Comfortable
+
+- Connects the data outputs directly to the client's goal of understanding Canadian financial stress and security.
+
+
+
+
+# Section 3: Financial and Behavioural Responses
+
+---
+
+## Savings Rate by Cluster (2017 vs 2022)
+
+```{r echo=FALSE}
+#| fig-width: 9
+#| fig-height: 5
+ggplot(survey, aes(x = financial_wellness_cluster, y = savings_pct, fill = factor(year))) +
+  geom_boxplot(position = position_dodge(width = 0.8)) +
+  labs(title = "Savings Rate by Cluster: 2017 vs 2022", x = "Cluster", y = "Savings (% of paycheque)", fill = "Year") +
+  theme_minimal(base_size = 14)
+```
+
+---
+
+## Paycheque Delay Difficulty
+
+```{r echo=FALSE}
+#| fig-width: 9
+#| fig-height: 5
+ggplot(survey_2017, aes(x = financial_wellness_cluster, y = benefits_preference, fill = factor(year))) +
+  geom_bar(position = position_dodge(width = 0.8)) +
+  labs(title = "Paycheque Delay Difficulty by Cluster: 2017 vs 2022",
+       subtitle = "Score: 1 = Very difficult ... 7 = Very manageable",
+       x = "Cluster", y = "Difficulty Score", fill = "Year") +
+  theme_minimal(base_size = 14)
+```
+
+
+
+---
+
+## Most Important Benefit
+
+```{r echo=FALSE}
+#| fig-width: 9
+#| fig-height: 5
+ggplot(survey %>% filter(!is.na(benefits_preference)), 
+       aes(x = financial_wellness_cluster, fill = benefits_preference)) +
+  geom_bar(position = "fill") +
+  geom_text(
+    aes(label = scales::percent(after_stat(prop), accuracy = 1), group = benefits_preference),
+    stat = "count",
+    position = position_fill(vjust = 0.5),
+    color = "white",
+    size = 3,
+    fontface = "bold"
+  ) +
+  facet_wrap(~ year) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(
+    title = "Workplace Benefits Preference by Cluster",
+    x = "Financial Wellness Cluster",
+    y = "Proportion",
+    fill = "Benefit Preference"
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+
+
+---
+
+## Emergency Fund
+
+```{r echo=FALSE}
+#| fig-width: 9
+#| fig-height: 5
+ggplot(survey, aes(x = financial_wellness_cluster, y = paycheque_delay_score, fill = factor(year))) +
+  geom_boxplot(position = position_dodge(width = 0.8)) +
+  labs(title = "Paycheque Delay Difficulty by Cluster: 2017 vs 2022",
+       subtitle = "Score: 1 = Very difficult ... 7 = Very manageable",
+       x = "Cluster", y = "Difficulty Score", fill = "Year") +
+  theme_minimal(base_size = 14)
+```
+
+
+---
+
+
+
+
+## Exercise
+Try plotting yourself!
+
+```{webr}
+library(ggplot2)
+library(tidyverse)
+library(scales)
+
+# Load CSV files
+survey_2017 <- read_csv("data/survey_2017.csv")
+survey_2022 <- read_csv("data/survey_2022.csv")
+survey <- bind_rows(survey_2017, survey_2022)
+
+# Set Likert Levels
+likert_levels <- c(
+  "Very difficult", "Difficult", "Somewhat difficult", "Neither",
+  "Somewhat manageable", "Manageable", "Very manageable"
+)
+
+# Mutate factors and buckets
+survey <- survey %>%
+  mutate(
+    paycheque_delay_difficulty = factor(paycheque_delay_difficulty, levels = likert_levels, ordered = TRUE),
+    emergency_fund_likelihood  = factor(emergency_fund_likelihood, levels = likert_levels, ordered = TRUE),
+    financial_wellness_cluster = factor(financial_wellness_cluster, levels = c("Stressed", "Coping", "Comfortable")),
+    paycheque_delay_score      = as.numeric(paycheque_delay_difficulty),
+    emergency_fund_score       = as.numeric(emergency_fund_likelihood),
+    age_bucket = cut(age, breaks = c(18, 25, 35, 45, 55, 66), labels = c("18-24", "25-34", "35-44", "45-54", "55-65"), right = FALSE, include.lowest = TRUE),
+    income_bucket = cut(income, breaks = c(30000, 50000, 75000, 100000, 150000, Inf), labels = c("$30k-49k", "$50k-74k", "$75k-99k", "$100k-149k","$150k+"), right = FALSE, include.lowest = TRUE),
+    province_bucket = case_when(
+      province == "Alberta" ~ "AB",
+      province == "British Columbia" ~ "BC",
+      province == "Ontario" ~ "ON",
+      province == "Quebec" ~ "QC",
+      TRUE ~ "Other"
+    )
+  )
+
+survey_2017 <- survey %>% filter(year == 2017)
+survey_2022 <- survey %>% filter(year == 2022)
+
+
+#| fig-width: 9
+#| fig-height: 5
+## Try replacing paycheque_delay_score with emergency_fund_score or income
+ggplot(survey, aes(x = financial_wellness_cluster, y = paycheque_delay_score, fill = factor(year))) +
+  geom_boxplot(position = position_dodge(width = 0.8)) +
+  labs(title = "Paycheque Delay Difficulty by Cluster: 2017 vs 2022",
+       subtitle = "Score: 1 = Very difficult ... 7 = Very manageable",
+       x = "Cluster", y = "Difficulty Score", fill = "Year") +
+  theme_minimal(base_size = 14)
+```
+
+## Next Time:
+How to clean the data so that we can work with it?
+

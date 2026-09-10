@@ -2,16 +2,19 @@
 title: "About"
 ---
 
-## About Me
+## Bio
 
 **Agassi Iu**
 Wilfrid Laurier University
 
-- **Education:** Closely finishing my PhD in the Math department at WLU (previously in BBA/Fin Math DD).
-- **Experience:** Previously taught ST474/674 Monte Carlo Methods in Spring 2025.
+- **Education:** 
+  - PhD in Mathematical and Statistical Modelling at Wilfrid Laurier University | 2026
+  - MMath in Statistics at University of Waterloo | 2020
+  - BBA/BA Financial Mathematics at Wilfrid Laurier University | 2019
+- **Teaching Experience:** Previously taught ST474/674 Monte Carlo Methods in Spring 2025.
 
 ::: {.callout-important}
 ## Office Hours
-Wednesdays 14:00–16:00, LH3073, or by appointment.
+Fall 2026: Wednesdays 14:00–16:00 in room LH3073, or by appointment.
 :::
 

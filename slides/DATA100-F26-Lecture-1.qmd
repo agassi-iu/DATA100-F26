@@ -142,7 +142,7 @@ Technical assignments take time to debug. Avoid last-minute coding stress.
 . . .
 
 ::: {.callout-warning}
-## 🏋️ Practice Daily (I hope)
+## 🏋️ Practice Daily (I hope you do)
 Programming is a muscle. Practicing 30 minutes daily is far better than cramming every last-minute.
 :::
 :::
@@ -167,7 +167,7 @@ Connect with classmates to discuss ideas and keep each other accountable.
 ## My Expectation
 
 ::: {.callout-note}
-## In-Class
+### In-Class
 - Be respectful to the instructor and your fellow classmates.
 - Bring your laptop or tablet.
   - Only use it for note-taking and participation.
@@ -177,7 +177,7 @@ Connect with classmates to discuss ideas and keep each other accountable.
 . . .
 
 ::: {.callout-tip}
-## Out-of-Class
+### Out-of-Class
 - Proactive work habits: start early.
 - Academic integrity and working independently
 - <span style="color:red;">AI usage</span>.
@@ -223,7 +223,7 @@ Data Analysis (for this course at least) mostly concentrates on Preparation and 
 
 A concept that is still in the making, may take many shapes and forms for different people. Key ideas:
 
-- Look at data from the point of view of a scientist: do experiments, make hypothesis, test hypothesis by more experiments, rinse and repeat, ..., arrive at some conclusion
+- Look at data from the point of view of a scientist: do experiments, make hypothesis, test hypothesis by more experiments, rinse and repeat, ..., arrive at some conclusion.
 
 - Look at decision making of all kinds from the point of view of data: tell / refute a story with data, make / break a decision by data, persuade / disillusion using data...
 

@@ -18,14 +18,14 @@ Wilfrid Laurier University
 |---|:---:|---|
 | **Laboratories** | 30% | Weekly on Mondays |
 | **Participation** | 5% | Every class |
-| **Capstone Project** | 15% | Multiple due-dates |
+| **Capstone Project** | 20% | Multiple due-dates |
 | **Midterm Exams** | 20% | Twice (see [Schedule](schedule.qmd)) |
-| **Final Exam** | 20% | Final exam period in December |
+| **Final Exam** | 25% | Final exam period in December |
 
 ## Tools
 
-- **R & RStudio** — all labs, assignments, and even exams use R.
-- **MyLearningSpace** — announcements, submissions, and discussions.
+- **RStudio** — labs, assignments, projects, and (second) midterm.
+- **MyLearningSpace** — announcements, submissions, and in-class quiz participation.
 
 
 ## First-Year Success Tips
