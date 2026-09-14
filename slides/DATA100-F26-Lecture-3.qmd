@@ -22,34 +22,130 @@ execute:
   message: false
 ---
 
-## Recap: Day 1
+## Recap: Day 1 of Whole Game
 
-- We toured real findings — income, benefits, paycheque-delay difficulty
+- We examined some EDA (Exploratory Data Analysis): with variables like income, benefits, delayed paycheque difficulty, etc.
 - We ended with three financial wellness clusters: Stressed, Coping, Comfortable
-- Today: how we actually got there — including the messy parts
+- Today: we look at how we actually got there , ... including the messy parts of data analytics ...
 
 ---
 
 ## Before we look at the raw data...
 
-<div style="text-align: center; font-size: 1.3em; margin-top: 1.5em;">
+
+::: {.callout-caution title="Thinking Moment"}
 What do you think could go wrong with real, raw survey data?
+:::
 
-<br><br>
+
+::: {.callout-warning title="Potential Problems"}
 What kinds of problems might it have that yesterday's polished plots didn't show?
-</div>
+:::
 
-<!-- Collect answers on screen/board -- don't organize yet, just capture them.
-     This list becomes the roadmap for today, and we return to it at the end. -->
 
 ---
+
+```{r set up}
+#| include: false
+library(tidyverse)
+library(ggplot2)
+
+survey_2017_raw <- read_csv("data/raw_survey_2017.csv") |> distinct()
+survey_2022_raw <- read_csv("data/raw_survey_2022.csv", skip = 1) |> distinct()
+
+benefits_2017_long <- survey_2017_raw |>
+  pivot_longer(cols = starts_with("benefit_"), names_to = "benefit_type", values_to = "response") |>
+  mutate(chosen = response %in% c("Yes", "Y", "yes")) |>
+  group_by(respondent_id) |>
+  summarize(benefit_preference = if (any(chosen)) benefit_type[chosen][1] else NA_character_, .groups = "drop")
+survey_2017_clean <- survey_2017_raw |> select(-starts_with("benefit_")) |> left_join(benefits_2017_long, by = "respondent_id")
+
+benefits_2022_long <- survey_2022_raw |>
+  pivot_longer(cols = starts_with("benefit_"), names_to = "benefit_type", values_to = "response") |>
+  mutate(chosen = response %in% c("Yes", "Y", "yes")) |>
+  group_by(respondent_id) |>
+  summarize(benefit_preference = if (any(chosen)) benefit_type[chosen][1] else NA_character_, .groups = "drop")
+survey_2022_clean <- survey_2022_raw |> select(-starts_with("benefit_")) |> left_join(benefits_2022_long, by = "respondent_id")
+
+clean_income <- function(x) {
+  x <- str_trim(x)
+  is_k <- str_detect(x, "K$")
+  numeric_part <- x |> str_remove_all("[$,K]") |> as.numeric()
+  if_else(is_k, numeric_part * 1000, numeric_part)
+}
+survey_2017_clean <- survey_2017_clean |> mutate(income = clean_income(income))
+survey_2022_clean <- survey_2022_clean |> mutate(income = clean_income(income))
+
+standardize_province <- function(x) {
+  x <- str_trim(x) |> str_to_lower()
+  case_when(
+    x %in% c("ontario", "on") ~ "Ontario",
+    x %in% c("alberta", "ab") ~ "Alberta",
+    x %in% c("british columbia", "bc") ~ "British Columbia",
+    x %in% c("quebec", "qc") ~ "Quebec",
+    TRUE ~ str_to_title(x)
+  )
+}
+survey_2017_clean <- survey_2017_clean |> mutate(province = standardize_province(province))
+survey_2022_clean <- survey_2022_clean |> mutate(province = standardize_province(province))
+
+standardize_yn <- function(x) {
+  x <- str_trim(x) |> str_to_lower()
+  case_when(x %in% c("yes", "y") ~ "Yes", x %in% c("no", "n") ~ "No", TRUE ~ NA_character_)
+}
+survey_2017_clean <- survey_2017_clean |> mutate(debt_overwhelmed = standardize_yn(debt_overwhelmed))
+survey_2022_clean <- survey_2022_clean |> mutate(debt_overwhelmed = standardize_yn(debt_overwhelmed))
+
+survey_2017_clean <- survey_2017_clean |>
+  mutate(emergency_fund_3lvl = case_when(
+    emergency_fund_likelihood %in% c("Very difficult", "Difficult", "Somewhat difficult") ~ "Difficult",
+    emergency_fund_likelihood == "Neither" ~ "Neither",
+    emergency_fund_likelihood %in% c("Somewhat manageable", "Manageable", "Very manageable") ~ "Manageable",
+    TRUE ~ NA_character_
+  ))
+survey_2022_clean <- survey_2022_clean |>
+  mutate(emergency_fund_3lvl = case_when(
+    emergency_fund_likelihood %in% c("Very difficult", "Difficult") ~ "Difficult",
+    emergency_fund_likelihood == "Neither" ~ "Neither",
+    emergency_fund_likelihood %in% c("Manageable", "Very manageable") ~ "Manageable",
+    TRUE ~ NA_character_
+  ))
+
+# age bucket alignment
+survey_2017_clean <- survey_2017_clean |>
+  mutate(age_bucket = case_when(
+    age <= 30 ~ "18-30",
+    age <= 40 ~ "30-40",
+    age <= 50 ~ "40-50",
+    age <= 65 ~ "50-65",
+    TRUE ~ "65+"
+  )) |>
+  select(-age)
+
+survey_2022_clean <- survey_2022_clean |>
+  rename(age_bucket = age)
+
+# column name alignment
+survey_2017_clean <- survey_2017_clean |>
+  rename(pay_delay_response = paycheque_delay_difficulty)
+survey_2022_clean <- survey_2022_clean |>
+  rename(pay_delay_response = twoweek_pay_delay_impact)
+
+# benefit category alignment
+survey_2017_clean <- survey_2017_clean |>
+  mutate(benefit_preference = if_else(
+    benefit_preference == "benefit_education",
+    "benefit_other",
+    benefit_preference
+  ))
+survey_combined <- bind_rows(survey_2017_clean, survey_2022_clean)
+```
+
 
 ## The reveal: here's the actual raw file
 
 ```{r}
 #| eval: false
-library(tidyverse)
-
 survey_2017_raw <- read_csv("data/raw_survey_2017.csv")
 
 # Note the skip = 1 -- 2022's file has a stray metadata line above the
@@ -60,12 +156,10 @@ glimpse(survey_2017_raw)
 glimpse(survey_2022_raw)
 ```
 
-<!-- Let the mess speak for itself. Pause. Validate whatever the class
-     predicted a moment ago. -->
 
 ---
 
-## First things first: duplicate rows
+## Duplicate responses (rows)
 
 A few respondents show up more than once (simulating a double-submitted survey).
 
@@ -77,27 +171,31 @@ survey_2017_raw <- survey_2017_raw |> distinct()
 survey_2022_raw <- survey_2022_raw |> distinct()
 ```
 
-`distinct()` removes exact duplicate rows — simple, but always worth checking
-for *before* anything else, since duplicates quietly inflate every count and
-mean you compute downstream.
+::: {.callout-tips}
+The function `distinct()` removes exact duplicate rows. It is always worth checking for *before* doing anything else), since duplicates quietly inflate every count.
+:::
+
 
 ---
 
 ## Tidy data: benefits are stuck in wide format
 
-```{r}
+```{r echo=TRUE} 
 #| eval: false
 survey_2017_raw |>
   select(respondent_id, starts_with("benefit_")) |>
   head()
 ```
 
-One respondent, one true preference — but it's spread across six columns.
-This needs `pivot_longer()` before we can do anything useful with it.
+::: {.callout-tip}
+One respondent has a single true preference, but right now it's scattered across six separate columns. Before we can do anything useful with it, we need to reshape it with `pivot_longer()`.
+:::
+
+
 
 ---
 
-## Tidy data: `pivot_longer()` to the rescue
+## Tidy data: `pivot_longer()` 
 
 ```{r}
 #| eval: false
@@ -119,10 +217,8 @@ survey_2017_clean <- survey_2017_raw |>
   left_join(benefits_2017_long, by = "respondent_id")
 ```
 
-<!-- Same pattern applies to 2022 -- it just has one fewer benefit_ column,
-     since "Educational funding" never existed as an option that year. -->
 
-```{r}
+```{r echo = FALSE}
 #| eval: false
 benefits_2022_long <- survey_2022_raw |>
   pivot_longer(
@@ -144,16 +240,54 @@ survey_2022_clean <- survey_2022_raw |>
 
 ---
 
-## Strings & expressions: income is a mess
+## Strings & expressions
 
-```{r}
+
+::: {.callout-warning title="The format for income response is a mess!"}
+
+Sometimes people are allowed to type intheir response however they like. For example, if someone has an annual income of $85,000, there are several ways they might enter that in the survey:
+
+- `"85000"`
+- `"$85,000"`
+- `"85,000"`
+- `"85K"`
+
+So how do we take all these different formats and turn them into something we can actually work with in our analysis?
+:::
+
+
+## Recall from last week's survey
+
+For Question 7 of the survey, I asked everyone what was the best sandwich?
+
+::: {.callout-note title="Most Popular Answer"}
+
+**Grilled Cheese** was among the most popular answers. But this is what I got from last week's survey response:
+
+- Grilled cheese
+- Grilled Cheese
+- Grilled Cheese!
+- grilled cheese
+- grilled cheese with Hot sauce
+- Grilled cheese sandwich
+- Ham Grilled Cheese
+
+:::
+
+
+
+
+## Back to the Income Example
+
+```{r echo=FALSE}
 #| eval: false
 survey_2017_clean |> distinct(income) |> slice_sample(n = 6)
 ```
 
-Four different formats mixed together: `"85000"`, `"$85,000"`, `"85,000"`,
-`"85K"`. Before income can be used in any calculation, it needs to become a
-real number.
+::: {.callout-important title="Solution"}
+Before income can be used in any calculation, the income data needs to be transformed into a real number.
+:::
+
 
 ```{r}
 #| eval: false
@@ -175,9 +309,9 @@ survey_2022_clean <- survey_2022_clean |>
 
 ---
 
-## Strings & expressions: province spelling
+## Strings & expressions: provinces
 
-```{r}
+```{r echo=FALSE}
 #| eval: false
 survey_2017_clean |> distinct(province)
 ```
@@ -203,14 +337,14 @@ survey_2022_clean <- survey_2022_clean |> mutate(province = standardize_province
 
 ---
 
-## Strings & expressions: Yes/No encodings
+## Strings & expressions: Yes/No
 
-```{r}
+```{r echo=FALSE}
 #| eval: false
 survey_2017_clean |> distinct(debt_overwhelmed)
 ```
 
-Three encodings for the same two answers: `"Yes"/"No"`, `"Y"/"N"`, `"yes"/"no"`.
+We might get three variations for the same two answers: `"Yes"/"No"`, `"Y"/"N"`, `"yes"/"no"`.
 
 ```{r}
 #| eval: false
@@ -229,23 +363,37 @@ survey_2022_clean <- survey_2022_clean |> mutate(debt_overwhelmed = standardize_
 
 ---
 
-## Missing data: how much, and where?
+## Missing data
 
-```{r}
-#| eval: false
-survey_2017_clean |>
-  summarize(across(everything(), ~ mean(is.na(.)))) |>
-  pivot_longer(everything(), names_to = "column", values_to = "pct_missing") |>
-  arrange(desc(pct_missing))
-```
+
+::: {.callout-warning title="Where did missing data come from?"}
+
+Sometimes we don't always get all the complete data set that we want. 
+
+- People tend to skip questions that they don't feel comfortable answer.
+- perhaps people forgot to fill in one of the questions/pages of survey.
+- maybe people gave some weird looking answer that is unusable (e.g $*@2#$1aE&)
+- or sometimes these questions are simply irrelevant to them
+
+:::
 
 ---
 
-## Missing data: two honest options
 
-::: {.columns}
-::: {.column width="48%"}
-**Option 1: Delete**
+
+## Two options: 1) Delete the row
+
+If a respondent didn't answer, we can just remove them from the analysis. :)
+
+::: {.callout-tip title="This is cool, but..."}
+
+While this is a simple method, you will lose the respondents. 
+
+- if the people who skipped the question aren't random, the ones left behind don't represent everyone fairly.
+
+:::
+
+
 ```{r}
 #| eval: false
 survey_2017_nomiss <- survey_2017_clean |>
@@ -253,46 +401,55 @@ survey_2017_nomiss <- survey_2017_clean |>
           debt_overwhelmed,
           emergency_fund_likelihood)
 ```
-Simple, but shrinks your sample —
-and if missingness isn't random,
-you bias what's left.
-:::
-
-::: {.column width="48%"}
-**Option 2: Impute**
-```{r}
-#| eval: false
-survey_2017_imputed <- survey_2017_clean |>
-  mutate(savings_pct = if_else(
-    is.na(savings_pct),
-    median(savings_pct, na.rm = TRUE),
-    savings_pct
-  ))
-```
-Keeps every row, but every imputed
-value is a guess — and a bad guess
-can quietly distort your results.
-:::
-:::
-
-<!-- Discussion: which would you choose for savings_pct? For debt_overwhelmed
-     (categorical)? Does the answer change per-column? -->
 
 ---
 
-## Mismatched response: too many response levels
+## Two options: 2) Imputation
+
+Instead of throwing the whole response away, we can guess a reasonable value to put in its place.
+
+- like using the average of everyone else's answer. (e.g. mean or median)
 
 ```{r}
+#| eval: false
+survey_2017_clean |> mutate(income = ifelse(is.na(income), median(income, na.rm = TRUE), income))
+```
+
+::: {.callout-tip title="This is cool, but..."}
+
+Now some of your "data" is really just a guess. If you fill in too many values this way, your data can look more similar than it actually is.
+
+:::
+
+
+---
+
+```{r echo=FALSE}
 #| eval: false
 survey_2017_clean |> distinct(emergency_fund_likelihood)
 survey_2022_clean |> distinct(emergency_fund_likelihood)
 ```
 
-2017 has 7 levels. 2022 already collapsed to 5. Neither matches the other,
-and neither is easy to compare across years as-is.
+## Mismatched response
 
-**The compromise:** collapse both down to 3 levels — Difficult, Neither,
-Manageable.
+::: {.callout-warning title="Too many response levels"}
+
+Sometimes survey designers choose a set of response options one year, then decide to change them the next. For example, in our financial wellness data, the survey asked questions of *How difficult is it to obtain $2,000 of emergency fund?*:
+
+- in 2017, there are 7 levels: *Very difficult*, *Difficult*, *Somewhat difficult*, *Neither*, *Somewhat manageable*, *Manageable*, *Very manageable* 
+- in 2022, there are now only 5 levels: *Very difficult*, *Difficult*, *Neither*, *Manageable*, *Very manageable* 
+
+So what do you do? Neither of them directly match each other. And this is difficult for a year-to-year comparative analysis
+:::
+
+
+## Potential Solution
+
+::: {.callout-note title="Compromise"}
+
+We can collapse both down to 3 levels — *Difficult*, *Neither*, *Manageable.*
+
+:::
 
 ```{r}
 #| eval: false
@@ -313,23 +470,83 @@ survey_2022_clean <- survey_2022_clean |>
   ))
 ```
 
-<!-- Worth naming out loud: this is a judgment call. A different compromise
-     (e.g. 5 levels, or a different cut point) would give slightly different
-     results downstream. -->
+
+
+## Before: 7 Levels vs 5 Levels
+
+```{r echo=FALSE}
+#| fig-width: 9
+#| fig-height: 5
+bind_rows(
+  survey_2017_clean |> mutate(year = 2017),
+  survey_2022_clean |> mutate(year = 2022)
+) |>
+  filter(!is.na(emergency_fund_likelihood)) |>
+  mutate(emergency_fund_likelihood = factor(
+    emergency_fund_likelihood,
+    levels = c("Very difficult", "Difficult", "Somewhat difficult", "Neither",
+               "Somewhat manageable", "Manageable", "Very manageable")
+  )) |>
+  ggplot(aes(x = emergency_fund_likelihood, fill = emergency_fund_likelihood)) +
+  geom_bar(aes(y = after_stat(count / sum(count))), color = "white") +
+  facet_wrap(~ year, scales = "free_x") +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(title = "Emergency Fund Readiness: Raw Response Levels", x = NULL, y = "Percentage") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 40, hjust = 1))
+```
+
+Different number of categories, different wording. It is not easy to tell how people have changed over time by comparing these two bar plots side by side as-is.
+
+
+## After:
+
+```{r echo=FALSE}
+#| fig-width: 9
+#| fig-height: 5
+bind_rows(
+  survey_2017_clean |> mutate(year = 2017),
+  survey_2022_clean |> mutate(year = 2022)
+) |>
+  filter(!is.na(emergency_fund_3lvl)) |>
+  mutate(emergency_fund_3lvl = factor(emergency_fund_3lvl,
+                                       levels = c("Difficult", "Neither", "Manageable"))) |>
+  ggplot(aes(x = emergency_fund_3lvl, fill = emergency_fund_3lvl)) +
+  geom_bar(aes(y = after_stat(count / sum(count))), color = "white") +
+  facet_wrap(~ year) +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(title = "Emergency Fund Readiness: 2017 vs 2022", x = NULL, y = "Percentage") +
+  theme_minimal(base_size = 14) +
+  theme(legend.position = "none")
+```
+
+Now that both years use the same 3 levels, we can finally put them side by side and ask: did things get better, worse, or stay the same?
 
 ---
 
-## Mismatched question: same question, different name
+## Different ways of asking the same question
 
-```{r}
+```{r echo=FALSE}
 #| eval: false
 names(survey_2017_clean)
 names(survey_2022_clean)
 ```
 
-`paycheque_delay_difficulty` (2017) and `twoweek_pay_delay_impact` (2022)
-ask the same thing — the survey platform changed, the wording changed, the
-column name changed. `rename()` fixes this in one line each.
+::: {.callout-warning title="Mismatched question: same question, different name"}
+
+Sometimes a question gets worded differently across years, even though it's really asking the same thing.
+
+- in 2017, the survey asked *How difficult was it for you if your paycheque is delayed?*
+  - stored as `paycheque_delay_difficulty`
+- in 2022, the question became *If there is a two week delay in your paycheque arrival, how impactful would it be to your finances?*
+  - stored as `twoweek_pay_delay_impact`
+
+Same underlying question, different wording and different column name — `rename()` fixes this in one line each.
+
+:::
 
 ```{r}
 #| eval: false
@@ -342,7 +559,7 @@ survey_2022_clean <- survey_2022_clean |>
 
 ---
 
-## Age: numbers in one year, buckets in the other
+## Mismatched responses: Age
 
 ```{r}
 #| eval: false
@@ -350,8 +567,19 @@ survey_2017_clean |> select(age) |> head()
 survey_2022_clean |> select(age) |> head()
 ```
 
-2017 gives an exact age. 2022 gives a bracket. To compare years, everyone
-needs to speak the same bucket language.
+::: {.callout-warning title="Are you willing to share your age?"}
+
+Sometimes the same underlying question gets *measured* differently across years, even when the intent is identical. 
+
+- in 2017, respondents gave an exact age
+  - stored as `age`, e.g. `34`
+- in 2022, respondents picked from age brackets instead
+  - stored as `age`, e.g. `"30-40"`
+
+- Now we have the same underlying question, but a different level of precision
+  — to compare over the years, everyone needs to speak the same bucket language.
+
+:::
 
 ```{r}
 #| eval: false
@@ -368,9 +596,6 @@ survey_2022_clean <- survey_2022_clean |>
   rename(age_bucket = age)
 ```
 
-<!-- Worth a pause: 2022's brackets overlap at the boundaries (is age 30 in
-     "18-30" or "30-40"?). Real survey design flaw -- we had to pick a rule
-     for 2017 to match, and that choice is itself a judgment call. -->
 
 ---
 
@@ -398,7 +623,7 @@ survey_2017_clean <- survey_2017_clean |>
 
 ---
 
-## Combine years
+## Combine into one data set
 
 ```{r}
 #| eval: false
@@ -407,47 +632,64 @@ survey_combined <- bind_rows(survey_2017_clean, survey_2022_clean)
 glimpse(survey_combined)
 ```
 
-Only possible now — column names match (`rename()`), category sets match
-(the "Other" recode), and the response scales match (the 3-level collapse).
+::: {.callout-note title="Only possible now"}
+
+Now that we have:
+
+ — column names match (`rename()`)
+ - category sets match (the "Other" recoded)
+ - response scales match (the 3-level of likert responses in paycheque question)
+ 
 Every fix so far existed to make this one line possible.
+
+:::
 
 ---
 
-## A useful side quest: `separate()`
+## Too much info in one column
+
+```{r echo=FALSE}
+#| eval: false
+survey_combined |> select(respondent_id) |> head()
+```
+
+::: {.callout-warning title="One column doing two jobs"}
+
+The variable `respondent_id` looks like a single value, but it's actually smuggling in two separate pieces of information at once.
+
+- the year the response came from, e.g. `2017`
+
+- the respondent's number within that year, e.g. `0001`
+
+Both are jammed into one string: `"2017-0001"`. If we ever want to work with just the year, or just the respondent number, we're stuck first pulling them apart.
+
+:::
 
 ```{r}
 #| eval: false
+survey_combined <- survey_combined |>
+  separate(respondent_id, into = c("survey_year", "respondent_num"), sep = "-")
+
 survey_combined |>
-  separate(respondent_id, into = c("survey_year", "respondent_num"), sep = "-") |>
   select(survey_year, respondent_num, everything()) |>
   head()
 ```
 
-`respondent_id` (`"2017-0001"`) is actually two pieces of information
-squeezed into one column. `separate()` is `pivot_longer()`'s cousin for
-this specific problem — splitting one messy column into several clean ones.
 
----
-
-## `pivot_wider()`: the mirror image
-
-```{r}
+```{r echo=FALSE}
 #| eval: false
 survey_combined |>
   count(financial_wellness_cluster, year) |>
   pivot_wider(names_from = year, values_from = n)
 ```
 
-`pivot_longer()` took wide data and made it long. `pivot_wider()` does the
-opposite — useful here for turning a long count table into a clean
-side-by-side year comparison, exactly the shape you'd want for a report.
-
 ---
 
 ## Show concluding results
 
-```{r}
-#| eval: false
+```{r echo=TRUE}
+#| fig-width: 9
+#| fig-height: 5
 survey_combined |>
   ggplot(aes(x = financial_wellness_cluster, y = income, fill = factor(year))) +
   geom_boxplot(position = position_dodge(width = 0.8)) +
@@ -456,28 +698,45 @@ survey_combined |>
   theme_minimal()
 ```
 
-This is the exact plot style from Day 1 — except now you've watched every
-step of how the data underneath it got here.
+This is the exact plot style from Day 1, except now you've watched every step of how the data underneath it got here.
+
+---
 
 ---
 
 ## Back to your predictions
 
-<div style="text-align: center; font-size: 1.3em; margin-top: 1.5em;">
+::: {.callout-important title="Discussion"}
+
 Which of your guesses from the start of class came true?
 
-<br><br>
 What did we run into that nobody predicted?
-</div>
+
+:::
+
+::: {.callout-note title="Document your decisions"}
+
+A results plot without its cleaning log is a claim without evidence. For any real report, this deserves its own short section (*ahem your final report*):
+
+- Which rows/columns were dropped, and why
+- Every recoding decision (e.g. collapsing levels and combining buckets, etc.)
+- What's imputed vs. observed, clearly marked
+
+:::
 
 ---
 
 ## A few honest cautions
 
-- Every cleaning choice was also an analytical choice — a different 3-level
-  collapse, a different age-bucket rule, a different imputation method
-  could all shift what we find downstream
-- This dataset is synthetic — today's numbers are illustrative, not a claim
-  about real Canadians
-- Later this semester: missing-data methods and statistical tests that let
-  you make these calls more rigorously than by eyeballing
+::: {.callout-caution title="Keep in mind"}
+
+- Every cleaning choice was also an analytical choice — a different 3-level collapse, a different age-bucket rule, a different imputation method could all shift what we find downstream
+- This dataset is synthetic — today's numbers are illustrative, not a claim about real Canadians
+- Later this semester: missing-data methods and statistical tests that let you make these calls more rigorously than by eyeballing
+
+:::
+
+
+::: {.callout-tip title="Next Week"}
+Visualization!
+:::

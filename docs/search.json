@@ -53,14 +53,14 @@
     "href": "slides/DATA100-F26-Lecture-3.html#before-we-look-at-the-raw-data",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Before we look at the raw data…",
-    "text": "Before we look at the raw data…\n\nWhat do you think could go wrong with real, raw survey data?\n What kinds of problems might it have that yesterday’s polished plots didn’t show?"
+    "text": "Before we look at the raw data…\n\n\n\n\n\n\n\nThinking Moment\n\n\nWhat do you think could go wrong with real, raw survey data?\n\n\n\n\n\n\n\n\n\n\n\nPotential Problems\n\n\nWhat kinds of problems might it have that yesterday’s polished plots didn’t show?"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-3.html#the-reveal-heres-the-actual-raw-file",
     "href": "slides/DATA100-F26-Lecture-3.html#the-reveal-heres-the-actual-raw-file",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "The reveal: here’s the actual raw file",
-    "text": "The reveal: here’s the actual raw file\n\nlibrary(tidyverse)\n\nsurvey_2017_raw &lt;- read_csv(\"data/raw_survey_2017.csv\")\n\n# Note the skip = 1 -- 2022's file has a stray metadata line above the\n# real header (a leftover from the export on the new survey platform)\nsurvey_2022_raw &lt;- read_csv(\"data/raw_survey_2022.csv\", skip = 1)\n\nglimpse(survey_2017_raw)\nglimpse(survey_2022_raw)"
+    "text": "The reveal: here’s the actual raw file\n\nsurvey_2017_raw &lt;- read_csv(\"data/raw_survey_2017.csv\")\n\n# Note the skip = 1 -- 2022's file has a stray metadata line above the\n# real header (a leftover from the export on the new survey platform)\nsurvey_2022_raw &lt;- read_csv(\"data/raw_survey_2022.csv\", skip = 1)\n\nglimpse(survey_2017_raw)\nglimpse(survey_2022_raw)"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-3.html#first-things-first-duplicate-rows",
@@ -74,14 +74,14 @@
     "href": "slides/DATA100-F26-Lecture-3.html#tidy-data-benefits-are-stuck-in-wide-format",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Tidy data: benefits are stuck in wide format",
-    "text": "Tidy data: benefits are stuck in wide format\n\nsurvey_2017_raw |&gt;\n  select(respondent_id, starts_with(\"benefit_\")) |&gt;\n  head()\n\nOne respondent, one true preference — but it’s spread across six columns. This needs pivot_longer() before we can do anything useful with it."
+    "text": "Tidy data: benefits are stuck in wide format\n\nsurvey_2017_raw |&gt;\n  select(respondent_id, starts_with(\"benefit_\")) |&gt;\n  head()\n\n\n\n\n\n\n\nTip\n\n\nOne respondent has a single true preference, but right now it’s scattered across six separate columns. Before we can do anything useful with it, we need to reshape it with pivot_longer()."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-3.html#tidy-data-pivot_longer-to-the-rescue",
     "href": "slides/DATA100-F26-Lecture-3.html#tidy-data-pivot_longer-to-the-rescue",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Tidy data: pivot_longer() to the rescue",
-    "text": "Tidy data: pivot_longer() to the rescue\n\nbenefits_2017_long &lt;- survey_2017_raw |&gt;\n  pivot_longer(\n    cols = starts_with(\"benefit_\"),\n    names_to = \"benefit_type\",\n    values_to = \"response\"\n  ) |&gt;\n  mutate(chosen = response %in% c(\"Yes\", \"Y\", \"yes\")) |&gt;\n  group_by(respondent_id) |&gt;\n  summarize(\n    benefit_preference = if (any(chosen)) benefit_type[chosen][1] else NA_character_,\n    .groups = \"drop\"\n  )\n\nsurvey_2017_clean &lt;- survey_2017_raw |&gt;\n  select(-starts_with(\"benefit_\")) |&gt;\n  left_join(benefits_2017_long, by = \"respondent_id\")\n\n\n\nbenefits_2022_long &lt;- survey_2022_raw |&gt;\n  pivot_longer(\n    cols = starts_with(\"benefit_\"),\n    names_to = \"benefit_type\",\n    values_to = \"response\"\n  ) |&gt;\n  mutate(chosen = response %in% c(\"Yes\", \"Y\", \"yes\")) |&gt;\n  group_by(respondent_id) |&gt;\n  summarize(\n    benefit_preference = if (any(chosen)) benefit_type[chosen][1] else NA_character_,\n    .groups = \"drop\"\n  )\n\nsurvey_2022_clean &lt;- survey_2022_raw |&gt;\n  select(-starts_with(\"benefit_\")) |&gt;\n  left_join(benefits_2022_long, by = \"respondent_id\")"
+    "text": "Tidy data: pivot_longer() to the rescue\n\nbenefits_2017_long &lt;- survey_2017_raw |&gt;\n  pivot_longer(\n    cols = starts_with(\"benefit_\"),\n    names_to = \"benefit_type\",\n    values_to = \"response\"\n  ) |&gt;\n  mutate(chosen = response %in% c(\"Yes\", \"Y\", \"yes\")) |&gt;\n  group_by(respondent_id) |&gt;\n  summarize(\n    benefit_preference = if (any(chosen)) benefit_type[chosen][1] else NA_character_,\n    .groups = \"drop\"\n  )\n\nsurvey_2017_clean &lt;- survey_2017_raw |&gt;\n  select(-starts_with(\"benefit_\")) |&gt;\n  left_join(benefits_2017_long, by = \"respondent_id\")"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-3.html#strings-expressions-income-is-a-mess",
@@ -102,14 +102,14 @@
     "href": "slides/DATA100-F26-Lecture-3.html#strings-expressions-yesno-encodings",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Strings & expressions: Yes/No encodings",
-    "text": "Strings & expressions: Yes/No encodings\n\nsurvey_2017_clean |&gt; distinct(debt_overwhelmed)\n\nThree encodings for the same two answers: \"Yes\"/\"No\", \"Y\"/\"N\", \"yes\"/\"no\".\n\nstandardize_yn &lt;- function(x) {\n  x &lt;- str_trim(x) |&gt; str_to_lower()\n  case_when(\n    x %in% c(\"yes\", \"y\") ~ \"Yes\",\n    x %in% c(\"no\", \"n\") ~ \"No\",\n    TRUE ~ NA_character_\n  )\n}\n\nsurvey_2017_clean &lt;- survey_2017_clean |&gt; mutate(debt_overwhelmed = standardize_yn(debt_overwhelmed))\nsurvey_2022_clean &lt;- survey_2022_clean |&gt; mutate(debt_overwhelmed = standardize_yn(debt_overwhelmed))"
+    "text": "Strings & expressions: Yes/No encodings\nWe might get three variations for the same two answers: \"Yes\"/\"No\", \"Y\"/\"N\", \"yes\"/\"no\".\n\nstandardize_yn &lt;- function(x) {\n  x &lt;- str_trim(x) |&gt; str_to_lower()\n  case_when(\n    x %in% c(\"yes\", \"y\") ~ \"Yes\",\n    x %in% c(\"no\", \"n\") ~ \"No\",\n    TRUE ~ NA_character_\n  )\n}\n\nsurvey_2017_clean &lt;- survey_2017_clean |&gt; mutate(debt_overwhelmed = standardize_yn(debt_overwhelmed))\nsurvey_2022_clean &lt;- survey_2022_clean |&gt; mutate(debt_overwhelmed = standardize_yn(debt_overwhelmed))"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-3.html#missing-data-how-much-and-where",
     "href": "slides/DATA100-F26-Lecture-3.html#missing-data-how-much-and-where",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Missing data: how much, and where?",
-    "text": "Missing data: how much, and where?\n\nsurvey_2017_clean |&gt;\n  summarize(across(everything(), ~ mean(is.na(.)))) |&gt;\n  pivot_longer(everything(), names_to = \"column\", values_to = \"pct_missing\") |&gt;\n  arrange(desc(pct_missing))"
+    "text": "Missing data: how much, and where?\n\n\n\n\n\n\n\nMissing Data\n\n\nSometimes we don’t always get all the complete data set that we want.\n\nPeople tend to skip questions that they don’t feel comfortable answer.\nperhaps people forgot to fill in one of the questions/pages of survey.\nmaybe people gave some weird looking answer that is unusable (e.g $*@2#$1aE&)\nor sometimes these questions are simply irrelevant to them"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-3.html#missing-data-two-honest-options",
@@ -172,21 +172,21 @@
     "href": "slides/DATA100-F26-Lecture-3.html#show-concluding-results",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Show concluding results",
-    "text": "Show concluding results\n\nsurvey_combined |&gt;\n  ggplot(aes(x = financial_wellness_cluster, y = income, fill = factor(year))) +\n  geom_boxplot(position = position_dodge(width = 0.8)) +\n  labs(title = \"Income by Cluster: 2017 vs 2022\",\n       x = \"Cluster\", y = \"Income ($)\", fill = \"Year\") +\n  theme_minimal()\n\nThis is the exact plot style from Day 1 — except now you’ve watched every step of how the data underneath it got here."
+    "text": "Show concluding results\n\nsurvey_combined |&gt;\n  ggplot(aes(x = financial_wellness_cluster, y = income, fill = factor(year))) +\n  geom_boxplot(position = position_dodge(width = 0.8)) +\n  labs(title = \"Income by Cluster: 2017 vs 2022\",\n       x = \"Cluster\", y = \"Income ($)\", fill = \"Year\") +\n  theme_minimal()\n\n\nThis is the exact plot style from Day 1, except now you’ve watched every step of how the data underneath it got here."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-3.html#back-to-your-predictions",
     "href": "slides/DATA100-F26-Lecture-3.html#back-to-your-predictions",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Back to your predictions",
-    "text": "Back to your predictions\n\nWhich of your guesses from the start of class came true?\n What did we run into that nobody predicted?"
+    "text": "Back to your predictions\n\n\n\n\n\n\n\nDiscussion\n\n\nWhich of your guesses from the start of class came true?\nWhat did we run into that nobody predicted?\n\n\n\n\n\n\n\n\n\n\n\nDocument your decisions\n\n\nA results plot without its cleaning log is a claim without evidence. For any real report, this deserves its own short section (ahem your final report):\n\nWhich rows/columns were dropped, and why\nEvery recoding decision (e.g. collapsing levels and combining buckets, etc.)\nWhat’s imputed vs. observed, clearly marked"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-3.html#a-few-honest-cautions",
     "href": "slides/DATA100-F26-Lecture-3.html#a-few-honest-cautions",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "A few honest cautions",
-    "text": "A few honest cautions\n\nEvery cleaning choice was also an analytical choice — a different 3-level collapse, a different age-bucket rule, a different imputation method could all shift what we find downstream\nThis dataset is synthetic — today’s numbers are illustrative, not a claim about real Canadians\nLater this semester: missing-data methods and statistical tests that let you make these calls more rigorously than by eyeballing"
+    "text": "A few honest cautions\n\n\n\n\n\n\n\nKeep in mind\n\n\n\nEvery cleaning choice was also an analytical choice — a different 3-level collapse, a different age-bucket rule, a different imputation method could all shift what we find downstream\nThis dataset is synthetic — today’s numbers are illustrative, not a claim about real Canadians\nLater this semester: missing-data methods and statistical tests that let you make these calls more rigorously than by eyeballing\n\n\n\n\n\n\n\n\n\n\n\n\nNext Week\n\n\nVisualization!"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-1.html#outline",
@@ -501,21 +501,21 @@
     "href": "slides/DATA100-F26-Lecture-2.html#this-course-works-the-same-way",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "This course works the same way! :)",
-    "text": "This course works the same way! :)\nWe are going to take a quick glimpse on what you are about to do in this course, over this week.\n\n\n\n\n\n\n\n\nToday\n\n\nPlay the whole game once:\n\nAn open question \\(\\rightarrow\\) some cool results\n\n\n\n\n\n\n\n\n\n\n\n\n\nRest of semester\n\n\nDrill each piece:\n\nCleaning, transformations, modelling, communication\n\n\n\n\n\nBy the end of the course, you’ll play the whole game again (wink wink this time completing the final project by yourself."
+    "text": "This course works the same way! :)\nWe are going to take a quick glimpse on what you are about to do in this course, over this week.\n\n\n\n\n\n\n\n\nToday\n\n\nPlay the whole game once:\n\nAn open question \\(\\rightarrow\\) some cool results\n\n\n\n\n\n\n\n\n\n\n\n\n\nRest of semester\n\n\nDrill each piece:\n\nCleaning, transformations, modelling, communication\n\n\n\n\n\nBy the end of the course, you’ll play the whole game again (wink wink this time completing the final project by yourself)."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-2.html#why-does-this-matter",
     "href": "slides/DATA100-F26-Lecture-2.html#why-does-this-matter",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Why does this matter?",
-    "text": "Why does this matter?\n\nFinancial stress affects health, relationships, and decision-making\nUnderstanding what predicts financial comfort helps policymakers, employers, and individuals\n\n\n\n\n\n\n\n\n\nToday\n\n\nA look at real survey data on Canadians’ financial wellness."
+    "text": "Why does this matter?\n\nFinancial stress affects health, relationships, and decision-making.\nUnderstanding what predicts financial comfort helps policymakers, employers, and individuals.\n\n\n\n\n\n\n\n\n\nToday\n\n\nWork with real Canadian financial wellness survey data."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-2.html#the-data",
     "href": "slides/DATA100-F26-Lecture-2.html#the-data",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "The Data",
-    "text": "The Data\n\n\n\n\n\n\n\nData Overview\n\n\nSurvey responses from Canadians regarding income, employment, financial habits, and workplace benefits.\n\nSample: Representative cross-section of Canadians across all provinces\nScale: 1000 total respondents across two survey waves (in 2017 & 2022)\nScope: Captures demographic variables alongside self-reported financial stress metrics (survey responses)\n\n\n\n\n\n\n\nNote: This data set originates from a real research project conducted in partnership with external industrial partners. To preserve confidentiality, the data has been anonymized and structured for teaching purposes."
+    "text": "The Data\n\n\n\n\n\n\n\nData Overview\n\n\nSurvey responses from Canadians regarding income, employment, financial habits, and workplace benefits.\n\nSample: Canadians across all provinces\nScale: 1,000 total respondents across two survey waves (in 2017 & 2022)\nScope: Captures demographic variables alongside self-reported financial stress metrics (survey responses)\n\n\n\n\n\n\n\nNote: This data set originates from a real research project conducted in partnership with external industrial partners. To preserve confidentiality, the data has been anonymized and structured for teaching purposes."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-2.html#survey-questions",
@@ -529,14 +529,14 @@
     "href": "slides/DATA100-F26-Lecture-2.html#glimpse-of-data",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Glimpse of Data",
-    "text": "Glimpse of Data\n\n\n# A tibble: 6 × 16\n  respondent_id  year   age province      income savings_pct benefits_preference\n  &lt;chr&gt;         &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;              \n1 2017-0001      2017    31 Alberta        78300        21.6 More time off      \n2 2017-0002      2017    51 Newfoundland… 149500        21.8 Educational funding\n3 2017-0003      2017    40 Manitoba       97700         8.2 Health benefits    \n4 2017-0004      2017    37 Ontario       102300        13.7 Higher wages       \n5 2017-0005      2017    39 British Colu… 118600         7.8 Health benefits    \n6 2017-0006      2017    43 Alberta        54400        16.9 Health benefits    \n# ℹ 9 more variables: paycheque_delay_difficulty &lt;ord&gt;, debt_overwhelmed &lt;chr&gt;,\n#   emergency_fund_likelihood &lt;ord&gt;, financial_wellness_cluster &lt;fct&gt;,\n#   paycheque_delay_score &lt;dbl&gt;, emergency_fund_score &lt;dbl&gt;, age_bucket &lt;fct&gt;,\n#   income_bucket &lt;fct&gt;, province_bucket &lt;chr&gt;"
+    "text": "Glimpse of Data\n\nhead(survey_2017)\n\n# A tibble: 6 × 16\n  respondent_id  year   age province      income savings_pct benefits_preference\n  &lt;chr&gt;         &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;              \n1 2017-0001      2017    31 Alberta        78300        21.6 More time off      \n2 2017-0002      2017    51 Newfoundland… 149500        21.8 Educational funding\n3 2017-0003      2017    40 Manitoba       97700         8.2 Health benefits    \n4 2017-0004      2017    37 Ontario       102300        13.7 Higher wages       \n5 2017-0005      2017    39 British Colu… 118600         7.8 Health benefits    \n6 2017-0006      2017    43 Alberta        54400        16.9 Health benefits    \n# ℹ 9 more variables: paycheque_delay_difficulty &lt;ord&gt;, debt_overwhelmed &lt;chr&gt;,\n#   emergency_fund_likelihood &lt;ord&gt;, financial_wellness_cluster &lt;fct&gt;,\n#   paycheque_delay_score &lt;dbl&gt;, emergency_fund_score &lt;dbl&gt;, age_bucket &lt;fct&gt;,\n#   income_bucket &lt;fct&gt;, province_bucket &lt;chr&gt;\n\n\n\n\n\n\n\n\n\nWhat’s a tibble?\n\n\nA tibble is just a table of rows and columns, like an Excel spreadsheet. It is how R stores and displays your data with just cleaner printing."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-2.html#what-does-the-sample-look-like",
     "href": "slides/DATA100-F26-Lecture-2.html#what-does-the-sample-look-like",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "What does the sample look like?",
-    "text": "What does the sample look like?\n\n\n\n\n\n\n\nWhat do you notice?\n\n\nI am going to show you the demographic-response (i.e. age, income, and province) distributions from the 2017 survey results. Try and answer the following questions\n\nCan you tell me if there are any obvious patterns?\nDo you like the plots that I created?\nBased on those 3 plots, can you tell me about the financial wellness of these groups of respondents?"
+    "text": "What does the sample look like?\n\n\n\n\n\n\n\nWhat do you notice?\n\n\nI am going to show you the demographic-response (i.e. age, income, and province) distributions from the 2017 survey results. Try and answer the following questions:\n\nCan you tell me if there are any obvious patterns?\nDo you like the plots that I created? What would you change?\nBased on those three plots, can you tell me anything about the financial wellness of the respondents?"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-2.html#income-distribution",
@@ -564,14 +564,14 @@
     "href": "slides/DATA100-F26-Lecture-2.html#checkpoint",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Checkpoint",
-    "text": "Checkpoint\nFor the rest of the lecture, try and think of these questions:\n\nCan you tell me if there are any obvious patterns?\nDo you like the plots that I created?\nBased on those 3 plots, can you tell me about the financial wellness of these groups of respondents?"
+    "text": "Checkpoint\n\n\n\n\n\n\n\nCheckpoint\n\n\nFor the rest of the lecture, keep thinking about these questions:\n\nWhat kind of patterns do you recognize from the plots?\nHow would you improve the readability of the plots?\nWhat can you tell me about the financial wellness from the survey results?\n\n\n\nAge vs Income\n\n\n\n\n\n\n\nTip\n\n\nLet us try and fit something called a Linear Model. That is we let \\(y\\) = income and \\(x\\) = age, and we fit some function \\(y=f(x) = mx+b\\) over this plot.\n\n\n\n\n\nTell me about the patterns again?\n\n\n\nSection 2: Financial Wellness Clusters\n\n\n\nHow We Found These Groups/Clusters\n\nWe didn’t set the rules manually: The patterns emerged directly from the survey data.\nUnsupervised Learning: We used algorithms to group respondents based on mathematical similarity across many variables at once.\n\nMethods like k-Nearest Neighbors (k-NN) and t-SNE helped us reduce high-dimensional data into distinct clusters.\nDon’t worry! The math behind clustering is out of scope of this course, just think of it as a tool that finds hidden patterns in complex data. If you are interested, you should take ST362 and ST494 in future!\n\n\n\n\nClustering Results\n\nAnalyzed 100+ survey questions across 10+ years of longitudinal project data.\n\nThis is our actual work from the lab. I am only replicating a small subset of the data for this class.\n\n3 groups proved to be the mathematical sweet spot (2 lost key details; 4 added unnecessary noise).\n\nStressed\nCoping\nComfortable\n\nConnects the data outputs directly to the client’s goal of understanding Canadian financial stress and security.\n\n\n\nClustering Results in 2017\n\n\n\nClustering Comparison\n\n\n\n\nSection 3: Financial and Behavioural Responses\n\n\n\nSavings Rate by Cluster (2017 vs 2022)\n\n\n\n\nPaycheque Delay Difficulty\n\n\n\n\nMost Important Benefit\n\n\n\n\nEmergency Fund\n\n\n\n\nExercise\nTry plotting yourself!\n\n\n\n\n\n\n\n\n\n\nNext Time:\nHow to clean the data so that we can work with it?"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-2.html#age-vs-income",
     "href": "slides/DATA100-F26-Lecture-2.html#age-vs-income",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Age vs Income",
-    "text": "Age vs Income\nThis is an example of a Linear Model."
+    "text": "Age vs Income\n\n\n\n\n\n\n\n\nFinding Patterns\n\n\nLet us try and fit something called a Linear Model. That is we let \\(y\\) = income and \\(x\\) = age, and we fit some function \\(y=f(x) = mx+b\\) over this plot."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-2.html#tell-me-about-the-patterns-again",
@@ -585,7 +585,7 @@
     "href": "slides/DATA100-F26-Lecture-2.html#how-we-found-these-groupsclusters",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "How We Found These Groups/Clusters",
-    "text": "How We Found These Groups/Clusters\n\nWe didn’t set the rules manually: The patterns emerged directly from the survey data.\nUnsupervised Learning: We used algorithms to group respondents based on mathematical similarity across many variables at once.\n\nMethods like k-Nearest Neighbors (k-NN) and t-SNE helped us reduce high-dimensional data into distinct clusters.\nDon’t worry! The math behind clustering is out of scope of this course, just think of it as a tool that finds hidden patterns in complex data. If you are interested, you should take ST362 and ST494 in future!"
+    "text": "How We Found These Groups/Clusters\n\nWe didn’t set the rules manually: The patterns emerged directly from the survey data.\nUnsupervised Learning: We used algorithms to group respondents based on mathematical similarity across many variables at once.\n\nMethods like k-Nearest Neighbors (k-NN) and t-SNE helped us reduce high-dimensional data into distinct clusters.\nDon’t worry! The math behind clustering is out of scope of this course, just think of it as a tool that finds hidden patterns in complex data. If you are interested, you should take these courses in future.\n\nST362 Regression Analysis , and\nST494 Statistical Learning."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-2.html#clustering-results",
@@ -663,5 +663,243 @@
     "title": "Lecture Slides",
     "section": "Lecture 3: Day 2 of the Whole Game",
     "text": "Lecture 3: Day 2 of the Whole Game\nComing soon."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#what-contributes-to-financial-wellness",
+    "href": "slides/DATA100-F26-Lecture-2.html#what-contributes-to-financial-wellness",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "What contributes to financial wellness?",
+    "text": "What contributes to financial wellness?\n\n\n\n\n\n\n\nCheckpoint\n\n\nTake a minute to think about it — what factors do you think contribute to someone’s financial wellness?\n\nIs it someone’s current wealth?\nHow much money are they making from their jobs?\nIs where you live a factor to how financially well are you?\n\n\n\n\n\n\n\n\n\nWe’ll come back to your answers as we go through the questions."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#age-distribution-correct-version",
+    "href": "slides/DATA100-F26-Lecture-2.html#age-distribution-correct-version",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Age Distribution (Correct Version)",
+    "text": "Age Distribution (Correct Version)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#clustering-results-in-2017",
+    "href": "slides/DATA100-F26-Lecture-2.html#clustering-results-in-2017",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Clustering Results in 2017",
+    "text": "Clustering Results in 2017"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#clustering-comparison",
+    "href": "slides/DATA100-F26-Lecture-2.html#clustering-comparison",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Clustering Comparison",
+    "text": "Clustering Comparison"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#for-the-rest-of-the-lecture-keep-thinking-about-these-questions",
+    "href": "slides/DATA100-F26-Lecture-2.html#for-the-rest-of-the-lecture-keep-thinking-about-these-questions",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "For the rest of the lecture, keep thinking about these questions:",
+    "text": "For the rest of the lecture, keep thinking about these questions:\n\n\n\n\n\n\n\nCheckpoint\n\n\n\nWhat kind of patterns do you recognize from the plots?\nHow would you improve the readability of the plots?\nWhat can you tell me about the financial wellness from the survey results?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#types-of-variables",
+    "href": "slides/DATA100-F26-Lecture-2.html#types-of-variables",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Types of Variables",
+    "text": "Types of Variables\n\n\n\n#\nQuestion\nVariable Type\n\n\n\n\n1\nAge\nContinuous\n\n\n2\nProvince\nCategorical (Nominal)\n\n\n3\nAnnual income (in CAD)\nContinuous\n\n\n4\nPercentage of paycheck saved\nContinuous\n\n\n5\nOverwhelmed by debt?\nCategorical (Binary)\n\n\n6\nManageability of $2,000 emergency fund\nLikert (Ordinal)\n\n\n7\nManageability of 2-week paycheque delay\nLikert (Ordinal)\n\n\n8\nMost important job benefit\nCategorical (Nominal)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#choosing-how-to-show-data",
+    "href": "slides/DATA100-F26-Lecture-2.html#choosing-how-to-show-data",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Choosing How to Show Data",
+    "text": "Choosing How to Show Data\n\n\n\n\n\n\n\nQuick distinctions\n\n\n\nContinuous: a numeric value that can (in theory) take any value in a range.\nCategorical: falls into one of several unordered groups (nominal) or has only two options (binary).\nLikert: an ordered scale (e.g., “very difficult” → “difficult” → … → “very manageable”)\n\ncategorical, but with a meaningful order.\n\n\n\n\n\n\n\n\n\n\n\n\n\nOne idea to hold onto\n\n\nThe type of variable decides the type of plot.\n\nOne category at a time → bar chart\nOne number at a time → histogram\nTwo things at once → scatterplot (or boxplot, if one is a category)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#does-income-differ-by-cluster",
+    "href": "slides/DATA100-F26-Lecture-2.html#does-income-differ-by-cluster",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Does Income Differ by Cluster?",
+    "text": "Does Income Differ by Cluster?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#what-happens-when-we-add-a-third-variable",
+    "href": "slides/DATA100-F26-Lecture-2.html#what-happens-when-we-add-a-third-variable",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "What Happens When We Add a Third Variable?",
+    "text": "What Happens When We Add a Third Variable?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#do-you-save-more-just-because-you-make-more",
+    "href": "slides/DATA100-F26-Lecture-2.html#do-you-save-more-just-because-you-make-more",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Do you save more just because you make more?",
+    "text": "Do you save more just because you make more?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#recap-day-1-of-whole-game",
+    "href": "slides/DATA100-F26-Lecture-3.html#recap-day-1-of-whole-game",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Recap: Day 1 of Whole Game",
+    "text": "Recap: Day 1 of Whole Game\n\nWe examined some EDA (Exploratory Data Analysis): with variables like income, benefits, delayed paycheque difficulty, etc.\nWe ended with three financial wellness clusters: Stressed, Coping, Comfortable\nToday: we look at how we actually got there , … including the messy parts of data analytics …"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#communicating-your-cleaning-choices",
+    "href": "slides/DATA100-F26-Lecture-3.html#communicating-your-cleaning-choices",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Communicating your cleaning choices",
+    "text": "Communicating your cleaning choices\nA results plot without its cleaning log is a claim without evidence. For any real report, this deserves its own short section (ahem your final report):\n\nWhich rows/columns were dropped, and why\nEvery recoding decision (the emergency-fund 3-level collapse, the age-bucket cutoffs) — someone else should be able to disagree with your call, which means they need to be able to see it\nWhat’s imputed vs. observed, clearly marked"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#duplicate-responses-rows",
+    "href": "slides/DATA100-F26-Lecture-3.html#duplicate-responses-rows",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Duplicate responses (rows)",
+    "text": "Duplicate responses (rows)\nA few respondents show up more than once (simulating a double-submitted survey).\n\nsurvey_2017_raw |&gt; count(respondent_id, sort = TRUE) |&gt; filter(n &gt; 1)\n\nsurvey_2017_raw &lt;- survey_2017_raw |&gt; distinct()\nsurvey_2022_raw &lt;- survey_2022_raw |&gt; distinct()\n\n\nThe function distinct() removes exact duplicate rows. It is always worth checking for before doing anything else), since duplicates quietly inflate every count."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#tidy-data-pivot_longer",
+    "href": "slides/DATA100-F26-Lecture-3.html#tidy-data-pivot_longer",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Tidy data: pivot_longer()",
+    "text": "Tidy data: pivot_longer()\n\nbenefits_2017_long &lt;- survey_2017_raw |&gt;\n  pivot_longer(\n    cols = starts_with(\"benefit_\"),\n    names_to = \"benefit_type\",\n    values_to = \"response\"\n  ) |&gt;\n  mutate(chosen = response %in% c(\"Yes\", \"Y\", \"yes\")) |&gt;\n  group_by(respondent_id) |&gt;\n  summarize(\n    benefit_preference = if (any(chosen)) benefit_type[chosen][1] else NA_character_,\n    .groups = \"drop\"\n  )\n\nsurvey_2017_clean &lt;- survey_2017_raw |&gt;\n  select(-starts_with(\"benefit_\")) |&gt;\n  left_join(benefits_2017_long, by = \"respondent_id\")"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#strings-expressions",
+    "href": "slides/DATA100-F26-Lecture-3.html#strings-expressions",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Strings & expressions",
+    "text": "Strings & expressions\n\n\n\n\n\n\n\nThe format for income response is a mess!\n\n\nSometimes people are allowed to type intheir response however they like. For example, if someone has an annual income of $85,000, there are several ways they might enter that in the survey:\n\n\"85000\"\n\"$85,000\"\n\"85,000\"\n\"85K\"\n\nSo how do we take all these different formats and turn them into something we can actually work with in our analysis?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#recall-from-last-weeks-survey",
+    "href": "slides/DATA100-F26-Lecture-3.html#recall-from-last-weeks-survey",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Recall from last week’s survey",
+    "text": "Recall from last week’s survey\nFor Question 7 of the survey, I asked everyone what was the best sandwich?\n\n\n\n\n\n\n\nMost Popular Answer\n\n\nGrilled Cheese was among the most popular answers. But this is what I got from last week’s survey response:\n\nGrilled cheese\nGrilled Cheese\nGrilled Cheese!\ngrilled cheese\ngrilled cheese with Hot sauce\nGrilled cheese sandwich\nHam Grilled Cheese"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#back-to-the-income-example",
+    "href": "slides/DATA100-F26-Lecture-3.html#back-to-the-income-example",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Back to the Income Example",
+    "text": "Back to the Income Example\n\n\n\n\n\n\n\nSolution\n\n\nBefore income can be used in any calculation, the income data needs to be transformed into a real number.\n\n\n\n\n\nclean_income &lt;- function(x) {\n  x &lt;- str_trim(x)\n  is_k &lt;- str_detect(x, \"K$\")\n  numeric_part &lt;- x |&gt;\n    str_remove_all(\"[$,K]\") |&gt;\n    as.numeric()\n  if_else(is_k, numeric_part * 1000, numeric_part)\n}\n\nsurvey_2017_clean &lt;- survey_2017_clean |&gt;\n  mutate(income = clean_income(income))\n\nsurvey_2022_clean &lt;- survey_2022_clean |&gt;\n  mutate(income = clean_income(income))"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#fixing-the-income-response",
+    "href": "slides/DATA100-F26-Lecture-3.html#fixing-the-income-response",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Fixing the income response",
+    "text": "Fixing the income response\n\nclean_income &lt;- function(x) {\n  x &lt;- str_trim(x)\n  is_k &lt;- str_detect(x, \"K$\")\n  numeric_part &lt;- x |&gt;\n    str_remove_all(\"[$,K]\") |&gt;\n    as.numeric()\n  if_else(is_k, numeric_part * 1000, numeric_part)\n}\n\nsurvey_2017_clean &lt;- survey_2017_clean |&gt;\n  mutate(income = clean_income(income))\n\nsurvey_2022_clean &lt;- survey_2022_clean |&gt;\n  mutate(income = clean_income(income))"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#strings-expressions-provinces",
+    "href": "slides/DATA100-F26-Lecture-3.html#strings-expressions-provinces",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Strings & expressions: provinces",
+    "text": "Strings & expressions: provinces\nSame province, several spellings: \"Ontario\", \"ON\", \"ontario \".\n\nstandardize_province &lt;- function(x) {\n  x &lt;- str_trim(x) |&gt; str_to_lower()\n  case_when(\n    x %in% c(\"ontario\", \"on\") ~ \"Ontario\",\n    x %in% c(\"alberta\", \"ab\") ~ \"Alberta\",\n    x %in% c(\"british columbia\", \"bc\") ~ \"British Columbia\",\n    x %in% c(\"quebec\", \"qc\") ~ \"Quebec\",\n    TRUE ~ str_to_title(x)\n  )\n}\n\nsurvey_2017_clean &lt;- survey_2017_clean |&gt; mutate(province = standardize_province(province))\nsurvey_2022_clean &lt;- survey_2022_clean |&gt; mutate(province = standardize_province(province))"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#two-options-1-delete-the-row",
+    "href": "slides/DATA100-F26-Lecture-3.html#two-options-1-delete-the-row",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Two options: 1) Delete the row",
+    "text": "Two options: 1) Delete the row\nIf a respondent didn’t answer, we can just remove them from the analysis. :)\n\n\n\n\n\n\n\nThis is cool, but…\n\n\nWhile this is a simple method, you will lose the respondents.\n\nif the people who skipped the question aren’t random, the ones left behind don’t represent everyone fairly.\n\n\n\n\n\n\nsurvey_2017_nomiss &lt;- survey_2017_clean |&gt;\n  drop_na(income, savings_pct,\n          debt_overwhelmed,\n          emergency_fund_likelihood)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#two-options-2-imputation",
+    "href": "slides/DATA100-F26-Lecture-3.html#two-options-2-imputation",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Two options: 2) Imputation",
+    "text": "Two options: 2) Imputation\nInstead of throwing the whole response away, we can guess a reasonable value to put in its place.\n\nlike using the average of everyone else’s answer. (e.g. mean or median)\n\n\nsurvey_2017_clean |&gt; mutate(income = ifelse(is.na(income), median(income, na.rm = TRUE), income))\n\n\n\n\n\n\n\n\nThis is cool, but…\n\n\nNow some of your “data” is really just a guess. If you fill in too many values this way, your data can look more similar than it actually is."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#comparing-the-collapsed-levels",
+    "href": "slides/DATA100-F26-Lecture-3.html#comparing-the-collapsed-levels",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Comparing the Collapsed Levels",
+    "text": "Comparing the Collapsed Levels\n\nNow that both years use the same 3 levels, we can finally put them side by side and ask: did things get better, worse, or stay the same?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#back-to-the-fixing-the-income-example",
+    "href": "slides/DATA100-F26-Lecture-3.html#back-to-the-fixing-the-income-example",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Back to the Fixing the Income Example",
+    "text": "Back to the Fixing the Income Example\n\n\n\n\n\n\n\nSolution\n\n\nBefore income can be used in any calculation, the income data needs to be transformed into a real number.\n\n\n\n\n\nclean_income &lt;- function(x) {\n  x &lt;- str_trim(x)\n  is_k &lt;- str_detect(x, \"K$\")\n  numeric_part &lt;- x |&gt;\n    str_remove_all(\"[$,K]\") |&gt;\n    as.numeric()\n  if_else(is_k, numeric_part * 1000, numeric_part)\n}\n\nsurvey_2017_clean &lt;- survey_2017_clean |&gt;\n  mutate(income = clean_income(income))\n\nsurvey_2022_clean &lt;- survey_2022_clean |&gt;\n  mutate(income = clean_income(income))"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#strings-expressions-yesno",
+    "href": "slides/DATA100-F26-Lecture-3.html#strings-expressions-yesno",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Strings & expressions: Yes/No",
+    "text": "Strings & expressions: Yes/No\nWe might get three variations for the same two answers: \"Yes\"/\"No\", \"Y\"/\"N\", \"yes\"/\"no\".\n\nstandardize_yn &lt;- function(x) {\n  x &lt;- str_trim(x) |&gt; str_to_lower()\n  case_when(\n    x %in% c(\"yes\", \"y\") ~ \"Yes\",\n    x %in% c(\"no\", \"n\") ~ \"No\",\n    TRUE ~ NA_character_\n  )\n}\n\nsurvey_2017_clean &lt;- survey_2017_clean |&gt; mutate(debt_overwhelmed = standardize_yn(debt_overwhelmed))\nsurvey_2022_clean &lt;- survey_2022_clean |&gt; mutate(debt_overwhelmed = standardize_yn(debt_overwhelmed))"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#before-collapsing-7-levels-vs-5-levels",
+    "href": "slides/DATA100-F26-Lecture-3.html#before-collapsing-7-levels-vs-5-levels",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Before Collapsing: 7 Levels vs 5 Levels",
+    "text": "Before Collapsing: 7 Levels vs 5 Levels\n\nDifferent number of categories, different wording. It is not easy to tell how people have changed over time by comparing these two bar plots side by side as-is."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#mismatched-response",
+    "href": "slides/DATA100-F26-Lecture-3.html#mismatched-response",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Mismatched response",
+    "text": "Mismatched response\n\n\n\n\n\n\n\nToo many response levels\n\n\nSometimes survey designers choose a set of response options one year, then decide to change them the next. For example, in our financial wellness data, the survey asked questions of How difficult is it to obtain $2,000 of emergency fund?:\n\nin 2017, there are 7 levels: Very difficult, Difficult, Somewhat difficult, Neither, Somewhat manageable, Manageable, Very manageable\nin 2022, there are now only 5 levels: Very difficult, Difficult, Neither, Manageable, Very manageable\n\nSo what do you do? Neither of them directly match each other. And this is difficult for a year-to-year comparative analysis"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#potential-solution",
+    "href": "slides/DATA100-F26-Lecture-3.html#potential-solution",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Potential Solution",
+    "text": "Potential Solution\n\n\n\n\n\n\n\nCompromise\n\n\nWe can collapse both down to 3 levels — Difficult, Neither, Manageable.\n\n\n\n\n\nsurvey_2017_clean &lt;- survey_2017_clean |&gt;\n  mutate(emergency_fund_3lvl = case_when(\n    emergency_fund_likelihood %in% c(\"Very difficult\", \"Difficult\", \"Somewhat difficult\") ~ \"Difficult\",\n    emergency_fund_likelihood == \"Neither\" ~ \"Neither\",\n    emergency_fund_likelihood %in% c(\"Somewhat manageable\", \"Manageable\", \"Very manageable\") ~ \"Manageable\",\n    TRUE ~ NA_character_\n  ))\n\nsurvey_2022_clean &lt;- survey_2022_clean |&gt;\n  mutate(emergency_fund_3lvl = case_when(\n    emergency_fund_likelihood %in% c(\"Very difficult\", \"Difficult\") ~ \"Difficult\",\n    emergency_fund_likelihood == \"Neither\" ~ \"Neither\",\n    emergency_fund_likelihood %in% c(\"Manageable\", \"Very manageable\") ~ \"Manageable\",\n    TRUE ~ NA_character_\n  ))"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#different-ways-of-asking-the-same-question",
+    "href": "slides/DATA100-F26-Lecture-3.html#different-ways-of-asking-the-same-question",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Different ways of asking the same question",
+    "text": "Different ways of asking the same question\n\n\n\n\n\n\n\nMismatched question: same question, different name\n\n\nSometimes a question gets worded differently across years, even though it’s really asking the same thing.\n\nin 2017, the survey asked How difficult was it for you if your paycheque is delayed?\n\nstored as paycheque_delay_difficulty\n\nin 2022, the question became If there is a two week delay in your paycheque arrival, how impactful would it be to your finances?\n\nstored as twoweek_pay_delay_impact\n\n\nSame underlying question, different wording and different column name — rename() fixes this in one line each.\n\n\n\n\n\nsurvey_2017_clean &lt;- survey_2017_clean |&gt;\n  rename(pay_delay_response = paycheque_delay_difficulty)\n\nsurvey_2022_clean &lt;- survey_2022_clean |&gt;\n  rename(pay_delay_response = twoweek_pay_delay_impact)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#mismatched-responses-age",
+    "href": "slides/DATA100-F26-Lecture-3.html#mismatched-responses-age",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Mismatched responses: Age",
+    "text": "Mismatched responses: Age\n\nsurvey_2017_clean |&gt; select(age) |&gt; head()\nsurvey_2022_clean |&gt; select(age) |&gt; head()\n\n\n\n\n\n\n\n\nAre you willing to share your age?\n\n\nSometimes the same underlying question gets measured differently across years, even when the intent is identical.\n\nin 2017, respondents gave an exact age\n\nstored as age, e.g. 34\n\nin 2022, respondents picked from age brackets instead\n\nstored as age, e.g. \"30-40\"\n\nNow we have the same underlying question, but a different level of precision — to compare over the years, everyone needs to speak the same bucket language.\n\n\n\n\n\n\nsurvey_2017_clean &lt;- survey_2017_clean |&gt;\n  mutate(age_bucket = case_when(\n    age &lt;= 30 ~ \"18-30\",\n    age &lt;= 40 ~ \"30-40\",\n    age &lt;= 50 ~ \"40-50\",\n    age &lt;= 65 ~ \"50-65\",\n    TRUE ~ \"65+\"\n  ))\n\nsurvey_2022_clean &lt;- survey_2022_clean |&gt;\n  rename(age_bucket = age)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#combine-into-one-data-set",
+    "href": "slides/DATA100-F26-Lecture-3.html#combine-into-one-data-set",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Combine into one data set",
+    "text": "Combine into one data set\n\nsurvey_combined &lt;- bind_rows(survey_2017_clean, survey_2022_clean)\n\nglimpse(survey_combined)\n\n\n\n\n\n\n\n\nOnly possible now\n\n\nNow that we have:\n— column names match (rename()) - category sets match (the “Other” recoded) - response scales match (the 3-level of likert responses in paycheque question)\nEvery fix so far existed to make this one line possible."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#too-much-info-in-one-column",
+    "href": "slides/DATA100-F26-Lecture-3.html#too-much-info-in-one-column",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Too much info in one column",
+    "text": "Too much info in one column\n\n\n\n\n\n\n\nOne column doing two jobs\n\n\nThe variable respondent_id looks like a single value, but it’s actually smuggling in two separate pieces of information at once.\n\nthe year the response came from, e.g. 2017\nthe respondent’s number within that year, e.g. 0001\n\nBoth are jammed into one string: \"2017-0001\". If we ever want to work with just the year, or just the respondent number, we’re stuck first pulling them apart.\n\n\n\n\n\nsurvey_combined &lt;- survey_combined |&gt;\n  separate(respondent_id, into = c(\"survey_year\", \"respondent_num\"), sep = \"-\")\n\nsurvey_combined |&gt;\n  select(survey_year, respondent_num, everything()) |&gt;\n  head()"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#missing-data",
+    "href": "slides/DATA100-F26-Lecture-3.html#missing-data",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Missing data",
+    "text": "Missing data\n\n\n\n\n\n\n\nWhere did missing data come from?\n\n\nSometimes we don’t always get all the complete data set that we want.\n\nPeople tend to skip questions that they don’t feel comfortable answer.\nperhaps people forgot to fill in one of the questions/pages of survey.\nmaybe people gave some weird looking answer that is unusable (e.g $*@2#$1aE&)\nor sometimes these questions are simply irrelevant to them"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#before-7-levels-vs-5-levels",
+    "href": "slides/DATA100-F26-Lecture-3.html#before-7-levels-vs-5-levels",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Before: 7 Levels vs 5 Levels",
+    "text": "Before: 7 Levels vs 5 Levels\n\nDifferent number of categories, different wording. It is not easy to tell how people have changed over time by comparing these two bar plots side by side as-is."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#after",
+    "href": "slides/DATA100-F26-Lecture-3.html#after",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "After:",
+    "text": "After:\n\nNow that both years use the same 3 levels, we can finally put them side by side and ask: did things get better, worse, or stay the same?"
   }
 ]

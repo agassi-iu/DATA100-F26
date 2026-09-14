@@ -411,6 +411,8 @@ y
 What are the final values of `x` and `y` after following this sequence of commands? Predict first, then try it below to confirm.
 
 ```{webr}
+#| autorun: true
+#| runbutton: false
 x <- 6
 x^2
 x <- 2*x-1
