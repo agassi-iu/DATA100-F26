@@ -74,22 +74,29 @@ A very common question that a client might ask is:
 
 ---
 
-## Why does this matter?
+## Today's Agenda
 
-- Financial stress affects health, relationships, and decision-making.
-- Understanding ***what predicts*** financial comfort helps policymakers, employers, and individuals.
+
+::: {.callout-note title="Data Set"}
+Work with real Canadian financial wellness survey data.
+:::
 
 . . .
 
-::: {.callout-note title="Today"}
-Work with real Canadian financial wellness survey data.
+::: {.callout-caution title="Why does this matter?"}
+
+- Financial stress affects health, relationships, and decision-making.
+- Understanding *what predicts* financial comfort helps policymakers, employers, and individuals.
+
 :::
+
 
 
 ## What contributes to financial wellness?
 ::: {.callout-important title="Checkpoint"}
-Take a minute to think about it — what factors do **you** think
-contribute to someone's financial wellness?
+Take a minute to think about it: what factors do **you** think contribute to someone's financial wellness?
+
+. . .
 
 - Is it someone's current wealth?
 - How much money are they making from their jobs?
