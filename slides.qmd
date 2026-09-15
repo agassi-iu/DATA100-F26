@@ -17,5 +17,13 @@ title: "Lecture Slides"
 
 
 ## Lecture 4: Day 1 of Visualization 
-*Coming soon*
+- *Coming soon*
+
+
+## Lecture 5: Day 2 of Visualization 
+- *Coming soon*
+
+
+## Lecture 5: Day 3 of Visualization 
+- *Coming soon*
 
