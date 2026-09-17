@@ -142,7 +142,7 @@ survey_combined <- bind_rows(survey_2017_clean, survey_2022_clean)
 ```
 
 
-## The reveal: here's the actual raw file
+## Here's the actual raw file
 
 ```{r}
 #| eval: false
@@ -159,9 +159,11 @@ glimpse(survey_2022_raw)
 
 ---
 
+
 ## Duplicate responses (rows)
 
-A few respondents show up more than once (simulating a double-submitted survey).
+A few respondents show up more than once.
+- Think of this as a double-submitted survey.
 
 ```{r}
 #| eval: false
@@ -171,8 +173,10 @@ survey_2017_raw <- survey_2017_raw |> distinct()
 survey_2022_raw <- survey_2022_raw |> distinct()
 ```
 
-::: {.callout-tips}
+::: {.callout-tips title="Function"}
+
 The function `distinct()` removes exact duplicate rows. It is always worth checking for *before* doing anything else), since duplicates quietly inflate every count.
+
 :::
 
 
@@ -187,8 +191,10 @@ survey_2017_raw |>
   head()
 ```
 
-::: {.callout-tip}
+::: {.callout-tip title="Function"}
+
 One respondent has a single true preference, but right now it's scattered across six separate columns. Before we can do anything useful with it, we need to reshape it with `pivot_longer()`.
+
 :::
 
 
@@ -245,7 +251,7 @@ survey_2022_clean <- survey_2022_raw |>
 
 ::: {.callout-warning title="The format for income response is a mess!"}
 
-Sometimes people are allowed to type intheir response however they like. For example, if someone has an annual income of $85,000, there are several ways they might enter that in the survey:
+Sometimes people are allowed to type in their responses however they like. For example, if someone has an annual income of $85,000, there are several ways they might enter that in the survey:
 
 - `"85000"`
 - `"$85,000"`
@@ -383,7 +389,7 @@ Sometimes we don't always get all the complete data set that we want.
 
 ## Two options: 1) Delete the row
 
-If a respondent didn't answer, we can just remove them from the analysis. :)
+If a respondent didn't answer a question in the survey, we can just remove this person entirely from the data analysis. :)
 
 ::: {.callout-tip title="This is cool, but..."}
 
@@ -488,7 +494,7 @@ bind_rows(
                "Somewhat manageable", "Manageable", "Very manageable")
   )) |>
   ggplot(aes(x = emergency_fund_likelihood, fill = emergency_fund_likelihood)) +
-  geom_bar(aes(y = after_stat(count / sum(count))), color = "white") +
+  geom_bar(aes(y = after_stat(count / sum(count)*2)), color = "white") +
   facet_wrap(~ year, scales = "free_x") +
   scale_y_continuous(labels = scales::percent) +
   scale_fill_brewer(palette = "Set2") +
@@ -514,7 +520,7 @@ bind_rows(
   mutate(emergency_fund_3lvl = factor(emergency_fund_3lvl,
                                        levels = c("Difficult", "Neither", "Manageable"))) |>
   ggplot(aes(x = emergency_fund_3lvl, fill = emergency_fund_3lvl)) +
-  geom_bar(aes(y = after_stat(count / sum(count))), color = "white") +
+  geom_bar(aes(y = after_stat(count / sum(count)*2)), color = "white") +
   facet_wrap(~ year) +
   scale_y_continuous(labels = scales::percent) +
   scale_fill_brewer(palette = "Set2") +
@@ -548,14 +554,6 @@ Same underlying question, different wording and different column name — `renam
 
 :::
 
-```{r}
-#| eval: false
-survey_2017_clean <- survey_2017_clean |>
-  rename(pay_delay_response = paycheque_delay_difficulty)
-
-survey_2022_clean <- survey_2022_clean |>
-  rename(pay_delay_response = twoweek_pay_delay_impact)
-```
 
 ---
 
@@ -577,7 +575,7 @@ Sometimes the same underlying question gets *measured* differently across years,
   - stored as `age`, e.g. `"30-40"`
 
 - Now we have the same underlying question, but a different level of precision
-  — to compare over the years, everyone needs to speak the same bucket language.
+  - In order to compare over the years, everyone needs to speak the same bucket language.
 
 :::
 
@@ -601,15 +599,13 @@ survey_2022_clean <- survey_2022_clean |>
 
 ## Removed benefit option: aligning categories
 
-```{r}
-#| eval: false
-survey_2017_clean |> distinct(benefit_preference)
-survey_2022_clean |> distinct(benefit_preference)
-```
+::: {.callout-warning title="Non-existent Option in Survey"}
 
 "Educational funding" existed as a choice in 2017, but the 2022 platform
 dropped it. To compare years fairly, we fold anything not offered in both
 years into a shared **"Other"** category.
+
+:::
 
 ```{r}
 #| eval: false
@@ -702,8 +698,6 @@ This is the exact plot style from Day 1, except now you've watched every step of
 
 ---
 
----
-
 ## Back to your predictions
 
 ::: {.callout-important title="Discussion"}
@@ -726,17 +720,41 @@ A results plot without its cleaning log is a claim without evidence. For any rea
 
 ---
 
-## A few honest cautions
+## A few cautions
 
 ::: {.callout-caution title="Keep in mind"}
 
 - Every cleaning choice was also an analytical choice — a different 3-level collapse, a different age-bucket rule, a different imputation method could all shift what we find downstream
-- This dataset is synthetic — today's numbers are illustrative, not a claim about real Canadians
+- This dataset is synthetic: today's numbers are illustrative, not a claim about real Canadians
 - Later this semester: missing-data methods and statistical tests that let you make these calls more rigorously than by eyeballing
 
 :::
 
-
 ::: {.callout-tip title="Next Week"}
-Visualization!
+We will actually begin learning how to code! Starting with Visualization.
 :::
+---
+
+## Fun Exercises
+
+``` {webr}
+# This is a comment. Comments are useful for taking notes on what you are trying to do.
+# You can add/remove the "#" to comment/un-comment a line.
+# Try to un-comment the next two lines to let R run and see where it leads you!
+# x <- 5
+# x
+# print(paste("x =",x))
+
+# What if I have a vector y with a bunch of numbers?
+
+
+# Can I check if the value of x=5 is smaller or larger than some of the values in y?
+
+
+# Tell me which of those elements (values) in the vector y is greater than 5.
+
+
+
+```
+
+

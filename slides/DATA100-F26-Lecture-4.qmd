@@ -1,0 +1,635 @@
+---
+title: "DATA100 Introduction to Data Analytics"
+subtitle: "Lecture 4: Visualization - Day 1"
+author: "Agassi Iu"
+institute: "Wilfrid Laurier University"
+date: "September 22, 2026"
+format: 
+  live-revealjs:
+    theme: sky
+    slide-number: true
+    transition: slide
+    incremental: true
+    embed-resources: true # Embeds figures and libraries into a single portable HTML file
+filters:
+  - live
+webr:
+  packages:
+    - ggplot2
+    - dplyr
+    - tidyr
+    - tibble
+    - readr
+    - stringr
+    - forcats
+    - purrr
+    - scales
+    - ggrepel
+    - patchwork
+execute:
+  echo: true
+  warning: false   # Hides warnings and package loading messages
+  message: false
+  fig-width: 7
+  fig-height: 4
+  fig-align: center
+---
+
+```{r}
+#| label: setup
+#| echo: false
+library(tidyverse)
+theme_set(theme_gray(base_size = 14))
+```
+
+```{webr}
+#| context: setup
+#| autorun: true
+#| echo: false
+library(tidyverse)
+theme_set(theme_gray(base_size = 14))
+```
+
+## Where we are
+
+Chapter 1 gave you a working template for plots. This chapter explains
+*why* that template works.
+
+By the end you should be able to describe **any** ggplot2 plot in terms of
+seven components:
+
+- data
+- aesthetic mappings
+- a geom
+- a stat
+- a position adjustment
+- a coordinate system
+- a faceting scheme
+
+::: {.notes}
+Frame this as moving from "recipes" to "grammar". Once students see the seven
+slots, unfamiliar plots stop looking like new syntax to memorize.
+:::
+
+## Setup
+
+```{r}
+#| eval: false
+library(tidyverse)
+```
+
+We'll work mostly with two datasets that ship with ggplot2:
+
+- `mpg` — 234 car models, 11 variables
+- `diamonds` — ~54,000 diamonds
+
+```{r}
+mpg |> select(manufacturer, model, displ, hwy, class, drv) |> head(4)
+```
+
+::: {.callout-note}
+Every dataset in this deck (`mpg`, `diamonds`, `smaller`, `label_info`, ...)
+is already loaded in the live-code cells below via a hidden setup chunk — you
+don't need to re-run `library(tidyverse)` yourself before trying an exercise.
+:::
+
+# Aesthetic mappings
+
+## Mapping a variable to an aesthetic
+
+An **aesthetic** is a visual property of the marks on the plot: position,
+color, shape, size, transparency.
+
+`aes()` says "let this variable *control* that property."
+
+```{r}
+#| fig-height: 3.4
+ggplot(mpg, aes(x = displ, y = hwy, color = class)) +
+  geom_point()
+```
+
+## Not every aesthetic suits every variable
+
+`shape` only supplies six distinct symbols before it gives up — a seventh
+category simply goes unplotted, with a warning.
+
+```{r}
+#| fig-height: 3
+#| warning: true
+ggplot(mpg, aes(x = displ, y = hwy, shape = class)) +
+  geom_point()
+```
+
+::: {.callout-warning}
+`class` has seven levels but `shape` can only display six. SUVs (62 rows)
+silently disappear from the plot above — always read the warnings ggplot2
+gives you, they're telling you data went missing from the picture.
+:::
+
+## Ordered aesthetics imply ordered data
+
+`size` and `alpha` are *ranked* channels. Mapping an unordered category to
+them tells the reader a ranking exists when it doesn't.
+
+```{r}
+#| fig-height: 3
+#| warning: true
+ggplot(mpg, aes(x = displ, y = hwy, size = class)) +
+  geom_point()
+```
+
+::: {.callout-caution}
+`class` (2seater, compact, midsize, ...) has no inherent order. Mapping it to
+`size` or `alpha` visually implies "bigger/darker = more," which is
+misleading for a purely categorical variable. Save these aesthetics for
+variables that are genuinely ordered or continuous.
+:::
+
+## Mapping vs. setting
+
+Inside `aes()` = mapping, driven by data, gets a legend.
+Outside `aes()` = setting, a fixed constant, no legend.
+
+```{r}
+#| fig-height: 3.2
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(color = "blue", size = 2, shape = 17)
+```
+
+## Setting values
+
+When you set an aesthetic you supply a raw value, not a variable:
+
+| Aesthetic | Value |
+|---|---|
+| `color` | a color name or hex string, `"blue"`, `"#E81B23"` |
+| `size`  | point size in mm, `size = 1` |
+| `shape` | an integer 0–25, `shape = 1` |
+| `alpha` | opacity from 0 to 1 |
+
+Shapes 0–14 are hollow (border from `color`), 15–20 are solid (filled with
+`color`), and 21–25 take both a `color` border and a `fill`.
+
+## Your turn {.smaller}
+
+::: {.callout-tip}
+## Try it yourself
+1. Draw `hwy` vs. `displ` with pink filled triangles.
+2. Why does the code below *not* produce blue points?
+3. What does `stroke` do, and which shapes respond to it? (`?geom_point`)
+4. What happens with `aes(color = displ < 5)`?
+:::
+
+```{r}
+#| eval: false
+ggplot(mpg) +
+  geom_point(aes(x = displ, y = hwy, color = "blue"))
+```
+
+```{webr}
+#| exercise: aes_mappings
+
+```
+
+# Geometric objects
+
+## A geom is how the data gets drawn
+
+Same data, same mappings, different geom:
+
+:::: {.columns}
+::: {.column width="50%"}
+```{r}
+#| fig-width: 4.5
+#| fig-height: 3.5
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point()
+```
+:::
+::: {.column width="50%"}
+```{r}
+#| fig-width: 4.5
+#| fig-height: 3.5
+ggplot(mpg, aes(displ, hwy)) +
+  geom_smooth()
+```
+:::
+::::
+
+## Geoms accept different aesthetics
+
+A line has no shape; a point has no linetype. ggplot2 quietly ignores
+aesthetics a geom can't use.
+
+```{r}
+#| fig-height: 3.2
+ggplot(mpg, aes(x = displ, y = hwy, linetype = drv)) +
+  geom_smooth()
+```
+
+Mapping a discrete variable splits the geom into one object per level.
+
+## Grouping without a legend
+
+`group` splits the data the same way, but adds no legend and no visual
+distinction.
+
+```{r}
+#| fig-height: 3.2
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_smooth(aes(group = drv))
+```
+
+::: {.callout-note}
+`group` is what mapping a discrete variable does *implicitly* behind the
+scenes — using it explicitly is handy when you want the splitting behaviour
+without the legend or the visual distinction that `color` or `linetype`
+would add.
+:::
+
+## Layers stack
+
+Multiple geoms in one plot. Mappings in `ggplot()` are global; mappings in a
+geom are local to that layer.
+
+```{r}
+#| fig-height: 3.2
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(aes(color = class)) +
+  geom_smooth(se = FALSE)
+```
+
+## Layers can have their own data
+
+Useful for highlighting a subset:
+
+```{r}
+#| fig-height: 3.2
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(color = "grey60") +
+  geom_point(
+    data = mpg |> filter(class == "2seater"),
+    color = "red", size = 2
+  )
+```
+
+## Different geoms reveal different things
+
+```{r}
+#| fig-height: 3
+#| layout-ncol: 3
+#| fig-width: 3.2
+ggplot(mpg, aes(x = hwy)) + geom_histogram(binwidth = 2)
+ggplot(mpg, aes(x = hwy)) + geom_density()
+ggplot(mpg, aes(x = hwy)) + geom_boxplot()
+```
+
+The histogram and density show bimodality and right skew; the boxplot
+compresses that into a summary but flags outliers.
+
+## Beyond the built-in geoms
+
+ggplot2 ships with 40+ geoms.
+
+::: {.callout-tip}
+If you need a geom that doesn't exist, check the extension gallery before
+writing your own: <https://exts.ggplot2.tidyverse.org/gallery/>. Someone has
+often already solved the problem — e.g. **ggridges** for ridgeline plots.
+:::
+
+```{r}
+#| eval: false
+library(ggridges)
+
+ggplot(mpg, aes(x = hwy, y = drv, fill = drv, color = drv)) +
+  geom_density_ridges(alpha = 0.5, show.legend = FALSE)
+```
+
+## Your turn {.smaller}
+
+::: {.callout-tip}
+## Try it yourself
+1. Which geom draws a line chart? A boxplot? A histogram? An area chart?
+2. What does `show.legend = FALSE` do, and why might you want it?
+3. What does `se` control in `geom_smooth()`?
+4. Recreate a plot with points colored by `drv` and *one* smooth curve fitted
+   to the whole dataset (not one per group).
+:::
+
+```{webr}
+#| exercise: geoms
+
+```
+
+# Facets
+
+## `facet_wrap()`: one variable
+
+Splits the plot into panels, one per level.
+
+```{r}
+#| fig-height: 3.2
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point() +
+  facet_wrap(~cyl)
+```
+
+## `facet_grid()`: two variables
+
+A two-sided formula, `rows ~ cols`.
+
+```{r}
+#| fig-height: 3.4
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point() +
+  facet_grid(drv ~ cyl)
+```
+
+Empty panels mean that combination doesn't occur in the data.
+
+## Free scales
+
+By default every panel shares one scale, which is what makes panels
+comparable. Release that with `scales`:
+
+```{r}
+#| fig-height: 3.2
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point() +
+  facet_grid(drv ~ cyl, scales = "free")
+```
+
+::: {.callout-note}
+`"free_x"`, `"free_y"`, or `"free"` let each row/column pick its own range —
+easier to read within a panel, but panels are no longer directly comparable
+to each other. Use free scales for exploration, shared scales for
+communication.
+:::
+
+## Your turn {.smaller}
+
+::: {.callout-tip}
+## Try it yourself
+1. What happens if you facet on a continuous variable?
+2. What does `.` mean in `facet_grid(drv ~ .)`?
+3. Faceting vs. the color aesthetic — when is each better? Does the answer
+   change as the dataset grows?
+4. Which reads better for comparing `displ` across drive trains: faceting by
+   row or by column? What does that suggest as a rule of thumb?
+:::
+
+```{webr}
+#| exercise: facets
+
+```
+
+# Statistical transformations
+
+## Where does `count` come from?
+
+```{r}
+#| fig-height: 3.2
+ggplot(diamonds, aes(x = cut)) +
+  geom_bar()
+```
+
+`count` isn't a column in `diamonds`. The bar geom computed it.
+
+## Stats
+
+A **stat** is the algorithm a geom runs on your data before drawing.
+
+- bar charts, histograms, freqpolys → bin and count
+- smoothers → fit a model, plot predictions
+- boxplots → compute a five-number summary
+
+Every geom has a default stat; every stat has a default geom. `?geom_bar`
+tells you it uses `stat_count()`, and lists the variables it computes.
+
+## Overriding the stat
+
+When you already have the counts, switch to the identity stat (or use
+`geom_col()`):
+
+```{r}
+#| fig-height: 3
+diamonds |>
+  count(cut) |>
+  ggplot(aes(x = cut, y = n)) +
+  geom_bar(stat = "identity")
+```
+
+## Using a computed variable
+
+`after_stat()` reaches into the variables the stat produced.
+
+```{r}
+#| fig-height: 3.2
+ggplot(diamonds, aes(x = cut, y = after_stat(prop), group = 1)) +
+  geom_bar()
+```
+
+::: {.callout-important}
+Without `group = 1`, each bar is treated as its own group and every
+proportion comes out as 1 — there's nothing to divide by. Try deleting
+`group = 1` in the live cell below and see what happens.
+:::
+
+## Calling a stat directly
+
+Sometimes the summary *is* the point, and naming the stat says so:
+
+```{r}
+#| fig-height: 3
+ggplot(diamonds) +
+  stat_summary(
+    aes(x = cut, y = depth),
+    fun.min = min, fun.max = max, fun = median
+  )
+```
+
+## Your turn {.smaller}
+
+::: {.callout-tip}
+## Try it yourself
+1. What geom does `stat_summary()` use by default? Rewrite the previous plot
+   with it.
+2. How does `geom_col()` differ from `geom_bar()`?
+3. List some geom/stat pairs. What do they have in common?
+4. Why did the proportion bar chart need `group = 1`? Confirm by removing it
+   in the cell below.
+:::
+
+```{webr}
+#| exercise: stats
+
+ggplot(diamonds, aes(x = cut, y = after_stat(prop))) +
+  geom_bar()
+```
+
+# Position adjustments
+
+## `color` vs. `fill` for bars
+
+```{r}
+#| fig-height: 3
+#| layout-ncol: 2
+#| fig-width: 4.5
+ggplot(mpg, aes(x = drv, color = drv)) + geom_bar()
+ggplot(mpg, aes(x = drv, fill = drv)) + geom_bar()
+```
+
+## Stacking is a position adjustment
+
+Map `fill` to a second variable and the bars stack automatically:
+
+```{r}
+#| fig-height: 3.2
+ggplot(mpg, aes(x = drv, fill = class)) +
+  geom_bar()
+```
+
+## The four options
+
+```{r}
+#| fig-height: 3
+#| layout-ncol: 2
+#| fig-width: 4.5
+ggplot(mpg, aes(x = drv, fill = class)) + geom_bar(position = "fill")
+ggplot(mpg, aes(x = drv, fill = class)) + geom_bar(position = "dodge")
+```
+
+- `"stack"` — the default for bars
+- `"fill"` — stack, then normalize each bar to the same height: compares proportions
+- `"dodge"` — side by side: compares individual counts
+- `"identity"` — draw where the values fall; overlaps for bars, default for points
+
+## Overplotting
+
+`hwy` and `displ` are rounded, so points land on a grid and pile up. This
+scatterplot shows 126 visible points for 234 observations.
+
+```{r}
+#| fig-height: 3.2
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point()
+```
+
+## Jittering
+
+`position = "jitter"` adds a little random noise. Less accurate at small
+scales, far more honest at large ones.
+
+```{r}
+#| fig-height: 3.2
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_jitter()
+```
+
+`geom_jitter()` is shorthand for `geom_point(position = "jitter")`.
+
+## Your turn {.smaller}
+
+::: {.callout-tip}
+## Try it yourself
+1. What's wrong with a plain `geom_point()` of `cty` vs. `hwy`? Fix it below.
+2. Is there any difference between the default and `position = "identity"`
+   for points? Why?
+3. Which arguments to `geom_jitter()` control the amount of jitter?
+4. Compare `geom_jitter()` and `geom_count()`.
+:::
+
+```{webr}
+#| exercise: positions
+
+ggplot(mpg, aes(x = cty, y = hwy)) +
+  geom_point()
+```
+
+# Coordinate systems
+
+## The default is Cartesian
+
+x and y act independently. Two alternatives come up often enough to know:
+
+- `coord_quickmap()` — fixes the aspect ratio for geographic data
+- `coord_polar()` — bends the Cartesian plane into polar coordinates
+
+```{r}
+#| eval: false
+nz <- map_data("nz")
+
+ggplot(nz, aes(x = long, y = lat, group = group)) +
+  geom_polygon(fill = "white", color = "black") +
+  coord_quickmap()
+```
+
+## Polar coordinates
+
+A bar chart and a Coxcomb chart are the same plot in different coordinates:
+
+```{r}
+#| fig-height: 3
+#| layout-ncol: 2
+#| fig-width: 4
+bar <- ggplot(diamonds) +
+  geom_bar(aes(x = clarity, fill = clarity), show.legend = FALSE, width = 1) +
+  theme(aspect.ratio = 1)
+
+bar + coord_flip()
+bar + coord_polar()
+```
+
+# Putting it together
+
+## The extended template
+
+```r
+ggplot(data = <DATA>) +
+  <GEOM_FUNCTION>(
+     mapping = aes(<MAPPINGS>),
+     stat = <STAT>,
+     position = <POSITION>
+  ) +
+  <COORDINATE_FUNCTION> +
+  <FACET_FUNCTION>
+```
+
+Seven slots. In practice you fill in three — data, mappings, geom — because
+ggplot2 supplies sensible defaults for the rest.
+
+## Why this matters
+
+Any plot you can imagine is some combination of:
+
+data → stat → geom → aesthetic mappings → coordinate system → position → facets
+
+Change one slot, get a different plot. That's the whole idea behind
+"the layered grammar of graphics," and it's why you can build hundreds of
+thousands of plots from one template.
+
+The original paper is worth reading:
+<https://vita.had.co.nz/papers/layered-grammar.pdf>
+
+## Summary
+
+- **Aesthetics** map variables to visual properties; setting differs from mapping
+- **Geoms** decide how marks are drawn; layers stack and can override data and mappings
+- **Facets** split one plot into comparable panels
+- **Stats** compute the values a geom actually plots
+- **Positions** resolve overlap: stack, fill, dodge, jitter
+- **Coordinates** redefine what x and y mean
+
+Still to come: **themes**, in Chapter 11.
+
+## Resources
+
+- ggplot2 cheatsheet — <https://posit.co/resources/cheatsheets>
+- Package reference — <https://ggplot2.tidyverse.org/reference>
+- Extension gallery — <https://exts.ggplot2.tidyverse.org/gallery/>
+- *ggplot2: Elegant Graphics for Data Analysis* — <https://ggplot2-book.org/>
+
+::: {.notes}
+Closing point worth repeating: when a geom you want doesn't exist, check the
+extensions before building it yourself.
+:::
