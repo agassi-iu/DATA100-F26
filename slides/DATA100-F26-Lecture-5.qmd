@@ -1,9 +1,9 @@
 ---
 title: "DATA100 Introduction to Data Analytics"
-subtitle: "Lecture 10: Exploratory Data Analysis"
+subtitle: "Lecture 5: Exploratory Data Analysis"
 author: "Agassi Iu"
 institute: "Wilfrid Laurier University"
-date: "Date, 2026"
+date: "September 24, 2026"
 format: 
   live-revealjs:
     theme: sky
@@ -61,22 +61,24 @@ questions stop being interesting:
 2. **Search for answers** by visualizing, transforming, and modelling
 3. **Refine** your questions, or generate new ones from what you found
 
-Most of what you produce during EDA gets thrown away. That's fine — the
-output is understanding, not plots.
+Most of what you produce during EDA gets thrown away, and that's okay!
+ — the output is *understanding*, not plots.
 
-::: {.notes}
-Emphasize that dead ends are expected and not failure. Students often think
-EDA should look tidy in retrospect.
-:::
 
 ## Why it's not optional
 
-Even when the research question arrives fully formed, you still have to
-know whether the data can answer it.
+::: {.callout-note title="Important note"}
+Dead ends are expected and not failure. 
+:::
 
-Data cleaning is a *special case* of EDA: you're asking whether the data
-meets your expectations, and using the same tools — visualization,
-transformation, modelling — to find out.
+Even when the research question arrives fully formed, you still have to know whether the data can answer it.
+
+
+::: {.callout-caution title="Data cleaning"}
+
+A *special case* of EDA: you're asking whether the data meets your expectations, and using the same tools like visualization, transformation, modelling to find out.
+
+:::
 
 ## Setup
 
@@ -90,24 +92,46 @@ Two guiding questions carry most of the weight:
 1. What **variation** occurs *within* my variables?
 2. What **covariation** occurs *between* my variables?
 
-::: {.callout-note}
-`smaller` (`diamonds` filtered to `carat < 3`) is already available in every
-live cell below, along with `mpg` and `diamonds`.
+::: {.callout-warning title="Remember from the Financial Wellness Data?}
+
+We had three clusters for financial wellness: stressed, coping , and comfortable. What were the variation and covariation discussed in that example?
+
 :::
+
 
 # Variation
 
 ## Variation
 
-**Variation** is the tendency of a variable's values to change from one
-measurement to the next.
+::: {.callout-note title="Variation"}
+The tendency of a variable's values to change from one measurement to the
+next.
+:::
 
-Measure anything continuous twice and you get two answers — even for
-quantities that are genuinely constant. Add real differences between
-subjects and across time, and every variable gets its own characteristic
-pattern.
+- Even a perfectly constant quantity will read slightly differently each time you measure it. That's measurement noise. 
 
-The way to see that pattern is to plot the distribution.
+- Real variables also differ between subjects and over time on top of that noise, and the combination gives every variable its own characteristic shape. 
+
+- Some cluster tightly, some spread wide, some have several common values.
+
+- You can't see that shape in a long column of numbers. **Plotting the
+distribution is how you see it.**
+
+
+## The Diamond Data {.smaller}
+
+::: {.callout-note title="The `diamonds` variables"}
+| Variable | Meaning |
+|---|---|
+| `price` | price in US dollars |
+| `carat` | weight of the diamond |
+| `cut` | quality of the cut: Fair, Good, Very Good, Premium, Ideal |
+| `color` | diamond color, from J (worst) to D (best) |
+| `clarity` | how clear the diamond is: I1 (worst) to IF (best) |
+| `x`, `y`, `z` | length, width, depth in mm |
+| `depth` | total depth percentage |
+| `table` | width of the top of the diamond relative to widest point |
+:::
 
 ## A first look
 
@@ -117,7 +141,7 @@ ggplot(diamonds, aes(x = carat)) +
   geom_histogram(binwidth = 0.5)
 ```
 
-## Binwidth changes what you can see
+## Changing the Binwidth 
 
 ```{r}
 #| fig-height: 3.4
@@ -129,15 +153,13 @@ Same data. A much narrower bin reveals structure the first plot hid entirely.
 
 ## Typical values: what to ask
 
-Tall bars are common values, short bars rare ones, gaps are values never
-observed. Turn that into questions:
+Tall bars are common values, short bars rare ones, gaps are values never observed. Turn that into questions:
 
 - Which values are most common? Why?
 - Which are rare? Does that match what you expected?
 - Are there unexpected patterns? What could explain them?
 
-For the carat histogram: why the spikes at whole carats and common
-fractions? And why more diamonds just *above* each spike than just below?
+For the carat histogram: why the spikes at whole carats and common fractions? And why more diamonds just *above* each spike than just below?
 
 ::: {.notes}
 The answer involves both cutting practice and pricing incentives — a good
@@ -146,7 +168,7 @@ illustration that some EDA questions need domain knowledge, not more code.
 
 ## Clusters mean subgroups
 
-When a distribution separates into clumps, ask:
+When a distribution separates into clumps, you can ask yourself:
 
 - How are observations *within* a cluster alike?
 - How do clusters differ from each other?
@@ -174,13 +196,17 @@ ggplot(diamonds, aes(x = y)) +
   coord_cartesian(ylim = c(0, 50))
 ```
 
+
+
+## Zooming In
+
 Now three unusual regions show up: near 0, around 30, and around 60.
 
-::: {.callout-note}
-**`coord_cartesian()` zooms** — the bars are still computed from *all* the
-data, so you can safely zoom the y-axis to see rare bins without changing
-what got counted. `ylim()`/`xlim()` instead **discard** any data outside the
-limits before the stat runs, which can silently change your bar heights.
+::: {.callout-note title="`coord_cartesian()`"}
+The bars are still computed from *all* the data, so you can safely zoom the y-axis to see rare bins without changing what got counted. 
+
+`ylim()`/`xlim()` instead **discard** any data outside the limits before the stat runs, which can silently change your bar heights. 
+
 When you just want a closer look, reach for `coord_cartesian()`.
 :::
 
@@ -198,23 +224,18 @@ unusual
 ## What we found
 
 `y` is a dimension in millimeters. A diamond cannot be 0 mm wide, so those
-rows are **missing data encoded as zero** — something no search for `NA`
-would ever have surfaced.
+rows are **missing data encoded as zero**.
 
-The 32 mm and 59 mm entries are implausible too: over an inch across, but
-priced like ordinary stones.
+  — something no search for `NA` would ever have surfaced.
+
+The 32 mm and 59 mm entries are implausible too!
 
 ::: {.callout-important}
-This is the core payoff of EDA: visualizing the data surfaced a data-quality
-problem that a search for `NA` never would have. Always sanity-check units
-and physically-plausible ranges, not just missingness flags.
+This is the core payoff of EDA: visualizing the data surfaced a data-quality problem that a search for `NA` never would have. Always sanity-check units and physically-plausible ranges, not just missingness flags.
 :::
 
 ::: {.callout-caution}
-Run your analysis with and without the outliers. If it barely moves and you
-can't explain them, dropping them is defensible. If it moves a lot, find the
-cause and **disclose the removal** in your write-up — don't drop values
-without justification just because they're inconvenient.
+Run your analysis with and without the outliers. If it barely moves and you can't explain them, dropping them is defensible. If it moves a lot, find the cause and **disclose the removal** in your write-up — don't drop values without justification just because they're inconvenient.
 :::
 
 ## Two ways to handle them
@@ -234,9 +255,7 @@ option 1 across every variable in messy data and you may have nothing left.
 
 ## Missing values in plots
 
-ggplot2 won't guess where to put an `NA`, so it drops them and warns you.
-Silence the warning with `na.rm = TRUE` — once you've understood why they're
-missing.
+ggplot2 won't guess where to put an `NA`, so it drops them and warns you. Silence the warning with `na.rm = TRUE` (only once you've understood why they're missing).
 
 ```{r}
 #| fig-height: 2.9
@@ -249,9 +268,7 @@ ggplot(diamonds2, aes(x = x, y = y)) +
 
 ## Missingness can be the signal
 
-In `nycflights13::flights`, a missing `dep_time` means the flight was
-cancelled. So compare scheduled departure times for cancelled and
-non-cancelled flights:
+In `nycflights13::flights`, a missing `dep_time` means the flight was cancelled. So compare scheduled departure times for cancelled and non-cancelled flights:
 
 ```{r}
 #| fig-height: 2.8
@@ -266,30 +283,24 @@ nycflights13::flights |>
   geom_freqpoly(aes(color = cancelled), binwidth = 1/4)
 ```
 
-::: {.callout-tip}
-Missing values aren't always noise to drop. Sometimes *why* a value is
-missing is itself the most informative variable in the dataset —
-`is.na(dep_time)` here is doing more analytical work than `dep_time` itself.
-:::
 
 ## The comparison isn't fair yet
 
-Cancelled flights are vastly outnumbered, so the two curves aren't
-comparable on a count scale.
+::: {.callout-tip}
+Missing values aren't always noise to drop. Sometimes *why* a value is missing is itself the most informative variable in the dataset — `is.na(dep_time)` here is doing more analytical work than `dep_time` itself.
+:::
 
-That's a covariation problem — and the next section is about fixing exactly
-this kind of comparison.
+Cancelled flights are vastly outnumbered, so the two curves aren't comparable on a count scale.
+
+That's a covariation problem, and the next section is about fixing exactly this kind of comparison.
 
 ## Your turn {.smaller}
 
 ::: {.callout-tip}
 ## Try it yourself
-1. Explore the distributions of `x`, `y`, and `z` in `diamonds`. Which is
-   length, which width, which depth?
+1. Explore the distributions of `x`, `y`, and `z` in `diamonds`. Which is length, which width, which depth?
 2. Explore `price`. Try a wide range of binwidths. Anything surprising?
 3. How many diamonds are 0.99 carat vs. exactly 1 carat? Why the gap?
-4. Compare `coord_cartesian()` with `xlim()`/`ylim()` when zooming into a
-   histogram.
 :::
 
 ```{webr}
@@ -297,15 +308,16 @@ this kind of comparison.
 
 ggplot(diamonds, aes(x = x)) +
   geom_histogram(binwidth = 0.25)
+
+## Q3
+# diamonds |> filter(carat %in% c(0.99, 1.00)) |> count(carat)
 ```
 
 # Covariation
 
 ## Covariation
 
-If variation describes behavior *within* a variable, **covariation**
-describes behavior *between* variables: the tendency for two or more
-variables to move together.
+If variation describes behavior *within* a variable, **covariation** describes behavior *between* variables: the tendency for two or more variables to move together.
 
 The strategy depends on the variable types:
 
@@ -313,7 +325,7 @@ The strategy depends on the variable types:
 - categorical × categorical
 - numerical × numerical
 
-## Categorical × numerical: the count problem
+## Categorical × numerical:
 
 ```{r}
 #| fig-height: 3.2
@@ -321,7 +333,10 @@ ggplot(diamonds, aes(x = price)) +
   geom_freqpoly(aes(color = cut), binwidth = 500, linewidth = 0.75)
 ```
 
-Group sizes differ so much that shape differences are invisible.
+::: {.callout-caution title="The Count Problem"}
+Group sizes differ so much that shape differences are invisible. Do you think each `cut` share the same pattern?
+:::
+
 
 ## Switch the y-axis to density
 
@@ -334,38 +349,32 @@ ggplot(diamonds, aes(x = price, y = after_stat(density))) +
   geom_freqpoly(aes(color = cut), binwidth = 500, linewidth = 0.75)
 ```
 
-## A surprise
+## Frequency polygons vs Boxplots
 
-Fair diamonds — the *lowest* quality cut — appear to have the highest
-average price.
+Fair diamonds (the *lowest* quality cut) appear to have the highest average price.
 
-Frequency polygons are busy, though. A boxplot makes the comparison cleaner:
 
 ```{r}
-#| fig-height: 2.8
+#| fig-height: 3.2
 ggplot(diamonds, aes(x = cut, y = price)) +
   geom_boxplot()
 ```
 
-::: {.callout-important}
-This is a genuine paradox, not a plotting artifact — worse-cut diamonds
-really do look more expensive here. Hold onto this; the "Patterns and
-models" section resolves it once `carat` enters the picture.
-:::
 
-## Reordering unordered categories
+## Reordering 
 
 `cut` is an ordered factor, so its order is meaningful. Most categorical
 variables aren't.
 
-::: {.callout-tip}
-`fct_reorder(variable, by, fun)` sorts factor levels by a summary statistic
-of another variable — almost always makes a categorical-vs-numeric plot
-easier to read at a glance.
+::: {.callout-tip title="`fct_reorder(variable, by, fun)`"}
+This function sorts factor levels by a summary statistic (e.g. mean/median) of another variable, which almost always makes a categorical-vs-numeric plot easier to read at a glance.
 :::
 
+
+## Example
+
 ```{r}
-#| fig-height: 2.7
+#| fig-height: 3.2
 #| layout-ncol: 2
 #| fig-width: 4.5
 ggplot(mpg, aes(x = class, y = hwy)) + geom_boxplot()
@@ -374,7 +383,7 @@ ggplot(mpg, aes(x = fct_reorder(class, hwy, median), y = hwy)) + geom_boxplot()
 
 ## Flip when labels are long
 
-Swap the x and y mappings — no extra function needed:
+Swap the x and y mappings with no extra function needed:
 
 ```{r}
 #| fig-height: 3.2
@@ -386,20 +395,29 @@ ggplot(mpg, aes(x = hwy, y = fct_reorder(class, hwy, median))) +
 
 ::: {.callout-tip}
 ## Try it yourself
-1. Improve the cancelled-vs-non-cancelled departure time plot.
-2. Which variable best predicts diamond price? How is it related to `cut`?
-   Use that to explain why poorer cuts look more expensive.
-3. Compare swapping x/y with adding `coord_flip()`.
-4. Try `geom_violin()`, a faceted `geom_histogram()`, a colored
-   `geom_freqpoly()`, and a colored `geom_density()` on the same comparison.
-   What does each do well and badly?
+Recall that there are variables such as `price`, `carat`, `cut`, `color`, `clarity`, `x`, `y`, `z`, `depth`, and `table`. 
+
+Earlier we saw that `Fair` cut diamonds look more expensive on average than `Ideal` cut diamonds, which may be the opposite of what you'd expect. `carat` (the diamond's weight) turns out to be the strongest predictor of `price` in the whole dataset.
+
+1. Plot `price` against `carat`. Does the relationship look strong?
+2. Now plot `carat` against `cut`. Is `carat` spread evenly across cut
+   qualities, or do `Fair` diamonds skew toward one end?
+3. Put it together: why does `Fair` diamonds skewing that way in `carat`
+   make them look pricier overall, even though a worse cut should, on its
+   own, lower the price?
+   
 :::
 
 ```{webr}
-#| exercise: cat_num
+#| exercise: carat_effect
 
-ggplot(diamonds, aes(x = cut, y = price)) +
-  geom_violin()
+# Step 1: price vs. carat
+ggplot(diamonds, aes(x = carat, y = price)) +
+  geom_point(alpha = 1/50)
+
+# Step 2: carat vs. cut
+ggplot(diamonds, aes(x = cut, y = carat)) +
+  geom_boxplot()
 ```
 
 ## Categorical × categorical: counts
@@ -423,9 +441,7 @@ diamonds |>
 ```
 
 ::: {.callout-note}
-For unordered categories, the **seriation** package can reorder rows and
-columns to expose structure; **heatmaply** does interactive versions of the
-same idea for larger tables.
+For unordered categories, the **seriation** package can reorder rows and columns to expose structure; **heatmaply** does interactive versions of the same idea for larger tables.
 :::
 
 ## Numerical × numerical
@@ -436,7 +452,7 @@ ggplot(smaller, aes(x = carat, y = price)) +
   geom_point()
 ```
 
-A positive, roughly exponential relationship — and a lot of overplotting.
+A positive, roughly exponential relationship, and a **LOT** of overplotting.
 
 ## Transparency helps
 
@@ -448,20 +464,7 @@ ggplot(smaller, aes(x = carat, y = price)) +
 
 Clusters at 1, 1.5, and 2 carats become visible.
 
-## Bin in two dimensions
-
-```{r}
-#| fig-height: 3
-#| layout-ncol: 2
-#| fig-width: 4.5
-ggplot(smaller, aes(x = carat, y = price)) + geom_bin2d()
-ggplot(smaller, aes(x = carat, y = price)) + geom_hex()
-```
-
-`geom_bin2d()` uses rectangles, `geom_hex()` hexagons (needs the **hexbin**
-package). Both map bin counts to fill.
-
-## Or bin one variable and reuse boxplots
+## Bin + Boxplots ?
 
 ```{r}
 #| fig-height: 3.2
@@ -469,33 +472,9 @@ ggplot(smaller, aes(x = carat, y = price)) +
   geom_boxplot(aes(group = cut_width(carat, 0.1)))
 ```
 
-`cut_width(x, width)` slices `x` into equal-width bins. `cut_number()` makes
-bins with roughly equal *counts* instead.
+`cut_width(x, width)` slices `x` into equal-width bins. `cut_number()` makes bins with roughly equal *counts* instead.
 
-::: {.notes}
-Boxplots look about the same regardless of how many points they summarize.
-`varwidth = TRUE` makes box width proportional to group size, which is worth
-mentioning here.
-:::
 
-## Your turn {.smaller}
-
-::: {.callout-tip}
-## Try it yourself
-1. Frequency polygon instead of boxplot for the conditional distribution —
-   what changes? When does `cut_width()` beat `cut_number()`?
-2. Visualize `carat` partitioned by `price`.
-3. How do price distributions compare for very large vs. very small diamonds?
-4. Combine two techniques to show cut, carat, and price together.
-5. Why is a scatterplot better than a binned plot for spotting 2-D outliers?
-:::
-
-```{webr}
-#| exercise: num_num
-
-ggplot(smaller, aes(x = carat, y = price)) +
-  geom_boxplot(aes(group = cut_number(carat, 20)))
-```
 
 # Patterns and models
 
@@ -511,62 +490,28 @@ A systematic relationship shows up as a pattern. When you spot one, ask:
 
 ## Variation vs. covariation
 
-Variation creates uncertainty. Covariation *reduces* it.
+**Variation** is uncertainty within a single variable. If `price` varies a lot on its own, knowing nothing else, you can't say much about what a given diamond costs. **Covariation** between variables cuts that uncertainty down.
 
-If two variables covary, values of one improve your predictions about the
-other. If the covariation is causal — a special case — you can use one to
-control the other.
-
-## Models extract patterns
-
-The cut/price paradox exists because carat is entangled with both. Fit a
-model for price from carat, then look at what's left over.
-
-```{r}
-#| eval: false
-library(tidymodels)
-
-diamonds <- diamonds |>
-  mutate(log_price = log(price), log_carat = log(carat))
-
-diamonds_fit <- linear_reg() |>
-  fit(log_price ~ log_carat, data = diamonds)
-
-diamonds_aug <- augment(diamonds_fit, new_data = diamonds) |>
-  mutate(.resid = exp(.resid))
-```
-
-Log-transform first, fit, then exponentiate the residuals back to a price-like
-scale.
-
-::: {.callout-note}
-`tidymodels` is heavy and not part of the live-code package set for this
-deck, so this example stays static — run it locally in RStudio if you'd
-like to reproduce it yourself.
+::: {.callout-tip}
+If `carat` and `price` covary, then knowing a diamond's `carat` narrows down your guess for its `price` a lot more than guessing blind. The stronger the covariation, the more one variable tells you about the other.
 :::
 
-## The paradox dissolves
 
-```{r}
-#| eval: false
-ggplot(diamonds_aug, aes(x = cut, y = .resid)) +
-  geom_boxplot()
-```
+## Modelling
 
-With the carat effect removed, the expected relationship appears: **relative
-to their size, better-cut diamonds cost more.**
+This is the entire logic behind prediction and modelling: a useful predictor is just a variable that covaries with the outcome you care about. A variable that doesn't covary with the outcome is useless as a predictor, no matter how interesting it looks on its own.
 
-Modelling gets its own treatment once you have wrangling and programming in
-hand — but the idea is worth meeting here.
+::: {.callout-important}
+Covariation is not the same as causation. Two variables can covary because one causes the other, because both are driven by a third variable, or by pure coincidence. If the covariation genuinely is causal, you can go a step further than prediction and actually **control** one variable by changing the other. Most covariation you find during EDA is not causal, and confirming causation takes more than a plot.
+:::
+
+
 
 ## Summary
 
 - EDA is a **loop**: question → visualize/transform/model → better questions
 - **Variation** within a variable: typical values, clusters, unusual values
-- Outliers are sometimes errors, sometimes discoveries. Investigate before
-  deciding; disclose what you removed
+- Outliers are sometimes errors, sometimes discoveries. Investigate before deciding; disclose what you removed (**important**)
 - **Covariation** between variables: pick the technique by variable type
-- Overplotting has several fixes: alpha, 2-D binning, binning one axis
-- **Models** let you strip out a dominant relationship to see what remains
 
 Next: turning exploratory graphics into ones other people can read.
