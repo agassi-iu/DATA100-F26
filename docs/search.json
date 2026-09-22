@@ -431,7 +431,7 @@
     "href": "slides/DATA100-F26-Lecture-4.html#your-turn",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Your turn",
-    "text": "Your turn\n\n\n\n\n\n\nTry it yourself\n\n\n\nDraw hwy vs. displ with pink filled triangles.\nWhy does the code below not produce blue points?\nWhat does stroke do, and which shapes respond to it? (?geom_point)\nWhat happens with aes(color = displ &lt; 5)?\n\n\n\n\n\nggplot(mpg) +\n  geom_point(aes(x = displ, y = hwy, color = \"blue\"))"
+    "text": "Your turn\n\n\n\n\n\n\nTry it yourself\n\n\n\nDraw hwy vs. displ with pink filled triangles.\nWhy does the code below not produce blue points?\nWhat happens with aes(color = displ &lt; 5)?\n\n\n\n\n\nggplot(mpg) +\n  geom_point(aes(x = displ, y = hwy, color = \"blue\"))"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-4.html#a-geom-is-how-the-data-gets-drawn",
@@ -483,11 +483,46 @@
     "text": "Common geoms at a glance\n\n\n\n\n\n\n\n\nChart type\nGeom\nWhat it draws\n\n\n\n\nLine chart\ngeom_line()\nConnects points in order of the x-value — good for trends over a continuous sequence (e.g. time)\n\n\nBar plot\ngeom_bar()\nCounts observations per category and draws bar height as the count (uses stat_count())\n\n\nBar plot (pre-counted)\ngeom_col()\nBar height comes directly from a y column you already have — no counting\n\n\nHistogram\ngeom_histogram()\nBins a continuous variable and draws bar height as the count per bin\n\n\nBoxplot\ngeom_boxplot()\nFive-number summary (min, Q1, median, Q3, max) plus outliers, per group\n\n\nArea chart\ngeom_area()\nLike geom_line(), but fills the region under the line"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-4.html#your-turn-1",
-    "href": "slides/DATA100-F26-Lecture-4.html#your-turn-1",
+    "objectID": "slides/DATA100-F26-Lecture-4.html#boxplots",
+    "href": "slides/DATA100-F26-Lecture-4.html#boxplots",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Your turn",
-    "text": "Your turn\n\n\n\n\n\n\nTry it yourself\n\n\n\nWhich geom draws a line chart? A boxplot? A histogram? An area chart?\nWhat does show.legend = FALSE do, and why might you want it?\nWhat does se control in geom_smooth()?\nRecreate a plot with points colored by drv and one smooth curve fitted to the whole dataset (not one per group)."
+    "section": "Boxplots",
+    "text": "Boxplots\nA boxplot summarizes a distribution with five numbers: the minimum, the first quartile (Q1), the median, the third quartile (Q3), and the maximum. Points far from the rest get drawn separately as individual outliers.\n\nggplot(mpg, aes(x = class, y = hwy)) +\n  geom_boxplot()"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#reading-a-boxplot",
+    "href": "slides/DATA100-F26-Lecture-4.html#reading-a-boxplot",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Reading a boxplot",
+    "text": "Reading a boxplot\n\n\n\n\n\n\n\nWhat each part means\n\n\n\nThe box spans Q1 to Q3, the middle 50% of the data (the interquartile range, or IQR).\nThe line inside the box is the median.\nThe whiskers extend to the farthest point still within 1.5 times the IQR from the box.\nDots beyond the whiskers are flagged as outliers.\n\n\n\n\n\n\n\n\n\n\n\nTip\n\n\nA boxplot is a compression. It tells you center and spread at a glance, but it can’t show you whether a group has one peak or several, since all of that shape detail gets collapsed into five numbers."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#violin-plots",
+    "href": "slides/DATA100-F26-Lecture-4.html#violin-plots",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Violin plots",
+    "text": "Violin plots\nA violin plot replaces the box with a mirrored density curve, so you see the full shape of the distribution instead of just a summary.\n\nggplot(mpg, aes(x = class, y = hwy)) +\n  geom_violin()"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#boxplot-vs.-violin-plot",
+    "href": "slides/DATA100-F26-Lecture-4.html#boxplot-vs.-violin-plot",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Boxplot vs. violin plot",
+    "text": "Boxplot vs. violin plot\nggplot(mpg, aes(x = class, y = hwy)) + geom_boxplot()\nggplot(mpg, aes(x = class, y = hwy)) + geom_violin()"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#boxplot-vs-violin-plot",
+    "href": "slides/DATA100-F26-Lecture-4.html#boxplot-vs-violin-plot",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Boxplot vs violin plot",
+    "text": "Boxplot vs violin plot\n\n\n\n\n\n\nImportant\n\n\nUse a boxplot when you mainly care about comparing medians and spread across many groups at once, it stays compact even with a dozen categories side by side.\nUse a violin plot when the shape itself matters, for example spotting bimodal groups, since a boxplot cannot distinguish “spread out evenly” from “two separate clusters.”\n\n\n\n\n\n\n\n\n\nCaution\n\n\nViolin plots need enough points per group to draw a reliable density curve. With a small group, the “shape” you see may just be noise from too few observations, not a real pattern."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#try-out-different-plots",
+    "href": "slides/DATA100-F26-Lecture-4.html#try-out-different-plots",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Try out different plots",
+    "text": "Try out different plots\n\n\n\n\n\n\nTry it yourself\n\n\n\nWhich geom draws a line chart? A boxplot? A histogram? An area chart?\nWhat does show.legend = FALSE do, and why might you want it?\nTry uncommenting different sections below to see how each chart type behaves with 1 vs. 2 variables!"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-4.html#facet_wrap-one-variable",
@@ -518,8 +553,8 @@
     "text": "Free scales\n\n\n\n\n\n\n\nCustomization\n\n\n\"free_x\", \"free_y\", or \"free\" let each row/column pick its own range.\n\nThis is easier to read within a panel, but panels are no longer directly comparable to each other.\n\n\n\n\n\n\n\n\n\n\n\n\nCheckpoint\n\n\nIf I want to share a plot with someone that has no idea about the data set, should I use free scales or shared scales?"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-4.html#your-turn-2",
-    "href": "slides/DATA100-F26-Lecture-4.html#your-turn-2",
+    "objectID": "slides/DATA100-F26-Lecture-4.html#your-turn-1",
+    "href": "slides/DATA100-F26-Lecture-4.html#your-turn-1",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Your turn",
     "text": "Your turn\n\n\n\n\n\n\nTry it yourself\n\n\n\nWhat happens if you facet on a continuous variable like cty?\nWhat does . mean in facet_grid(drv ~ .)?"
@@ -567,8 +602,8 @@
     "text": "Calling a stat directly\nSometimes the summary is the point, and naming the stat says so:\n\nggplot(diamonds) +\n  stat_summary(\n    aes(x = cut, y = depth),\n    fun.min = min, fun.max = max, fun = median\n  )"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-4.html#your-turn-3",
-    "href": "slides/DATA100-F26-Lecture-4.html#your-turn-3",
+    "objectID": "slides/DATA100-F26-Lecture-4.html#your-turn-2",
+    "href": "slides/DATA100-F26-Lecture-4.html#your-turn-2",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Your turn",
     "text": "Your turn\n\n\n\n\n\n\nTry it yourself\n\n\n\nIf you swap geom_bar() for geom_col() in the plot below without changing anything else, what error (if any) do you think you’ll get? Try it and see if you were right.\nWhich diamond cut do you think has the smallest proportion in the data set?"
@@ -616,8 +651,8 @@
     "text": "Jittering\nposition = \"jitter\" adds a little random noise. Less accurate at small scales, far more honest at large ones.\n\nggplot(mpg, aes(x = displ, y = hwy)) +\n  geom_jitter()\n\n\ngeom_jitter() is shorthand for geom_point(position = \"jitter\")."
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-4.html#your-turn-4",
-    "href": "slides/DATA100-F26-Lecture-4.html#your-turn-4",
+    "objectID": "slides/DATA100-F26-Lecture-4.html#your-turn-3",
+    "href": "slides/DATA100-F26-Lecture-4.html#your-turn-3",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Your turn",
     "text": "Your turn\n\n\n\n\n\n\nTry it yourself\n\n\n\nWhat’s wrong with a plain geom_point() of cty vs. hwy? Fix it below.\nIs there any difference between the default and position = \"identity\" for points?\nTry geom_jitter(width = 0.2, height = 0.5) to control the amount of jitter.\nCompare geom_jitter() and geom_count()."

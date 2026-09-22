@@ -262,8 +262,7 @@ Shapes 0–14 are hollow (border from `color`), 15–20 are solid (filled with
 ## Try it yourself
 1. Draw `hwy` vs. `displ` with pink filled triangles.
 2. Why does the code below *not* produce blue points?
-3. What does `stroke` do, and which shapes respond to it? (`?geom_point`)
-4. What happens with `aes(color = displ < 5)`?
+3. What happens with `aes(color = displ < 5)`?
 :::
 
 ```{r}
@@ -274,6 +273,12 @@ ggplot(mpg) +
 
 ```{webr}
 #| exercise: aes_mappings
+# Question 1
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(shape = 24, fill = "pink", color = "black", size = 3)
+
+# Question 2
+# ???
 
 ```
 
@@ -381,24 +386,95 @@ The histogram and density show *bimodality* and *right skew*; the boxplot compre
 | Area chart | `geom_area()` | Like `geom_line()`, but fills the region under the line |
 
 
+## Boxplots
 
-## Your turn {.smaller}
+A boxplot summarizes a distribution with five numbers: the minimum, the first quartile (Q1), the median, the third quartile (Q3), and the maximum. Points far from the rest get drawn separately as individual outliers.
+
+```{r}
+#| fig-height: 3.2
+ggplot(mpg, aes(x = class, y = hwy)) +
+  geom_boxplot()
+```
+
+## Reading a boxplot
+
+::: {.callout-note title="What each part means"}
+
+  - The **box** spans Q1 to Q3, the middle 50% of the data (the interquartile
+    range, or IQR).
+  - The **line inside the box** is the median.
+  - The **whiskers** extend to the farthest point still within 1.5 times the
+    IQR from the box.
+  - **Dots beyond the whiskers** are flagged as outliers.
+
+:::
+
+::: {.callout-tip}
+
+  A boxplot is a compression. It tells you center and spread at a glance, but it can't show you whether a group has one peak or several, since all of that shape detail gets collapsed into five numbers.
+  
+:::
+
+## Violin plots
+
+A violin plot replaces the box with a mirrored density curve, so you see the full shape of the distribution instead of just a summary.
+
+```{r}
+#| fig-height: 3.2
+ggplot(mpg, aes(x = class, y = hwy)) +
+  geom_violin()
+```
+
+
+## Boxplot vs. violin plot
+
+```{r}
+#| fig-height: 3
+#| layout-ncol: 2
+#| fig-width: 4.5
+ggplot(mpg, aes(x = class, y = hwy)) + geom_boxplot()
+ggplot(mpg, aes(x = class, y = hwy)) + geom_violin()
+```
+
+
+## Boxplot vs violin plot
+::: {.callout-important}
+  Use a boxplot when you mainly care about comparing medians and spread across many groups at once, it stays compact even with a dozen categories side by side.
+  
+  Use a violin plot when the shape itself matters, for example spotting bimodal groups, since a boxplot cannot distinguish "spread out evenly" from "two separate clusters."
+:::
+
+::: {.callout-caution}
+
+  Violin plots need enough points per group to draw a reliable density curve. With a small group, the "shape" you see may just be noise from too few observations, not a real pattern.
+
+:::
+
+
+## Try out different plots {.smaller}
 
 ::: {.callout-tip}
 ## Try it yourself
 1. Which geom draws a line chart? A boxplot? A histogram? An area chart?
 2. What does `show.legend = FALSE` do, and why might you want it?
-3. What does `se` control in `geom_smooth()`?
-4. Recreate a plot with points colored by `drv` and *one* smooth curve fitted
-   to the whole dataset (not one per group).
+3. Try uncommenting different sections below to see how each chart type behaves with 1 vs. 2 variables!
 :::
 
 ```{webr}
 #| exercise: geoms
 
-ggplot(mpg, aes(x = displ, y = hwy)) +
-  geom_point(aes(color = drv)) +
-  geom_smooth(aes(group = drv))
+# --- 1. HISTOGRAM (1 continuous variable: hwy) ---
+ggplot(mpg, aes(x = hwy)) +
+  geom_histogram(binwidth = 2, fill = "steelblue", color = "white")
+
+# --- 2. BOXPLOT (1 categorical x, 1 continuous y) ---
+# ggplot(mpg, aes(x = class, y = hwy, fill = class)) +
+#   geom_boxplot(show.legend = FALSE)
+
+# --- 3. LINE CHART (Trends over a continuous sequence) ---
+# ggplot(economics, aes(x = date, y = unemploy)) +
+#   geom_line(color = "firebrick")
+
 ```
 
 # Facets
