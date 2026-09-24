@@ -1,0 +1,1682 @@
+[
+  {
+    "objectID": "syllabus.html",
+    "href": "syllabus.html",
+    "title": "Syllabus",
+    "section": "",
+    "text": "This course provides a broad overview of modern methods and tools for big data analytics. Different stages of data analytics lifecycle, including diagnosing, cleaning, preparing, transforming, visualizing and modelling data, are considered. Numerical and graphical methods of descriptive statistics are introduced. Data analytic methods are demonstrated using the statistical computing software R."
+  },
+  {
+    "objectID": "syllabus.html#course-description",
+    "href": "syllabus.html#course-description",
+    "title": "Syllabus",
+    "section": "",
+    "text": "This course provides a broad overview of modern methods and tools for big data analytics. Different stages of data analytics lifecycle, including diagnosing, cleaning, preparing, transforming, visualizing and modelling data, are considered. Numerical and graphical methods of descriptive statistics are introduced. Data analytic methods are demonstrated using the statistical computing software R."
+  },
+  {
+    "objectID": "syllabus.html#instructor",
+    "href": "syllabus.html#instructor",
+    "title": "Syllabus",
+    "section": "Instructor",
+    "text": "Instructor\nAgassi Iu Wilfrid Laurier University Office Hours: Wednesdays 14:00–16:00, LH3073, or by appointment"
+  },
+  {
+    "objectID": "syllabus.html#assessments-evaluation",
+    "href": "syllabus.html#assessments-evaluation",
+    "title": "Syllabus",
+    "section": "Assessments & Evaluation",
+    "text": "Assessments & Evaluation\n\n\n\nCategory\nWeight\nFrequency\n\n\n\n\nLaboratories\n30%\nWeekly on Mondays\n\n\nParticipation\n5%\nEvery class\n\n\nCapstone Project\n20%\nMultiple due-dates\n\n\nMidterm Exams\n20%\nTwice (see Schedule)\n\n\nFinal Exam\n25%\nFinal exam period in December"
+  },
+  {
+    "objectID": "syllabus.html#tools",
+    "href": "syllabus.html#tools",
+    "title": "Syllabus",
+    "section": "Tools",
+    "text": "Tools\n\nRStudio — labs, assignments, projects, and (second) midterm.\nMyLearningSpace — announcements, submissions, and in-class quiz participation."
+  },
+  {
+    "objectID": "syllabus.html#first-year-success-tips",
+    "href": "syllabus.html#first-year-success-tips",
+    "title": "Syllabus",
+    "section": "First-Year Success Tips",
+    "text": "First-Year Success Tips\n\nStart early — avoid last-minute coding stress.\nPractice daily — even 30 minutes a day beats cramming.\nAsk questions early — reach out after 15 minutes of being stuck. Use office hours. I have an open door policy ;)\nForm study groups — teach among yourselves! This is the best way to learn."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#two-kinds-of-plot",
+    "href": "slides/DATA100-F26-Lecture-6.html#two-kinds-of-plot",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Two kinds of plot",
+    "text": "Two kinds of plot\n\n\n\n\n\n\n\nExploratory\n\n\nYou know what’s in it before you look. You make it, take a glance at it, and then move on. You’ll make hundreds and discard most.\n\n\n\n\n\n\n\n\n\n\n\nExpository\n\n\nSomeone else has to read it, especially someone without your background and without much patience.\n\n\n\n\n\n\n\n\n\n\nTip\n\n\nGetting from the first to the second takes real effort. This chapter is the toolkit."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#setup",
+    "href": "slides/DATA100-F26-Lecture-6.html#setup",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Setup",
+    "text": "Setup\nThese are the libraries that we are going to use in today’s lecture.\n\nlibrary(tidyverse)\nlibrary(scales)     # label and break helpers\nlibrary(ggrepel)    # non-overlapping text labels\nlibrary(patchwork)  # combining plots"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#labs",
+    "href": "slides/DATA100-F26-Lecture-6.html#labs",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "labs()",
+    "text": "labs()\n\nggplot(mpg, aes(x = displ, y = hwy)) +\n  geom_point(aes(color = class)) +\n  geom_smooth(se = FALSE) +\n  labs(\n    x = \"Engine displacement (L)\",\n    y = \"Highway fuel economy (mpg)\",\n    color = \"Car type\",\n    title = \"Fuel efficiency generally decreases with engine size\",\n    subtitle = \"Two seaters are an exception because of their light weight\",\n    caption = \"Data from fueleconomy.gov\"\n  )"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#what-each-label-is-for",
+    "href": "slides/DATA100-F26-Lecture-6.html#what-each-label-is-for",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "What each label is for",
+    "text": "What each label is for\n\n\n\n\n\n\n\nLabel\nJob\n\n\n\n\ntitle\nState the finding, not the plot’s contents\n\n\nsubtitle\nAdd detail below the title\n\n\ncaption\nUsually the data source\n\n\nx, y\nReplace variable names with descriptions and units\n\n\naesthetic names\nSame, for each legend"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#mathematical-labels",
+    "href": "slides/DATA100-F26-Lecture-6.html#mathematical-labels",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Mathematical labels",
+    "text": "Mathematical labels\nSwap the string for quote(); see ?plotmath for the vocabulary.\n\ndf &lt;- tibble(x = 1:10, y = cumsum(x^2))\n\nggplot(df, aes(x, y)) +\n  geom_point() +\n  labs(\n    x = quote(x[i]),\n    y = quote(sum(x[i] ^ 2, i == 1, n))\n  )"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#your-turn",
+    "href": "slides/DATA100-F26-Lecture-6.html#your-turn",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Your turn",
+    "text": "Your turn\n\n\n\n\n\n\n\nThe mpg variables you’ll need\n\n\n\n\n\n\n\n\n\nVariable\nMeaning\n\n\n\n\ncty\ncity fuel economy, in miles per gallon\n\n\nhwy\nhighway fuel economy, in miles per gallon\n\n\ndrv\ndrive train: 4 = four-wheel, f = front-wheel, r = rear-wheel\n\n\n\n\n\n\n\n\n\n\n\n\n\nTry it yourself\n\n\nBuild a scatterplot from mpg with hwy vs. cty, mapping both color and shape to drive train (drv). Add a custom title, subtitle, caption, x, and y label."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#labelling-observations",
+    "href": "slides/DATA100-F26-Lecture-6.html#labelling-observations",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Labelling observations",
+    "text": "Labelling observations\ngeom_text() is geom_point() plus a label aesthetic. Build a small data frame of just the things you want labelled:\n\nlabel_info &lt;- mpg |&gt;\n  group_by(drv) |&gt;\n  arrange(desc(displ)) |&gt;\n  slice_head(n = 1) |&gt;\n  mutate(\n    drive_type = case_when(\n      drv == \"f\" ~ \"front-wheel drive\",\n      drv == \"r\" ~ \"rear-wheel drive\",\n      drv == \"4\" ~ \"4-wheel drive\"\n    )\n  ) |&gt;\n  select(displ, hwy, drv, drive_type)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#labels-instead-of-a-legend",
+    "href": "slides/DATA100-F26-Lecture-6.html#labels-instead-of-a-legend",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Labels instead of a legend",
+    "text": "Labels instead of a legend\n\nggplot(mpg, aes(x = displ, y = hwy, color = drv)) +\n  geom_point(alpha = 0.3) +\n  geom_smooth(se = FALSE) +\n  geom_text(\n    data = label_info,\n    aes(x = displ, y = hwy, label = drive_type),\n    fontface = \"bold\", size = 5, hjust = \"right\", vjust = \"bottom\"\n  ) +\n  theme(legend.position = \"none\")"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#ggrepel-fixes-the-overlap",
+    "href": "slides/DATA100-F26-Lecture-6.html#ggrepel-fixes-the-overlap",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "ggrepel fixes the overlap",
+    "text": "ggrepel fixes the overlap\n\nggplot(mpg, aes(x = displ, y = hwy, color = drv)) +\n  geom_point(alpha = 0.3) +\n  geom_smooth(se = FALSE) +\n  geom_label_repel(\n    data = label_info,\n    aes(x = displ, y = hwy, label = drive_type),\n    fontface = \"bold\", size = 5, nudge_y = 2\n  ) +\n  theme(legend.position = \"none\")"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#highlighting-specific-points",
+    "href": "slides/DATA100-F26-Lecture-6.html#highlighting-specific-points",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Highlighting specific points",
+    "text": "Highlighting specific points\n\npotential_outliers &lt;- mpg |&gt; filter(hwy &gt; 40 | (hwy &gt; 20 & displ &gt; 5))\n\nggplot(mpg, aes(x = displ, y = hwy)) +\n  geom_point() +\n  geom_text_repel(data = potential_outliers, aes(label = model)) +\n  geom_point(data = potential_outliers, color = \"red\") +\n  geom_point(\n    data = potential_outliers,\n    color = \"red\", size = 3, shape = \"circle open\"\n  )"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#other-annotation-geoms",
+    "href": "slides/DATA100-F26-Lecture-6.html#other-annotation-geoms",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Other annotation geoms",
+    "text": "Other annotation geoms\n\n\n\n\n\n\nNote\n\n\n\ngeom_hline() / geom_vline() are reference lines. Thick and white (linewidth = 2, color = \"white\"), drawn under the data, reads clearly without competing with it\ngeom_rect() boxes off a region with xmin/xmax/ymin/ymax.\ngeom_segment(arrow = ...) point at something. x/y start, xend/yend end"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#annotate-for-one-off-text",
+    "href": "slides/DATA100-F26-Lecture-6.html#annotate-for-one-off-text",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "annotate() for one-off text",
+    "text": "annotate() for one-off text\nGeoms highlight subsets of data; annotate() adds individual elements without needing a data frame.\n\ntrend_text &lt;- \"Larger engine sizes tend to have lower fuel economy.\" |&gt;\n  str_wrap(width = 30)\n\ntrend_text\n\n[1] \"Larger engine sizes tend to\\nhave lower fuel economy.\"\n\n\nstr_wrap() inserts line breaks at a chosen width."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#text-plus-arrow",
+    "href": "slides/DATA100-F26-Lecture-6.html#text-plus-arrow",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Text plus arrow",
+    "text": "Text plus arrow\n\nggplot(mpg, aes(x = displ, y = hwy)) +\n  geom_point() +\n  annotate(\n    geom = \"label\", x = 3.5, y = 38,\n    label = trend_text, hjust = \"left\", color = \"red\"\n  ) +\n  annotate(\n    geom = \"segment\",\n    x = 3, y = 35, xend = 5, yend = 25, color = \"red\",\n    arrow = arrow(type = \"closed\")\n  )"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#your-turn-1",
+    "href": "slides/DATA100-F26-Lecture-6.html#your-turn-1",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Your turn",
+    "text": "Your turn\n\n\n\n\n\n\nTry it yourself\n\n\n\nUse geom_text() with infinite positions to place text in all four corners.\nUse annotate() to drop a single customized point in the middle of a plot."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#your-turn-2",
+    "href": "slides/DATA100-F26-Lecture-6.html#your-turn-2",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Your turn",
+    "text": "Your turn\n\n\n\n\n\n\nTry it yourself\n\n\nRun the following code with geom_text() that draws its label data into every matching facet. If your label data frame has a column matching the faceting variable, ggplot2 only places that label in the facet(s) where the value matches. Try labeling just the cyl = 8 facet, then try giving every facet its own distinct label."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#scales-are-always-there",
+    "href": "slides/DATA100-F26-Lecture-6.html#scales-are-always-there",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Scales are always there",
+    "text": "Scales are always there\nThese two produce identical output:\n\nggplot(mpg, aes(x = displ, y = hwy)) +\n  geom_point(aes(color = class))\n\nggplot(mpg, aes(x = displ, y = hwy)) +\n  geom_point(aes(color = class)) +\n  scale_x_continuous() +\n  scale_y_continuous() +\n  scale_color_discrete()\n\nNaming scheme: scale_ + aesthetic + _ + scale type (continuous, discrete, date, datetime)."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#two-reasons-to-override",
+    "href": "slides/DATA100-F26-Lecture-6.html#two-reasons-to-override",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Two reasons to override",
+    "text": "Two reasons to override\n\nTweak the default: different breaks, different labels\nReplace it entirely: a transformation or palette that fits your data better than a general-purpose default can"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#breaks-and-labels",
+    "href": "slides/DATA100-F26-Lecture-6.html#breaks-and-labels",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Breaks and labels",
+    "text": "Breaks and labels\nAxes and legends are collectively called guides.\n\nbreaks sets where the ticks or keys go\nlabels sets what they say\n\n\nggplot(mpg, aes(x = displ, y = hwy, color = drv)) +\n  geom_point() +\n  scale_y_continuous(breaks = seq(15, 40, by = 5))"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#suppressing-and-renaming",
+    "href": "slides/DATA100-F26-Lecture-6.html#suppressing-and-renaming",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Suppressing and renaming",
+    "text": "Suppressing and renaming\nlabels = NULL removes the labels entirely\n\nggplot(mpg, aes(x = displ, y = hwy, color = drv)) +\n  geom_point() +\n  scale_x_continuous(labels = NULL) +\n  scale_y_continuous(labels = NULL) +\n  scale_color_discrete(labels = c(\"4\" = \"4-wheel\", \"f\" = \"front\", \"r\" = \"rear\"))"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#formatting-with-the-scales-package",
+    "href": "slides/DATA100-F26-Lecture-6.html#formatting-with-the-scales-package",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Formatting with the scales package",
+    "text": "Formatting with the scales package\nggplot(diamonds, aes(x = price, y = cut)) +\n  geom_boxplot(alpha = 0.05) +\n  scale_x_continuous(labels = label_dollar())\nggplot(diamonds, aes(x = price, y = cut)) +\n  geom_boxplot(alpha = 0.05) +\n  scale_x_continuous(\n    labels = label_dollar(scale = 1/1000, suffix = \"K\"),\n    breaks = seq(1000, 19000, by = 6000)\n  )\n\n\n\n\n\n\n\n\n\n\nNote breaks stays in the original data scale."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#percentages",
+    "href": "slides/DATA100-F26-Lecture-6.html#percentages",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Percentages",
+    "text": "Percentages\n\nggplot(diamonds, aes(x = cut, fill = clarity)) +\n  geom_bar(position = \"fill\") +\n  scale_y_continuous(name = \"Percentage\", labels = label_percent())"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#breaks-that-mark-real-events",
+    "href": "slides/DATA100-F26-Lecture-6.html#breaks-that-mark-real-events",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Breaks that mark real events",
+    "text": "Breaks that mark real events\nWith few data points, put the ticks where the observations are:\n\npresidential |&gt;\n  mutate(id = 33 + row_number()) |&gt;\n  ggplot(aes(x = start, y = id)) +\n  geom_point() +\n  geom_segment(aes(xend = end, yend = id)) +\n  scale_x_date(name = NULL, breaks = presidential$start, date_labels = \"'%y\")\n\n\nDates use date_labels (a format string) and date_breaks (\"2 days\",\"1 month\")."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#legend-position",
+    "href": "slides/DATA100-F26-Lecture-6.html#legend-position",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Legend position",
+    "text": "Legend position\nlegend.position is a theme setting:\nbase &lt;- ggplot(mpg, aes(x = displ, y = hwy)) + geom_point(aes(color = class))\n\nbase + theme(legend.position = \"right\")\nbase + theme(legend.position = \"bottom\") +\n  guides(color = guide_legend(nrow = 3))\n\n\n\n\n\n\n\n\n\n\nShort and wide → top or bottom. Tall and narrow → left or right.\"none\" removes it."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#overriding-legend-aesthetics",
+    "href": "slides/DATA100-F26-Lecture-6.html#overriding-legend-aesthetics",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Overriding legend aesthetics",
+    "text": "Overriding legend aesthetics\n\nggplot(mpg, aes(x = displ, y = hwy)) +\n  geom_point(aes(color = class)) +\n  geom_smooth(se = FALSE) +\n  theme(legend.position = \"bottom\") +\n  guides(color = guide_legend(nrow = 2, override.aes = list(size = 4)))"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#transform-in-the-scale-not-the-mapping",
+    "href": "slides/DATA100-F26-Lecture-6.html#transform-in-the-scale-not-the-mapping",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Transform in the scale, not the mapping",
+    "text": "Transform in the scale, not the mapping\nggplot(diamonds, aes(x = log10(carat), y = log10(price))) +\n  geom_bin2d()\nggplot(diamonds, aes(x = carat, y = price)) +\n  geom_bin2d() +\n  scale_x_log10() +\n  scale_y_log10()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\nVisually identical — but the right-hand axes are labelled in the original units. Transforming inside aes() leaves the reader staring at log values; transforming via the scale keeps the plot interpretable.\n\n\n\n##ColorBrewer\nThe default categorical palette spaces hues evenly around the color wheel. ColorBrewer’s palettes are hand-tuned so common forms of color blindness can still distinguish them.\nggplot(mpg, aes(x = displ, y = hwy)) + geom_point(aes(color = drv))\nggplot(mpg, aes(x = displ, y = hwy)) +\n  geom_point(aes(color = drv)) +\n  scale_color_brewer(palette = \"Set1\")"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#predetermined-mapping",
+    "href": "slides/DATA100-F26-Lecture-6.html#predetermined-mapping",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Predetermined mapping",
+    "text": "Predetermined mapping\nSome variables come with expected colors. scale_color_manual() pins them down to the specific colour:\n\npresidential |&gt;\n  mutate(id = 33 + row_number()) |&gt;\n  ggplot(aes(x = start, y = id, color = party)) +\n  geom_point() +\n  geom_segment(aes(xend = end, yend = id)) +\n  scale_color_manual(values = c(Republican = \"#E81B23\", Democratic = \"#00AEF3\"))"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#three-ways-to-set-limits",
+    "href": "slides/DATA100-F26-Lecture-6.html#three-ways-to-set-limits",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Three ways to set limits",
+    "text": "Three ways to set limits\n\nFilter the data\nSet limits on the scale\nSet xlim/ylim in coord_cartesian()\n\n\n\n\n\n\n\nCaution\n\n\nOptions 1 and 2 both throw data away before any stat or smooth is fit - a geom_smooth() curve will genuinely change shape.\nOption 3 is a true zoom: the smooth is fit on the full data and only the view changes. Pick option 3 unless you actually want to refit on a subset."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#what-do-i-mean-by-that",
+    "href": "slides/DATA100-F26-Lecture-6.html#what-do-i-mean-by-that",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "What do i mean by that?",
+    "text": "What do i mean by that?\nggplot(mpg, aes(x = displ, y = hwy)) +\n  geom_point(aes(color = drv)) + geom_smooth() +\n  scale_x_continuous(limits = c(5, 6)) +\n  scale_y_continuous(limits = c(10, 25))\nggplot(mpg, aes(x = displ, y = hwy)) +\n  geom_point(aes(color = drv)) + geom_smooth() +\n  coord_cartesian(xlim = c(5, 6), ylim = c(10, 25))\n\n\n\n\n\n\n\n\n\n\nSame window, different smooth curves."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#an-even-simpler-example",
+    "href": "slides/DATA100-F26-Lecture-6.html#an-even-simpler-example",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "An even simpler example",
+    "text": "An even simpler example"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#expanding-limits-to-share-scales",
+    "href": "slides/DATA100-F26-Lecture-6.html#expanding-limits-to-share-scales",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Expanding limits to share scales",
+    "text": "Expanding limits to share scales\nlimits is genuinely useful in the other direction: making separate plots comparable.\nsuv     &lt;- mpg |&gt; filter(class == \"suv\")\ncompact &lt;- mpg |&gt; filter(class == \"compact\")\n\nx_scale   &lt;- scale_x_continuous(limits = range(mpg$displ))\ny_scale   &lt;- scale_y_continuous(limits = range(mpg$hwy))\ncol_scale &lt;- scale_color_discrete(limits = unique(mpg$drv))\n\nggplot(suv, aes(displ, hwy, color = drv)) +\n  geom_point() + x_scale + y_scale + col_scale\nggplot(compact, aes(displ, hwy, color = drv)) +\n  geom_point() + x_scale + y_scale + col_scale"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#built-in-themes",
+    "href": "slides/DATA100-F26-Lecture-6.html#built-in-themes",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Built-in themes",
+    "text": "Built-in themes\n\nggplot(mpg, aes(x = displ, y = hwy)) +\n  geom_point(aes(color = class)) +\n  geom_smooth(se = FALSE) +\n  theme_bw()\n\n\nEight ship with ggplot2: theme_gray() (default), theme_bw(), theme_light(), theme_classic(), theme_linedraw(), theme_dark(), theme_minimal(), theme_void(). The package ggthemes adds many more."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#customizing-individual-components",
+    "href": "slides/DATA100-F26-Lecture-6.html#customizing-individual-components",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Customizing individual components",
+    "text": "Customizing individual components\ntheme() controls everything non-data. element_*() functions describe how each piece looks.\n\nggplot(mpg, aes(x = displ, y = hwy, color = drv)) +\n  geom_point() +\n  labs(\n    title = \"Larger engine sizes tend to have lower fuel economy\",\n    caption = \"Source: https://fueleconomy.gov.\"\n  ) +\n  theme(\n    legend.position = c(0.6, 0.7),\n    legend.direction = \"horizontal\",\n    legend.box.background = element_rect(color = \"black\"),\n    plot.title = element_text(face = \"bold\"),\n    plot.title.position = \"plot\",\n    plot.caption.position = \"plot\",\n    plot.caption = element_text(hjust = 0)\n  )"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#try-it",
+    "href": "slides/DATA100-F26-Lecture-6.html#try-it",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Try it",
+    "text": "Try it"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#worth-knowing",
+    "href": "slides/DATA100-F26-Lecture-6.html#worth-knowing",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Worth knowing",
+    "text": "Worth knowing\n\nelement_text(): font face, size, color, justification\nelement_rect(): backgrounds and borders\nelement_line(): grid lines and axis lines\nelement_blank(): remove a component entirely\n\nplot.title.position = \"plot\" aligns the title to the whole graphic rather than the panel, which usually looks better with left-aligned captions.\nSee ?theme for the full list."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#patchwork",
+    "href": "slides/DATA100-F26-Lecture-6.html#patchwork",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "patchwork",
+    "text": "patchwork\nSave plots as objects, then combine with operators:\n\np1 &lt;- ggplot(mpg, aes(x = displ, y = hwy)) +\n  geom_point() + labs(title = \"Plot 1\")\np2 &lt;- ggplot(mpg, aes(x = drv, y = hwy)) +\n  geom_boxplot() + labs(title = \"Plot 2\")\n\np1 + p2\n\n\npatchwork doesn’t add a new function here!"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#composing-layouts",
+    "href": "slides/DATA100-F26-Lecture-6.html#composing-layouts",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Composing layouts",
+    "text": "Composing layouts\n| places side by side, / starts a new row.\n\np3 &lt;- ggplot(mpg, aes(x = cty, y = hwy)) +\n  geom_point() + labs(title = \"Plot 3\")\n\n(p1 | p3) / p2"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#collecting-legends",
+    "href": "slides/DATA100-F26-Lecture-6.html#collecting-legends",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Collecting legends",
+    "text": "Collecting legends"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#what-just-happened",
+    "href": "slides/DATA100-F26-Lecture-6.html#what-just-happened",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "What just happened",
+    "text": "What just happened\n\nguide_area() reserves a slot for the shared legend\nplot_layout(guides = \"collect\") gathers legends from every panel into it\nheights = c(1, 3, 2, 4) divides the vertical space proportionally\n\n\n\n\n\n\n\nNote\n\n\n& applies a theme setting to every plot in the patchwork; a plain + would only affect the last one added. This is the one place in ggplot2 code where & and + are not interchangeable."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#your-turn-3",
+    "href": "slides/DATA100-F26-Lecture-6.html#your-turn-3",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Your turn",
+    "text": "Your turn\n\n\n\n\n\n\nTry it yourself\n\n\nWhat changes if you drop the parentheses from (p1 | p2) / p3? Why?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#summary",
+    "href": "slides/DATA100-F26-Lecture-6.html#summary",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Summary",
+    "text": "Summary\n\nLabels: the title states the finding; axes carry units\nAnnotations: geom_text() for data, annotate() for one-offs; reference lines, rectangles, and arrows\nScales: breaks and labels to tweak, whole scales to replace; transform in the scale so axes stay readable\nColor: ColorBrewer and viridis for accessibility; redundant shape encoding is free insurance\nZooming: coord_cartesian() zooms, limits subsets\nThemes: everything that isn’t data\nLayout: patchwork for multi-panel figures"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-6.html#next-class",
+    "href": "slides/DATA100-F26-Lecture-6.html#next-class",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Next Class",
+    "text": "Next Class\nReview for Visualization and Midterm!"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#where-we-are",
+    "href": "slides/DATA100-F26-Lecture-4.html#where-we-are",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Where we are",
+    "text": "Where we are\nIn this week, I will give you a working template for plots. This chapter explains why that template works.\nBy the end you should be able to describe any ggplot2 plot in terms of seven components: a dataset, a geom, a set of mappings, a stat, a position adjustment, a coordinate system, a faceting scheme and theme.\n\n\n\n\n\n\n\nMy Plan\n\n\nI hope that once you’ve seen the seven slots, these plots will stop looking like new syntax to memorize."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#setup",
+    "href": "slides/DATA100-F26-Lecture-4.html#setup",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Setup",
+    "text": "Setup\n\nlibrary(tidyverse)\n\nWe’ll work mostly with two datasets that ship with ggplot2:\n\nmpg — 234 car models, 11 variables\ndiamonds — ~54,000 diamonds\n\n\nmpg |&gt; select(manufacturer, model, displ, hwy, class, drv) |&gt; head(4)\n\n# A tibble: 4 × 6\n  manufacturer model displ   hwy class   drv  \n  &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;\n1 audi         a4      1.8    29 compact f    \n2 audi         a4      1.8    29 compact f    \n3 audi         a4      2      31 compact f    \n4 audi         a4      2      30 compact f"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#data",
+    "href": "slides/DATA100-F26-Lecture-4.html#data",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Data",
+    "text": "Data\nEvery ggplot() call starts with the same first argument: a data frame (or tibble).\n\nggplot(data = mpg) +\n  geom_point(aes(x = displ, y = hwy))\n\nmpg fills in &lt;DATA&gt; from the template. Nothing gets drawn until ggplot2 knows which data frame to pull the variables displ and hwy out of the mappings in aes()."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#data-can-change-per-layer",
+    "href": "slides/DATA100-F26-Lecture-4.html#data-can-change-per-layer",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Data can change per layer",
+    "text": "Data can change per layer\nggplot(data = ...) sets the default data for every layer. Any geom can override it with its own data argument:\n\nggplot(data = mpg, aes(x = displ, y = hwy)) +\n  geom_point() +\n  geom_point(data = mpg |&gt; filter(class == \"2seater\"), color = \"red\")\n\nThe first layer inherits mpg from ggplot(); the second layer supplies its own filtered data frame instead. Same idea you’ll see again in the Layers section:\n\ndata is a slot you can fill once globally, or override locally."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#the-pipe",
+    "href": "slides/DATA100-F26-Lecture-4.html#the-pipe",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "The pipe: |>",
+    "text": "The pipe: |&gt;\nThe symbol |&gt; takes what’s on its left and feeds it in as the first argument of the function on its right.\n\nmpg |&gt; select(manufacturer, model, displ, hwy)\n\n# is exactly the same as:\nselect(mpg, manufacturer, model, displ, hwy)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#analogy",
+    "href": "slides/DATA100-F26-Lecture-4.html#analogy",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Analogy",
+    "text": "Analogy\n\n\n\n\n\n\n\nIf you like math…\n\n\nThink of a two-variable function \\(f(x, y)\\).\nThe pipe works like plugging a value in for one of the arguments. Piping 5 into \\(y\\) gives you \\(f(x, 5)\\). Essentially you’ve fixed one input and left the rest open.\n\n\n\n\n\n\n\n\n\n\n\nConnecting back to coding\n\n\nWhen we write mpg |&gt; filter(...) |&gt; select(...), we’re doing the same thing: treating mpg like the input we’re plugging in, and filter(...), select(...) like functions waiting to receive it as their first argument."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#the-pipe-chain",
+    "href": "slides/DATA100-F26-Lecture-4.html#the-pipe-chain",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "The Pipe Chain",
+    "text": "The Pipe Chain\nYou can chain several steps and get something that reads top-to-bottom, roughly like “take mpg, then filter it, then select these columns”, instead of nesting function calls inside each other.\n\nmpg |&gt;\n  filter(class == \"suv\") |&gt;\n  select(model, displ, hwy) |&gt;\n  arrange(desc(hwy))\n\n\n\n\n\n\n\nNote\n\n\nThis is R’s native pipe (base R ≥ 4.1). You may also see %&gt;% in older code or tutorials. They serve the same purpose."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#mapping-a-variable-to-an-aesthetic",
+    "href": "slides/DATA100-F26-Lecture-4.html#mapping-a-variable-to-an-aesthetic",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Mapping a variable to an aesthetic",
+    "text": "Mapping a variable to an aesthetic\nAn aesthetic is a visual property of the marks on the plot: position, color, shape, size, transparency.\naes() says “let this variable control that property.”\n\nggplot(mpg, aes(x = displ, y = hwy, color = class)) +\n  geom_point()"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#not-every-aesthetic-suits",
+    "href": "slides/DATA100-F26-Lecture-4.html#not-every-aesthetic-suits",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Not every aesthetic suits",
+    "text": "Not every aesthetic suits\nYou can change the shape of scatterplots from circles to triangles, stars, squares, etc.\nBut shape only supplies six distinct symbols before it gives up: the seventh category simply goes unplotted, with a warning.\n\nggplot(mpg, aes(x = displ, y = hwy, shape = class)) +\n  geom_point()\n\nWarning: The shape palette can deal with a maximum of 6 discrete values because more\nthan 6 becomes difficult to discriminate\nℹ you have requested 7 values. Consider specifying shapes manually if you need\n  that many of them.\n\n\nWarning: Removed 62 rows containing missing values or values outside the scale range\n(`geom_point()`)."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#problems-with-shape-levels",
+    "href": "slides/DATA100-F26-Lecture-4.html#problems-with-shape-levels",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Problems with shape levels",
+    "text": "Problems with shape levels\n\n\n\n\n\n\nWarning\n\n\nclass has seven levels but shape can only display six. SUVs (62 rows) silently disappear from the plot above. You should always read the warnings ggplot2 gives you, they’re telling you data went missing from the picture.\n\n\n\n\nggplot(mpg, aes(x = displ, y = hwy, shape = drv)) +\n  geom_point()"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#point-customization",
+    "href": "slides/DATA100-F26-Lecture-4.html#point-customization",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Point customization",
+    "text": "Point customization\n\n\n\n\n\n\n\nCheckpoint\n\n\nWhat do you think size and alpha does?\n\n\n\n\n\nsize changes the size of the dot (smaller-larger)\nalpha changes the transparency of the dot (lighter-darker)\nThese two aesthetics are ranked."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#ordered-aesthetics",
+    "href": "slides/DATA100-F26-Lecture-4.html#ordered-aesthetics",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Ordered aesthetics",
+    "text": "Ordered aesthetics\n\nggplot(mpg, aes(x = displ, y = hwy, size = class)) +\n  geom_point()\n\nWarning: Using size for a discrete variable is not advised.\n\n\n\n\n\n\n\n\n\n\nMapping an unordered category\n\n\nclass (e.g. 2seater, compact, midsize, …) has no inherent order. Mapping it to size or alpha visually implies “bigger/darker = more,” which is misleading for a purely categorical variable. Save these aesthetics for variables that are genuinely ordered or continuous."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#mapping-vs.-setting",
+    "href": "slides/DATA100-F26-Lecture-4.html#mapping-vs.-setting",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Mapping vs. setting",
+    "text": "Mapping vs. setting\nInside aes() = mapping, driven by data, gets a legend. Outside aes() = setting, a fixed constant, no legend.\n\nggplot(mpg, aes(x = displ, y = hwy)) +\n  geom_point(color = \"blue\", size = 2, shape = 17)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#setting-values",
+    "href": "slides/DATA100-F26-Lecture-4.html#setting-values",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Setting values",
+    "text": "Setting values\nWhen you set an aesthetic you supply a raw value:\n\n\n\nAesthetic\nValue\n\n\n\n\ncolor\ncolour name \"blue\" or hex string \"#E81B23\"\n\n\nsize\npoint size in mm, size = 1\n\n\nshape\nan integer 0–25, shape = 1\n\n\nalpha\nopacity from 0 to 1\n\n\n\nShapes 0–14 are hollow (border from color), 15–20 are solid (filled with color), and 21–25 take both a color border and a fill."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#your-turn",
+    "href": "slides/DATA100-F26-Lecture-4.html#your-turn",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Your turn",
+    "text": "Your turn\n\n\n\n\n\n\nTry it yourself\n\n\n\nDraw hwy vs. displ with pink filled triangles.\nWhy does the code below not produce blue points?\nWhat happens with aes(color = displ &lt; 5)?\n\n\n\n\n\nggplot(mpg) +\n  geom_point(aes(x = displ, y = hwy, color = \"blue\"))"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#a-geom-is-how-the-data-gets-drawn",
+    "href": "slides/DATA100-F26-Lecture-4.html#a-geom-is-how-the-data-gets-drawn",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "A geom is how the data gets drawn",
+    "text": "A geom is how the data gets drawn\nSame data, same mappings, different geom:\n\n\n\nggplot(mpg, aes(displ, hwy)) +\n  geom_point()\n\n\n\n\n\n\n\n\n\n\nggplot(mpg, aes(displ, hwy)) +\n  geom_smooth()"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#geoms-accept-different-aesthetics",
+    "href": "slides/DATA100-F26-Lecture-4.html#geoms-accept-different-aesthetics",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Geoms accept different aesthetics",
+    "text": "Geoms accept different aesthetics\nA line has no shape; a point has no linetype. ggplot2 quietly ignores aesthetics a geom can’t use.\n\nggplot(mpg, aes(x = displ, y = hwy, linetype = drv)) +\n  geom_smooth()\n\n\nMapping a discrete variable splits the geom into one object per level."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#grouping-without-a-legend",
+    "href": "slides/DATA100-F26-Lecture-4.html#grouping-without-a-legend",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Grouping without a legend",
+    "text": "Grouping without a legend\ngroup splits the data the same way, but adds no legend and no visual distinction.\n\nggplot(mpg, aes(x = displ, y = hwy)) +\n  geom_smooth(aes(group = drv))\n\n\n\n\n\n\n\n\nNote\n\n\ngroup is what mapping a discrete variable does implicitly behind the scenes. You should use it when you want the splitting behaviour without the legend or the visual distinction that color or linetype would add."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#layers-stack",
+    "href": "slides/DATA100-F26-Lecture-4.html#layers-stack",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Layers stack",
+    "text": "Layers stack\nMultiple geoms in one plot. Mappings in ggplot() are global; mappings in a geom are local to that layer.\n\nggplot(mpg, aes(x = displ, y = hwy)) +\n  geom_point(aes(color = class)) +\n  geom_smooth(se = FALSE)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#layers-can-have-their-own-data",
+    "href": "slides/DATA100-F26-Lecture-4.html#layers-can-have-their-own-data",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Layers can have their own data",
+    "text": "Layers can have their own data\nUseful for highlighting a subset:\n\nggplot(mpg, aes(x = displ, y = hwy)) +\n  geom_point(color = \"grey60\") +\n  geom_point(\n    data = mpg |&gt; filter(class == \"2seater\"),\n    color = \"red\", size = 2\n  )"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#different-geoms",
+    "href": "slides/DATA100-F26-Lecture-4.html#different-geoms",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Different geoms",
+    "text": "Different geoms\nggplot(mpg, aes(x = hwy)) + geom_histogram(binwidth = 2)\nggplot(mpg, aes(x = hwy)) + geom_density()\nggplot(mpg, aes(x = hwy)) + geom_boxplot()\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe histogram and density show bimodality and right skew; the boxplot compresses that into a summary but flags outliers."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#common-geoms-at-a-glance",
+    "href": "slides/DATA100-F26-Lecture-4.html#common-geoms-at-a-glance",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Common geoms at a glance",
+    "text": "Common geoms at a glance\n\n\n\n\n\n\n\n\nChart type\nGeom\nWhat it draws\n\n\n\n\nLine chart\ngeom_line()\nConnects points in order of the x-value — good for trends over a continuous sequence (e.g. time)\n\n\nBar plot\ngeom_bar()\nCounts observations per category and draws bar height as the count (uses stat_count())\n\n\nBar plot (pre-counted)\ngeom_col()\nBar height comes directly from a y column you already have — no counting\n\n\nHistogram\ngeom_histogram()\nBins a continuous variable and draws bar height as the count per bin\n\n\nBoxplot\ngeom_boxplot()\nFive-number summary (min, Q1, median, Q3, max) plus outliers, per group\n\n\nArea chart\ngeom_area()\nLike geom_line(), but fills the region under the line"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#boxplots",
+    "href": "slides/DATA100-F26-Lecture-4.html#boxplots",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Boxplots",
+    "text": "Boxplots\nA boxplot summarizes a distribution with five numbers: the minimum, the first quartile (Q1), the median, the third quartile (Q3), and the maximum. Points far from the rest get drawn separately as individual outliers.\n\nggplot(mpg, aes(x = class, y = hwy)) +\n  geom_boxplot()"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#reading-a-boxplot",
+    "href": "slides/DATA100-F26-Lecture-4.html#reading-a-boxplot",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Reading a boxplot",
+    "text": "Reading a boxplot\n\n\n\n\n\n\n\nWhat each part means\n\n\n\nThe box spans Q1 to Q3, the middle 50% of the data (the interquartile range, or IQR).\nThe line inside the box is the median.\nThe whiskers extend to the farthest point still within 1.5 times the IQR from the box.\nDots beyond the whiskers are flagged as outliers.\n\n\n\n\n\n\n\n\n\n\n\nTip\n\n\nA boxplot is a compression. It tells you center and spread at a glance, but it can’t show you whether a group has one peak or several, since all of that shape detail gets collapsed into five numbers."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#violin-plots",
+    "href": "slides/DATA100-F26-Lecture-4.html#violin-plots",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Violin plots",
+    "text": "Violin plots\nA violin plot replaces the box with a mirrored density curve, so you see the full shape of the distribution instead of just a summary.\n\nggplot(mpg, aes(x = class, y = hwy)) +\n  geom_violin()"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#boxplot-vs.-violin-plot",
+    "href": "slides/DATA100-F26-Lecture-4.html#boxplot-vs.-violin-plot",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Boxplot vs. violin plot",
+    "text": "Boxplot vs. violin plot\nggplot(mpg, aes(x = class, y = hwy)) + geom_boxplot()\nggplot(mpg, aes(x = class, y = hwy)) + geom_violin()"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#boxplot-vs-violin-plot",
+    "href": "slides/DATA100-F26-Lecture-4.html#boxplot-vs-violin-plot",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Boxplot vs violin plot",
+    "text": "Boxplot vs violin plot\n\n\n\n\n\n\nImportant\n\n\nUse a boxplot when you mainly care about comparing medians and spread across many groups at once, it stays compact even with a dozen categories side by side.\nUse a violin plot when the shape itself matters, for example spotting bimodal groups, since a boxplot cannot distinguish “spread out evenly” from “two separate clusters.”\n\n\n\n\n\n\n\n\n\nCaution\n\n\nViolin plots need enough points per group to draw a reliable density curve. With a small group, the “shape” you see may just be noise from too few observations, not a real pattern."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#try-out-different-plots",
+    "href": "slides/DATA100-F26-Lecture-4.html#try-out-different-plots",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Try out different plots",
+    "text": "Try out different plots\n\n\n\n\n\n\nTry it yourself\n\n\n\nWhich geom draws a line chart? A boxplot? A histogram? An area chart?\nWhat does show.legend = FALSE do, and why might you want it?\nTry uncommenting different sections below to see how each chart type behaves with 1 vs. 2 variables!"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#facet_wrap-one-variable",
+    "href": "slides/DATA100-F26-Lecture-4.html#facet_wrap-one-variable",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "facet_wrap(): one variable",
+    "text": "facet_wrap(): one variable\nWhat if we are interested in how each class of variables behave? We can split the plot into panels with one per level.\n\nggplot(mpg, aes(x = displ, y = hwy)) +\n  geom_point() +\n  facet_wrap(~cyl)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#facet_grid-two-variables",
+    "href": "slides/DATA100-F26-Lecture-4.html#facet_grid-two-variables",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "facet_grid(): two variables",
+    "text": "facet_grid(): two variables\nA two-sided formula, rows ~ cols.\n\nggplot(mpg, aes(x = displ, y = hwy)) +\n  geom_point() +\n  facet_grid(drv ~ cyl)\n\n\nEmpty panels mean that combination doesn’t occur in the data."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#free-scales",
+    "href": "slides/DATA100-F26-Lecture-4.html#free-scales",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Free scales",
+    "text": "Free scales\nBy default every panel shares one scale, which is what makes panels comparable. Release that with scales:\n\nggplot(mpg, aes(x = displ, y = hwy)) +\n  geom_point() +\n  facet_grid(drv ~ cyl, scales = \"free\")"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#free-scales-1",
+    "href": "slides/DATA100-F26-Lecture-4.html#free-scales-1",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Free scales",
+    "text": "Free scales\n\n\n\n\n\n\n\nCustomization\n\n\n\"free_x\", \"free_y\", or \"free\" let each row/column pick its own range.\n\nThis is easier to read within a panel, but panels are no longer directly comparable to each other.\n\n\n\n\n\n\n\n\n\n\n\n\nCheckpoint\n\n\nIf I want to share a plot with someone that has no idea about the data set, should I use free scales or shared scales?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#your-turn-1",
+    "href": "slides/DATA100-F26-Lecture-4.html#your-turn-1",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Your turn",
+    "text": "Your turn\n\n\n\n\n\n\nTry it yourself\n\n\n\nWhat happens if you facet on a continuous variable like cty?\nWhat does . mean in facet_grid(drv ~ .)?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#where-does-count-come-from",
+    "href": "slides/DATA100-F26-Lecture-4.html#where-does-count-come-from",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Where does count come from?",
+    "text": "Where does count come from?\n\nggplot(diamonds, aes(x = cut)) +\n  geom_bar()\n\n\ncount isn’t a column in diamonds. The geom_bar computed it."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#stats",
+    "href": "slides/DATA100-F26-Lecture-4.html#stats",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Stats",
+    "text": "Stats\nA stat is the algorithm a geom runs on your data before drawing.\n\nbar charts, histograms, freqpolys → bin and count\nsmoothers → fit a model, plot predictions\nboxplots → compute a five-number summary\n\nEvery geom has a default stat; every stat has a default geom. ?geom_bar tells you it uses stat_count(), and lists the variables it computes."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#overriding-the-stat",
+    "href": "slides/DATA100-F26-Lecture-4.html#overriding-the-stat",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Overriding the stat",
+    "text": "Overriding the stat\nWhen you already have the counts, switch to the identity stat (or use geom_col()):\n\ndiamonds |&gt;\n  count(cut) |&gt;\n  ggplot(aes(x = cut, y = n)) +\n  geom_bar(stat = \"identity\")"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#using-a-computed-variable",
+    "href": "slides/DATA100-F26-Lecture-4.html#using-a-computed-variable",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Using a computed variable",
+    "text": "Using a computed variable\nafter_stat() reaches into the variables the stat produced. The prop means proportion.\n\nggplot(diamonds, aes(x = cut, y = after_stat(prop), group = 1)) +\n  geom_bar()"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#group-issue",
+    "href": "slides/DATA100-F26-Lecture-4.html#group-issue",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "group issue",
+    "text": "group issue\n\n\n\n\n\n\nImportant\n\n\nWithout group = 1, each bar is treated as its own group and every proportion comes out as 1, then there’s nothing to divide by. Try deleting group = 1 in the live cell below and see what happens."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#calling-a-stat-directly",
+    "href": "slides/DATA100-F26-Lecture-4.html#calling-a-stat-directly",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Calling a stat directly",
+    "text": "Calling a stat directly\nSometimes the summary is the point, and naming the stat says so:\n\nggplot(diamonds) +\n  stat_summary(\n    aes(x = cut, y = depth),\n    fun.min = min, fun.max = max, fun = median\n  )"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#your-turn-2",
+    "href": "slides/DATA100-F26-Lecture-4.html#your-turn-2",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Your turn",
+    "text": "Your turn\n\n\n\n\n\n\nTry it yourself\n\n\n\nIf you swap geom_bar() for geom_col() in the plot below without changing anything else, what error (if any) do you think you’ll get? Try it and see if you were right.\nWhich diamond cut do you think has the smallest proportion in the data set?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#color-vs.-fill-for-bars",
+    "href": "slides/DATA100-F26-Lecture-4.html#color-vs.-fill-for-bars",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "color vs. fill for bars",
+    "text": "color vs. fill for bars\nggplot(mpg, aes(x = drv, color = drv)) + geom_bar()\nggplot(mpg, aes(x = drv, fill = drv)) + geom_bar()"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#stacking-is-a-position-adjustment",
+    "href": "slides/DATA100-F26-Lecture-4.html#stacking-is-a-position-adjustment",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Stacking is a position adjustment",
+    "text": "Stacking is a position adjustment\nMap fill to a second variable and the bars stack automatically:\n\nggplot(mpg, aes(x = drv, fill = class)) +\n  geom_bar()"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#the-four-options",
+    "href": "slides/DATA100-F26-Lecture-4.html#the-four-options",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "The four options",
+    "text": "The four options\n\n\n\n\n\n\n\nStack\n\n\n\"stack\" — the default for bars. Segments pile on top of each other in full-height, full-count form.\n\n\n\n\n\n\n\n\n\n\n\nFill\n\n\n\"fill\" — stack, then normalize each bar to the same height. Best for comparing proportions across groups, since every bar reaches 100%.\n\n\n\n\n\n\n\n\n\n\n\nDodge\n\n\n\"dodge\" — segments sit side by side instead of stacking. Best for comparing individual counts directly, since bar heights stay on the original count scale.\n\n\n\n\n\n\n\n\n\n\n\nIdentity\n\n\n\"identity\" — draws each value exactly where it falls, with no adjustment. For bars this usually means overlapping rectangles (rarely what you want); for points, it’s the default position since points have no width to adjust."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#exercise",
+    "href": "slides/DATA100-F26-Lecture-4.html#exercise",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Exercise",
+    "text": "Exercise\n\n\n\n\n\n\nTip\n\n\nChange position = \"stack\" below to \"fill\", \"dodge\", and \"identity\". Watch how the same data tells a different story each time."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#overplotting",
+    "href": "slides/DATA100-F26-Lecture-4.html#overplotting",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Overplotting",
+    "text": "Overplotting\nhwy and displ are rounded, so points land on a grid and pile up. This scatterplot shows 126 visible points for 234 observations. The points are overlapping!\n\nggplot(mpg, aes(x = displ, y = hwy)) +\n  geom_point()"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#jittering",
+    "href": "slides/DATA100-F26-Lecture-4.html#jittering",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Jittering",
+    "text": "Jittering\nposition = \"jitter\" adds a little random noise. Less accurate at small scales, far more honest at large ones.\n\nggplot(mpg, aes(x = displ, y = hwy)) +\n  geom_jitter()\n\n\ngeom_jitter() is shorthand for geom_point(position = \"jitter\")."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#your-turn-3",
+    "href": "slides/DATA100-F26-Lecture-4.html#your-turn-3",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Your turn",
+    "text": "Your turn\n\n\n\n\n\n\nTry it yourself\n\n\n\nWhat’s wrong with a plain geom_point() of cty vs. hwy? Fix it below.\nIs there any difference between the default and position = \"identity\" for points?\nTry geom_jitter(width = 0.2, height = 0.5) to control the amount of jitter.\nCompare geom_jitter() and geom_count()."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#the-default-is-cartesian",
+    "href": "slides/DATA100-F26-Lecture-4.html#the-default-is-cartesian",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "The default is Cartesian",
+    "text": "The default is Cartesian\nx and y act independently. Two alternatives come up often enough to know:\n\ncoord_quickmap(): fixes the aspect ratio for geographic data\ncoord_polar(): bends the Cartesian plane into polar coordinates\n\n\nnz &lt;- map_data(\"nz\")\n\nggplot(nz, aes(x = long, y = lat, group = group)) +\n  geom_polygon(fill = \"white\", color = \"black\") +\n  coord_quickmap()"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#polar-coordinates",
+    "href": "slides/DATA100-F26-Lecture-4.html#polar-coordinates",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Polar coordinates",
+    "text": "Polar coordinates\nA bar chart and a Coxcomb chart are the same plot in different coordinates:\nbar &lt;- ggplot(diamonds) +\n  geom_bar(aes(x = clarity, fill = clarity), show.legend = FALSE, width = 1) +\n  theme(aspect.ratio = 1)\n\nbar + coord_flip()\nbar + coord_polar()"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#the-extended-template",
+    "href": "slides/DATA100-F26-Lecture-4.html#the-extended-template",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "The extended template",
+    "text": "The extended template\nggplot(data = &lt;DATA&gt;) +\n  &lt;GEOM_FUNCTION&gt;(\n     mapping = aes(&lt;MAPPINGS&gt;),\n     stat = &lt;STAT&gt;,\n     position = &lt;POSITION&gt;\n  ) +\n  &lt;COORDINATE_FUNCTION&gt; +\n  &lt;FACET_FUNCTION&gt;\nThere are seven slots. In practice you only fill in three: data, mappings, geom, because ggplot2 supplies sensible defaults for the rest."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-4.html#summary",
+    "href": "slides/DATA100-F26-Lecture-4.html#summary",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Summary",
+    "text": "Summary\n\nAesthetics map variables to visual properties; setting differs from mapping\nGeoms decide how marks are drawn; layers stack and can override data and mappings\nFacets split one plot into comparable panels\nStats compute the values a geom actually plots\nPositions resolve overlap: stack, fill, dodge, jitter\nCoordinates redefine what x and y mean\n\nStill to come: themes, in Chapter 11 (next week)."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#the-whole-game",
+    "href": "slides/DATA100-F26-Lecture-2.html#the-whole-game",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "The Whole Game",
+    "text": "The Whole Game\nImagine learning baseball by drilling practices into pitching, hitting, and fielding for three months, before ever seeing a new game.\n\n\n\n\n\n\n\nWarning\n\n\nThis sounds exhausting. Nobody learns baseball that way.\n\n\n\n\n\n\n\n\n\n\nInstead, you would play a simplified whole game first. - It is messy, imperfect, but real. - You’d get a feel for what the sport is before drilling into any of the skills."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#this-course-works-the-same-way",
+    "href": "slides/DATA100-F26-Lecture-2.html#this-course-works-the-same-way",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "This course works the same way! :)",
+    "text": "This course works the same way! :)\nWe are going to take a quick glimpse on what you are about to do in this course, over this week.\n\n\n\n\n\n\n\n\nToday\n\n\nPlay the whole game once:\n\nAn open question \\(\\rightarrow\\) some cool results\n\n\n\n\n\n\n\n\n\n\n\n\n\nRest of semester\n\n\nDrill each piece:\n\nCleaning, transformations, modelling, communication\n\n\n\n\n\nBy the end of the course, you’ll play the whole game again (wink wink this time completing the final project by yourself)."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#todays-agenda",
+    "href": "slides/DATA100-F26-Lecture-2.html#todays-agenda",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Today’s Agenda",
+    "text": "Today’s Agenda\n\n\n\n\n\n\n\nData Set\n\n\nWork with real Canadian financial wellness survey data.\n\n\n\n\n\n\n\n\n\n\n\n\nWhy does this matter?\n\n\n\nFinancial stress affects health, relationships, and decision-making.\nUnderstanding what predicts financial comfort helps policymakers, employers, and individuals."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#what-contributes-to-financial-wellness",
+    "href": "slides/DATA100-F26-Lecture-2.html#what-contributes-to-financial-wellness",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "What contributes to financial wellness?",
+    "text": "What contributes to financial wellness?\n\n\n\n\n\n\n\nCheckpoint\n\n\nTake a minute to think about it: what factors do you think contribute to someone’s financial wellness?\n\n\nIs it someone’s current wealth?\nHow much money are they making from their jobs?\nIs where you live a factor to how financially well are you?\n\n\n\n\n\n\n\n\n\n\nWe’ll come back to your answers as we go through the questions."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#the-data",
+    "href": "slides/DATA100-F26-Lecture-2.html#the-data",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "The Data",
+    "text": "The Data\n\n\n\n\n\n\n\nData Overview\n\n\nSurvey responses from Canadians regarding income, employment, financial habits, and workplace benefits.\n\nSample: Canadians across all provinces\nScale: 1,000 total respondents across two survey waves (in 2017 & 2022)\nScope: Captures demographic variables alongside self-reported financial stress metrics (survey responses)\n\n\n\n\n\n\n\nNote: This data set originates from a real research project conducted in partnership with external industrial partners. To preserve confidentiality, the data has been anonymized and structured for teaching purposes."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#survey-questions",
+    "href": "slides/DATA100-F26-Lecture-2.html#survey-questions",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "8 Survey Questions",
+    "text": "8 Survey Questions\n\nWhat is your age?\nWhich province are you currently living in?\nWhat is your annual income in dollars?\nWhat percentage of your paycheck do you put into savings?\nAre you currently overwhelmed by debt?\nHow manageable are you able to come up with $2,000 of emergency fund right now?\nHow manageable are you able to live if your paycheque arrives two weeks late?\nWhat is the most important benefit that you seek from your job?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#types-of-variables",
+    "href": "slides/DATA100-F26-Lecture-2.html#types-of-variables",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Types of Variables",
+    "text": "Types of Variables\n\n\n\n#\nQuestion\nVariable Type\n\n\n\n\n1\nAge\nContinuous\n\n\n2\nProvince\nCategorical (Nominal)\n\n\n3\nAnnual income (in CAD)\nContinuous\n\n\n4\nPercentage of paycheck saved\nContinuous\n\n\n5\nOverwhelmed by debt?\nCategorical (Binary)\n\n\n6\nManageability of $2,000 emergency fund\nLikert (Ordinal)\n\n\n7\nManageability of 2-week paycheque delay\nLikert (Ordinal)\n\n\n8\nMost important job benefit\nCategorical (Nominal)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#choosing-how-to-show-data",
+    "href": "slides/DATA100-F26-Lecture-2.html#choosing-how-to-show-data",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Choosing How to Show Data",
+    "text": "Choosing How to Show Data\n\n\n\n\n\n\n\nQuick distinctions\n\n\n\nContinuous: a numeric value that can (in theory) take any value in a range.\nCategorical: falls into one of several unordered groups (nominal) or has only two options (binary).\nLikert: an ordered scale (e.g., “very difficult” → “difficult” → … → “very manageable”)\n\ncategorical, but with a meaningful order.\n\n\n\n\n\n\n\n\n\n\n\n\n\nOne idea to hold onto\n\n\nThe type of variable decides the type of plot.\n\nOne category at a time → bar chart\nOne number at a time → histogram\nTwo things at once → scatterplot (or boxplot, if one is a category)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#glimpse-of-data",
+    "href": "slides/DATA100-F26-Lecture-2.html#glimpse-of-data",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Glimpse of Data",
+    "text": "Glimpse of Data\n\nhead(survey_2017)\n\n# A tibble: 6 × 16\n  respondent_id  year   age province      income savings_pct benefits_preference\n  &lt;chr&gt;         &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;              \n1 2017-0001      2017    31 Alberta        78300        21.6 More time off      \n2 2017-0002      2017    51 Newfoundland… 149500        21.8 Educational funding\n3 2017-0003      2017    40 Manitoba       97700         8.2 Health benefits    \n4 2017-0004      2017    37 Ontario       102300        13.7 Higher wages       \n5 2017-0005      2017    39 British Colu… 118600         7.8 Health benefits    \n6 2017-0006      2017    43 Alberta        54400        16.9 Health benefits    \n# ℹ 9 more variables: paycheque_delay_difficulty &lt;ord&gt;, debt_overwhelmed &lt;chr&gt;,\n#   emergency_fund_likelihood &lt;ord&gt;, financial_wellness_cluster &lt;fct&gt;,\n#   paycheque_delay_score &lt;dbl&gt;, emergency_fund_score &lt;dbl&gt;, age_bucket &lt;fct&gt;,\n#   income_bucket &lt;fct&gt;, province_bucket &lt;chr&gt;\n\n\n\n\n\n\n\n\n\nWhat’s a tibble?\n\n\nA tibble is just a table of rows and columns, like an Excel spreadsheet. It is how R stores and displays your data with just cleaner printing."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#what-does-the-sample-look-like",
+    "href": "slides/DATA100-F26-Lecture-2.html#what-does-the-sample-look-like",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "What does the sample look like?",
+    "text": "What does the sample look like?\n\n\n\n\n\n\n\nWhat do you notice?\n\n\nI am going to show you the demographic-response (i.e. age, income, and province) distributions from the 2017 survey results. Try and answer the following questions:\n\nCan you tell me if there are any obvious patterns?\nDo you like the plots that I created? What would you change?\nBased on those three plots, can you tell me anything about the financial wellness of the respondents?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#income-distribution",
+    "href": "slides/DATA100-F26-Lecture-2.html#income-distribution",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Income Distribution",
+    "text": "Income Distribution"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#age-distribution",
+    "href": "slides/DATA100-F26-Lecture-2.html#age-distribution",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Age Distribution",
+    "text": "Age Distribution"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#age-distribution-correct-version",
+    "href": "slides/DATA100-F26-Lecture-2.html#age-distribution-correct-version",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Age Distribution (Correct Version)",
+    "text": "Age Distribution (Correct Version)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#province-distribution",
+    "href": "slides/DATA100-F26-Lecture-2.html#province-distribution",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Province Distribution",
+    "text": "Province Distribution"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#for-the-rest-of-the-lecture-keep-thinking-about-these-questions",
+    "href": "slides/DATA100-F26-Lecture-2.html#for-the-rest-of-the-lecture-keep-thinking-about-these-questions",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "For the rest of the lecture, keep thinking about these questions:",
+    "text": "For the rest of the lecture, keep thinking about these questions:\n\n\n\n\n\n\n\nCheckpoint\n\n\n\nWhat kind of patterns do you recognize from the plots?\nHow would you improve the readability of the plots?\nWhat can you tell me about the financial wellness from the survey results?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#age-vs-income",
+    "href": "slides/DATA100-F26-Lecture-2.html#age-vs-income",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Age vs Income",
+    "text": "Age vs Income\n\n\n\n\n\n\n\n\nFinding Patterns\n\n\nLet us try and fit something called a Linear Model. That is we let \\(y\\) = income and \\(x\\) = age, and we fit some function \\(y=f(x) = mx+b\\) over this plot."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#tell-me-about-the-patterns-again",
+    "href": "slides/DATA100-F26-Lecture-2.html#tell-me-about-the-patterns-again",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Tell me about the patterns again?",
+    "text": "Tell me about the patterns again?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#how-we-found-these-groupsclusters",
+    "href": "slides/DATA100-F26-Lecture-2.html#how-we-found-these-groupsclusters",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "How We Found These Groups/Clusters",
+    "text": "How We Found These Groups/Clusters\n\nWe didn’t set the rules manually: The patterns emerged directly from the survey data.\nUnsupervised Learning: We used algorithms to group respondents based on mathematical similarity across many variables at once.\n\nMethods like k-Nearest Neighbors (k-NN) and t-SNE helped us reduce high-dimensional data into distinct clusters.\nDon’t worry! The math behind clustering is out of scope of this course, just think of it as a tool that finds hidden patterns in complex data. If you are interested, you should take these courses in future.\n\nST362 Regression Analysis , and\nST494 Statistical Learning."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#clustering-results",
+    "href": "slides/DATA100-F26-Lecture-2.html#clustering-results",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Clustering Results",
+    "text": "Clustering Results\n\nAnalyzed 100+ survey questions across 10+ years of longitudinal project data.\n\nThis is our actual work from the lab. I am only replicating a small subset of the data for this class.\n\n3 groups proved to be the mathematical sweet spot (2 lost key details; 4 added unnecessary noise).\n\nStressed\nCoping\nComfortable\n\nConnects the data outputs directly to the client’s goal of understanding Canadian financial stress and security."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#clustering-comparison",
+    "href": "slides/DATA100-F26-Lecture-2.html#clustering-comparison",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Clustering Comparison",
+    "text": "Clustering Comparison"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#savings-rate-by-cluster-2017-vs-2022",
+    "href": "slides/DATA100-F26-Lecture-2.html#savings-rate-by-cluster-2017-vs-2022",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Savings Rate by Cluster (2017 vs 2022)",
+    "text": "Savings Rate by Cluster (2017 vs 2022)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#paycheque-delay-difficulty",
+    "href": "slides/DATA100-F26-Lecture-2.html#paycheque-delay-difficulty",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Paycheque Delay Difficulty",
+    "text": "Paycheque Delay Difficulty"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#most-important-benefit",
+    "href": "slides/DATA100-F26-Lecture-2.html#most-important-benefit",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Most Important Benefit",
+    "text": "Most Important Benefit"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#does-income-differ-by-cluster",
+    "href": "slides/DATA100-F26-Lecture-2.html#does-income-differ-by-cluster",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Does Income Differ by Cluster?",
+    "text": "Does Income Differ by Cluster?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#emergency-fund",
+    "href": "slides/DATA100-F26-Lecture-2.html#emergency-fund",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Emergency Fund",
+    "text": "Emergency Fund"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#what-happens-when-we-add-a-third-variable",
+    "href": "slides/DATA100-F26-Lecture-2.html#what-happens-when-we-add-a-third-variable",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "What Happens When We Add a Third Variable?",
+    "text": "What Happens When We Add a Third Variable?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#do-you-save-more-just-because-you-make-more",
+    "href": "slides/DATA100-F26-Lecture-2.html#do-you-save-more-just-because-you-make-more",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Do you save more just because you make more?",
+    "text": "Do you save more just because you make more?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#exercise",
+    "href": "slides/DATA100-F26-Lecture-2.html#exercise",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Exercise",
+    "text": "Exercise\nTry plotting yourself!"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-2.html#next-time",
+    "href": "slides/DATA100-F26-Lecture-2.html#next-time",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Next Time:",
+    "text": "Next Time:\nHow to clean the data so that we can work with it?"
+  },
+  {
+    "objectID": "schedule.html",
+    "href": "schedule.html",
+    "title": "Schedule",
+    "section": "",
+    "text": "Note\n\n\n\nThis schedule is a tentative schedule. It may subject to change depending on the speed or circumstances of our lectures."
+  },
+  {
+    "objectID": "schedule.html#course-schedule",
+    "href": "schedule.html#course-schedule",
+    "title": "Schedule",
+    "section": "Course Schedule",
+    "text": "Course Schedule\n\n\n\n\n\n\n\n\n\nWeek\nDay 1 (Tuesdays)\nDay 2 (Thursdays)\nAssessment\n\n\n\n\n1\n–\nIntroduction\nL0\n\n\n2\nWhole Game 1\nWhole Game 2\nL1\n\n\n3\nVisualization 1\nVisualization 2\nL2\n\n\n4\nVisualization 3\nVisualization recap\nL3\n\n\n5\nMidterm 1\nGroup project guidance 1\nM1\n\n\n6\nLogical vectors\nWords and numbers\nL4\n\n\n7\nFancy words and numbers\nMissing values and joins\nL5\n\n\n8\nPivot and Midterm 2 Review\nCase study\nL6\n\n\n9\nGroup project guidance 2\nImport: Excel, databases, and beyond\nM2\n\n\n10\nData science in practice\nRelationship between variables\nL7 , GP1\n\n\n11\nStructured relationships\nPredictive modelling\nL8 , GP 2\n\n\n12\nGroup project guidance 3\nModelling workflow\nL9\n\n\n13\nReview\n–\nL10 , GP3"
+  },
+  {
+    "objectID": "courses.html",
+    "href": "courses.html",
+    "title": "Teaching Experience",
+    "section": "",
+    "text": "DATA100 (Introduction to Data Analytics)\nST230 (Introduction to Probability and Statistics in Sciences)"
+  },
+  {
+    "objectID": "courses.html#current-courses",
+    "href": "courses.html#current-courses",
+    "title": "Teaching Experience",
+    "section": "",
+    "text": "DATA100 (Introduction to Data Analytics)\nST230 (Introduction to Probability and Statistics in Sciences)"
+  },
+  {
+    "objectID": "courses.html#past-courses",
+    "href": "courses.html#past-courses",
+    "title": "Teaching Experience",
+    "section": "Past Courses",
+    "text": "Past Courses\n\nST474/674 (Monte Carlo Methods)"
+  },
+  {
+    "objectID": "courses.html#graduate-ta-experience",
+    "href": "courses.html#graduate-ta-experience",
+    "title": "Teaching Experience",
+    "section": "Graduate TA Experience",
+    "text": "Graduate TA Experience\n\nWilfrid Laurier Univesrity\n\nMA307/507 (Numerical Analysis)\nMA451/651 (Stochastic Calculus)\nMA477/677 (Quantitative Financial Risk Management)\nST359/559 (Probability II)\nST462/662 (Advanced Regression)\nST473/674 (Financial Data Analysis)\nST494/694 (Statistical Learning)"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation:\n\nPhD in Mathematical and Statistical Modelling at Wilfrid Laurier University | 2026\nMMath in Statistics at University of Waterloo | 2020\nBBA/BA Financial Mathematics at Wilfrid Laurier University | 2019\n\nTeaching Experience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nFall 2026: Wednesdays 14:00–16:00 in room LH3073, or by appointment."
+  },
+  {
+    "objectID": "about.html#bio",
+    "href": "about.html#bio",
+    "title": "About",
+    "section": "",
+    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation:\n\nPhD in Mathematical and Statistical Modelling at Wilfrid Laurier University | 2026\nMMath in Statistics at University of Waterloo | 2020\nBBA/BA Financial Mathematics at Wilfrid Laurier University | 2019\n\nTeaching Experience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nFall 2026: Wednesdays 14:00–16:00 in room LH3073, or by appointment."
+  },
+  {
+    "objectID": "assignments.html",
+    "href": "assignments.html",
+    "title": "Assignments",
+    "section": "",
+    "text": "All labs and the capstone project are submitted through MyLearningSpace. This page tracks what’s due and when."
+  },
+  {
+    "objectID": "assignments.html#labs",
+    "href": "assignments.html#labs",
+    "title": "Assignments",
+    "section": "Labs",
+    "text": "Labs\n\n\n\nLab\nTopic\nDate\n\n\n\n\nLab 0\nIntroduction\nSep 14\n\n\nLab 1\n—\nSep 21\n\n\nLab 2\n—\nSep 28\n\n\nLab 3\n—\nOct 05\n\n\nLab 4\n—\nOct 19\n\n\nLab 5\n—\nOct 26\n\n\nLab 6\n—\nNov 02\n\n\nLab 7\n—\nNov 16\n\n\nLab 8\n—\nNov 23\n\n\nLab 9\n—\nNov 30\n\n\nLab 10\n—\nDec 02\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nLabs are worth 30% of your final grade, to be submitted during labs weekly on Mondays. See the Syllabus for full grading breakdown."
+  },
+  {
+    "objectID": "assignments.html#capstone-project",
+    "href": "assignments.html#capstone-project",
+    "title": "Assignments",
+    "section": "Capstone Project",
+    "text": "Capstone Project\nThe capstone project (15%) has multiple checkpoints across the term. Details and rubric will be posted here as each checkpoint approaches.\n\n\n\nCheckpoint\nDescription\nDue\n\n\n\n\nProposal\nDataset + research question\nTBD\n\n\nProgress Check\nDraft analysis\nTBD\n\n\nFinal Submission\nReport + presentation\nDec 3"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "DATA100: Introduction to Data Analytics",
+    "section": "",
+    "text": "Welcome to DATA100 — Introduction to Data Analytics! This course introduces you to the fundamentals of data analysis using R, covering everything from R basics and data types to R Markdown/Quarto reporting, data wrangling, and communicating results.\n\n\n\n\n\n\nNoteInstructor\n\n\n\nAgassi Iu · Wilfrid Laurier University Office Hours: Wednesdays 14:00–16:00, LH3073 (or by appointment)"
+  },
+  {
+    "objectID": "index.html#welcome",
+    "href": "index.html#welcome",
+    "title": "DATA100: Introduction to Data Analytics",
+    "section": "",
+    "text": "Welcome to DATA100 — Introduction to Data Analytics! This course introduces you to the fundamentals of data analysis using R, covering everything from R basics and data types to R Markdown/Quarto reporting, data wrangling, and communicating results.\n\n\n\n\n\n\nNoteInstructor\n\n\n\nAgassi Iu · Wilfrid Laurier University Office Hours: Wednesdays 14:00–16:00, LH3073 (or by appointment)"
+  },
+  {
+    "objectID": "index.html#quick-links",
+    "href": "index.html#quick-links",
+    "title": "DATA100: Introduction to Data Analytics",
+    "section": "Quick Links",
+    "text": "Quick Links\n\n📄 Syllabus — grading breakdown, policies, and expectations\n🗓️ Schedule — weekly topics and readings\n📊 Slides — lecture slide decks\n📝 Assignments — labs, capstone project, and due dates\n👋 About — more about your instructor"
+  },
+  {
+    "objectID": "index.html#course-hub",
+    "href": "index.html#course-hub",
+    "title": "DATA100: Introduction to Data Analytics",
+    "section": "Course Hub",
+    "text": "Course Hub\nAnnouncements, submissions, and discussions happen on MyLearningSpace — this site is your reference hub for slides, schedule, and syllabus details.\n\n\n\n\n\n\nTipBefore the first class\n\n\n\nPlease install R and RStudio before our first lab. See the Slides page for the Lecture 1 walkthrough on installation."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#outline",
+    "href": "slides/DATA100-F26-Lecture-1.html#outline",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Outline",
+    "text": "Outline\n\nDATA100 Course\nIntroduction\nR Basics"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#about-me",
+    "href": "slides/DATA100-F26-Lecture-1.html#about-me",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "About Me",
+    "text": "About Me\n\nInstructor: Agassi Iu\nEducation: Closely finishing my PhD in the math department at WLU (previously in BBA/Fin Math DD)\nExperience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025\nHobbies: Cooking, dancing, soccer, badminton\n\n\n\n\n\n\n\n\nOffice Hours\n\n\nWednesdays 14:00–16:00 in LH3073, or by appointment."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#my-teaching-philosophy",
+    "href": "slides/DATA100-F26-Lecture-1.html#my-teaching-philosophy",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "My Teaching Philosophy",
+    "text": "My Teaching Philosophy\n\n\n\n\n\n\n\n\n🧑‍🏫 Teaching Approach\n\n\n\nHands-on Learning: Focus on real datasets, critical inquiry, and practical problem-solving.\nActive Classroom: Expect interactive coding sessions and collaborative experimentation.\n\n\n\n\n\n\n\n\n\n\n\n\n🚪 Open Door Policy\n\n\n\nFirst-Year Support: Transitioning to university can be challenging; support is always available.\nOpen Discussion: Office hours and discussion forums are safe spaces to clarify concepts."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#what-i-hope-to-teach",
+    "href": "slides/DATA100-F26-Lecture-1.html#what-i-hope-to-teach",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "What I Hope to Teach",
+    "text": "What I Hope to Teach\n\n\n\n\n\n\n\n\n🧠 Analytical Mindset\n\n\nFormulate precise questions, structure complex problems, and analyze data objectively without bias.\n\n\n\n\n\n\n\n\n\n\n\n💻 Technical Fluency\n\n\nBuild confidence with modern open-source tools, repeatable workflows, and clean coding principles.\n\n\n\n\n\n\n\n\n\n\n\n\n💬 Data Communication\n\n\nTranslate statistical results into compelling visual narratives for technical and business audiences."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#assessments-evaluation",
+    "href": "slides/DATA100-F26-Lecture-1.html#assessments-evaluation",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Assessments & Evaluation",
+    "text": "Assessments & Evaluation\n\n\n\nCategory\nWeight\nFrequency\n\n\n\n\nLaboratories\n30%\nWeekly on Mondays\n\n\nParticipation\n5%\nEvery class\n\n\nCapstone Project\n15%\nMultiple due-dates\n\n\nMidterm Exams\n20%\nTwice (see syllabus)\n\n\nFinal Exam\n20%\nFinal exam period in December"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#important-tools",
+    "href": "slides/DATA100-F26-Lecture-1.html#important-tools",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Important Tools",
+    "text": "Important Tools\n\n\n\n\n\n\n\n\n🐍 Coding Environment\n\n\nI will teach the course using the software R. You will be asked to complete assignments, labs, projects, and even exams in R.\n\n\n\n\n\n\n\n\n\n\n\n✉️ Communications\n\n\nPlease always check your emails. I will send you emails with updates on the course assessments, should there be any.\n\n\n\n\n\n\n\n\n\n\n\n\n🌐 Course Hub\n\n\nAccess announcements, submit assignments, and engage in peer discussions via MyLearningSpace. I will also update a new course webpage throughout the semester."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#keys-to-first-year-success",
+    "href": "slides/DATA100-F26-Lecture-1.html#keys-to-first-year-success",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Keys to First-Year Success",
+    "text": "Keys to First-Year Success\n\n\n\n\n\n\n\n\n📅 Start Early\n\n\nTechnical assignments take time to debug. Avoid last-minute coding stress.\n\n\n\n\n\n\n\n\n\n\n🏋️ Practice Daily (I hope you do)\n\n\nProgramming is a muscle. Practicing 30 minutes daily is far better than cramming every last-minute.\n\n\n\n\n\n\n\n\n\n\n\n\n❓ Ask Questions Early\n\n\nReach out when stuck for more than 15 minutes. Use office hours liberally.\n\n\n\n\n\n\n\n\n\n\n\n👥 Form Study Groups\n\n\nConnect with classmates to discuss ideas and keep each other accountable."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#my-expectation",
+    "href": "slides/DATA100-F26-Lecture-1.html#my-expectation",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "My Expectation",
+    "text": "My Expectation\n\n\n\n\n\n\nIn-Class\n\n\n\nBe respectful to the instructor and your fellow classmates.\nBring your laptop or tablet.\n\nOnly use it for note-taking and participation.\nIf you want to watch a movie, sit at the back.\n\n\n\n\n\n\n\n\n\n\n\n\nOut-of-Class\n\n\n\nProactive work habits: start early.\nAcademic integrity and working independently\nAI usage."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#artificial-intelligence",
+    "href": "slides/DATA100-F26-Lecture-1.html#artificial-intelligence",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Artificial Intelligence",
+    "text": "Artificial Intelligence\n\n\n\n\n\n\nUniversity Policy\n\n\nLaurier’s Gen AI Policy\n\n\n\n\n\n\n\n\n\n\nMy Policy\n\n\n\nI know what you guys do at home!\nAll I am asking for is to spend 15 minutes diagnosing the problem before going to AI.\nLater on in this course, I will actually ask you to use AI as a mandatory component of your final project.\n\n\n\n\n\n\n\n\n\n\n\n\nMy Goal\n\n\nI hope to give you an enjoyable learning experience, by showing you that this AI (Agassi Iu) is better at teaching than the AI you use at home."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#data-project-work-flow",
+    "href": "slides/DATA100-F26-Lecture-1.html#data-project-work-flow",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Data project work flow",
+    "text": "Data project work flow\n\n\n\n\n\n\n\n\nDATA100 Specifically\n\n\nData Analysis (for this course at least) mostly concentrates on Preparation and Refinement."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#data-science",
+    "href": "slides/DATA100-F26-Lecture-1.html#data-science",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Data Science",
+    "text": "Data Science\nA concept that is still in the making, may take many shapes and forms for different people. Key ideas:\n\nLook at data from the point of view of a scientist: do experiments, make hypothesis, test hypothesis by more experiments, rinse and repeat, …, arrive at some conclusion.\nLook at decision making of all kinds from the point of view of data: tell / refute a story with data, make / break a decision by data, persuade / disillusion using data…"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#data-science-1",
+    "href": "slides/DATA100-F26-Lecture-1.html#data-science-1",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Data Science",
+    "text": "Data Science\nData science is a tool. The correctness of the conclusion not only depends on the correctness of the inputs, but also depends on interpretation. It is also important that the tool is used responsibly.\n\nThe science: math, statistics, computer programming, etc.\nThe output: figures, diagrams, reports, presentation, etc.\nThe hope: try to be useful, and hopefully helpful. (to whom?)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#data-analytics",
+    "href": "slides/DATA100-F26-Lecture-1.html#data-analytics",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Data Analytics",
+    "text": "Data Analytics\n\nData needs statistics\nData needs programming"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#introduction-1",
+    "href": "slides/DATA100-F26-Lecture-1.html#introduction-1",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Introduction",
+    "text": "Introduction\n\nR is a programming language for statistical computing and graphics\n\nR is software is open source unlike some other statistical software.\nR can be downloaded at https://www.r-project.org/.\n\nRStudio is an integrated development environment for R\n\nRStudio will be used in this course.\nCan be downloaded at https://posit.co/download/rstudio-desktop/.\nPlease install R before RStudio, otherwise RStudio will not work."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#user-interface-i",
+    "href": "slides/DATA100-F26-Lecture-1.html#user-interface-i",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "User Interface I",
+    "text": "User Interface I\n\nR Console\n\nCan give R direct instructions via the R console.\n\nR script\n\nA text file containing a set of commands and comments.\nCan create an R script, with the file extension ‘.R’.\nUsed to run a sequence of commands in R.\nOther types of scripts such as R markdown files can be created.\nGood idea to save your script or R markdown file periodically.\n\nEnvironment\n\nWhere variables are created and stored.\nServes as a Workspace."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#user-interface-ii",
+    "href": "slides/DATA100-F26-Lecture-1.html#user-interface-ii",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "User Interface II",
+    "text": "User Interface II\n\nHistory\n\nStores the code that has been ran.\nNext to the Environment tab.\n\nWorking Directory\n\nR scripts are stored here by default.\nCan be important when importing data.\nPermanently change working directory: Tools ⇒ Global Options ⇒ General ⇒ Default working directory\nTemporarily change working directory: Session ⇒ Set working directory ⇒ Choose Directory\nThe working directory resets to the default when RStudio restarts."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#base-r-r-packages",
+    "href": "slides/DATA100-F26-Lecture-1.html#base-r-r-packages",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Base R & R packages",
+    "text": "Base R & R packages\n\nBase R\n\nContains some basic functions and visualization tools.\nThe base R functions contain only a tiny fraction of what is actually available.\n\nR packages\n\nA package is essentially a suite of related functions that were created by one or more R users.\nCurrently over 19000 R packages available at https://cran.r-project.org/.\n\nThe main packages we will use:\n\ntidyverse."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#initializing-r-packages",
+    "href": "slides/DATA100-F26-Lecture-1.html#initializing-r-packages",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Initializing R packages",
+    "text": "Initializing R packages\n\nUse install.packages(\"package_name\") in the console to install R packages on your own machine.\n\nExample: install.packages(\"ggplot2\") to install ggplot2.\n\nUse library(package_name) to initialize already installed packages.\n\nExample: library(ggplot2) to load ggplot2.\n\nTo install the package if it isn’t already installed and then initialize it after installation:\n\nif(!require(package_name)) install.packages(\"package_name\")\nlibrary(package_name)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#arithmetic-operations",
+    "href": "slides/DATA100-F26-Lecture-1.html#arithmetic-operations",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Arithmetic Operations",
+    "text": "Arithmetic Operations\n\nOrder of arithmetic operations (BEDMAS) applies in R.\nBasic operations:\n\n\n\n\nOperation\nDescription\n\n\n\n\n+\nAddition\n\n\n-\nSubtraction\n\n\n*\nMultiplication\n\n\n/\nDivision\n\n\n^\nExponent\n\n\n%%\nModulus (Remainder from division)\n\n\n%/%\nInteger Division\n\n\n\n\n# is used to add comments to R scripts."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#relational-operators",
+    "href": "slides/DATA100-F26-Lecture-1.html#relational-operators",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Relational Operators",
+    "text": "Relational Operators\nRelational operators are used to compare between values:\n\n\n\nOperation\nDescription\n\n\n\n\n&lt;\nLess than\n\n\n&gt;\nGreater than\n\n\n&lt;=\nLess than or equal to\n\n\n&gt;=\nGreater than or equal to\n\n\n==\nEqual to\n\n\n!=\nNot equal to"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#assigning-variables",
+    "href": "slides/DATA100-F26-Lecture-1.html#assigning-variables",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Assigning Variables",
+    "text": "Assigning Variables\n\nThe operators =, &lt;-, and -&gt; can be used to assign values to variables\n\nIf we want to assign x = 2; x=2, x&lt;-2, and 2-&gt;x are equivalent.\nCommon convention is to use &lt;- but feel free to use =.\n\nRules for variable names.\n\nStart with a letter (x5 is OK but 5x is NOT.)\nConsist of letters, numbers, underscores, and periods (x_5 and x.5 are OK but not x-5).\nCase sensitive (x and X would be different variables).\n\nVariable naming conventions\n\nTry to use meaningful names."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#displaying-output",
+    "href": "slides/DATA100-F26-Lecture-1.html#displaying-output",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Displaying Output",
+    "text": "Displaying Output\n\nR will display the outputs of unassigned calculations\n\nexp(3) would compute \\(e^3\\) (approximately) and display the result.\n\nR suppresses the output of assigned calculations\n\nx&lt;-exp(3) would compute \\(e^3\\) and store the result in x but would not display anything.\nTo see that value of x we would need to run print(x) or just x."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#workspace-environment",
+    "href": "slides/DATA100-F26-Lecture-1.html#workspace-environment",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Workspace (Environment)",
+    "text": "Workspace (Environment)\n\nUse ls() or objects() to generate a list of objects. in workspace.\nUse rm() to remove objects from the current workspace.\n\nThe call rm(x,y,z) will remove the variables x, y, and z from the workspace.\nThe call rm(list=ls()) will remove all objects from the workspace.\nThe workspace is automatically cleared when RStudio is exited."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#some-useful-functions",
+    "href": "slides/DATA100-F26-Lecture-1.html#some-useful-functions",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Some Useful Functions",
+    "text": "Some Useful Functions\n\n\n\nFunction\nDescription\n\n\n\n\nexp(x)\nComputes the exponential function \\(e^x\\).\n\n\nlog(x)\nComputes the logarithmic function \\(\\log_e(x)\\).\n\n\nsqrt(x)\nComputes the square root \\(\\sqrt{x}\\).\n\n\nfactorial(x)\nComputes the factorial of a positive integer \\(x!\\).\n\n\nsin(x)\nComputes the sine of x in radians.\n\n\nabs(x)\nComputes the absolute value of x."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#useful-r-resources",
+    "href": "slides/DATA100-F26-Lecture-1.html#useful-r-resources",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Useful R Resources",
+    "text": "Useful R Resources\n\nUse ? to learn more about how a function works.\n\nFor example, ?sqrt would produce a brief explanation of the sqrt function in a separate window.\nYou can also go to the Help tab and search for the function or command you need help with.\n\nIt may be more useful to use Google\n\nhttps://stackoverflow.com/\nhttps://www.r-bloggers.com/"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#live-coding-try-it-yourself",
+    "href": "slides/DATA100-F26-Lecture-1.html#live-coding-try-it-yourself",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Live Coding: Try it Yourself",
+    "text": "Live Coding: Try it Yourself\nEdit and run this cell right here in the slide — no local R install needed for anyone in the room."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#exercise",
+    "href": "slides/DATA100-F26-Lecture-1.html#exercise",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Exercise",
+    "text": "Exercise\nWhat are the final values of x and y after following this sequence of commands? Predict first, then try it below to confirm.\n\n\n\n\n\n\n\n\n\nNotes:"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-1.html#next-time-next-week",
+    "href": "slides/DATA100-F26-Lecture-1.html#next-time-next-week",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Next Time (Next Week)",
+    "text": "Next Time (Next Week)\n\nWe are going to look at a very simple example of:\n\nWhat can we do with data?\nHow do we work with data?\nWhy might this course be useful (at all)?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#recap-day-1-of-whole-game",
+    "href": "slides/DATA100-F26-Lecture-3.html#recap-day-1-of-whole-game",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Recap: Day 1 of Whole Game",
+    "text": "Recap: Day 1 of Whole Game\n\nWe examined some EDA (Exploratory Data Analysis): with variables like income, benefits, delayed paycheque difficulty, etc.\nWe ended with three financial wellness clusters: Stressed, Coping, Comfortable\nToday: we look at how we actually got there , … including the messy parts of data analytics …"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#before-we-look-at-the-raw-data",
+    "href": "slides/DATA100-F26-Lecture-3.html#before-we-look-at-the-raw-data",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Before we look at the raw data…",
+    "text": "Before we look at the raw data…\n\n\n\n\n\n\n\nThinking Moment\n\n\nWhat do you think could go wrong with real, raw survey data?\n\n\n\n\n\n\n\n\n\n\n\nPotential Problems\n\n\nWhat kinds of problems might it have that yesterday’s polished plots didn’t show?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#heres-the-actual-raw-file",
+    "href": "slides/DATA100-F26-Lecture-3.html#heres-the-actual-raw-file",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Here’s the actual raw file",
+    "text": "Here’s the actual raw file\n\nsurvey_2017_raw &lt;- read_csv(\"data/raw_survey_2017.csv\")\n\n# Note the skip = 1 -- 2022's file has a stray metadata line above the\n# real header (a leftover from the export on the new survey platform)\nsurvey_2022_raw &lt;- read_csv(\"data/raw_survey_2022.csv\", skip = 1)\n\nglimpse(survey_2017_raw)\nglimpse(survey_2022_raw)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#duplicate-responses-rows",
+    "href": "slides/DATA100-F26-Lecture-3.html#duplicate-responses-rows",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Duplicate responses (rows)",
+    "text": "Duplicate responses (rows)\nA few respondents show up more than once. - Think of this as a double-submitted survey.\n\nsurvey_2017_raw |&gt; count(respondent_id, sort = TRUE) |&gt; filter(n &gt; 1)\n\nsurvey_2017_raw &lt;- survey_2017_raw |&gt; distinct()\nsurvey_2022_raw &lt;- survey_2022_raw |&gt; distinct()\n\n\nThe function distinct() removes exact duplicate rows. It is always worth checking for before doing anything else), since duplicates quietly inflate every count."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#tidy-data-benefits-are-stuck-in-wide-format",
+    "href": "slides/DATA100-F26-Lecture-3.html#tidy-data-benefits-are-stuck-in-wide-format",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Tidy data: benefits are stuck in wide format",
+    "text": "Tidy data: benefits are stuck in wide format\n\nsurvey_2017_raw |&gt;\n  select(respondent_id, starts_with(\"benefit_\")) |&gt;\n  head()\n\n\n\n\n\n\n\n\nFunction\n\n\nOne respondent has a single true preference, but right now it’s scattered across six separate columns. Before we can do anything useful with it, we need to reshape it with pivot_longer()."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#tidy-data-pivot_longer",
+    "href": "slides/DATA100-F26-Lecture-3.html#tidy-data-pivot_longer",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Tidy data: pivot_longer()",
+    "text": "Tidy data: pivot_longer()\n\nbenefits_2017_long &lt;- survey_2017_raw |&gt;\n  pivot_longer(\n    cols = starts_with(\"benefit_\"),\n    names_to = \"benefit_type\",\n    values_to = \"response\"\n  ) |&gt;\n  mutate(chosen = response %in% c(\"Yes\", \"Y\", \"yes\")) |&gt;\n  group_by(respondent_id) |&gt;\n  summarize(\n    benefit_preference = if (any(chosen)) benefit_type[chosen][1] else NA_character_,\n    .groups = \"drop\"\n  )\n\nsurvey_2017_clean &lt;- survey_2017_raw |&gt;\n  select(-starts_with(\"benefit_\")) |&gt;\n  left_join(benefits_2017_long, by = \"respondent_id\")"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#strings-expressions",
+    "href": "slides/DATA100-F26-Lecture-3.html#strings-expressions",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Strings & expressions",
+    "text": "Strings & expressions\n\n\n\n\n\n\n\nThe format for income response is a mess!\n\n\nSometimes people are allowed to type in their responses however they like. For example, if someone has an annual income of $85,000, there are several ways they might enter that in the survey:\n\n\"85000\"\n\"$85,000\"\n\"85,000\"\n\"85K\"\n\nSo how do we take all these different formats and turn them into something we can actually work with in our analysis?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#recall-from-last-weeks-survey",
+    "href": "slides/DATA100-F26-Lecture-3.html#recall-from-last-weeks-survey",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Recall from last week’s survey",
+    "text": "Recall from last week’s survey\nFor Question 7 of the survey, I asked everyone what was the best sandwich?\n\n\n\n\n\n\n\nMost Popular Answer\n\n\nGrilled Cheese was among the most popular answers. But this is what I got from last week’s survey response:\n\nGrilled cheese\nGrilled Cheese\nGrilled Cheese!\ngrilled cheese\ngrilled cheese with Hot sauce\nGrilled cheese sandwich\nHam Grilled Cheese"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#back-to-the-income-example",
+    "href": "slides/DATA100-F26-Lecture-3.html#back-to-the-income-example",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Back to the Income Example",
+    "text": "Back to the Income Example\n\n\n\n\n\n\n\nSolution\n\n\nBefore income can be used in any calculation, the income data needs to be transformed into a real number.\n\n\n\n\n\nclean_income &lt;- function(x) {\n  x &lt;- str_trim(x)\n  is_k &lt;- str_detect(x, \"K$\")\n  numeric_part &lt;- x |&gt;\n    str_remove_all(\"[$,K]\") |&gt;\n    as.numeric()\n  if_else(is_k, numeric_part * 1000, numeric_part)\n}\n\nsurvey_2017_clean &lt;- survey_2017_clean |&gt;\n  mutate(income = clean_income(income))\n\nsurvey_2022_clean &lt;- survey_2022_clean |&gt;\n  mutate(income = clean_income(income))"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#strings-expressions-provinces",
+    "href": "slides/DATA100-F26-Lecture-3.html#strings-expressions-provinces",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Strings & expressions: provinces",
+    "text": "Strings & expressions: provinces\nSame province, several spellings: \"Ontario\", \"ON\", \"ontario \".\n\nstandardize_province &lt;- function(x) {\n  x &lt;- str_trim(x) |&gt; str_to_lower()\n  case_when(\n    x %in% c(\"ontario\", \"on\") ~ \"Ontario\",\n    x %in% c(\"alberta\", \"ab\") ~ \"Alberta\",\n    x %in% c(\"british columbia\", \"bc\") ~ \"British Columbia\",\n    x %in% c(\"quebec\", \"qc\") ~ \"Quebec\",\n    TRUE ~ str_to_title(x)\n  )\n}\n\nsurvey_2017_clean &lt;- survey_2017_clean |&gt; mutate(province = standardize_province(province))\nsurvey_2022_clean &lt;- survey_2022_clean |&gt; mutate(province = standardize_province(province))"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#strings-expressions-yesno",
+    "href": "slides/DATA100-F26-Lecture-3.html#strings-expressions-yesno",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Strings & expressions: Yes/No",
+    "text": "Strings & expressions: Yes/No\nWe might get three variations for the same two answers: \"Yes\"/\"No\", \"Y\"/\"N\", \"yes\"/\"no\".\n\nstandardize_yn &lt;- function(x) {\n  x &lt;- str_trim(x) |&gt; str_to_lower()\n  case_when(\n    x %in% c(\"yes\", \"y\") ~ \"Yes\",\n    x %in% c(\"no\", \"n\") ~ \"No\",\n    TRUE ~ NA_character_\n  )\n}\n\nsurvey_2017_clean &lt;- survey_2017_clean |&gt; mutate(debt_overwhelmed = standardize_yn(debt_overwhelmed))\nsurvey_2022_clean &lt;- survey_2022_clean |&gt; mutate(debt_overwhelmed = standardize_yn(debt_overwhelmed))"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#missing-data",
+    "href": "slides/DATA100-F26-Lecture-3.html#missing-data",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Missing data",
+    "text": "Missing data\n\n\n\n\n\n\n\nWhere did missing data come from?\n\n\nSometimes we don’t always get all the complete data set that we want.\n\nPeople tend to skip questions that they don’t feel comfortable answer.\nperhaps people forgot to fill in one of the questions/pages of survey.\nmaybe people gave some weird looking answer that is unusable (e.g $*@2#$1aE&)\nor sometimes these questions are simply irrelevant to them"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#two-options-1-delete-the-row",
+    "href": "slides/DATA100-F26-Lecture-3.html#two-options-1-delete-the-row",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Two options: 1) Delete the row",
+    "text": "Two options: 1) Delete the row\nIf a respondent didn’t answer a question in the survey, we can just remove this person entirely from the data analysis. :)\n\n\n\n\n\n\n\nThis is cool, but…\n\n\nWhile this is a simple method, you will lose the respondents.\n\nif the people who skipped the question aren’t random, the ones left behind don’t represent everyone fairly.\n\n\n\n\n\n\nsurvey_2017_nomiss &lt;- survey_2017_clean |&gt;\n  drop_na(income, savings_pct,\n          debt_overwhelmed,\n          emergency_fund_likelihood)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#two-options-2-imputation",
+    "href": "slides/DATA100-F26-Lecture-3.html#two-options-2-imputation",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Two options: 2) Imputation",
+    "text": "Two options: 2) Imputation\nInstead of throwing the whole response away, we can guess a reasonable value to put in its place.\n\nlike using the average of everyone else’s answer. (e.g. mean or median)\n\n\nsurvey_2017_clean |&gt; mutate(income = ifelse(is.na(income), median(income, na.rm = TRUE), income))\n\n\n\n\n\n\n\n\nThis is cool, but…\n\n\nNow some of your “data” is really just a guess. If you fill in too many values this way, your data can look more similar than it actually is."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#mismatched-response",
+    "href": "slides/DATA100-F26-Lecture-3.html#mismatched-response",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Mismatched response",
+    "text": "Mismatched response\n\n\n\n\n\n\n\nToo many response levels\n\n\nSometimes survey designers choose a set of response options one year, then decide to change them the next. For example, in our financial wellness data, the survey asked questions of How difficult is it to obtain $2,000 of emergency fund?:\n\nin 2017, there are 7 levels: Very difficult, Difficult, Somewhat difficult, Neither, Somewhat manageable, Manageable, Very manageable\nin 2022, there are now only 5 levels: Very difficult, Difficult, Neither, Manageable, Very manageable\n\nSo what do you do? Neither of them directly match each other. And this is difficult for a year-to-year comparative analysis"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#potential-solution",
+    "href": "slides/DATA100-F26-Lecture-3.html#potential-solution",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Potential Solution",
+    "text": "Potential Solution\n\n\n\n\n\n\n\nCompromise\n\n\nWe can collapse both down to 3 levels — Difficult, Neither, Manageable.\n\n\n\n\n\nsurvey_2017_clean &lt;- survey_2017_clean |&gt;\n  mutate(emergency_fund_3lvl = case_when(\n    emergency_fund_likelihood %in% c(\"Very difficult\", \"Difficult\", \"Somewhat difficult\") ~ \"Difficult\",\n    emergency_fund_likelihood == \"Neither\" ~ \"Neither\",\n    emergency_fund_likelihood %in% c(\"Somewhat manageable\", \"Manageable\", \"Very manageable\") ~ \"Manageable\",\n    TRUE ~ NA_character_\n  ))\n\nsurvey_2022_clean &lt;- survey_2022_clean |&gt;\n  mutate(emergency_fund_3lvl = case_when(\n    emergency_fund_likelihood %in% c(\"Very difficult\", \"Difficult\") ~ \"Difficult\",\n    emergency_fund_likelihood == \"Neither\" ~ \"Neither\",\n    emergency_fund_likelihood %in% c(\"Manageable\", \"Very manageable\") ~ \"Manageable\",\n    TRUE ~ NA_character_\n  ))"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#before-7-levels-vs-5-levels",
+    "href": "slides/DATA100-F26-Lecture-3.html#before-7-levels-vs-5-levels",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Before: 7 Levels vs 5 Levels",
+    "text": "Before: 7 Levels vs 5 Levels\n\nDifferent number of categories, different wording. It is not easy to tell how people have changed over time by comparing these two bar plots side by side as-is."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#after",
+    "href": "slides/DATA100-F26-Lecture-3.html#after",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "After:",
+    "text": "After:\n\nNow that both years use the same 3 levels, we can finally put them side by side and ask: did things get better, worse, or stay the same?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#different-ways-of-asking-the-same-question",
+    "href": "slides/DATA100-F26-Lecture-3.html#different-ways-of-asking-the-same-question",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Different ways of asking the same question",
+    "text": "Different ways of asking the same question\n\n\n\n\n\n\n\nMismatched question: same question, different name\n\n\nSometimes a question gets worded differently across years, even though it’s really asking the same thing.\n\nin 2017, the survey asked How difficult was it for you if your paycheque is delayed?\n\nstored as paycheque_delay_difficulty\n\nin 2022, the question became If there is a two week delay in your paycheque arrival, how impactful would it be to your finances?\n\nstored as twoweek_pay_delay_impact\n\n\nSame underlying question, different wording and different column name — rename() fixes this in one line each."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#mismatched-responses-age",
+    "href": "slides/DATA100-F26-Lecture-3.html#mismatched-responses-age",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Mismatched responses: Age",
+    "text": "Mismatched responses: Age\n\nsurvey_2017_clean |&gt; select(age) |&gt; head()\nsurvey_2022_clean |&gt; select(age) |&gt; head()\n\n\n\n\n\n\n\n\nAre you willing to share your age?\n\n\nSometimes the same underlying question gets measured differently across years, even when the intent is identical.\n\nin 2017, respondents gave an exact age\n\nstored as age, e.g. 34\n\nin 2022, respondents picked from age brackets instead\n\nstored as age, e.g. \"30-40\"\n\nNow we have the same underlying question, but a different level of precision\n\nIn order to compare over the years, everyone needs to speak the same bucket language.\n\n\n\n\n\n\n\nsurvey_2017_clean &lt;- survey_2017_clean |&gt;\n  mutate(age_bucket = case_when(\n    age &lt;= 30 ~ \"18-30\",\n    age &lt;= 40 ~ \"30-40\",\n    age &lt;= 50 ~ \"40-50\",\n    age &lt;= 65 ~ \"50-65\",\n    TRUE ~ \"65+\"\n  ))\n\nsurvey_2022_clean &lt;- survey_2022_clean |&gt;\n  rename(age_bucket = age)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#removed-benefit-option-aligning-categories",
+    "href": "slides/DATA100-F26-Lecture-3.html#removed-benefit-option-aligning-categories",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Removed benefit option: aligning categories",
+    "text": "Removed benefit option: aligning categories\n\n\n\n\n\n\n\nNon-existent Option in Survey\n\n\n“Educational funding” existed as a choice in 2017, but the 2022 platform dropped it. To compare years fairly, we fold anything not offered in both years into a shared “Other” category.\n\n\n\n\n\nsurvey_2017_clean &lt;- survey_2017_clean |&gt;\n  mutate(benefit_preference = if_else(\n    benefit_preference == \"benefit_education\",\n    \"benefit_other\",\n    benefit_preference\n  ))"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#combine-into-one-data-set",
+    "href": "slides/DATA100-F26-Lecture-3.html#combine-into-one-data-set",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Combine into one data set",
+    "text": "Combine into one data set\n\nsurvey_combined &lt;- bind_rows(survey_2017_clean, survey_2022_clean)\n\nglimpse(survey_combined)\n\n\n\n\n\n\n\n\nOnly possible now\n\n\nNow that we have:\n— column names match (rename()) - category sets match (the “Other” recoded) - response scales match (the 3-level of likert responses in paycheque question)\nEvery fix so far existed to make this one line possible."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#too-much-info-in-one-column",
+    "href": "slides/DATA100-F26-Lecture-3.html#too-much-info-in-one-column",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Too much info in one column",
+    "text": "Too much info in one column\n\n\n\n\n\n\n\nOne column doing two jobs\n\n\nThe variable respondent_id looks like a single value, but it’s actually smuggling in two separate pieces of information at once.\n\nthe year the response came from, e.g. 2017\nthe respondent’s number within that year, e.g. 0001\n\nBoth are jammed into one string: \"2017-0001\". If we ever want to work with just the year, or just the respondent number, we’re stuck first pulling them apart.\n\n\n\n\n\nsurvey_combined &lt;- survey_combined |&gt;\n  separate(respondent_id, into = c(\"survey_year\", \"respondent_num\"), sep = \"-\")\n\nsurvey_combined |&gt;\n  select(survey_year, respondent_num, everything()) |&gt;\n  head()"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#show-concluding-results",
+    "href": "slides/DATA100-F26-Lecture-3.html#show-concluding-results",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Show concluding results",
+    "text": "Show concluding results\n\nsurvey_combined |&gt;\n  ggplot(aes(x = financial_wellness_cluster, y = income, fill = factor(year))) +\n  geom_boxplot(position = position_dodge(width = 0.8)) +\n  labs(title = \"Income by Cluster: 2017 vs 2022\",\n       x = \"Cluster\", y = \"Income ($)\", fill = \"Year\") +\n  theme_minimal()\n\n\nThis is the exact plot style from Day 1, except now you’ve watched every step of how the data underneath it got here."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#back-to-your-predictions",
+    "href": "slides/DATA100-F26-Lecture-3.html#back-to-your-predictions",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Back to your predictions",
+    "text": "Back to your predictions\n\n\n\n\n\n\n\nDiscussion\n\n\nWhich of your guesses from the start of class came true?\nWhat did we run into that nobody predicted?\n\n\n\n\n\n\n\n\n\n\n\nDocument your decisions\n\n\nA results plot without its cleaning log is a claim without evidence. For any real report, this deserves its own short section (ahem your final report):\n\nWhich rows/columns were dropped, and why\nEvery recoding decision (e.g. collapsing levels and combining buckets, etc.)\nWhat’s imputed vs. observed, clearly marked"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#a-few-cautions",
+    "href": "slides/DATA100-F26-Lecture-3.html#a-few-cautions",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "A few cautions",
+    "text": "A few cautions\n\n\n\n\n\n\n\nKeep in mind\n\n\n\nEvery cleaning choice was also an analytical choice — a different 3-level collapse, a different age-bucket rule, a different imputation method could all shift what we find downstream\nThis dataset is synthetic: today’s numbers are illustrative, not a claim about real Canadians\nLater this semester: missing-data methods and statistical tests that let you make these calls more rigorously than by eyeballing\n\n\n\n\n\n\n\n\n\n\n\n\nNext Week\n\n\nWe will actually begin learning how to code! Starting with Visualization."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-3.html#fun-exercises",
+    "href": "slides/DATA100-F26-Lecture-3.html#fun-exercises",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Fun Exercises",
+    "text": "Fun Exercises"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#the-eda-loop",
+    "href": "slides/DATA100-F26-Lecture-5.html#the-eda-loop",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "The EDA loop",
+    "text": "The EDA loop\nEDA is not a procedure with a checklist. It’s a cycle you run until the questions stop being interesting:\n\nGenerate questions about your data\nSearch for answers by visualizing, transforming, and modelling\nRefine your questions, or generate new ones from what you found\n\nMost of what you produce during EDA gets thrown away, and that’s okay!"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#why-its-not-optional",
+    "href": "slides/DATA100-F26-Lecture-5.html#why-its-not-optional",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Why it’s not optional",
+    "text": "Why it’s not optional\n\n\n\n\n\n\n\nImportant note\n\n\nDead ends are expected and not failure.\n\n\n\n\nEven when the research question arrives fully formed, you still have to know whether the data can answer it.\n\n\n\n\n\n\n\nData cleaning\n\n\nA special case of EDA: you’re asking whether the data meets your expectations, and using the same tools like visualization, transformation, modelling to find out."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#two-guiding-questions",
+    "href": "slides/DATA100-F26-Lecture-5.html#two-guiding-questions",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Two Guiding Questions",
+    "text": "Two Guiding Questions\n\nWhat variation occurs within my variables?\nWhat covariation occurs between my variables?\n\n\n\n\n\n\n\n\nVariation\n\n\nHow much a single variable’s values differ from one observation to the next. Even measuring the same quantity repeatedly gives slightly different results, and real differences between subjects or across time add even more spread.\n\n\n\n\n\n\n\n\n\n\n\nCovariation\n\n\nThe tendency for two or more variables to move together. If two variables covary, knowing the value of one improves your guess about the other."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#a-simple-example",
+    "href": "slides/DATA100-F26-Lecture-5.html#a-simple-example",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "A simple example",
+    "text": "A simple example\nWeigh 10 apples from the same tree:\n142g, 138g, 151g, 145g, 149g, 133g, 156g, 144g, 140g, 147g\nThat spread, some apples heavier, some lighter, is variation: natural differences within one variable, even from apples off the same tree.\nNow also measure each apple’s diameter:\n\n\n\nDiameter (cm)\nWeight (g)\n\n\n\n\n6.5\n133\n\n\n7.0\n140\n\n\n7.8\n151\n\n\n8.1\n156\n\n\n\nBigger diameter tends to mean more weight. The two variables move together, that’s covariation. Knowing one lets you make a real guess about the other."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#variation-1",
+    "href": "slides/DATA100-F26-Lecture-5.html#variation-1",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Variation",
+    "text": "Variation\n\n\n\n\n\n\n\nVariation\n\n\nThe tendency of a variable’s values to change from one measurement to thenext.\n\n\n\n\n\nEven a perfectly constant quantity will read slightly differently each time you measure it. That’s measurement noise.\nReal variables also differ between subjects and over time on top of that noise, and the combination gives every variable its own characteristic shape.\nSome cluster tightly, some spread wide, some have several common values.\nYou can’t see that shape in a long column of numbers. Plotting the distribution is how you see it."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#the-diamond-data",
+    "href": "slides/DATA100-F26-Lecture-5.html#the-diamond-data",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "The Diamond Data",
+    "text": "The Diamond Data\n\n\n\n\n\n\n\nThe diamonds variables\n\n\n\n\n\nVariable\nMeaning\n\n\n\n\nprice\nprice in US dollars\n\n\ncarat\nweight of the diamond\n\n\ncut\nquality of the cut: Fair, Good, Very Good, Premium, Ideal\n\n\ncolor\ndiamond color, from J (worst) to D (best)\n\n\nclarity\nhow clear the diamond is: I1 (worst) to IF (best)\n\n\nx, y, z\nlength, width, depth in mm\n\n\ndepth\ntotal depth percentage\n\n\ntable\nwidth of the top of the diamond relative to widest point"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#a-first-look",
+    "href": "slides/DATA100-F26-Lecture-5.html#a-first-look",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "A first look",
+    "text": "A first look\n\nggplot(diamonds, aes(x = carat)) +\n  geom_histogram(binwidth = 0.5)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#changing-the-binwidth",
+    "href": "slides/DATA100-F26-Lecture-5.html#changing-the-binwidth",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Changing the Binwidth",
+    "text": "Changing the Binwidth\n\nggplot(smaller, aes(x = carat)) +\n  geom_histogram(binwidth = 0.01)\n\n\nSame data. A much narrower bin reveals structure the first plot hid entirely."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#typical-values-what-to-ask",
+    "href": "slides/DATA100-F26-Lecture-5.html#typical-values-what-to-ask",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Typical values: what to ask",
+    "text": "Typical values: what to ask\n\n\n\n\n\n\n\nCheckpoint\n\n\n\nWhich values are most common? Why?\nWhich are rare? Does that match what you expected?\nWhat are the gaps?\nAre there unexpected patterns? What could explain them?\n\n\n\n\n\nFor the carat histogram: why the spikes at whole carats and common fractions? And why more diamonds just above each spike than just below?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#clusters-mean-subgroups",
+    "href": "slides/DATA100-F26-Lecture-5.html#clusters-mean-subgroups",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Clusters mean subgroups",
+    "text": "Clusters mean subgroups\nWhen a distribution separates into clumps, you can ask yourself:\n\nHow are observations within a cluster alike?\nHow do clusters differ from each other?\nWhat explains the split?\nCould the clusters be an artifact rather than real structure?\n\n::: {.callout-important title”Recall from last week”} The three clusters from Financial Wellness data: stressed, coping, and comfortable. :::"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#unusual-values-hide-in-plain-sight",
+    "href": "slides/DATA100-F26-Lecture-5.html#unusual-values-hide-in-plain-sight",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Unusual values hide in plain sight",
+    "text": "Unusual values hide in plain sight\n\nggplot(diamonds, aes(x = y)) +\n  geom_histogram(binwidth = 0.5)\n\n\nThe only hint of anything odd is how wide the x-axis is."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#zoom-in-on-the-y-axis",
+    "href": "slides/DATA100-F26-Lecture-5.html#zoom-in-on-the-y-axis",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Zoom in on the y-axis",
+    "text": "Zoom in on the y-axis\n\nggplot(diamonds, aes(x = y)) +\n  geom_histogram(binwidth = 0.5) +\n  coord_cartesian(ylim = c(0, 50))"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#zooming-in",
+    "href": "slides/DATA100-F26-Lecture-5.html#zooming-in",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Zooming In",
+    "text": "Zooming In\nNow three unusual regions show up: near 0, around 30, and around 60.\n\n\n\n\n\n\n\ncoord_cartesian()\n\n\nThe bars are still computed from all the data, so you can safely zoom the y-axis to see rare bins without changing what got counted.\nylim()/xlim() instead discard any data outside the limits before the stat runs, which can silently change your bar heights.\nWhen you just want a closer look, reach for coord_cartesian()."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#outliers",
+    "href": "slides/DATA100-F26-Lecture-5.html#outliers",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Outliers",
+    "text": "Outliers\nA value that sits far away from the rest of a variable’s values, unusual enough that it stands out from the general pattern. Outliers can come from a few different places:\n\n\n\n\n\n\n\nA real, unusual observation\n\n\nThe value is correct. It just represents something genuinely rare, an extremely large diamond, an exceptionally tall person.\n\n\n\n\n\n\n\n\n\n\n\nA measurement or data entry error\n\n\nThe value is wrong. A typo, a broken sensor, a missing value coded as 0 instead of NA. This is common and worth checking first.\n\n\n\n\n\n\n\n\n\n\n\nWhy they matter\n\n\nAn outlier can quietly distort summaries like the mean or a fitted trend line, so it’s worth investigating rather than ignoring. But it should never be dropped automatically just because it’s inconvenient, understanding why it’s unusual comes first.\n\n\n\n\nYou can’t always spot an outlier from a column of numbers. Plotting the distribution, and sometimes zooming in, is usually what reveals it."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#pull-the-outliers-out",
+    "href": "slides/DATA100-F26-Lecture-5.html#pull-the-outliers-out",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Pull the outliers out",
+    "text": "Pull the outliers out\n\nunusual &lt;- diamonds |&gt;\n  filter(y &lt; 3 | y &gt; 20) |&gt;\n  select(price, x, y, z) |&gt;\n  arrange(y)\n\nunusual\n\n# A tibble: 9 × 4\n  price     x     y     z\n  &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n1  5139  0      0    0   \n2  6381  0      0    0   \n3 12800  0      0    0   \n4 15686  0      0    0   \n5 18034  0      0    0   \n6  2130  0      0    0   \n7  2130  0      0    0   \n8  2075  5.15  31.8  5.12\n9 12210  8.09  58.9  8.06"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#what-we-found",
+    "href": "slides/DATA100-F26-Lecture-5.html#what-we-found",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "What we found",
+    "text": "What we found\ny is a dimension in millimeters. A diamond cannot be 0 mm wide, so those are missing data encoded as zero.\n\nYou wouldn’t have been able to find these simply by searching for NA as missing data.\n\nThe 32 mm and 59 mm entries are implausible too!\n\n\n\n\n\n\nImportant\n\n\nThis is the core payoff of EDA: visualizing the data surfaced a data-quality problem that a search for NA never would have. Always sanity-check units and physically-plausible ranges, not just missingness flags.\n\n\n\n\n\n\n\n\n\nCaution\n\n\nRun your analysis with and without the outliers. If it barely moves and you can’t explain them, dropping them is defensible. If it moves a lot, find the cause and disclose the removal in your write-up — don’t drop values without justification just because they’re inconvenient."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#two-ways-to-handle-them",
+    "href": "slides/DATA100-F26-Lecture-5.html#two-ways-to-handle-them",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Two ways to handle them",
+    "text": "Two ways to handle them\n\n# Option 1: drop the whole row — usually too blunt\ndiamonds2 &lt;- diamonds |&gt; filter(between(y, 3, 20))\n\n# Option 2: replace the bad value with NA — usually better\ndiamonds2 &lt;- diamonds |&gt;\n  mutate(y = if_else(y &lt; 3 | y &gt; 20, NA, y))\n\n\n\n\n\n\n\nNote\n\n\nfilter() basically isolates the rows where the y values are between 3 and 20, while keeping the rest of the variables (as long as their corresponding y is between 3 and 20). It discards the rest.\nmutate() changes (like mutation) the column of y such that if y is less than 3 OR y is greater than 20, then the corresponding y value becomes NA."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#missing-values-in-plots",
+    "href": "slides/DATA100-F26-Lecture-5.html#missing-values-in-plots",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Missing values in plots",
+    "text": "Missing values in plots\nggplot2 won’t guess where to put an NA, so it drops them and warns you. Silence the warning with na.rm = TRUE (only once you’ve understood why they’re missing).\n\ndiamonds2 &lt;- diamonds |&gt; mutate(y = if_else(y &lt; 3 | y &gt; 20, NA, y))\n\nggplot(diamonds2, aes(x = x, y = y)) +\n  geom_point()\n\nWarning: Removed 9 rows containing missing values or values outside the scale range\n(`geom_point()`)."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#your-turn",
+    "href": "slides/DATA100-F26-Lecture-5.html#your-turn",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Your turn",
+    "text": "Your turn\n\n\n\n\n\n\nTry it yourself\n\n\n\nExplore the distributions of x, y, and z in diamonds. Which is length, which width, which depth?\nExplore price. Try a wide range of binwidths. Anything surprising?\nHow many diamonds are 0.99 carat vs. exactly 1 carat? Why the gap?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#covariation-1",
+    "href": "slides/DATA100-F26-Lecture-5.html#covariation-1",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Covariation",
+    "text": "Covariation\nIf variation describes behavior within a variable, covariation describes behavior between variables: the tendency for two or more variables to move together.\nThe strategy depends on the variable types:\n\ncategorical × numerical\ncategorical × categorical\nnumerical × numerical"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#categorical-numerical",
+    "href": "slides/DATA100-F26-Lecture-5.html#categorical-numerical",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Categorical × numerical:",
+    "text": "Categorical × numerical:\n\nggplot(diamonds, aes(x = price)) +\n  geom_freqpoly(aes(color = cut), binwidth = 500, linewidth = 0.75)\n\n\n\n\n\n\n\n\n\nThe Count Problem\n\n\nGroup sizes differ so much that shape differences are invisible. Do you think each cut share the same pattern?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#switch-the-y-axis-to-density",
+    "href": "slides/DATA100-F26-Lecture-5.html#switch-the-y-axis-to-density",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Switch the y-axis to density",
+    "text": "Switch the y-axis to density\nDensity is the count standardized so the area under each curve is 1. Since it isn’t a column in the data, after_stat() fetches it from the stat. The following plot is a frequency polygon.\n\nggplot(diamonds, aes(x = price, y = after_stat(density))) +\n  geom_freqpoly(aes(color = cut), binwidth = 500, linewidth = 0.75)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#frequency-polygons-vs-boxplots",
+    "href": "slides/DATA100-F26-Lecture-5.html#frequency-polygons-vs-boxplots",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Frequency polygons vs Boxplots",
+    "text": "Frequency polygons vs Boxplots\nFair diamonds (the lowest quality cut) appear to have the highest average price.\n\nggplot(diamonds, aes(x = cut, y = price)) +\n  geom_boxplot()"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#reordering",
+    "href": "slides/DATA100-F26-Lecture-5.html#reordering",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Reordering",
+    "text": "Reordering\ncut is an ordered factor, so its order is meaningful. Most categorical variables aren’t.\n\n\n\n\n\n\n\nOrdered Cuts\n\n\nIt goes from Fair -&gt; Good -&gt; Very Good -&gt; Premium -&gt; Ideal.\n\n\n\n\n\n\n\n\n\n\n\nWhat do you do if the categories are: Apples, Oranges, Bananas?\n\n\nThis fct_reorder(variable, by, fun) function sorts factor levels by a summary statistic (e.g. mean/median) of another variable, which almost always makes a categorical-vs-numeric plot easier to read at a glance."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#example",
+    "href": "slides/DATA100-F26-Lecture-5.html#example",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Example",
+    "text": "Example\nggplot(mpg, aes(x = class, y = hwy)) + geom_boxplot()\nggplot(mpg, aes(x = fct_reorder(class, hwy, median), y = hwy)) + geom_boxplot()"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#flip-when-labels-are-long",
+    "href": "slides/DATA100-F26-Lecture-5.html#flip-when-labels-are-long",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Flip when labels are long",
+    "text": "Flip when labels are long\nSwap the x and y mappings with no extra function needed:\n\nggplot(mpg, aes(x = hwy, y = fct_reorder(class, hwy, median))) +\n  geom_boxplot()"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#your-turn-1",
+    "href": "slides/DATA100-F26-Lecture-5.html#your-turn-1",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Your turn",
+    "text": "Your turn\n\n\n\n\n\n\nTry it yourself\n\n\nRecall that there are variables such as price, carat, cut, color, clarity, x, y, z, depth, and table.\nEarlier we saw that Fair cut diamonds look more expensive on average than Ideal cut diamonds, which may be the opposite of what you’d expect. carat (the diamond’s weight) turns out to be the strongest predictor of price in the whole dataset.\n\nPlot price against carat. Does the relationship look strong?\nNow plot carat against cut. Is carat spread evenly across cut qualities, or do Fair diamonds skew toward one end?\nWhy does Fair diamonds skewing that way in carat make them look pricier overall, even though a worse cut should, on its own, lower the price?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#categorical-categorical-counts",
+    "href": "slides/DATA100-F26-Lecture-5.html#categorical-categorical-counts",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Categorical × categorical: counts",
+    "text": "Categorical × categorical: counts\n\nggplot(diamonds, aes(x = cut, y = color)) +\n  geom_count()\n\n\nCircle area shows how many observations fall at each combination."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#geom_tile",
+    "href": "slides/DATA100-F26-Lecture-5.html#geom_tile",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "geom_tile()",
+    "text": "geom_tile()\n\ndiamonds |&gt;\n  count(color, cut) |&gt;\n  ggplot(aes(x = color, y = cut)) +\n  geom_tile(aes(fill = n))"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#numerical-numerical",
+    "href": "slides/DATA100-F26-Lecture-5.html#numerical-numerical",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Numerical × numerical",
+    "text": "Numerical × numerical\n\nggplot(smaller, aes(x = carat, y = price)) +\n  geom_point()\n\n\nWould you argue that there is a lot of overplotting in this figure?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#transparency-helps",
+    "href": "slides/DATA100-F26-Lecture-5.html#transparency-helps",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Transparency helps",
+    "text": "Transparency helps\n\nggplot(smaller, aes(x = carat, y = price)) +\n  geom_point(alpha = 1 / 100)\n\n\nClusters at 1, 1.5, and 2 carats become visible."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#bin-boxplots",
+    "href": "slides/DATA100-F26-Lecture-5.html#bin-boxplots",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Bin + Boxplots ?",
+    "text": "Bin + Boxplots ?\n\nggplot(smaller, aes(x = carat, y = price)) +\n  geom_boxplot(aes(group = cut_width(carat, 0.1)))\n\n\ncut_width(x, width) slices x into equal-width bins. Can you comment on this plot?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#interrogating-a-pattern",
+    "href": "slides/DATA100-F26-Lecture-5.html#interrogating-a-pattern",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Interrogating a pattern",
+    "text": "Interrogating a pattern\nA systematic relationship shows up as a pattern. When you spot one, try and ask yourself:\n\nCould this be coincidence?\nHow would you describe the relationship?\nHow strong is it?\nWhat other variables might be involved?\nDoes it hold within subgroups?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#variation-vs.-covariation",
+    "href": "slides/DATA100-F26-Lecture-5.html#variation-vs.-covariation",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Variation vs. covariation",
+    "text": "Variation vs. covariation\nVariation is uncertainty within a single variable. If price varies a lot on its own, knowing nothing else, you can’t say much about what a given diamond costs. Covariation between variables cuts that uncertainty down.\n\n\n\n\n\n\nTip\n\n\nIf carat and price covary, then knowing a diamond’s carat narrows down your guess for its price a lot more than guessing blind. The stronger the covariation, the more one variable tells you about the other."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#modelling",
+    "href": "slides/DATA100-F26-Lecture-5.html#modelling",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Modelling",
+    "text": "Modelling\nThis is the entire logic behind prediction and modelling: a useful predictor is just a variable that covaries with the outcome you care about. A variable that doesn’t covary with the outcome is useless as a predictor, no matter how interesting it looks on its own.\n\nE.g. income with financial wellness\n\n\n\n\n\n\n\n\nCorrelation does not imply causation?\n\n\nCovariation is not the same as causation. Two variables can covary because one causes the other, because both are driven by a third variable, or by pure coincidence.\n\nE.g. The divorce rate in Maine correlates with per capita margarine consumption"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-5.html#summary",
+    "href": "slides/DATA100-F26-Lecture-5.html#summary",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Summary",
+    "text": "Summary\n\nEDA is a loop:\n\nask questions\n→ visualize/transform/model\n→ formualte better questions\n\nVariation within a variable: typical values, clusters, unusual values\nOutliers are sometimes errors, sometimes discoveries. Investigate before deciding; disclose what you removed.\nCovariation between variables: pick the technique by variable type\n\nNext: turning exploratory graphics into ones other people can read."
+  },
+  {
+    "objectID": "slides.html",
+    "href": "slides.html",
+    "title": "Lecture Slides",
+    "section": "",
+    "text": "Lecture 1 Slides"
+  },
+  {
+    "objectID": "slides.html#lecture-1-course-introduction-r-basics-r-markdown-data-types",
+    "href": "slides.html#lecture-1-course-introduction-r-basics-r-markdown-data-types",
+    "title": "Lecture Slides",
+    "section": "",
+    "text": "Lecture 1 Slides"
+  },
+  {
+    "objectID": "slides.html#lecture-2-day-1-of-the-whole-game",
+    "href": "slides.html#lecture-2-day-1-of-the-whole-game",
+    "title": "Lecture Slides",
+    "section": "Lecture 2: Day 1 of the Whole Game",
+    "text": "Lecture 2: Day 1 of the Whole Game\n\nLecture 2 Slides"
+  },
+  {
+    "objectID": "slides.html#lecture-3-day-2-of-the-whole-game",
+    "href": "slides.html#lecture-3-day-2-of-the-whole-game",
+    "title": "Lecture Slides",
+    "section": "Lecture 3: Day 2 of the Whole Game",
+    "text": "Lecture 3: Day 2 of the Whole Game\n\nLecture 3 Slides"
+  },
+  {
+    "objectID": "slides.html#lecture-4-day-1-of-visualization",
+    "href": "slides.html#lecture-4-day-1-of-visualization",
+    "title": "Lecture Slides",
+    "section": "Lecture 4: Day 1 of Visualization",
+    "text": "Lecture 4: Day 1 of Visualization\n\nLecture 4 Slides"
+  },
+  {
+    "objectID": "slides.html#lecture-5-day-2-of-visualization",
+    "href": "slides.html#lecture-5-day-2-of-visualization",
+    "title": "Lecture Slides",
+    "section": "Lecture 5: Day 2 of Visualization",
+    "text": "Lecture 5: Day 2 of Visualization\n\nLecture 5 Slides"
+  },
+  {
+    "objectID": "slides.html#lecture-6-day-3-of-visualization",
+    "href": "slides.html#lecture-6-day-3-of-visualization",
+    "title": "Lecture Slides",
+    "section": "Lecture 6: Day 3 of Visualization",
+    "text": "Lecture 6: Day 3 of Visualization\n\nLecture 6 Slides"
+  }
+]

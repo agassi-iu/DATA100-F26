@@ -166,7 +166,7 @@ Same data. A much narrower bin reveals structure the first plot hid entirely.
 
 ## Typical values: what to ask
 
-::: {-callout-caution title="Checkpoint"}
+::: {.callout-caution title="Checkpoint"}
 1. Which values are most common? Why?
 2. Which are rare? Does that match what you expected?
 3. What are the gaps?
@@ -185,10 +185,9 @@ When a distribution separates into clumps, you can ask yourself:
 - What explains the split?
 - Could the clusters be an artifact rather than real structure?
 
-::: {.callout-note title="Recall from last week"}
+::: {.callout-important title"Recall from last week"}
 The three clusters from Financial Wellness data: stressed, coping, and comfortable.
 :::
-
 
 
 ## Unusual values hide in plain sight
