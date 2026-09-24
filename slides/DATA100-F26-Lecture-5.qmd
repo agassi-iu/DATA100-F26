@@ -57,12 +57,11 @@ smaller <- diamonds |> filter(carat < 3)
 EDA is not a procedure with a checklist. It's a cycle you run until the
 questions stop being interesting:
 
-1. **Generate questions** about your data
-2. **Search for answers** by visualizing, transforming, and modelling
-3. **Refine** your questions, or generate new ones from what you found
+1. Generate questions about your data
+2. Search for answers by visualizing, transforming, and modelling
+3. Refine your questions, or generate new ones from what you found
 
-Most of what you produce during EDA gets thrown away, and that's okay!
- — the output is *understanding*, not plots.
+Most of what you produce during EDA gets thrown away, and that's okay! 
 
 
 ## Why it's not optional
@@ -74,38 +73,52 @@ Dead ends are expected and not failure.
 Even when the research question arrives fully formed, you still have to know whether the data can answer it.
 
 
-::: {.callout-caution title="Data cleaning"}
+::: {.callout-note title="Data cleaning"}
 
 A *special case* of EDA: you're asking whether the data meets your expectations, and using the same tools like visualization, transformation, modelling to find out.
 
 :::
 
-## Setup
-
-```{r}
-#| eval: false
-library(tidyverse)
-```
-
-Two guiding questions carry most of the weight:
+## Two Guiding Questions
 
 1. What **variation** occurs *within* my variables?
 2. What **covariation** occurs *between* my variables?
 
-::: {.callout-warning title="Remember from the Financial Wellness Data?}
-
-We had three clusters for financial wellness: stressed, coping , and comfortable. What were the variation and covariation discussed in that example?
-
+::: {.callout-note title="Variation"}
+How much a single variable's values differ from one observation to the next. Even measuring the same quantity repeatedly gives slightly different results, and real differences between subjects or across time add even more spread.
 :::
+
+::: {.callout-tip title="Covariation"}
+The tendency for two or more variables to move together. If two variables covary, knowing the value of one improves your guess about the other.
+:::
+
+## A simple example {.smaller}
+
+Weigh 10 apples from the same tree:
+
+142g, 138g, 151g, 145g, 149g, 133g, 156g, 144g, 140g, 147g
+
+That spread, some apples heavier, some lighter, is **variation**: natural differences within one variable, even from apples off the same tree.
+
+Now also measure each apple's diameter:
+
+| Diameter (cm) | Weight (g) |
+|---|---|
+| 6.5 | 133 |
+| 7.0 | 140 |
+| 7.8 | 151 |
+| 8.1 | 156 |
+
+Bigger diameter tends to mean more weight. The two variables move together, that's **covariation**. Knowing one lets you make a real guess about the other.
+
 
 
 # Variation
 
-## Variation
+## Variation {.smaller}
 
 ::: {.callout-note title="Variation"}
-The tendency of a variable's values to change from one measurement to the
-next.
+The tendency of a variable's values to change from one measurement to thenext.
 :::
 
 - Even a perfectly constant quantity will read slightly differently each time you measure it. That's measurement noise. 
@@ -153,18 +166,15 @@ Same data. A much narrower bin reveals structure the first plot hid entirely.
 
 ## Typical values: what to ask
 
-Tall bars are common values, short bars rare ones, gaps are values never observed. Turn that into questions:
-
-- Which values are most common? Why?
-- Which are rare? Does that match what you expected?
-- Are there unexpected patterns? What could explain them?
+::: {-callout-caution title="Checkpoint"}
+1. Which values are most common? Why?
+2. Which are rare? Does that match what you expected?
+3. What are the gaps?
+4. Are there unexpected patterns? What could explain them?
+:::
 
 For the carat histogram: why the spikes at whole carats and common fractions? And why more diamonds just *above* each spike than just below?
 
-::: {.notes}
-The answer involves both cutting practice and pricing incentives — a good
-illustration that some EDA questions need domain knowledge, not more code.
-:::
 
 ## Clusters mean subgroups
 
@@ -175,7 +185,11 @@ When a distribution separates into clumps, you can ask yourself:
 - What explains the split?
 - Could the clusters be an artifact rather than real structure?
 
-Many of these push you toward a relationship *between* variables.
+::: {.callout-note title="Recall from last week"}
+The three clusters from Financial Wellness data: stressed, coping, and comfortable.
+:::
+
+
 
 ## Unusual values hide in plain sight
 
@@ -210,6 +224,26 @@ The bars are still computed from *all* the data, so you can safely zoom the y-ax
 When you just want a closer look, reach for `coord_cartesian()`.
 :::
 
+## Outliers {.smaller}
+
+A value that sits far away from the rest of a variable's values, unusual enough that it stands out from the general pattern. Outliers can come from a few different places:
+
+::: {.callout-tip title="A real, unusual observation"}
+The value is correct. It just represents something genuinely rare, an extremely large diamond, an exceptionally tall person.
+:::
+
+::: {.callout-caution title="A measurement or data entry error"}
+The value is wrong. A typo, a broken sensor, a missing value coded as 0 instead of NA. This is common and worth checking first.
+:::
+
+::: {.callout-important title="Why they matter"}
+An outlier can quietly distort summaries like the mean or a fitted trend line, so it's worth investigating rather than ignoring. But it should never be dropped automatically just because it's inconvenient, understanding *why* it's unusual comes first.
+:::
+
+You can't always spot an outlier from a column of numbers. Plotting the
+distribution, and sometimes zooming in, is usually what reveals it.
+
+
 ## Pull the outliers out
 
 ```{r}
@@ -221,12 +255,11 @@ unusual <- diamonds |>
 unusual
 ```
 
-## What we found
+## What we found {.smaller}
 
-`y` is a dimension in millimeters. A diamond cannot be 0 mm wide, so those
-rows are **missing data encoded as zero**.
+`y` is a dimension in millimeters. A diamond cannot be 0 mm wide, so those are **missing data encoded as zero**.
 
-  — something no search for `NA` would ever have surfaced.
+- You wouldn't have been able to find these simply by searching for `NA` as missing data.
 
 The 32 mm and 59 mm entries are implausible too!
 
@@ -238,7 +271,7 @@ This is the core payoff of EDA: visualizing the data surfaced a data-quality pro
 Run your analysis with and without the outliers. If it barely moves and you can't explain them, dropping them is defensible. If it moves a lot, find the cause and **disclose the removal** in your write-up — don't drop values without justification just because they're inconvenient.
 :::
 
-## Two ways to handle them
+## Two ways to handle them 
 
 ```{r}
 #| eval: false
@@ -250,8 +283,14 @@ diamonds2 <- diamonds |>
   mutate(y = if_else(y < 3 | y > 20, NA, y))
 ```
 
-One invalid measurement doesn't invalidate the rest of the observation. Apply
-option 1 across every variable in messy data and you may have nothing left.
+::: {.callout-note}
+
+`filter()` basically isolates the rows where the `y` values are between 3 and 20, while keeping the rest of the variables (as long as their corresponding `y` is between 3 and 20). It discards the rest.
+
+`mutate()` changes (like mutation) the column of `y` such that if `y` is less than 3 **OR** `y` is greater than 20, then the corresponding `y` value becomes `NA`.
+
+:::
+
 
 ## Missing values in plots
 
@@ -266,33 +305,7 @@ ggplot(diamonds2, aes(x = x, y = y)) +
   geom_point()
 ```
 
-## Missingness can be the signal
 
-In `nycflights13::flights`, a missing `dep_time` means the flight was cancelled. So compare scheduled departure times for cancelled and non-cancelled flights:
-
-```{r}
-#| fig-height: 2.8
-nycflights13::flights |>
-  mutate(
-    cancelled = is.na(dep_time),
-    sched_hour = sched_dep_time %/% 100,
-    sched_min  = sched_dep_time %% 100,
-    sched_dep_time = sched_hour + (sched_min / 60)
-  ) |>
-  ggplot(aes(x = sched_dep_time)) +
-  geom_freqpoly(aes(color = cancelled), binwidth = 1/4)
-```
-
-
-## The comparison isn't fair yet
-
-::: {.callout-tip}
-Missing values aren't always noise to drop. Sometimes *why* a value is missing is itself the most informative variable in the dataset — `is.na(dep_time)` here is doing more analytical work than `dep_time` itself.
-:::
-
-Cancelled flights are vastly outnumbered, so the two curves aren't comparable on a count scale.
-
-That's a covariation problem, and the next section is about fixing exactly this kind of comparison.
 
 ## Your turn {.smaller}
 
@@ -340,8 +353,7 @@ Group sizes differ so much that shape differences are invisible. Do you think ea
 
 ## Switch the y-axis to density
 
-**Density** is the count standardized so the area under each curve is 1.
-Since it isn't a column in the data, `after_stat()` fetches it from the stat.
+**Density** is the count standardized so the area under each curve is 1. Since it isn't a column in the data, `after_stat()` fetches it from the stat. The following plot is a *frequency polygon*.
 
 ```{r}
 #| fig-height: 3
@@ -366,8 +378,13 @@ ggplot(diamonds, aes(x = cut, y = price)) +
 `cut` is an ordered factor, so its order is meaningful. Most categorical
 variables aren't.
 
-::: {.callout-tip title="`fct_reorder(variable, by, fun)`"}
-This function sorts factor levels by a summary statistic (e.g. mean/median) of another variable, which almost always makes a categorical-vs-numeric plot easier to read at a glance.
+::: {.callout-warning title="Ordered Cuts"}
+It goes from Fair -> Good -> Very Good -> Premium -> Ideal.
+:::
+
+
+::: {.callout-tip title="What do you do if the categories are: Apples, Oranges, Bananas?"}
+This `fct_reorder(variable, by, fun)` function sorts factor levels by a summary statistic (e.g. mean/median) of another variable, which almost always makes a categorical-vs-numeric plot easier to read at a glance.
 :::
 
 
@@ -400,11 +417,8 @@ Recall that there are variables such as `price`, `carat`, `cut`, `color`, `clari
 Earlier we saw that `Fair` cut diamonds look more expensive on average than `Ideal` cut diamonds, which may be the opposite of what you'd expect. `carat` (the diamond's weight) turns out to be the strongest predictor of `price` in the whole dataset.
 
 1. Plot `price` against `carat`. Does the relationship look strong?
-2. Now plot `carat` against `cut`. Is `carat` spread evenly across cut
-   qualities, or do `Fair` diamonds skew toward one end?
-3. Put it together: why does `Fair` diamonds skewing that way in `carat`
-   make them look pricier overall, even though a worse cut should, on its
-   own, lower the price?
+2. Now plot `carat` against `cut`. Is `carat` spread evenly across cut qualities, or do `Fair` diamonds skew toward one end?
+3. Why does `Fair` diamonds skewing that way in `carat` make them look pricier overall, even though a worse cut should, on its own, lower the price?
    
 :::
 
@@ -430,7 +444,7 @@ ggplot(diamonds, aes(x = cut, y = color)) +
 
 Circle area shows how many observations fall at each combination.
 
-## Or compute the counts, then tile
+## `geom_tile()`
 
 ```{r}
 #| fig-height: 3.2
@@ -440,9 +454,6 @@ diamonds |>
   geom_tile(aes(fill = n))
 ```
 
-::: {.callout-note}
-For unordered categories, the **seriation** package can reorder rows and columns to expose structure; **heatmaply** does interactive versions of the same idea for larger tables.
-:::
 
 ## Numerical × numerical
 
@@ -452,7 +463,7 @@ ggplot(smaller, aes(x = carat, y = price)) +
   geom_point()
 ```
 
-A positive, roughly exponential relationship, and a **LOT** of overplotting.
+Would you argue that there is a lot of overplotting in this figure?
 
 ## Transparency helps
 
@@ -472,7 +483,7 @@ ggplot(smaller, aes(x = carat, y = price)) +
   geom_boxplot(aes(group = cut_width(carat, 0.1)))
 ```
 
-`cut_width(x, width)` slices `x` into equal-width bins. `cut_number()` makes bins with roughly equal *counts* instead.
+`cut_width(x, width)` slices `x` into equal-width bins. Can you comment on this plot?
 
 
 
@@ -480,7 +491,7 @@ ggplot(smaller, aes(x = carat, y = price)) +
 
 ## Interrogating a pattern
 
-A systematic relationship shows up as a pattern. When you spot one, ask:
+A systematic relationship shows up as a pattern. When you spot one, try and ask yourself:
 
 - Could this be coincidence?
 - How would you describe the relationship?
@@ -499,19 +510,27 @@ If `carat` and `price` covary, then knowing a diamond's `carat` narrows down you
 
 ## Modelling
 
-This is the entire logic behind prediction and modelling: a useful predictor is just a variable that covaries with the outcome you care about. A variable that doesn't covary with the outcome is useless as a predictor, no matter how interesting it looks on its own.
+This is the entire logic behind prediction and modelling: a **useful** predictor is just a variable that **covaries** with the outcome you care about. A variable that doesn't covary with the outcome is useless as a predictor, no matter how interesting it looks on its own.
 
-::: {.callout-important}
-Covariation is not the same as causation. Two variables can covary because one causes the other, because both are driven by a third variable, or by pure coincidence. If the covariation genuinely is causal, you can go a step further than prediction and actually **control** one variable by changing the other. Most covariation you find during EDA is not causal, and confirming causation takes more than a plot.
+- E.g. `income` with `financial wellness`
+
+::: {.callout-important title="Correlation does not imply causation?"}
+Covariation is not the same as causation. Two variables can covary because one causes the other, because both are driven by a third variable, or by pure coincidence. 
+
+- E.g. The divorce rate in Maine correlates with per capita margarine consumption
+
 :::
 
 
 
-## Summary
+## Summary {.smaller}
 
-- EDA is a **loop**: question → visualize/transform/model → better questions
+- EDA is a **loop**: 
+  - ask questions 
+  - → visualize/transform/model 
+  - → formualte better questions
 - **Variation** within a variable: typical values, clusters, unusual values
-- Outliers are sometimes errors, sometimes discoveries. Investigate before deciding; disclose what you removed (**important**)
+- Outliers are sometimes errors, sometimes discoveries. Investigate before deciding; disclose what you removed.
 - **Covariation** between variables: pick the technique by variable type
 
 Next: turning exploratory graphics into ones other people can read.
