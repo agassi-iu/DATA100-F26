@@ -1,0 +1,351 @@
+---
+title: "DATA100 Midterm Version 1 (pink)\\vspace{-0.75cm}"
+date: "10/06/2026"
+date-format: full
+format:
+  pdf:
+    margin-left: 0.75in
+    margin-top: 0.75in
+    margin-right: 0.75in
+    margin-bottom: 0.75in
+    include-in-header:
+      - text: |
+          \usepackage{multicol}
+execute:
+  echo: false
+  warning: false
+  fig-width: 14
+  fig-height: 5
+---
+
+```{r}
+#| include: false
+library(tidyverse)
+theme_set(theme_bw())
+library(patchwork)
+library(ggridges)
+library(here)
+
+library(palmerpenguins)
+data(penguins)
+penguins <- na.omit(penguins)
+
+mpg_n5 <- filter(mpg, cyl != 5)
+```
+
+
+**Instructions**: Put your name, WLU id, **and section** on the answer sheet (which is separate).
+
+**Answer all questions on the answer sheet.**
+
+Only the **answer sheet** will be graded. No answers on this booklet will be considered. You may use this booklet for scrap paper.
+
+There are 8 pages, with questions printed on the front and back of each sheet.
+
+\clearpage
+
+\quad
+
+\clearpage
+
+# Multiple Choice Questions
+
+Each question below is worth one mark. Answer on the **answer sheet** provided.
+
+\quad
+
+
+1. Which of the following plots provides information about which kinds of cars have the highest miles per gallon (highway)?
+
+```{r}
+gga <- ggplot(mpg_n5) +
+  aes(x = hwy) +
+  geom_histogram() +
+  labs(x = "Miles per Gallon (Highway)",
+    y = "Count",
+    title = "Histogram of MPG (Highway)")
+
+ggb <- ggplot(filter(mpg_n5, hwy >= 25)) +
+  aes(x = factor(cyl), y = displ) +
+  geom_violin() +
+  labs(x = "Number of Cylinders",
+    y = "Engine Displacement",
+    title = "Cylinders versus Size",
+    subtitle = "Only cars with >= 25 mpg\n(highway) are plotted")
+
+ggc  <- ggplot(mpg_n5) +
+  aes(
+    fill = factor(cyl),
+    x = str_sub(trans, 1, 4),
+    y = hwy
+  ) +
+  geom_violin(scale = "width") +
+  scale_fill_grey() +
+  labs(
+    x = "Transmission Type",
+    y = "Miles per Gallon (Highway)",
+    fill = "# Cylinders",
+    title = "MPG by Transmission & Cylinders"
+  )
+
+ggd <- ggplot(mpg_n5) +
+  aes(x = cty, y = hwy) +
+  geom_point() +
+  labs(x = "Miles per Gallon (city)",
+    y = "Miles per Gallon (highway)",
+    title = "MPG in Highway and City")
+
+gga + ggb + ggc + ggd +
+  plot_layout(nrow = 1) + 
+  plot_annotation(tag_level = "a", tag_prefix = "1.")
+```
+
+<!--- C --->
+
+
+:::: {layout="[0.6,0.05,0.35]"}
+::: {}
+
+2. Which of the following is **NOT** a valid interpretation of the plot on the right?
+    a. There is an overall decreasing trend when we move from brown to green eyes.
+    b. There were more female subjects than male subjects
+    c. There were more female subjects with blue and brown eyes than male subjects
+    d. Brown and blue eyes appear to be overall more common than hazel and green
+
+<!--- A --->
+
+:::
+
+::: {}
+\quad
+::: 
+
+::: {}
+
+```{r}
+#| fig-width: 5
+#| fig-height: 4
+HairEyeColor |>
+  as.data.frame() |>
+  group_by(Sex, Eye) |>
+  summarise(Freq = sum(Freq), .groups = "drop") |>
+  ggplot() +
+    aes(x = Eye, fill = Sex, y = Freq) +
+    geom_col(position = "dodge", colour = 1) +
+    scale_fill_grey() +
+    labs(x = NULL, y = "Count",
+      title = "Eye colour by BioSex")
+```
+:::
+::::
+
+
+:::: {layout="[0.5,0.5]"}
+::: {}
+
+
+3. Consider the data on the right. Which of the following plots would provide meaningful information?
+    a. A bar plot of ID versus Name
+    b. A scatterplot of height versus grade
+    c. A bar plot of height versus grade
+    d. A boxplot plot of grade versus year
+
+<!--- ANS: D --->
+
+
+:::
+::: {}
+
+```{r}
+#| echo: false
+library(dplyr)
+
+tribble(
+  ~id, ~name, ~height, ~year, ~grade,
+  1,  "Bonk",     1.2,     1,     56,
+  2, "Lilah",     0.4,    NA,     NA,
+  3,  "June",     1.4,     3,     88,
+  4,  "Judy",     1.6,     2,     75,
+  5, "Julie",     1.7,     1,     72,
+  6, "Jodie",     1.9,     1,     83,
+  7,  "Jill",     1.4,     2,     81
+) |>
+  knitr::kable()
+```
+
+:::
+::::
+
+
+4. In `ggplot2`, what is the best description of a `geom`?
+    a. Declaring the way a data set will be used, e.g. by assigning columns to a dataframe.
+    b. The way data are assigned to elements of a plot, e.g. assigning `mpg` to the y axis or assigning `cyl` to the colour scheme.
+    c. The way elements of a plot are actually drawn, e.g. by declaring that a violin plot will be used.
+    d. The way additional plot elements, such as arrows or text, are added tp the plot.
+
+<!--- ANS: C --->
+
+5. Consider a data set which records the number of cents in each person's bank account, where each bank account can only have a whole number of cents (no decimals). What type of variable is this?
+    a. Qualitative - Categorical
+    b. Qualitative - Ordinal
+    c. Quantitative - Continuous
+    d. Quantitative - Discrete
+
+<!--- ANS: D --->
+
+6. Consider the data from Question 5; the number of cents in a person's bank account. Which of the following visualization provides the most useful information?
+
+```{r}
+set.seed(1867)
+cents <- c(round(rnorm(200, 10000, 1000)), round(rnorm(200, 20000, 2000)))
+p <- ggplot() + labs(x = "Number of Cents in Bank Account") + aes(x = cents)
+p1 <- p + geom_histogram(fill = "lightgrey", colour = 1, binwidth = 500) +
+    labs(title = "Histogram of Cents", y = "Count")
+p2 <- p + geom_histogram(fill = "lightgrey", colour = 1, binwidth = 3500) +
+    labs(title = "Histogram of Cents", y = "Count")
+p3 <- p + geom_bar(width = 10, colour = 1, fill = 1) +
+    labs(title = "Bar plot of Cents", y = "Count")
+p4 <- p + geom_density(bw = 4000) +
+    labs(title = "Density plot of Cents", y = "Density")
+
+p1 + p2 + p3 + p4 +
+    plot_annotation(tag_level = "a", tag_prefix = "6.") +
+    plot_layout(nrow = 1)
+```
+
+<!--- ANS: A --->
+
+\quad
+
+:::: {layout="[0.55,0.05,0.45]"}
+::: {}
+Consider the plot on the right for the next question. Note that the name of the data set is `mpg`, with columns `class` for the type of car (sedan, SUV, truck, etc.), `displ` for the size of the engine (displacement) in cubic feet, `hwy` for highway fuel efficiency in miles per gallon, and `cyl` for number of cylinders in the engine.
+
+    
+:::
+::: {}
+\quad
+:::
+::: {}
+```{r echo=FALSE, eval=TRUE}
+#| fig-height: 2
+#| fig-width: 4.5
+data(mpg)
+mpg <- mpg |>
+    filter(cyl != 5) |>
+    mutate(cyl = factor(cyl))
+
+ggplot(mpg) +
+    aes(x = displ, y = hwy, shape = cyl) +
+    geom_point(size = 3)
+```
+
+
+:::
+::::
+
+7. Which code produced the figure above? 
+    a. `ggplot(mpg) + aes(x = displ, y = hwy, shape = cyl) + geom_point()`
+    a. `ggplot(mpg) + aes(x = hwy, y = displ, colour = cyl) + geom_point()`
+    a. `ggplot(mpg) + aes(x = displ, y = hwy, colour = cyl) + geom_scatterplot()`
+    a. `ggplot(mpg) + geom_scatterplot(x = hwy, y = displ, shape = cyl)`
+
+8. Consider the following code. Which figure would it produce?
+
+```{r}
+#| echo: TRUE
+#| eval: FALSE
+
+ggplot(penguins) +
+    aes(x = species, fill = species) +
+    geom_bar() +
+    facet_wrap(~ island) +
+    coord_flip() +
+    labs(
+        x = NULL, y = "Count"
+    )
+```
+
+```{r}
+#| echo: false
+#| eval: true
+#| fig-width: 10
+#| fig-height: 5
+
+g1 <- ggplot(penguins) +
+    aes(x = species, fill = species) +
+    geom_bar(colour = 1) +
+    facet_wrap(~ island) +
+    coord_flip() +
+    labs(
+        x = NULL, y = "Count"
+    )
+
+g2 <- ggplot(penguins) +
+    aes(x = species, fill = sex) +
+    geom_bar(colour = 1) +
+    facet_wrap(~ island) +
+    coord_flip() +
+    labs(
+        x = NULL, y = "Count"
+    )
+
+g3 <- ggplot(penguins) +
+    aes(x = island, fill = species) +
+    geom_bar(colour = 1) +
+    coord_flip() +
+    labs(
+        x = NULL, y = "Count"
+    )
+
+g4 <- ggplot(penguins) +
+    aes(x = species, fill = species) +
+    geom_bar(colour = 1) +
+    facet_wrap(~ island) +
+    labs(
+        x = NULL, y = "Count"
+    )
+
+g1 + g2 + g3 + g4 +
+    plot_layout(nrow = 1) +
+    plot_annotation(tag_levels = "a", tag_prefix = "8.") &
+    theme(
+        legend.position = "bottom", legend.direction = "vertical",
+        axis.text.x = element_text(angle = 90)
+    ) &
+    scale_fill_manual(values = c("lightgrey", "darkgrey", "black"))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Short Answer Questions
+
+16. Plot the following data on the axes provided in the answer sheet. Choose whichever plot you believe is most appropriate. 
+
+```{r}
+# TODO: Better data
+tribble(
+    ~grade, ~class, ~student,
+    1, "chemistry", "me"
+)
+```
+
+

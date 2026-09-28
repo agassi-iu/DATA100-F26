@@ -1,6 +1,6 @@
 ---
 title: "DATA100 Introduction to Data Analytics"
-subtitle: "Lecture 6: Communication"
+subtitle: "Lecture: Data Visualization Principles"
 author: "Agassi Iu"
 institute: "Wilfrid Laurier University"
 date: "September 29, 2026"
@@ -24,8 +24,6 @@ webr:
     - forcats
     - purrr
     - scales
-    - ggrepel
-    - patchwork
 execute:
   echo: true
   warning: false   # Hides warnings and package loading messages
@@ -39,738 +37,432 @@ execute:
 #| label: setup
 #| echo: false
 library(tidyverse)
-library(scales)
-library(ggrepel)
-library(patchwork)
-theme_set(theme_gray(base_size = 14))
-```
-
-```{webr}
-#| context: setup
-#| autorun: true
-#| echo: false
-library(tidyverse)
-library(scales)
-library(ggrepel)
-library(patchwork)
 theme_set(theme_gray(base_size = 14))
 
-label_info <- mpg |>
-  group_by(drv) |>
-  arrange(desc(displ)) |>
-  slice_head(n = 1) |>
-  mutate(
-    drive_type = case_when(
-      drv == "f" ~ "front-wheel drive",
-      drv == "r" ~ "rear-wheel drive",
-      drv == "4" ~ "4-wheel drive"
-    )
-  ) |>
-  select(displ, hwy, drv, drive_type)
+# simulated data standing in for the book's real datasets, so every
+# plot below runs without extra packages
+set.seed(1)
+heights <- tibble(
+  sex = rep(c("Female", "Male"), c(338, 812)),
+  height = c(rnorm(338, mean = 64.5, sd = 3.5), rnorm(812, mean = 69.3, sd = 5.4))
+)
 
-potential_outliers <- mpg |> filter(hwy > 40 | (hwy > 20 & displ > 5))
-```
+browsers <- tibble(
+  browser = rep(c("Opera", "Safari", "Firefox", "Chrome", "IE"), 2),
+  year = rep(c("2000", "2015"), each = 5),
+  pct = c(3, 21, 23, 26, 28, 2, 22, 21, 29, 27)
+)
 
-## Two kinds of plot
-
-::: {.callout-note title="Exploratory"}
-You know what's in it before you look. You make it, take a glance at it, and then move on. You'll make hundreds and discard most.
-:::
-
-::: {.callout-caution title="Expository"}
-Someone else has to read it, especially someone without your background and without much patience.
-:::
-
-::: {.callout-tip}
-Getting from the first to the second takes real effort. This chapter is the
-toolkit.
-:::
-
-## Setup
-
-These are the libraries that we are going to use in today's lecture.
-
-```{r}
-#| eval: false
-library(tidyverse)
-library(scales)     # label and break helpers
-library(ggrepel)    # non-overlapping text labels
-library(patchwork)  # combining plots
-```
-
-
-# Labels
-
-## `labs()`
-
-```{r}
-#| fig-height: 3
-ggplot(mpg, aes(x = displ, y = hwy)) +
-  geom_point(aes(color = class)) +
-  geom_smooth(se = FALSE) +
-  labs(
-    x = "Engine displacement (L)",
-    y = "Highway fuel economy (mpg)",
-    color = "Car type",
-    title = "Fuel efficiency generally decreases with engine size",
-    subtitle = "Two seaters are an exception because of their light weight",
-    caption = "Data from fueleconomy.gov"
+life_exp <- tibble(
+  continent = rep(c("Africa", "Americas", "Asia", "Europe", "Oceania"), each = 8),
+  life_expectancy = c(
+    rnorm(8, 58, 6), rnorm(8, 74, 3), rnorm(8, 71, 5),
+    rnorm(8, 77, 2), rnorm(8, 78, 2)
   )
-```
-
-## What each label is for
-
-| Label | Job |
-|---|---|
-| `title` | State the **finding**, not the plot's contents |
-| `subtitle` | Add detail below the title |
-| `caption` | Usually the data source |
-| `x`, `y` | Replace variable names with **descriptions** **and units** |
-| aesthetic names | Same, for each legend |
-
-
-## Mathematical labels
-
-Swap the string for `quote()`; see `?plotmath` for the vocabulary.
-
-```{r}
-#| fig-height: 2.9
-df <- tibble(x = 1:10, y = cumsum(x^2))
-
-ggplot(df, aes(x, y)) +
-  geom_point() +
-  labs(
-    x = quote(x[i]),
-    y = quote(sum(x[i] ^ 2, i == 1, n))
-  )
-```
-
-## Your turn {.smaller}
-
-::: {.callout-note title="The `mpg` variables you'll need"}
-| Variable | Meaning |
-|---|---|
-| `cty` | city fuel economy, in miles per gallon |
-| `hwy` | highway fuel economy, in miles per gallon |
-| `drv` | drive train: `4` = four-wheel, `f` = front-wheel, `r` = rear-wheel |
-:::
-
-::: {.callout-tip}
-## Try it yourself
-Build a scatterplot from `mpg` with `hwy` vs. `cty`, mapping both `color` and `shape` to drive train (`drv`). Add a custom `title`, `subtitle`, `caption`, `x`, and `y` label.
-:::
-
-```{webr}
-#| exercise: labels
-
-ggplot(mpg, aes(x = cty, y = hwy)) +
-  geom_point()
-```
-
-# Annotations
-
-## Labelling observations
-
-`geom_text()` is `geom_point()` plus a `label` aesthetic. Build a small data
-frame of just the things you want labelled:
-
-```{r}
-label_info <- mpg |>
-  group_by(drv) |>
-  arrange(desc(displ)) |>
-  slice_head(n = 1) |>
-  mutate(
-    drive_type = case_when(
-      drv == "f" ~ "front-wheel drive",
-      drv == "r" ~ "rear-wheel drive",
-      drv == "4" ~ "4-wheel drive"
-    )
-  ) |>
-  select(displ, hwy, drv, drive_type)
-```
-
-## Labels instead of a legend
-
-```{r}
-#| fig-height: 3.2
-ggplot(mpg, aes(x = displ, y = hwy, color = drv)) +
-  geom_point(alpha = 0.3) +
-  geom_smooth(se = FALSE) +
-  geom_text(
-    data = label_info,
-    aes(x = displ, y = hwy, label = drive_type),
-    fontface = "bold", size = 5, hjust = "right", vjust = "bottom"
-  ) +
-  theme(legend.position = "none")
+)
+gdp <- tibble(country = c("US", "China", "Japan", "Germany", "France"),
+              ratio = c(1, 1/2.6, 1/3.4, 1/4.9, 1/5.8))
 ```
 
 
-## `ggrepel` fixes the overlap
+## Where these principles come from
 
-```{r}
-#| fig-height: 3.2
-ggplot(mpg, aes(x = displ, y = hwy, color = drv)) +
-  geom_point(alpha = 0.3) +
-  geom_smooth(se = FALSE) +
-  geom_label_repel(
-    data = label_info,
-    aes(x = displ, y = hwy, label = drive_type),
-    fontface = "bold", size = 5, nudge_y = 2
-  ) +
-  theme(legend.position = "none")
-```
-
-## Highlighting specific points
-
-
-```{r}
-#| fig-height: 3
-potential_outliers <- mpg |> filter(hwy > 40 | (hwy > 20 & displ > 5))
-
-ggplot(mpg, aes(x = displ, y = hwy)) +
-  geom_point() +
-  geom_text_repel(data = potential_outliers, aes(label = model)) +
-  geom_point(data = potential_outliers, color = "red") +
-  geom_point(
-    data = potential_outliers,
-    color = "red", size = 3, shape = "circle open"
-  )
-```
-
-## Other annotation geoms
+Not arbitrary style preferences, mostly grounded in research on how humans actually perceive and compare visual information.
 
 ::: {.callout-note}
-- `geom_hline()` / `geom_vline()` are reference lines. Thick and white (`linewidth = 2, color = "white"`), drawn *under* the data, reads clearly without competing with it
-- `geom_rect()` boxes off a region with `xmin`/`xmax`/`ymin`/`ymax`. 
-- `geom_segment(arrow = ...)` point at something. `x`/`y` start,
-  `xend`/`yend` end
+The preferred visualization choices are the ones that best match how our brains process shapes, lengths, and positions, not just what looks nice.
 :::
 
 
-## `annotate()` for one-off text
-
-Geoms highlight *subsets of data*; `annotate()` adds *individual elements*
-without needing a data frame.
-
-```{r}
-trend_text <- "Larger engine sizes tend to have lower fuel economy." |>
-  str_wrap(width = 30)
-
-trend_text
-```
-
-`str_wrap()` inserts line breaks at a chosen width.
-
-## Text plus arrow
-
-```{r}
-#| fig-height: 3.2
-ggplot(mpg, aes(x = displ, y = hwy)) +
-  geom_point() +
-  annotate(
-    geom = "label", x = 3.5, y = 38,
-    label = trend_text, hjust = "left", color = "red"
-  ) +
-  annotate(
-    geom = "segment",
-    x = 3, y = 35, xend = 5, yend = 25, color = "red",
-    arrow = arrow(type = "closed")
-  )
-```
-
-
-## Your turn {.smaller}
-
-::: {.callout-tip}
-## Try it yourself
-1. Use `geom_text()` with infinite positions to place text in all four
-   corners.
-2. Use `annotate()` to drop a single customized point in the middle of a plot.
+::: {.callout-tip title="Keep your goal in mind"}
+A plot for yourself during exploration will look different from a plot built to communicate a finding to an audience.
 :::
 
-```{webr}
-#| exercise: annotations
 
-ggplot(mpg, aes(x = displ, y = hwy)) +
-  geom_point() +
-  geom_text(x = -Inf, y = Inf, label = "Top left", hjust = 0, vjust = 1) +
-  geom_text(x = Inf, y = Inf, label = "Top right", hjust = 1, vjust = 1) +
-  geom_text(x = -Inf, y = -Inf, label = "Bottom left", hjust = 0, vjust = 0) +
-  geom_text(x = Inf, y = -Inf, label = "Bottom right", hjust = 1, vjust = 0) + 
-  annotate(
-    geom = "point", x = 4, y = 25,
-    color = "red", size = 4, shape = 8
-  )
-```
+# Encoding data with visual cues
 
-## Your turn {.smaller}
+## Not all visual cues are equal
 
-::: {.callout-tip}
-## Try it yourself
+Several visual channels are available to represent a value: position, length, angle, area, brightness, color hue.
 
-Run the following code with `geom_text()` that draws its label data into every matching facet. If your label data frame has a column matching the faceting variable, `ggplot2` only places that label in the facet(s) where the value matches. Try labeling just the cyl = 8 facet, then try giving every facet its own distinct label.
-
+::: {.callout-important title="Human's perception"}
+We are quite good at comparing **position and length**. We are noticeably worse at judging **angles**, and even worse at judging **area** alone. Brightness and color hue are the hardest of all to quantify precisely.
 :::
 
-```{webr}
-#| exercise: annotations
 
-labels <- tibble(
-  cyl = c(4, 5, 6, 8),
-  displ = 6, hwy = 40,
-  label = c("4 cyl", "5 cyl", "6 cyl", "8 cyl")
-)
+## Can you read pie charts?
 
-ggplot(mpg, aes(x = displ, y = hwy)) +
-  geom_point() +
-  geom_text(data = labels, aes(label = label)) +
-  facet_wrap(~cyl)
-```
-
-# Scales
-
-## Scales are always there
-
-These two produce identical output:
-
-```{r}
-#| eval: false
-ggplot(mpg, aes(x = displ, y = hwy)) +
-  geom_point(aes(color = class))
-
-ggplot(mpg, aes(x = displ, y = hwy)) +
-  geom_point(aes(color = class)) +
-  scale_x_continuous() +
-  scale_y_continuous() +
-  scale_color_discrete()
-```
-
-Naming scheme: `scale_` + aesthetic + `_` + scale type
-(`continuous`, `discrete`, `date`, `datetime`).
-
-## Two reasons to override
-
-1. **Tweak the default**: different breaks, different labels
-2. **Replace it entirely**: a transformation or palette that fits your data
-   better than a general-purpose default can
-
-## Breaks and labels
-
-Axes and legends are collectively called **guides**. 
-
-- `breaks` sets where the ticks or keys go
-- `labels` sets what they say
+A pie chart encodes each value with **both** angle and area simultaneously.
 
 ```{r}
 #| fig-height: 3
-ggplot(mpg, aes(x = displ, y = hwy, color = drv)) +
-  geom_point() +
-  scale_y_continuous(breaks = seq(15, 40, by = 5))
-```
-
-## Suppressing and renaming
-
-`labels = NULL` removes the labels entirely
-
-```{r}
-#| fig-height: 2.9
-ggplot(mpg, aes(x = displ, y = hwy, color = drv)) +
-  geom_point() +
-  scale_x_continuous(labels = NULL) +
-  scale_y_continuous(labels = NULL) +
-  scale_color_discrete(labels = c("4" = "4-wheel", "f" = "front", "r" = "rear"))
-```
-
-
-## Formatting with the scales package
-
-```{r}
-#| fig-height: 2.9
 #| layout-ncol: 2
-#| fig-width: 4.5
-ggplot(diamonds, aes(x = price, y = cut)) +
-  geom_boxplot(alpha = 0.05) +
-  scale_x_continuous(labels = label_dollar())
+#| fig-width: 4
+ggplot(browsers |> filter(year == "2000"), aes(x = "", y = pct, fill = browser)) +
+  geom_col(width = 1) + coord_polar("y") +
+  labs(title = "2000", x = NULL, y = NULL) + theme_void()
 
-ggplot(diamonds, aes(x = price, y = cut)) +
-  geom_boxplot(alpha = 0.05) +
-  scale_x_continuous(
-    labels = label_dollar(scale = 1/1000, suffix = "K"),
-    breaks = seq(1000, 19000, by = 6000)
-  )
-```
-
-Note `breaks` stays in the original data scale.
-
-## Percentages
-
-```{r}
-#| fig-height: 3.2
-ggplot(diamonds, aes(x = cut, fill = clarity)) +
-  geom_bar(position = "fill") +
-  scale_y_continuous(name = "Percentage", labels = label_percent())
-```
-
-## Breaks that mark real events
-
-With few data points, put the ticks where the observations are:
-
-```{r}
-#| fig-height: 3
-presidential |>
-  mutate(id = 33 + row_number()) |>
-  ggplot(aes(x = start, y = id)) +
-  geom_point() +
-  geom_segment(aes(xend = end, yend = id)) +
-  scale_x_date(name = NULL, breaks = presidential$start, date_labels = "'%y")
-```
-
-Dates use `date_labels` (a format string) and `date_breaks` (`"2 days"`,`"1 month"`).
-
-## Legend position
-
-`legend.position` is a **theme** setting:
-
-```{r}
-#| fig-height: 2.7
-#| layout-ncol: 2
-#| fig-width: 4.5
-base <- ggplot(mpg, aes(x = displ, y = hwy)) + geom_point(aes(color = class))
-
-base + theme(legend.position = "right")
-base + theme(legend.position = "bottom") +
-  guides(color = guide_legend(nrow = 3))
-```
-
-Short and wide → top or bottom. Tall and narrow → left or right.`"none"` removes it.
-
-## Overriding legend aesthetics
-
-```{r}
-#| fig-height: 2.9
-ggplot(mpg, aes(x = displ, y = hwy)) +
-  geom_point(aes(color = class)) +
-  geom_smooth(se = FALSE) +
-  theme(legend.position = "bottom") +
-  guides(color = guide_legend(nrow = 2, override.aes = list(size = 4)))
-```
-
-## Transform in the scale, not the mapping
-
-```{r}
-#| fig-height: 2.9
-#| layout-ncol: 2
-#| fig-width: 4.5
-ggplot(diamonds, aes(x = log10(carat), y = log10(price))) +
-  geom_bin2d()
-
-ggplot(diamonds, aes(x = carat, y = price)) +
-  geom_bin2d() +
-  scale_x_log10() +
-  scale_y_log10()
-```
-
-::: {.callout-note}
-Visually identical — but the right-hand axes are labelled in the *original*
-units. Transforming inside `aes()` leaves the reader staring at log values;
-transforming via the scale keeps the plot interpretable.
-:::
-
-##ColorBrewer
-
-The default categorical palette spaces hues evenly around the color wheel. ColorBrewer's palettes are hand-tuned so common forms of color blindness can still distinguish them.
-
-```{r}
-#| fig-height: 2.7
-#| layout-ncol: 2
-#| fig-width: 4.5
-ggplot(mpg, aes(x = displ, y = hwy)) + geom_point(aes(color = drv))
-
-ggplot(mpg, aes(x = displ, y = hwy)) +
-  geom_point(aes(color = drv)) +
-  scale_color_brewer(palette = "Set1")
+ggplot(browsers |> filter(year == "2015"), aes(x = "", y = pct, fill = browser)) +
+  geom_col(width = 1) + coord_polar("y") +
+  labs(title = "2015", x = NULL, y = NULL) + theme_void()
 ```
 
 
-## Predetermined mapping
-
-Some variables come with expected colors. `scale_color_manual()` pins them down to the specific colour:
-
-```{r}
-#| fig-height: 3
-presidential |>
-  mutate(id = 33 + row_number()) |>
-  ggplot(aes(x = start, y = id, color = party)) +
-  geom_point() +
-  geom_segment(aes(xend = end, yend = id)) +
-  scale_color_manual(values = c(Republican = "#E81B23", Democratic = "#00AEF3"))
-```
-
-
-## Three ways to set limits
-
-1. Filter the data
-2. Set `limits` on the scale
-3. Set `xlim`/`ylim` in `coord_cartesian()`
-
-::: {.callout-caution}
-Options 1 and 2 both throw data away before any stat or smooth is fit 
- - a `geom_smooth()` curve will genuinely change shape. 
-
-Option 3 is a true zoom: the smooth is fit on the full data and only the *view* changes. Pick option 3 unless you actually want to refit on a subset.
-:::
-
-## What do i mean by that?
-
-```{r}
-#| fig-height: 2.8
-#| layout-ncol: 2
-#| fig-width: 4.5
-ggplot(mpg, aes(x = displ, y = hwy)) +
-  geom_point(aes(color = drv)) + geom_smooth() +
-  scale_x_continuous(limits = c(5, 6)) +
-  scale_y_continuous(limits = c(10, 25))
-
-ggplot(mpg, aes(x = displ, y = hwy)) +
-  geom_point(aes(color = drv)) + geom_smooth() +
-  coord_cartesian(xlim = c(5, 6), ylim = c(10, 25))
-```
-
-Same window, different smooth curves.
-
-## An even simpler example
-
-```{webr}
-#| exercise: simple zoom
-
-set.seed(123)
-
-cluster_a <- tibble(
-  x = runif(15, 0, 3),
-  y = 10 - 2 * x + rnorm(15, sd = 1)
-)
-cluster_b <- tibble(
-  x = runif(200, 3, 10),
-  y = 4 + 1.5 * x + rnorm(200, sd = 3)
-)
-df <- bind_rows(cluster_a, cluster_b)
-
-# General plot
-ggplot(df, aes(x, y)) +
-  geom_point() +
-  geom_smooth(method = "lm")
-
-# Filtering/limits: refits on ONLY the points in view
-ggplot(df, aes(x, y)) +
-  geom_point() +
-  geom_smooth(method = "lm") +
-  scale_x_continuous(limits = c(0, 3))
-
-# coord_cartesian: keeps the original full-data line, just crops the view
-ggplot(df, aes(x, y)) +
-  geom_point() +
-  geom_smooth(method = "lm") +
-  coord_cartesian(xlim = c(0, 3))
-
-```
-
-
-## Expanding limits to share scales {.smaller}
-
-`limits` is genuinely useful in the other direction: making separate plots
-comparable.
-
-```{r}
-#| fig-height: 2.7
-#| layout-ncol: 2
-#| fig-width: 4.5
-suv     <- mpg |> filter(class == "suv")
-compact <- mpg |> filter(class == "compact")
-
-x_scale   <- scale_x_continuous(limits = range(mpg$displ))
-y_scale   <- scale_y_continuous(limits = range(mpg$hwy))
-col_scale <- scale_color_discrete(limits = unique(mpg$drv))
-
-ggplot(suv, aes(displ, hwy, color = drv)) +
-  geom_point() + x_scale + y_scale + col_scale
-ggplot(compact, aes(displ, hwy, color = drv)) +
-  geom_point() + x_scale + y_scale + col_scale
-```
-
-
-# Themes
-
-## Built-in themes
-
-```{r}
-#| fig-height: 3.2
-ggplot(mpg, aes(x = displ, y = hwy)) +
-  geom_point(aes(color = class)) +
-  geom_smooth(se = FALSE) +
-  theme_bw()
-```
-
-Eight ship with ggplot2: `theme_gray()` (default), `theme_bw()`, `theme_light()`, `theme_classic()`, `theme_linedraw()`, `theme_dark()`, `theme_minimal()`, `theme_void()`. The package **ggthemes** adds many more.
-
-
-
-## Customizing individual components
-
-`theme()` controls everything non-data. `element_*()` functions describe how
-each piece looks.
-
-```{r}
-#| fig-height: 2.8
-ggplot(mpg, aes(x = displ, y = hwy, color = drv)) +
-  geom_point() +
-  labs(
-    title = "Larger engine sizes tend to have lower fuel economy",
-    caption = "Source: https://fueleconomy.gov."
-  ) +
-  theme(
-    legend.position = c(0.6, 0.7),
-    legend.direction = "horizontal",
-    legend.box.background = element_rect(color = "black"),
-    plot.title = element_text(face = "bold"),
-    plot.title.position = "plot",
-    plot.caption.position = "plot",
-    plot.caption = element_text(hjust = 0)
-  )
-```
-
-## Try it
-
-```{webr}
-#| exercise: theme
-ggplot(mpg, aes(x = displ, y = hwy, color = drv)) +
-  geom_point() +
-  labs(
-    title = "Larger engine sizes tend to have lower fuel economy",
-    caption = "Source: https://fueleconomy.gov."
-  ) +
-  theme(
-    legend.position = c(0.6, 0.7),
-    legend.direction = "horizontal",
-    legend.box.background = element_rect(color = "black"),
-    plot.title = element_text(face = "bold"),
-    plot.title.position = "plot",
-    plot.caption.position = "plot",
-    plot.caption = element_text(hjust = 0)
-  )
-
-```
-
-
-## Worth knowing
-
-- `element_text()`: font face, size, color, justification
-- `element_rect()`: backgrounds and borders
-- `element_line()`: grid lines and axis lines
-- `element_blank()`: remove a component entirely
-
-`plot.title.position = "plot"` aligns the title to the whole graphic rather
-than the panel, which usually looks better with left-aligned captions.
-
-See `?theme` for the full list.
-
-# Layout
-
-## patchwork
-
-Save plots as objects, then combine with operators:
-
-```{r}
-#| fig-height: 2.9
-p1 <- ggplot(mpg, aes(x = displ, y = hwy)) +
-  geom_point() + labs(title = "Plot 1")
-p2 <- ggplot(mpg, aes(x = drv, y = hwy)) +
-  geom_boxplot() + labs(title = "Plot 2")
-
-p1 + p2
-```
-
-patchwork doesn't add a new function here!
-
-## Composing layouts
-
-`|` places side by side, `/` starts a new row.
+## What about bar plots?
 
 ```{r}
 #| fig-height: 3.4
-p3 <- ggplot(mpg, aes(x = cty, y = hwy)) +
-  geom_point() + labs(title = "Plot 3")
-
-(p1 | p3) / p2
+ggplot(browsers, aes(x = fct_reorder(browser, pct, .fun = mean), y = pct, fill = year)) +
+  geom_col(position = "dodge") +
+  geom_hline(yintercept = seq(0, 30, 10), color = "white", linewidth = 0.3) +
+  labs(x = "Browser", y = "Percent", fill = "Year",
+       title = "Browser share is far easier to compare as a barplot")
 ```
 
-## Collecting legends
 
-```{webr}
-#| exercise: layouts
-p1 <- ggplot(mpg, aes(drv, cty, color = drv)) +
-  geom_boxplot(show.legend = FALSE) + labs(title = "Plot 1")
-p2 <- ggplot(mpg, aes(drv, hwy, color = drv)) +
-  geom_boxplot(show.legend = FALSE) + labs(title = "Plot 2")
-p3 <- ggplot(mpg, aes(cty, color = drv, fill = drv)) +
-  geom_density(alpha = 0.5) + labs(title = "Plot 3")
-p4 <- ggplot(mpg, aes(hwy, color = drv, fill = drv)) +
-  geom_density(alpha = 0.5) + labs(title = "Plot 4")
-p5 <- ggplot(mpg, aes(cty, hwy, color = drv)) +
-  geom_point(show.legend = FALSE) + facet_wrap(~drv) + labs(title = "Plot 5")
+## Exercise
 
-(guide_area() / (p1 + p2) / (p3 + p4) / p5) +
-  plot_annotation(
-    title = "City and highway mileage for cars with different drive trains",
-    caption = "Source: https://fueleconomy.gov."
-  ) +
-  plot_layout(guides = "collect", heights = c(1, 3, 2, 4)) &
-  theme(legend.position = "top")
-```
-
-## What just happened
-
-- `guide_area()` reserves a slot for the shared legend
-- `plot_layout(guides = "collect")` gathers legends from every panel into it
-- `heights = c(1, 3, 2, 4)` divides the vertical space proportionally
-
-::: {.callout-note}
-`&` applies a theme setting to **every** plot in the patchwork; a plain `+` would only affect the last one added. This is the one place in ggplot2 code where `&` and `+` are not interchangeable.
+::: {.callout-tip title="Which browser grew the most from 2000 to 2015?"}
+Try plotting the pie chart and the bar plot by running the code below
 :::
 
+```{webr}
+#| exercise: encoding_ex
+browsers <- tibble(
+  browser = rep(c("Opera", "Safari", "Firefox", "Chrome", "IE"), 2),
+  year = rep(c("2000", "2015"), each = 5),
+  pct = c(3, 21, 23, 26, 28, 2, 22, 21, 29, 27)
+)
 
-## Your turn {.smaller}
+ggplot(browsers, aes(x = "", y = pct, fill = browser)) +
+  geom_col(width = 1) +
+  coord_polar(theta = "y") +
+  facet_wrap(~year) +
+  labs(x = NULL, y = NULL) +
+  theme_void()
+
+ggplot(browsers, aes(x = browser, y = pct, fill = year)) +
+  geom_col(position = "dodge")
+```
+
+
+
+# Know when to include 0
+
+## Length implies proportionality
+
+- When a visual cue is **length** (as in a bar plot), the reader assumes the length is proportional to the value. 
+
+- If the bar doesn't start at 0, that assumption breaks and a small real difference can be stretched to look huge.
+
+::: {.callout-caution title="Common problem in media"}
+This is a favourite trick of misleading charts in the media: truncate the y-axis, and a 16% increase can be made to look like it nearly tripled.
+:::
+
+## Exaggerated axis truncation
+
+![](https://rafalab.dfci.harvard.edu/dsbook-part-1/dataviz/img/class2_8.jpg)
+
+
+## How to exaggerate an increase?
+
+::: {.callout-tip title="Try playing around with the axis"}
+The template below compares my company's profit in 2011 and 2012. Notice how much bigger the increase looks once the y-axis gets truncated. Which plot would you rather show?
+:::
+
+```{webr}
+#| fig-height: 3
+#| layout-ncol: 2
+#| fig-width: 4
+profit <- tibble(year = c("2011", "2012"), value = c(340, 396))
+
+ggplot(profit, aes(year, value)) +
+  geom_col(fill = "firebrick") +
+  coord_cartesian(ylim = c(330, 400)) +
+  labs(title = "Axis truncated", y = "Dollars (thousands)")
+
+ggplot(profit, aes(year, value)) +
+  geom_col(fill = "steelblue") +
+  labs(title = "Axis starts at 0", y = "Dollars (thousands)")
+```
+
+
+## Length vs Position
+
+
+```{r}
+#| fig-height: 3
+#| layout-ncol: 2
+#| fig-width: 4.5
+ggplot(life_exp, aes(x = continent, y = life_expectancy)) +
+  geom_point() +
+  coord_cartesian(ylim = c(0, 85)) +
+  labs(title = "Forced to include 0")
+
+ggplot(life_exp, aes(x = continent, y = life_expectancy)) +
+  geom_point() +
+  labs(title = "Zoomed to the data")
+```
+
+
+## The rule of thumb
+
+::: {.callout-note title="Is the 0 required here?"}
+The empty space between 0 and 50 in the left plot adds no information and makes it harder to see the within-group and between-group variability that actually matters here.
+:::
+
+::: {.callout-important title="Bars vs Points}
+If length is your visual cue (bars), **always** include 0. If position is your cue (points, lines), it's fine (often better) to zoom to the range that matters.
+:::
+
+# Do not distort quantities
+
+## Circles
+
+![]{https://rafalab.dfci.harvard.edu/dsbook-part-1/dataviz/img/state-of-the-union.png}
+
+
+## Radius-proportional vs. area-proportional
+
+```{webr}
+#| fig-height: 3.2
+#| layout-ncol: 2
+#| fig-width: 4.5
+gdp <- tibble(country = c("US", "China", "Japan", "Germany", "France"),
+              ratio = c(1, 1/2.6, 1/3.4, 1/4.9, 1/5.8))
+
+ggplot(gdp, aes(x = country, y = 0)) +
+  geom_point(aes(size = ratio), shape = 21, fill = "steelblue") +
+  scale_size_area(max_size = 30, guide = "none") +
+  labs(title = "Radius proportional (distorted)") +
+  theme_void() + theme(plot.title = element_text(hjust = 0.5))
+
+ggplot(gdp, aes(x = country, y = 0)) +
+  geom_point(aes(size = ratio), shape = 21, fill = "steelblue") +
+  scale_size(range = c(2, 30), guide = "none") +
+  labs(title = "Area proportional (correct)") +
+  theme_void() + theme(plot.title = element_text(hjust = 0.5))
+```
 
 ::: {.callout-tip}
-## Try it yourself
-What changes if you drop the parentheses from `(p1 | p2) / p3`? Why?
+`ggplot2`'s `scale_size_area()` defaults to making **area**, not radius,
+proportional to the value — the mathematically honest choice. Worth knowing
+which default you're getting when you map a value to `size`.
+:::
+
+## Just use a different plot!
+
+```{r}
+#| fig-height: 3
+ggplot(gdp, aes(x = fct_reorder(country, ratio), y = ratio)) +
+  geom_col(fill = "steelblue") +
+  coord_flip() +
+  labs(x = NULL, y = "GDP relative to US")
+```
+
+
+# Show the data
+
+## Oh Hello?
+
+![]{https://i.pinimg.com/1200x/9b/71/89/9b7189f054526b97684c36ea725d8810.jpg}
+
+
+## Meet ET
+
+::: {.callout-warning title="How tall are you humans?"}
+The extra-terrestrial arrives Earth for the first time. Instead of asking if you have any mass destructive weapons or asking for the most appropriate swear words in human language, the alien asks you: How tall are you guys?
+:::
+
+::: {.callout-tip title="Uh-oh, what do I do?"}
+Instead of giving the alien a random answer, you kidnapped 338 women and 812 men. You measured each of their heights in inches, and reported to the alien. But reporting 1450 numbers is too much of a hassle, so you had to show the alien a plot! 
+:::
+
+
+## The Antennae plot
+
+Imagine describing human height to an alien who has never seen a person. A common way to compare two groups (popularized by spreadsheet software) is the **dynamite plot**: a bar at the group mean, with error-bar "antennae".
+
+```{r}
+#| fig-height: 3.2
+#| eval: FALSE
+heights |>
+  group_by(sex) |>
+  summarize(mean = mean(height), se = sd(height) / sqrt(n())) |>
+  ggplot(aes(x = sex, y = mean)) +
+  geom_col(fill = "grey70", width = 0.6) +
+  geom_errorbar(aes(ymin = mean, ymax = mean + 2 * se), width = 0.2) +
+  labs(y = "Height (in)")
+```
+
+
+## Bar going to 0 means 0-in height?
+
+```{r}
+#| fig-height: 3.2
+#| eval: TRUE
+#| echo: FALSE
+heights |>
+  group_by(sex) |>
+  summarize(mean = mean(height), se = sd(height) / sqrt(n())) |>
+  ggplot(aes(x = sex, y = mean)) +
+  geom_col(fill = "grey70", width = 0.6) +
+  geom_errorbar(aes(ymin = mean, ymax = mean + 2 * se), width = 0.2) +
+  labs(y = "Height (in)")
+```
+
+
+## Can you see the shape of the crowd?
+
+
+```{r}
+#| fig-height: 3.2
+ggplot(heights, aes(x = sex, y = height)) +
+  geom_point()
+```
+
+
+## Jitter and alpha blending
+
+Two small fixes make an enormous difference when points overlap heavily:
+
+::: {.callout-note title="Jitter"}
+`geom_jitter(...)` adds a small random horizontal nudge to each point, spreading out ones that would otherwise land exactly on top of each other. 
+
+- `geom_jitter(width=...)` adjusts the amount of horizontal jitter. 
+
+:::
+
+::: {.callout-tip title="Alpha"}
+Does anyone recall what does `alpha` change to a plot?
+
+- makes points semi-transparent, so denser regions naturally look
+darker.
+
+:::
+
+
+```{r}
+#| fig-height: 3.2
+ggplot(heights, aes(x = sex, y = height)) +
+  geom_jitter(width = 0.05, alpha = 0.2)
+```
+
+Now the height difference between groups, and the overall shape of each
+distribution, are both visible at a glance.
+
+## Exercise
+
+::: {.callout-tip title=""}
+Try and run the following code to compare two styles of plots.
 :::
 
 ```{webr}
-#| exercise: layout
+#| exercise: show_data_ex
+# Data set
+heights <- tibble(
+  sex = rep(c("Female", "Male"), c(338, 812)),
+  height = c(rnorm(338, mean = 64.5, sd = 3.5), rnorm(812, mean = 69.3, sd = 5.4))
+)
+# Normal plot
+ggplot(heights, aes(x = sex, y = height)) +
+  geom_point()
+# Plot with jitters
+ggplot(heights, aes(x = sex, y = height)) +
+  geom_jitter(width = 0.05, alpha = 1)
 
-p1 <- ggplot(mpg, aes(x = displ, y = hwy)) +
-  geom_point() + labs(title = "Plot 1")
-p2 <- ggplot(mpg, aes(x = drv, y = hwy)) +
-  geom_boxplot() + labs(title = "Plot 2")
-p3 <- ggplot(mpg, aes(x = cty, y = hwy)) +
-  geom_point() + labs(title = "Plot 3")
 
-p1 | p2 / p3
 ```
 
-## Summary
+# Ease comparisons
 
-- **Labels**: the title states the finding; axes carry units
-- **Annotations**: `geom_text()` for data, `annotate()` for one-offs; reference lines, rectangles, and arrows
-- **Scales**: `breaks` and `labels` to tweak, whole scales to replace;
-  transform in the scale so axes stay readable
-- **Color**: ColorBrewer and viridis for accessibility; redundant shape
-  encoding is free insurance
-- **Zooming**: `coord_cartesian()` zooms, `limits` subsets
-- **Themes**: everything that isn't data
-- **Layout**: patchwork for multi-panel figures
+## Are the men taller than women?
 
 
-## Next Class
+```{r}
+#| fig-height: 3.2
+ggplot(heights, aes(x = height)) +
+  geom_histogram(binwidth = 1) +
+  facet_wrap(~sex, scales = "free_x")
+```
 
-### Review for Visualization and Midterm!
+
+## Same data, Same Binwidth
+
+```{r}
+#| fig-height: 3.2
+ggplot(heights, aes(x = height)) +
+  geom_histogram(binwidth = 1) +
+  facet_wrap(~sex)
+```
+
+
+## Aligning plots
+
+
+```{r}
+#| fig-height: 3.4
+ggplot(heights, aes(x = height)) +
+  geom_histogram(binwidth = 1) +
+  facet_wrap(~sex, ncol = 1)
+```
+
+
+## Align the other way
+
+```{r}
+#| fig-height: 3.2
+ggplot(heights, aes(x = sex, y = height)) +
+  geom_boxplot() +
+  geom_jitter(width = 0.1, alpha = 0.15)
+```
+
+## Three plots, one dataset
+
+::: {.callout-tip title="Which plot is better?"}
+Run the following code to generate three plots we discussed earlier. What kind of question can each plot actually answer?
+:::
+
+
+```{webr}
+#| fig-height: 3
+#| fig-width: 3
+
+# Antennae plots
+heights |>
+  group_by(sex) |>
+  summarize(mean = mean(height), se = sd(height)/sqrt(n())) |>
+  ggplot(aes(sex, mean)) +
+  geom_col(fill = "grey70") +
+  geom_errorbar(aes(ymin = mean, ymax = mean + 2*se), width = 0.2) +
+  labs(title = "Dynamite plot")
+
+# Stacked histograms
+ggplot(heights, aes(x = height)) +
+  geom_histogram(binwidth = 1) +
+  facet_wrap(~sex, ncol = 1) +
+  labs(title = "Aligned histograms")
+
+# Boxplot
+ggplot(heights, aes(x = sex, y = height)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.1, alpha = 0.15) +
+  labs(title = "Boxplot + points")
+```
+
+
+## Summary {.smaller}
+
+- **Position and length** are the visual cues humans read most accurately;
+  angle is worse, area worse still, color/brightness hardest of all
+- **Always include 0** when the cue is length (bars); it's optional, often
+  better skipped, when the cue is position (points)
+- **Radius ≠ area** — squaring a linear scale factor silently exaggerates
+  differences
+- **Show the data**: raw points, jitter, and alpha blending beat a bar +
+  error bar summary almost every time
+- **Match the axes and align your panels** to the direction of the
+  comparison you actually want the reader to make
+
+
+# Visualization and Midterm Review on Thursday

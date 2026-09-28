@@ -1,0 +1,430 @@
+---
+title: "Midterm 1 Practice Problems"
+format: 
+  html:
+    css: [webex.css]
+    include-after-body: [webex.js]
+    embed-resources: true 
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(webexercises)
+library(tidyverse)
+library(knitr)
+library(here)
+```
+
+```{r, echo = FALSE, results='asis'}
+# Uncomment to change widget colours:
+#style_widgets(incorrect = "goldenrod", correct = "purple", highlight = "firebrick")
+```
+
+
+As a study note, you should spend just as much time *understanding* the topics as you do *solving* the questions below.
+
+It is **strongly** recommended that you write your full solutions on paper for each question **before** looking at the solutions. This will help you understand the concepts better and will also help you if you need to refer to your notes later. 
+
+::: {.callout-important}
+### Don't shortcut your learning!
+
+You can take a forklift to the gym and lift all the weights, but it doesn't mean you got any stronger. You can read and understand the solutions, but it doesn't mean you got any smarter. 
+
+You gain muscle by lifting weights that are near the limit of what you can handle - too heavy and you'll just fail, too light and you won't gain muscle. You gain knowledge in a similar way. In both cases, it should be a *managable struggle*!!!
+
+:::
+
+
+
+::: {.webex-check .webex-box}
+
+```{r}
+#| eval: true
+#| echo: false
+#| results: asis
+
+randomize <- function(n) sample.int(n, n, replace = FALSE)
+
+qnum <- 1
+
+cat(paste0(qnum, ". "),
+	"In a histogram, how are the \"bins\" usually created?",
+	longmcq(
+		c(
+			"Where there are more data, more bins are created.",
+			answer = "Bins are chosen as equal lengths across the range of the data.",
+			"Bins are always 1 unit wide.",
+			"Bin is short for binary and has nothing to do with visualization."
+		)[randomize(4)]
+	)
+)
+qnum <- qnum + 1
+
+
+cat(paste0(qnum, ". "),
+	"Which of the following best describes a violin plot?",
+	longmcq(
+		c(
+			"A plot of measurements taken from violins.",
+			answer = "A sideways density plot, mirrored across the axis.",
+			"A better version of a histogram.",
+			"A bigger version of a viola plot."
+		)[randomize(4)]
+	)
+)
+qnum <- qnum + 1
+
+
+cat(paste0(qnum, ". "),
+	"Which of the following plots would allow a comparison between two categorical variables?",
+	longmcq(
+		c(
+			"Histograms",
+			answer = "Bar plots",
+			"Violin plots",
+			"Box plots"
+		)[randomize(4)]
+	)
+)
+qnum <- qnum + 1
+
+tribble(
+  ~id, ~name, ~height, ~year, ~grade,
+  1,  "Bonk",     1.2,     1,     56,
+  2, "Lilah",     0.4,    NA,     NA,
+  3,  "June",     1.4,     3,     88,
+  4,  "Judy",     1.6,     2,     75,
+  5, "Julie",     1.7,     1,     72,
+  6, "Jodie",     1.9,     1,     83,
+  7,  "Jill",     1.4,     2,     81
+) |>
+  knitr::kable()
+
+
+cat(paste0(qnum, ". "),
+	"Consider the data above. Which of the following plots would provide meaningful information?",
+	longmcq(
+		c(
+			"A bar plot of ID versus Name",
+			answer = "A boxplot of grade versus year",
+			"A bar plot of height versus grade",
+			"A scatterplot of height versus grade"
+		)[randomize(4)]
+	)
+)
+qnum <- qnum + 1
+
+cat(paste0(qnum, ". "),
+  "Suppose we have a data set named \"`sales`\" with columns `product`, `volume`, and `city`, containing the name of the product and the number of that product that was sold in each city. Fill in the blanks for the following plotting code. The resulting plot is shown below.\n\n",
+  "`ggplot(`", fitb("sales"), "`) + aes(x = `", fitb("city"), "`, y = `", fitb("volume"), "`, fill = `", fitb("product"), "`) + geom_col(position=\"dodge\")`"
+)
+qnum <- qnum + 1
+
+sales <- tribble(
+  ~product, ~volume, ~city,
+  "hat", 240, "Waterloo",
+  "hat", 340, "Kitchener",
+  "hat", 40, "Cambridge",
+  "scarf", 120, "Waterloo",
+  "scarf", 230, "Kitchener",
+  "scarf", 10, "Cambridge",
+  "gloves", 310, "Waterloo",
+  "gloves", 300, "Kitchener",
+  "gloves", 100, "Cambridge"
+)
+ggplot(sales) + aes(x = city, y = volume, fill = product) + geom_col(position="dodge")
+
+tribble(
+  ~student_number, ~assessment, ~grade,
+  123456789, "A1", 90,
+  123456789, "A2", 83,
+  123456789, "A3", 74,
+  123456789, "MT", 89,
+  124624353, "A1", 60,
+  124624353, "A2", 65,
+  124624353, "A3", 70,
+  124624353, "MT", 76,
+  984367234, "A1", 73,
+  984367234, "A2", 74,
+  984367234, "A3", 76,
+  984367234, "MT", 71
+) |>
+  kable()
+
+cat(paste0(qnum, ". "),
+  " Consider the data above. What kind of variable is your student number, and what kind of plot might it be useful?",
+  longmcq(
+    sample(c(
+      answer = "Unordered qualitative, bar plot with heights defined by grade",
+      "Quantitative discrete, scatter plot of grade versus assessment",
+      "Unordered qualitative, scatter plot of grade versus assessment",
+      "Quantitative discrete, bar plot with heights defined by grade"
+    ))
+  )
+)
+qnum <- qnum + 1
+
+```
+
+`r hide("Explanation")`
+
+Your student number is just a stand-in for your name. Numbers are assigned (mostly) randomly and have no order. They're names made of digits, not numbers! You can't add or multiply them.
+
+`r unhide()`
+
+```{r}
+#| eval: true
+#| echo: false
+#| results: asis
+
+nhl_teams <- read_csv("data/game_teams_stats.csv") |>
+  na.omit() |>
+  filter(shots < 75, settled_in == "REG") |>
+  mutate(won = if_else(won, "Won", "Lost"))
+ggplot(nhl_teams) +
+  aes(x = shots, y = goals) +
+  geom_jitter(aes(colour = won), width = 0, height = 0.3) +
+  geom_smooth(method = "lm", se = FALSE, formula = y ~ x) +
+  scale_y_continuous(breaks = 0:10, minor_breaks = NULL) +
+  theme_bw() +
+  labs(
+    x = "Number of Shots Taken",
+    y = "Number of Goals Scored",
+    colour = NULL,
+    title = "Figure 2: Goals versus Shots Taken",
+    subtitle = "Goals are whole numbers but were jittered vertically for display purposes."
+  )
+
+cat("\n\n")
+
+cat(paste0(qnum, ". "),
+  "What's the take-away message from the plot above (labelled Figure 2)?",
+  longmcq(
+    sample(c(
+      answer = "Taking more shots has a very slight correlation with scoring more goals.",
+      "Scoring more goals than the other team only has a slight correlation with winning the game.",
+      "The blue team always wins.",
+      "If you score 4 goals, you're guaranteed to win."
+    ))
+  )
+)
+qnum <- qnum + 1
+
+cat(paste0(qnum, ". "),
+  "Figure 2 used veritcal jittering for the number of goals. Why?",
+  longmcq(
+    sample(c(
+      answer = "Since goals are whole numbers, all games with, say, 20 shots and 4 goals will be plotted in the exact same spot. Jittering allows us to see this.",
+      "for display purposes.",
+      "This jittering is inapproriate - it implies that there were games with 4.2 goals which is impossible.",
+      "The jittering is done because goals is a continuous variable but was only measured to the nearest whole number; jittering makes it continuous rather than discrete."
+    ))
+  )
+)
+qnum <- qnum + 1
+
+cat(paste0(qnum, ". "),
+  "From the plot above (Figure 2), how many shots do you need to take in order to have more than a 50% chance to win the game?",
+  longmcq(
+    c(
+      "20",
+      "40",
+      "60",
+      answer = "It is impossible to tell from this plot."
+    )
+  )
+)
+qnum <- qnum + 1
+```
+
+In Figure 2, does it appear that shooting more makes you more likely to win?
+
+`r hide("Answer")`
+
+Not really! As you take more shots you get more goals, but perhaps your opponent shoots more as well. If you look at, say, 20 shots in a game, it looks like slightly more than half of the games were won. If you look at 40 shots, it still looks like slightly more than half of the games were won.
+
+It really matters what the opponent does!
+
+`r unhide()`
+
+```{r}
+#| eval: true
+#| echo: false
+#| results: asis
+#| warning: false
+
+nhl_teams |>
+  group_by(shots) |>
+  summarise(win_prob = sum(won == "Won") / n()) |>
+  ggplot() +
+    aes(x = shots, y = win_prob) +
+    geom_line() +
+    theme_bw() +
+    labs(
+      x = "Number of Shots Taken",
+      y = "Proportion of Games Won",
+      title = "Figure 3: Wins versus Shots",
+      subtitle = "For each number of shots, this plot shows the proportion of games won."
+    ) +
+    annotate("segment", x = -Inf, xend = Inf, y = 0.5, yend = 0.5, col = "red") +
+    scale_y_continuous(breaks = seq(0, 1, 0.1)) +
+    scale_x_continuous(breaks = seq(0, 60, 10), minor_breaks = seq(0, 60, 5)) +
+    coord_cartesian(ylim = c(0, 1))
+
+cat("\n\n")
+
+cat(paste0(qnum, ". "),
+  "What is the interpretation of the plot above (Figure 3)?",
+  longmcq(
+    sample(c(
+      answer = "The number of shots is uncorrelated with whether the team wins - it's still a 50-50 chance. There's more variation at the extremes because there were fewer games with that number of shots.",
+      "If a team takes 60 shots, they are guaranteed to lose, but if they take exactly 55 shots they have a 75% chance of winning. During a game, a team should stop shooting when they hit 55 shots.",
+      "The overall chance of winning is *not* exactly 50% because very few of the values are actually 50%.",
+      "This plot shows how many games a team won at each number of shots."
+    ))
+  )
+)
+qnum <- qnum + 1
+
+
+cat(paste0(qnum, ". "),
+  "A survey asks respondents for their country, and answers come back as \"Canada\", \"canada\", and \"CAN\". Why do we need to clean these entries before creating a summary chart?",
+  longmcq(
+    sample(c(
+      "R will automatically throw an error and refuse to make the plot",
+      answer = "The computer treats them as 3 completely separate responses.",
+      "R will automatically delete all responses that aren't spelled correctly.",
+      "It changes the numbers from integers to decimals."
+    ))
+  )
+)
+qnum <- qnum + 1
+
+cat(paste0(qnum, ". "),
+  "You want to compare the relative proportions of car classes across different drive types (drv), ensuring that every bar reaches 100% height regardless of the total count in each drive category. Which position adjustment should you use in geom_bar()?",
+  longmcq(
+    sample(c(
+      "position = \"stack\"",
+      "position = \"dodge\"",
+      answer = "position = \"fill\"",
+      "position = \"identity\"" 
+    ))
+  )
+)
+qnum <- qnum + 1
+
+cat(paste0(qnum, ". "),
+  "I want to examine the distribution of a single continuous variable (hwy mileage) to check for bimodality and skewness across the entire dataset. Which geometric object is best suited for this task? ",
+  longmcq(
+    sample(c(
+      "geom_bar()",
+      answer = "geom_histogram()",
+      "geom_point()",
+      "geom_boxplot()"
+    ))
+  )
+)
+qnum <- qnum + 1
+
+
+cat(paste0(qnum, ". "),
+  "You plot City Mileage (cty) vs. Highway Mileage (hwy) for 234 cars using geom_point(). When you look at the plot, you only see about 100 dots. What is happening, and why is this plot misleading?",
+  longmcq(
+    sample(c(
+      "Over half of the cars in the dataset have missing mileage values.",
+      answer = "Multiple cars have identical rounded mileage values, causing their points to land on exact same coordinates and stack directly on top of each other.",
+      "geom_point() only plots a random sample of the data when datasets exceed 100 rows.",
+      "Cars with identical highway and city mileage automatically cancel each other out on the graph."
+    ))
+  )
+)
+qnum <- qnum + 1
+
+cat(paste0(qnum, ". "),
+  "I created a histogram of continuous highway gas mileage (hwy) using geom_histogram(). By default, ggplot2 uses 30 bins and displays a warning suggesting that the user pick a better binwidth. What happens to the story the plot tells if the student sets an extremely small bin width (e.g., binwidth = 0.1) versus an extremely large bin width (e.g., binwidth = 20)?",
+  longmcq(
+    sample(c(
+      answer = "An extremely small bin width creates too much visual noise (individual spikes), while an extremely large bin width over-smooths the data and hides features like bimodality or skewness.",
+      "An extremely small bin width converts the plot into a boxplot; an extremely large bin width converts it into a scatterplot.",
+      "An extremely small bin width only plots outliers; an extremely large bin width only plots the median.",
+      "ggplot2 automatically rejects bin widths smaller than 1.0 with a fatal error."
+    ))
+  )
+)
+qnum <- qnum + 1
+
+cat(paste0(qnum, ". "),
+  "When we want to deal with outliers, it is better to apply \"filter(...)\" so that we can isolate (and only work with) data without outliers, rather than using the \"mutate(...)\" function to change these outlier values to NA instead.",
+  longmcq(
+    sample(c(
+      answer = "True",
+      "False"
+    ))
+  )
+)
+qnum <- qnum + 1
+
+cat(paste0(qnum, ". "),
+  "When you plot with NA values, how do they appear in the plots?",
+  longmcq(
+    sample(c(
+      "They show up as zero, 0",
+      "They show up as -999",
+      answer = "They are not visible at all",
+      "The NA values are outliers, and tidyverse has automatically removed them from the data set."
+    ))
+  )
+)
+qnum <- qnum + 1
+
+cat(paste0(qnum, ". "),
+  "What is variation in the context of EDA?",
+  longmcq(
+    sample(c(
+      answer = "The tendency of a single variable's values differ from one measurement to the next",
+      "The tendency of two variables to move together",
+      "The number of bins used in a histogram",
+      "A coding error that produces incorrect plots"
+    ))
+  )
+)
+qnum <- qnum + 1
+
+cat(paste0(qnum, ". "),
+  "A violin plot shows two distinct humps for one group. What does a boxplot of the same group most likely fail to reveal?",
+  longmcq(
+    sample(c(
+      "The group's median value",
+      "Whether outliers exist",
+      "The exact sample size of the group ",
+      answer = "That the group actually has two common value ranges rather than one smooth distribution "
+    ))
+  )
+)
+qnum <- qnum + 1
+
+cat(paste0(qnum, ". "),
+  "You track two things over a month: (1) how many hours you sleep each night, which bounces around from 5 to 9 depending on the day, and (2) on days you drink more cups of coffee after 3pm, you tend to sleep noticeably fewer hours that night. Which of these is variation, and which is covariation?",
+  longmcq(
+    sample(c(
+      "Both are examples of variation",
+      answer = "Sleep hours night to night = variation; cups of afternoon coffee vs. hours slept = covariation",
+      "Sleep hours night to night = covariation; cups of afternoon coffee vs. hours slept = variation",
+      "Both are examples of covariation"
+    ))
+  )
+)
+qnum <- qnum + 1
+
+
+```
+:::
+
+
+
+`r hide("I need a hint")`
+
+See the documentation for `plot()` (`?plot`)
+
+`r unhide()`

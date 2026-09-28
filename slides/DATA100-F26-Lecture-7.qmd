@@ -1,0 +1,377 @@
+---
+title: "DATA100 Introduction to Data Analytics"
+subtitle: "Lecture 7: Visualization Recap + Midterm Review"
+author: "Agassi Iu"
+institute: "Wilfrid Laurier University"
+date: "October 1, 2026"
+format: 
+  live-revealjs:
+    theme: sky
+    slide-number: true
+    transition: slide
+    incremental: true
+    embed-resources: true # Embeds figures and libraries into a single portable HTML file
+filters:
+  - live
+webr:
+  packages:
+    - ggplot2
+    - dplyr
+    - tidyr
+    - tibble
+    - readr
+    - stringr
+    - forcats
+    - purrr
+    - scales
+execute:
+  echo: true
+  warning: false   # Hides warnings and package loading messages
+  message: false
+  fig-width: 7
+  fig-height: 4
+  fig-align: center
+---
+
+```{r}
+#| label: setup
+#| echo: false
+library(tidyverse)
+theme_set(theme_gray(base_size = 14))
+
+# Scatterplot data with a deliberate outlier for the interpretation exercise
+set.seed(42)
+subgroup_data <- mpg |>
+  filter(class %in% c("compact", "suv", "2seater")) |>
+  bind_rows(tibble(
+    manufacturer = "outlier", model = "outlier", displ = 2.0, hwy = 12,
+    cyl = 4, trans = "auto", drv = "f", cty = 10, fl = "p",
+    class = "compact", year = 2008
+  ))
+```
+
+```{webr}
+#| context: setup
+#| autorun: true
+#| echo: false
+library(tidyverse)
+theme_set(theme_gray(base_size = 14))
+
+set.seed(42)
+subgroup_data <- mpg |>
+  filter(class %in% c("compact", "suv", "2seater")) |>
+  bind_rows(tibble(
+    manufacturer = "outlier", model = "outlier", displ = 2.0, hwy = 12,
+    cyl = 4, trans = "auto", drv = "f", cty = 10, fl = "p",
+    class = "compact", year = 2008
+  ))
+```
+
+## What we've covered
+
+In the past two weeks, we have covered:
+
+- **Lecture 4**: the grammar of graphics with data, aesthetics, `geoms`, facets, stats, positions, coordinate systems
+- **Lecture 5**: exploratory data analysis with variation, covariation, outliers, missing data, confounding
+- **Lecture 6**: design principles with visual cues, honest axes, showing the data, easing comparisons
+
+::: {.callout-note title="Today's Agenda"}
+We are going to review these concepts from above for next week's midterm.
+:::
+
+# Aesthetics and geoms
+
+## Aesthetics at a glance {.smaller}
+
+| Aesthetic | Controls | Mapping example |
+|---|---|---|
+| `x`, `y` | position | `aes(x = displ, y = hwy)` |
+| `color` | outline / point color | `aes(color = class)` |
+| `fill` | interior color (bars, areas) | `aes(fill = class)` |
+| `shape` | point symbol (≤6 levels) | `aes(shape = drv)` |
+| `size` | point/line size (continuous only) | `aes(size = cty)` |
+| `alpha` | transparency (continuous only) | `aes(alpha = year)` |
+
+::: {.callout-important}
+Inside `aes()` = **mapping**, which is driven by data and you get a legend. 
+
+Outside `aes()`= **setting**, which is essentially a fixed constant, no legend.
+:::
+
+## Mapping vs. setting
+
+::: {.callout-tip title="Mapping"}
+Ties an aesthetic to a variable in your data. The value changes per row,
+and ggplot2 draws a legend. Written **inside** `aes()`.
+:::
+
+::: {.callout-note title="Setting"}
+Gives an aesthetic one fixed value for every point, no matter what the data
+says. No legend, since there's nothing to decode. Written **outside**
+`aes()`.
+:::
+
+```r
+# Mapping: color depends on class, varies per point, gets a legend
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(aes(color = class))
+
+# Setting: every point is blue, no legend
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(color = "blue")
+```
+
+::: {.callout-caution title="The classic trap"}
+`geom_point(aes(color = "blue"))` looks like a setting but is written
+inside `aes()` — so it's a mapping to the constant string `"blue"`,
+producing one default-palette color and a stray one-entry legend.
+:::
+
+## Try it yourself
+
+::: {.callout-tip title="Run the code below"}
+Predict what happens if you move `color = "blue"` outside `aes()`. 
+:::
+
+```{webr}
+#| exercise: mapping_vs_setting
+
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point(aes(color = "blue"))
+```
+
+
+## Geoms at a glance {.smaller}
+
+| Chart type | Geom | Notes |
+|---|---|---|
+| Scatterplot | `geom_point()` | default position `"identity"` |
+| Jittered scatter | `geom_jitter()` | shorthand for `geom_point(position = "jitter")` |
+| Trend line | `geom_smooth()` | `se = FALSE` drops the confidence band |
+| Histogram | `geom_histogram()` | needs `binwidth`; continuous x |
+| Bar chart (counts) | `geom_bar()` | uses `stat_count()` automatically |
+| Bar chart (values) | `geom_col()` | uses `stat_identity()`, needs `y` |
+| Boxplot | `geom_boxplot()` | five-number summary + outliers |
+| Frequency polygon | `geom_freqpoly()` | line version of a histogram |
+
+# facets, positions, stats
+
+## Facets {.smaller}
+
+| Function | Splits by | Layout |
+|---|---|---|
+| `facet_wrap(~var)` | one variable | wraps into a grid automatically |
+| `facet_grid(rows ~ cols)` | one or two variables | fixed rows/columns |
+| `facet_grid(var ~ .)` | one variable | forced into rows |
+| `facet_grid(. ~ var)` | one variable | forced into columns |
+
+::: {.callout-note}
+`scales = "free"` (or `"free_x"`/`"free_y"`) lets each panel use its own axis range — easier to read within a panel, but panels are no longer directly comparable.
+:::
+
+## Position adjustments {.smaller}
+
+| Position | Effect | Best for |
+|---|---|---|
+| `"identity"` | draws values exactly where they fall | points; overlapping bars need `alpha` |
+| `"stack"` | segments piled up | default for bars |
+| `"fill"` | stacked, normalized to 100% | comparing **proportions** |
+| `"dodge"` | segments side by side | comparing **raw counts** |
+| `"jitter"` | small random noise added | reducing overplotting in scatterplots |
+
+
+
+## Stats and `after_stat()` {.smaller}
+
+Every geom has a default **stat** that computes what actually gets plotted. For `geom_bar()`, that default is `count`: the number of rows in each group. You never have to ask for it explicitly.
+
+::: {.callout-note title="`after_stat()`"}
+Lets you reach into the stat's output and ask for a *different* computed variable instead of the default:
+
+| Variable | Definition |
+|---|---|
+| `count` | number of observations per group (default) |
+| `prop` | proportion of the total each group represents |
+| `density` | count standardized so the area under the curve sums to 1 |
+
+:::
+
+``` {r}
+#| eval: false
+ggplot(diamonds, aes(x = cut, y = after_stat(prop), group = 1)) + geom_bar()
+```
+
+## Count vs. proportion vs. density
+
+```{r}
+#| fig-height: 3
+#| layout-ncol: 3
+#| fig-width: 3.2
+ggplot(diamonds, aes(x = cut)) +
+  geom_bar() +
+  labs(title = "count (default)")
+
+ggplot(diamonds, aes(x = cut, y = after_stat(prop), group = 1)) +
+  geom_bar() +
+  labs(title = "prop")
+
+ggplot(diamonds, aes(x = price, y = after_stat(density))) +
+  geom_histogram(binwidth = 500) +
+  labs(title = "density")
+```
+
+::: {.callout-note}
+Same data, same bars, three different y-axes. `count` shows raw group sizes; `prop` rescales so every bar's height reflects its share of the whole (summing to 1 across bars); `density` is more commonly used with `histograms`/`freqpolys` and re-scales for area rather than height, here it looks nearly identical to `prop` since `geom_bar()` bins are all width 1.
+:::
+
+
+
+# labels and scales
+
+## Labels
+
+```r
+labs(
+  title = "States the finding, not the axes",
+  subtitle = "Optional supporting detail",
+  x = "Engine displacement (L)",
+  y = "Highway mpg",
+  color = "Vehicle class",
+  caption = "Data source"
+)
+```
+
+::: {.callout-tip}
+A good title tells the reader what to conclude. "Scatterplot of displ vs.
+hwy" wastes the most prominent text on the slide.
+:::
+
+## Scales
+
+| Function | Purpose |
+|---|---|
+| `scale_x_continuous()` / `scale_y_continuous()` | tweak breaks, labels, limits on a numeric axis |
+| `coord_cartesian(xlim = ..., ylim = ...)` | **zooms** the view; refits nothing |
+| `scale_x_continuous(limits = ...)` | **discards** data outside the range before any stat runs |
+
+::: {.callout-caution title="Zooming"}
+`coord_cartesian()` and scale `limits` both "zoom," but only one of them actually refits a `geom_smooth()` curve on less data.
+:::
+
+# Variation vs. covariation
+
+## The distinction {.smaller}
+
+::: {.callout-note title="Variation"}
+How much a single variable's values differ from one observation to the next.
+:::
+
+::: {.callout-tip title="Covariation"}
+The tendency for two or more variables to move together. If two variables covary, knowing one improves your guess about the other.
+:::
+
+| Comparison type | Tool |
+|---|---|
+| One numeric variable | histogram, density, boxplot |
+| Categorical × numeric | boxplot, faceted histogram, colored freqpoly |
+| Categorical × categorical | `geom_count()`, `geom_tile()` (heat maps) |
+| Numeric × numeric | scatterplot, binned boxplots |
+
+
+# Reading plots: practice
+
+## Interpretation 1: boxplot
+
+```{r}
+#| echo: false
+#| fig-height: 3.6
+ggplot(subgroup_data, aes(x = class, y = hwy)) +
+  geom_boxplot() +
+  labs(x = "Vehicle class", y = "Highway mpg")
+```
+
+::: {.callout-tip title="Questions"}
+a) Which class shows the most variation in `hwy`?
+b) Is there evidence of covariation between `class` and `hwy`?
+c) Does any class show a labeled outlier? How does a boxplot decide that?
+d) Rank the three classes by median, best to worst mpg.
+:::
+
+## Interpretation 2: scatterplot
+
+```{r}
+#| echo: false
+#| fig-height: 3.6
+ggplot(subgroup_data, aes(x = displ, y = hwy, color = class)) +
+  geom_point(size = 2.5, alpha = 0.7) +
+  geom_smooth(se = FALSE, method = "loess") +
+  scale_color_brewer(palette = "Set1") +
+  labs(x = "Engine displacement (L)", y = "Highway mpg", color = "Class")
+```
+
+::: {.callout-tip title="Questions"}
+a) Which class shows the most spread, and in which direction (x, y, or both)?
+b) Within one class, does `hwy` fall as `displ` rises?
+c) Do the three classes occupy separate regions, or do they overlap?
+:::
+
+# Live practice
+
+## Exercise 1: aesthetics and geoms
+
+::: {.callout-tip}
+Using `subgroup_data`, build a scatterplot of `hwy` vs. `displ`. Map colour to `class`, and make the points partially transparent.
+:::
+
+```{webr}
+#| exercise: practice_aes
+if (!exists("subgroup_data")) {
+  subgroup_data <- mpg |> filter(class %in% c("compact", "suv", "midsize"))
+}
+ggplot(subgroup_data, aes(x = displ, y = hwy)) +
+  geom_point()
+```
+
+## Exercise 2: facets and positions
+
+::: {.callout-tip}
+Build a bar chart of `class` counts, filled by `drv`, with bars **side by side** rather than stacked. Then facet the same plot by `drv`.
+:::
+
+```{webr}
+#| exercise: practice_facet_position
+
+ggplot(subgroup_data, aes(x = class, fill = drv)) +
+  geom_bar()
+```
+
+## Exercise 3: labels and scales
+
+::: {.callout-tip}
+Take the plot from Exercise 1 and add a title that states a finding, proper
+axis labels, and a ColorBrewer palette.
+:::
+
+```{webr}
+#| exercise: practice_labels
+
+ggplot(subgroup_data, aes(x = displ, y = hwy, color = class)) +
+  geom_point(alpha = 0.7)
+```
+
+## Final tips before your exam
+
+- Review the slides and textbook (*R for Data Science*).
+
+- Go over the pre-lab and lab assignment solutions. 
+  - Make sure that you understand the material.
+
+- Review your cheat sheet
+  - please write your own: An authentic formula sheet will be far more useful than a sheet that you have never read before, written by your friend.
+
+- I still have office hours from 2 to 4pm tomorrow!
+
+
+
+- Practice reading a plot cold: variation, covariation, outliers, labels.
+

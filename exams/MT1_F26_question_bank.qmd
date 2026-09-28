@@ -1,0 +1,316 @@
+---
+title: "DATA100 Midterm Question Bank\\vspace{-0.75cm}"
+date: "10/06/2026"
+date-format: full
+format:
+  pdf:
+    margin-left: 0.75in
+    margin-top: 0.75in
+    margin-right: 0.75in
+    margin-bottom: 0.75in
+    include-in-header:
+      - text: |
+          \usepackage{multicol}
+execute:
+  echo: false
+  warning: false
+  fig-width: 14
+  fig-height: 5
+---
+
+```{r}
+#| include: false
+library(tidyverse)
+theme_set(theme_bw())
+library(patchwork)
+library(ggridges)
+library(here)
+
+library(palmerpenguins)
+data(penguins)
+penguins <- na.omit(penguins)
+
+mpg_n5 <- filter(mpg, cyl != 5)
+```
+
+
+**Instructions**: Put your name, WLU id, **and section** on the answer sheet (which is separate).
+
+**Answer all questions on the answer sheet.**
+
+Only the **answer sheet** will be graded. No answers on this booklet will be considered. You may use this booklet for scrap paper.
+
+There are 8 pages, with questions printed on the front and back of each sheet.
+
+\clearpage
+
+\quad
+
+\clearpage
+
+# Multiple Choice Questions
+
+Each question below is worth one mark. Answer on the **answer sheet** provided.
+
+\quad
+
+
+1. Which code gives every point the same dark grey colour and draws no legend?
+    a. `geom_point(aes(color = "grey40"))`
+    b. `geom_point(color = grey40)`
+    c. `geom_point(aes(fill = "grey40"))`
+    d. `geom_point(color = "grey40")`
+
+<!--- ANS: D --->
+
+\quad
+
+
+:::: {layout="[0.5,0.5]"}
+::: {}
+
+2. Consider the snipet of data on the right (8 out of 200 rows). Which of the following plots would best answer the question "Do students in different programs tend to score differently?"
+    a. A scatterplot of `hours_studied` versus `exam_score`
+    b. A boxplot of `exam_score` for each `program`
+    c. A histogram of `program` and `exam_score`
+    d. A bar plot of `program` versus `hours_studied`
+
+<!--- ANS: B --->
+
+:::
+::: {}
+
+```{r}
+#| echo: false
+library(dplyr)
+
+tribble(
+  ~student_id, ~program,    ~hours_studied, ~exam_score,
+  101,         "Biology",   6,              78,
+  102,         "Music",     3,              65,
+  103,         "Economics", 8,              88,
+  104,         "Biology",   4,              70,
+  105,         "Economics", 5,              74,
+  106,         "Music",     7,              82,
+  107,         "Biology",   9,              91,
+  108,         "Economics", 2,              60
+) |>
+  knitr::kable()
+```
+
+:::
+::::
+
+
+3. The `penguins` data set has columns `species` (three species), `island` (three islands), `sex`, and `body_mass_g` (body mass in grams, a continuous variable). Which of the following mappings is appropriate?
+    a. `shape` mapped to `island`
+    b. `size` mapped to `species`
+    c. `shape` mapped to `body_mass_g`
+    d. `alpha` mapped to `island`
+
+<!--- ANS: A --->
+
+
+:::: {layout="[0.55,0.05,0.4]"}
+::: {}
+
+Consider the plot on the right for the next question. It is a stacked bar chart of the number of penguins of each species found on each island.
+
+:::
+::: {}
+\quad
+:::
+::: {}
+
+```{r}
+#| fig-width: 5
+#| fig-height: 3.5
+#| message: false
+ggplot(penguins) +
+  aes(x = island, fill = species) +
+  geom_bar(colour = 1) +
+  scale_fill_manual(values = c("white", "grey60", "black")) +
+  labs(x = "Island", y = "Count", fill = "Species")
+```
+
+:::
+::::
+
+4. Which position adjustment would make every bar the same height, so that the *proportion* of each species on each island can be compared?
+    a. `position = "stack"`
+    b. `position = "dodge"`
+    c. `position = "fill"`
+    d. `position = "identity"`
+
+<!--- ANS: C --->
+
+
+5. A researcher wants to compare the raw *count* of each `sex` within each `species` of penguin, using a bar chart with `sex` mapped to `fill`. Which position adjustment is the best choice?
+    a. `position = "fill"`
+    b. `position = "dodge"`
+    c. `position = "stack"`
+    d. `position = "identity"`
+
+<!--- ANS: B --->
+
+
+6. What does `facet_grid(species ~ .)` produce for the `penguins` data?
+    a. A single row of panels, one for each species
+    b. A grid with species along both the rows and the columns
+    c. One panel with the species distinguished by shading
+    d. A single column of panels, one for each species, stacked vertically
+
+<!--- ANS: D --->
+
+\quad
+
+
+Consider the histogram below for the next question. It shows exam scores for 200 students.
+
+```{r}
+#| fig-width: 6
+#| fig-height: 3.2
+#| message: false
+set.seed(123)
+scores <- tibble(score = round(rnorm(200, mean = 72, sd = 8)))
+
+ggplot(scores) +
+  aes(x = score) +
+  geom_histogram(binwidth = 0.5, fill = "grey70", colour = 1) +
+  labs(x = "Exam Score", y = "Count")
+```
+
+7. Every second bar in the histogram above is empty. What is the most likely explanation?
+    a. The scores were recorded as whole numbers, and the binwidth is smaller than that
+    b. The data have two groups of students with alternating score patterns
+    c. The binwidth is too large to show any detail
+    d. Half of the scores are missing from the data set
+
+<!--- ANS: A --->
+
+8. Which of the following statements describes *covariation*?
+    a. Exam scores in a class range from 40 to 95.
+    b. In the same class, half of the students wore hoodies and half wore jackets.
+    c. Students in the morning section had a higher average exam score than students in the afternoon section.
+    d. The heights of students in the class differ by up to 30 cm.
+
+<!--- ANS: C --->
+
+\quad
+
+Consider the plot below for the next question. It shows boxplots of a measurement for three groups.
+
+```{r}
+#| fig-width: 6
+#| fig-height: 3.6
+A <- c(70, 70, 70, 70, 70, 70, 70, 75, 75, 76, 77, 78, 79, 80, 82, 84)
+B <- c(40, 46, 50, 54, 57, 60, 62, 64, 66, 68, 70, 73, 76, 79, 83, 88)
+C <- c(50, 51, 52, 53, 53, 54, 54, 55, 55, 56, 56, 57, 57, 58, 59, 60, 72)
+
+boxdat <- tibble(
+  group = rep(c("A", "B", "C"), c(length(A), length(B), length(C))),
+  value = c(A, B, C)
+)
+
+ggplot(boxdat) +
+  aes(x = group, y = value) +
+  geom_boxplot() +
+  labs(x = "Group", y = "Measurement")
+```
+
+9. Which of the following is **NOT** a valid interpretation of the plot above?
+    a. Group C has the smallest interquartile range of the three groups.
+    b. The observations in Group B are spread roughly symmetrically around its median.
+    c. About three quarters of the observations in Group B are below the median of Group A.
+    d. Group C has fewer observations than Group A.
+
+<!--- ANS: D --->
+
+\quad
+
+Consider the plot below for the next question. It shows highway fuel efficiency against engine displacement for three classes of vehicle, with a straight line fit to each class. Note that the name of the data set is `mpg`, with columns `class` for the type of car, `displ` for the size of the engine (displacement) in litres, and `hwy` for highway fuel efficiency in miles per gallon.
+
+```{r}
+#| fig-width: 8
+#| fig-height: 3.8
+#| message: false
+veh <- mpg |>
+  select(displ, hwy, class) |>
+  filter(class %in% c("compact", "midsize", "suv")) |>
+  bind_rows(tibble(displ = 2.0, hwy = 12, class = "compact"))
+
+ggplot(veh) +
+  aes(x = displ, y = hwy, shape = class, linetype = class) +
+  geom_point(size = 2.5) +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE,
+    colour = "black", linewidth = 0.8) +
+  scale_shape_manual(values = c(16, 15, 17)) +
+  labs(
+    x = "Engine Displacement (L)",
+    y = "Miles per Gallon (highway)",
+    shape = "Class", linetype = "Class"
+  )
+```
+
+10. Which of the following conclusions is supported by the plot above?
+    a. Larger engines cause lower fuel efficiency.
+    b. Within each class, highway mpg tends to fall as displacement rises.
+    c. Vehicle class has no relationship with highway mpg.
+    d. The point far below the compact line must be a data entry error.
+
+<!--- ANS: B --->
+
+\quad
+
+
+11. Two plots show the same scatterplot of `hwy` against `displ` with a `geom_smooth()` line. Plot A adds `coord_cartesian(xlim = c(5, 6))` and Plot B adds `scale_x_continuous(limits = c(5, 6))`. Which statement is true?
+    a. Both fit the smooth line using only the points inside the window.
+    b. Neither changes the smooth line.
+    c. Plot A fits the smooth line using all of the data and then crops the view, while Plot B fits it using only the points inside the window.
+    d. Plot A fits the smooth line using only the points inside the window, while Plot B fits it using all of the data.
+
+<!--- ANS: C --->
+
+\quad
+
+Consider the two bar charts below for the next question. Both show the same two values, 340 in 2011 and 396 in 2012. 
+
+```{r}
+#| fig-width: 9
+#| fig-height: 3.4
+dat13 <- tibble(year = c("2011", "2012"), value = c(340, 396))
+
+p_left <- ggplot(dat13) +
+  aes(x = year, y = value) +
+  geom_col(fill = "grey70", colour = 1, width = 0.6) +
+  coord_cartesian(ylim = c(330, 400)) +
+  labs(x = "Year", y = "Value")
+
+p_right <- ggplot(dat13) +
+  aes(x = year, y = value) +
+  geom_col(fill = "grey70", colour = 1, width = 0.6) +
+  coord_cartesian(ylim = c(0, 400)) +
+  labs(x = "Year", y = "Value")
+
+p_left + p_right
+```
+
+12. Which statement about the two charts is correct?
+    a. The left chart is better because the increase is easier to see.
+    b. The left chart exaggerates the increase because the bar lengths are no longer proportional to the values.
+    c. Both charts are equally good because they show the same data.
+    d. The right chart hides the increase and should not be used.
+
+<!--- ANS: B --->
+
+\quad
+
+
+13. Which visual cue do people judge most accurately?
+    a. The angle of a pie slice
+    b. The area of a circle
+    c. The shade of grey
+    d. Position along a common scale
+
+<!--- ANS: D --->
+
