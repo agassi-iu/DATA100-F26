@@ -364,7 +364,7 @@ ggplot(subgroup_data, aes(x = displ, y = hwy, color = class)) +
 - Review your cheat sheet
   - please write your own: An authentic formula sheet will be far more useful than a sheet that you have never read before, written by your friend.
 
-- I still have office hours from 2 to 4pm tomorrow!
+- I still have office hours from 2 to 4pm on next Monday, October 5!
 
 
 

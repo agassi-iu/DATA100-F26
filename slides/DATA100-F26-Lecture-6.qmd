@@ -83,10 +83,10 @@ A plot for yourself during exploration will look different from a plot built to 
 
 ## Not all visual cues are equal
 
-Several visual channels are available to represent a value: position, length, angle, area, brightness, color hue.
+Several visual channels are available to represent a value: position, length, angle, area, brightness, colour hue.
 
 ::: {.callout-important title="Human's perception"}
-We are quite good at comparing **position and length**. We are noticeably worse at judging **angles**, and even worse at judging **area** alone. Brightness and color hue are the hardest of all to quantify precisely.
+We are quite good at comparing **position and length**. We are noticeably worse at judging **angles**, and even worse at judging **area** alone. Brightness and colour hue are the hardest of all to quantify precisely.
 :::
 
 
@@ -211,7 +211,7 @@ ggplot(life_exp, aes(x = continent, y = life_expectancy)) +
 The empty space between 0 and 50 in the left plot adds no information and makes it harder to see the within-group and between-group variability that actually matters here.
 :::
 
-::: {.callout-important title="Bars vs Points}
+::: {.callout-caution title="Bars vs Points"}
 If length is your visual cue (bars), **always** include 0. If position is your cue (points, lines), it's fine (often better) to zoom to the range that matters.
 :::
 
@@ -219,7 +219,7 @@ If length is your visual cue (bars), **always** include 0. If position is your c
 
 ## Circles
 
-![]{https://rafalab.dfci.harvard.edu/dsbook-part-1/dataviz/img/state-of-the-union.png}
+![](https://flowingdata.com/wp-content/uploads/2011/01/Bubble-chart-during-SOTU.jpg)
 
 
 ## Radius-proportional vs. area-proportional
@@ -265,7 +265,7 @@ ggplot(gdp, aes(x = fct_reorder(country, ratio), y = ratio)) +
 
 ## Oh Hello?
 
-![]{https://i.pinimg.com/1200x/9b/71/89/9b7189f054526b97684c36ea725d8810.jpg}
+![](https://i.pinimg.com/1200x/9b/71/89/9b7189f054526b97684c36ea725d8810.jpg)
 
 
 ## Meet ET
@@ -341,6 +341,8 @@ darker.
 
 :::
 
+
+# Jitter and Alpha 
 
 ```{r}
 #| fig-height: 3.2
@@ -454,10 +456,10 @@ ggplot(heights, aes(x = sex, y = height)) +
 ## Summary {.smaller}
 
 - **Position and length** are the visual cues humans read most accurately;
-  angle is worse, area worse still, color/brightness hardest of all
+  angle is worse, area worse still, colour/brightness hardest of all
 - **Always include 0** when the cue is length (bars); it's optional, often
-  better skipped, when the cue is position (points)
-- **Radius ≠ area** — squaring a linear scale factor silently exaggerates
+  better skipped, when the cue is position (poi`nts)
+- **Radius ≠ area**: squaring a linear scale factor silently exaggerates
   differences
 - **Show the data**: raw points, jitter, and alpha blending beat a bar +
   error bar summary almost every time
