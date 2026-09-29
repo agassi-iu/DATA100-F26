@@ -314,3 +314,89 @@ p_left + p_right
 
 <!--- ANS: D --->
 
+
+\clearpage
+
+# Short Answer Questions
+
+## Question 1
+The plot below shows bill depth against bill length for the penguins data set, with a different shade of grey for each of the three species of penguin: `Adelie`, `Chinstrap`, and `Gentoo`.
+
+```{r}
+library(palmerpenguins)
+data(penguins)
+penguins <- na.omit(penguins)
+
+ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm, fill = species)) +
+  geom_point(shape = 21, size = 2.5, color = "black", alpha = 1) +
+  scale_fill_manual(values = c("white", "grey80", "black")) +
+  labs(
+    x = "Bill length (mm)",
+    y = "Bill depth (mm)",
+    fill = "Species",
+    title = "Bill depth vs. bill length, by species"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(legend.position = "bottom", legend.direction = "horizontal")
+
+```
+
+a) [1 mark] Sketch a trend line for **each** of the three species directly on the plot.
+
+<!-- get full mark if all three lines seem accurate.  -->
+
+b) [3 marks] Which species's trend line does the best job summarizing its data? Which species's trend line does the worst job? Explain your reasoning using what you see in the plot.
+
+<!-- 1 mark for saying Chinstrap or Gentoo as best line. -->
+<!-- 1 mark for saying Adelie as worst line. -->
+<!-- 1 mark some form of justification (e.g. how closely together are the points, etc.) -->
+
+c) [3 marks] Suppose you are only shown the dashed overall trend line, and it has a negative slope. Could you conclude that bill depth decreases with bill length within each species? Why or why not?
+
+<!-- no: 0 marks -->
+<!-- yes: 1 mark for answer, 2 marks for justification -->
+
+d) [1 marks] The alpha value in this geom_point() call is set to 1. Briefly explain whether this is a good choice, and what you would change it to and why.
+
+<!-- student can suggest change to any values between 0.5 to 1. -->
+
+
+## Question 2
+
+A library keeps a checkouts data set: one row per checkout, with columns `genre` ("fiction", "nonfiction", "children"), `format` ("print" or "ebook"), `day_of_week`, and `checkout_count` (number of checkouts). You are given the following snippet of code:
+
+```{r}
+#| eval: FALSE
+checkouts |>
+  filter(genre != "children") |>
+  ggplot(aes(x = day_of_week, y = checkout_count, fill = format)) +
+  geom_col(position = "fill") +
+  facet_wrap(~genre) +
+  labs(
+    title = "???",
+    x = "Day of the week",
+    y = "Proportion of checkouts",
+    fill = "Format"
+  )
+```
+
+
+a) [2 marks] What does position = "fill" do to the bars, and what kind of comparison does it let you make that position = "stack" would not?
+
+<!-- draw comparison between fill and stack -->
+
+b) [2 marks] What relationship is this plot designed to show?
+
+<!-- Answer: It's designed to show whether the proportion of print versus ebook checkouts changes across the days of the week, and whether that pattern differs between fiction and nonfiction. -->
+
+<!-- Minus 0.5 marks for missed variables (there are 4) -->
+
+c) [1 mark] Suppose every bar in the *nonfiction* panel looks close to 50/50 between *print* and *ebook*, on every day of the week. What is the covariation between `day_of_week` and `format` in this case?
+
+<!-- There is no covariation since it is 50/50 -->
+
+d) [2 marks] If the filter() line were removed, how would the plot change?
+
+<!-- The plot would gain a third facet panel for children, and nothing else would change, the children genre's own bars would just appear alongside fiction and nonfiction. -->
+
+

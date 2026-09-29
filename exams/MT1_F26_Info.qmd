@@ -1,0 +1,46 @@
+---
+title: "DATA100 - Midterm 1 Information Sheet"
+subtitle: "Agassi Iu • Fall 2026"
+format:
+  pdf:
+    margin-left: 0.75in
+    margin-top: 0.75in
+    margin-right: 0.75in
+    margin-bottom: 0.75in
+---
+
+## Logistics
+
+| | |
+|---|---|
+| **Course** | *DATA100* |
+| **Term** | *Fall 2026* |
+| **Date** | *Tuesday, October 6, 2026* |
+| **Time** | *16:00 - 17:20* |
+| **Duration** | *80 minutes* |
+| **Location** | *LH1010* |
+| **Sections covered** | *Chapters 9-11 Visualization* |
+
+
+## What to bring
+
+- Student ID card
+- Pens/pencils
+- One double-sided handwritten formula sheet
+  - Everything must be handwritten (not even printed off from written notes on tablet)
+  - I will be checking these formula sheets on the day of the exam
+
+- *Everything else (e.g. phones, smart watches, other electronics, bags, etc.) should be turned off and stored away at the front of the room.*
+
+## Format
+
+15 multiple choice questions and 4 short answer questions.
+
+
+## How to prepare
+
+- Review lecture slides, in-class exercises, and the course readings
+- Review pre-lab and in-lab assignments
+- Practice reading plots *cold*
+- Redo the practice questions set posted on the course site
+

@@ -25213,7 +25213,7 @@ Agassi Iu
 <h2>What we’ve covered</h2>
 <p>In the past two weeks, we have covered:</p>
 <ul>
-<li class="fragment"><strong>Lecture 4</strong>: the grammar of graphics with data, aesthetics, <code>geoms</code>, facets, stats, positions, coordinate systems</li>
+<li class="fragment"><strong>Lecture 4</strong>: the grammar of graphics with data, aesthetics, geoms, facets, stats, positions, coordinates</li>
 <li class="fragment"><strong>Lecture 5</strong>: exploratory data analysis with variation, covariation, outliers, missing data, confounding</li>
 <li class="fragment"><strong>Lecture 6</strong>: design principles with visual cues, honest axes, showing the data, easing comparisons</li>
 </ul>
@@ -25296,7 +25296,7 @@ Agassi Iu
 </div>
 </div>
 </section>
-<section id="mapping-vs.-setting" class="slide level2">
+<section id="mapping-vs.-setting" class="slide level2 smaller">
 <h2>Mapping vs. setting</h2>
 <div title="Mapping">
 <div class="callout callout-tip callout-titled callout-style-default">
@@ -25335,17 +25335,17 @@ Agassi Iu
 <span id="cb1-5"><a aria-label="5"></a><span class="co"># Setting: every point is blue, no legend</span></span>
 <span id="cb1-6"><a aria-label="6"></a><span class="fu">ggplot</span>(mpg, <span class="fu">aes</span>(<span class="at">x =</span> displ, <span class="at">y =</span> hwy)) <span class="sc">+</span></span>
 <span id="cb1-7"><a aria-label="7"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">&quot;blue&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div title="The classic trap">
+<div title="Trap">
 <div class="callout callout-caution callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>The classic trap</strong></p>
+<p><strong>Trap</strong></p>
 </div>
 <div class="callout-content">
-<p><code>geom_point(aes(color = &quot;blue&quot;))</code> looks like a setting but is written inside <code>aes()</code> — so it’s a mapping to the constant string <code>&quot;blue&quot;</code>, producing one default-palette color and a stray one-entry legend.</p>
+<p><code>geom_point(aes(color = &quot;blue&quot;))</code> looks like a setting but is written inside <code>aes()</code>, so it’s a mapping to the constant string <code>&quot;blue&quot;</code>, producing one default-palette color and a stray one-entry legend.</p>
 </div>
 </div>
 </div>
@@ -25383,9 +25383,9 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZ2dwbG90KG1wZywgYWVzKHgg
 <h2>Geoms at a glance</h2>
 <table class="caption-top">
 <colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 50%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -25403,7 +25403,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZ2dwbG90KG1wZywgYWVzKHgg
 <tr class="even">
 <td>Jittered scatter</td>
 <td><code>geom_jitter()</code></td>
-<td>shorthand for <code>geom_point(position = &quot;jitter&quot;)</code></td>
+<td>same as <code>geom_point(position = &quot;jitter&quot;)</code></td>
 </tr>
 <tr class="odd">
 <td>Trend line</td>
@@ -25665,16 +25665,12 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZ2dwbG90KG1wZywgYWVzKHgg
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>scale_x_continuous()</code> / <code>scale_y_continuous()</code></td>
-<td>tweak breaks, labels, limits on a numeric axis</td>
+<td><code>coord_cartesian(xlim = ..., ylim = ...)</code></td>
+<td>zooms the view; refits nothing</td>
 </tr>
 <tr class="even">
-<td><code>coord_cartesian(xlim = ..., ylim = ...)</code></td>
-<td><strong>zooms</strong> the view; refits nothing</td>
-</tr>
-<tr class="odd">
-<td><code>scale_x_continuous(limits = ...)</code></td>
-<td><strong>discards</strong> data outside the range before any stat runs</td>
+<td><code>scale_x_continuous(limits = ...)</code> /<code>scale_y_continuous(limits = ...)</code></td>
+<td>discards data outside the range before any stat runs</td>
 </tr>
 </tbody>
 </table>

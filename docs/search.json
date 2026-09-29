@@ -46,7 +46,7 @@
     "href": "slides/DATA100-F26-Lecture-7.html#what-weve-covered",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "What we’ve covered",
-    "text": "What we’ve covered\nIn the past two weeks, we have covered:\n\nLecture 4: the grammar of graphics with data, aesthetics, geoms, facets, stats, positions, coordinate systems\nLecture 5: exploratory data analysis with variation, covariation, outliers, missing data, confounding\nLecture 6: design principles with visual cues, honest axes, showing the data, easing comparisons\n\n\n\n\n\n\n\n\nToday’s Agenda\n\n\nWe are going to review these concepts from above for next week’s midterm."
+    "text": "What we’ve covered\nIn the past two weeks, we have covered:\n\nLecture 4: the grammar of graphics with data, aesthetics, geoms, facets, stats, positions, coordinates\nLecture 5: exploratory data analysis with variation, covariation, outliers, missing data, confounding\nLecture 6: design principles with visual cues, honest axes, showing the data, easing comparisons\n\n\n\n\n\n\n\n\nToday’s Agenda\n\n\nWe are going to review these concepts from above for next week’s midterm."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-7.html#aesthetics-at-a-glance",
@@ -60,7 +60,7 @@
     "href": "slides/DATA100-F26-Lecture-7.html#mapping-vs.-setting",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Mapping vs. setting",
-    "text": "Mapping vs. setting\n\n\n\n\n\n\n\nMapping\n\n\nTies an aesthetic to a variable in your data. The value changes per row, and ggplot2 draws a legend. Written inside aes().\n\n\n\n\n\n\n\n\n\n\n\nSetting\n\n\nGives an aesthetic one fixed value for every point, no matter what the data says. No legend, since there’s nothing to decode. Written outside aes().\n\n\n\n\n# Mapping: color depends on class, varies per point, gets a legend\nggplot(mpg, aes(x = displ, y = hwy)) +\n  geom_point(aes(color = class))\n\n# Setting: every point is blue, no legend\nggplot(mpg, aes(x = displ, y = hwy)) +\n  geom_point(color = \"blue\")\n\n\n\n\n\n\n\nThe classic trap\n\n\ngeom_point(aes(color = \"blue\")) looks like a setting but is written inside aes() — so it’s a mapping to the constant string \"blue\", producing one default-palette color and a stray one-entry legend."
+    "text": "Mapping vs. setting\n\n\n\n\n\n\n\nMapping\n\n\nTies an aesthetic to a variable in your data. The value changes per row, and ggplot2 draws a legend. Written inside aes().\n\n\n\n\n\n\n\n\n\n\n\nSetting\n\n\nGives an aesthetic one fixed value for every point, no matter what the data says. No legend, since there’s nothing to decode. Written outside aes().\n\n\n\n\n# Mapping: color depends on class, varies per point, gets a legend\nggplot(mpg, aes(x = displ, y = hwy)) +\n  geom_point(aes(color = class))\n\n# Setting: every point is blue, no legend\nggplot(mpg, aes(x = displ, y = hwy)) +\n  geom_point(color = \"blue\")\n\n\n\n\n\n\n\nTrap\n\n\ngeom_point(aes(color = \"blue\")) looks like a setting but is written inside aes(), so it’s a mapping to the constant string \"blue\", producing one default-palette color and a stray one-entry legend."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-7.html#try-it-yourself",
@@ -74,7 +74,7 @@
     "href": "slides/DATA100-F26-Lecture-7.html#geoms-at-a-glance",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Geoms at a glance",
-    "text": "Geoms at a glance\n\n\n\n\n\n\n\n\nChart type\nGeom\nNotes\n\n\n\n\nScatterplot\ngeom_point()\ndefault position \"identity\"\n\n\nJittered scatter\ngeom_jitter()\nshorthand for geom_point(position = \"jitter\")\n\n\nTrend line\ngeom_smooth()\nse = FALSE drops the confidence band\n\n\nHistogram\ngeom_histogram()\nneeds binwidth; continuous x\n\n\nBar chart (counts)\ngeom_bar()\nuses stat_count() automatically\n\n\nBar chart (values)\ngeom_col()\nuses stat_identity(), needs y\n\n\nBoxplot\ngeom_boxplot()\nfive-number summary + outliers\n\n\nFrequency polygon\ngeom_freqpoly()\nline version of a histogram"
+    "text": "Geoms at a glance\n\n\n\n\n\n\n\n\nChart type\nGeom\nNotes\n\n\n\n\nScatterplot\ngeom_point()\ndefault position \"identity\"\n\n\nJittered scatter\ngeom_jitter()\nsame as geom_point(position = \"jitter\")\n\n\nTrend line\ngeom_smooth()\nse = FALSE drops the confidence band\n\n\nHistogram\ngeom_histogram()\nneeds binwidth; continuous x\n\n\nBar chart (counts)\ngeom_bar()\nuses stat_count() automatically\n\n\nBar chart (values)\ngeom_col()\nuses stat_identity(), needs y\n\n\nBoxplot\ngeom_boxplot()\nfive-number summary + outliers\n\n\nFrequency polygon\ngeom_freqpoly()\nline version of a histogram"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-7.html#facets",
@@ -116,7 +116,7 @@
     "href": "slides/DATA100-F26-Lecture-7.html#scales",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Scales",
-    "text": "Scales\n\n\n\n\n\n\n\nFunction\nPurpose\n\n\n\n\nscale_x_continuous() / scale_y_continuous()\ntweak breaks, labels, limits on a numeric axis\n\n\ncoord_cartesian(xlim = ..., ylim = ...)\nzooms the view; refits nothing\n\n\nscale_x_continuous(limits = ...)\ndiscards data outside the range before any stat runs\n\n\n\n\n\n\n\n\n\n\nZooming\n\n\ncoord_cartesian() and scale limits both “zoom,” but only one of them actually refits a geom_smooth() curve on less data."
+    "text": "Scales\n\n\n\n\n\n\n\nFunction\nPurpose\n\n\n\n\ncoord_cartesian(xlim = ..., ylim = ...)\nzooms the view; refits nothing\n\n\nscale_x_continuous(limits = ...) /scale_y_continuous(limits = ...)\ndiscards data outside the range before any stat runs\n\n\n\n\n\n\n\n\n\n\nZooming\n\n\ncoord_cartesian() and scale limits both “zoom,” but only one of them actually refits a geom_smooth() curve on less data."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-7.html#the-distinction",
@@ -833,6 +833,41 @@
     "text": "Course Hub\nAnnouncements, submissions, and discussions happen on MyLearningSpace — this site is your reference hub for slides, schedule, and syllabus details.\n\n\n\n\n\n\nTipBefore the first class\n\n\n\nPlease install R and RStudio before our first lab. See the Slides page for the Lecture 1 walkthrough on installation."
   },
   {
+    "objectID": "assignments.html",
+    "href": "assignments.html",
+    "title": "Assignments",
+    "section": "",
+    "text": "All labs and the capstone project are submitted through MyLearningSpace. This page tracks what’s due and when."
+  },
+  {
+    "objectID": "assignments.html#labs",
+    "href": "assignments.html#labs",
+    "title": "Assignments",
+    "section": "Labs",
+    "text": "Labs\n\n\n\nLab\nTopic\nDate\n\n\n\n\nLab 0\nIntroduction\nSep 14\n\n\nLab 1\n—\nSep 21\n\n\nLab 2\n—\nSep 28\n\n\nLab 3\n—\nOct 05\n\n\nLab 4\n—\nOct 19\n\n\nLab 5\n—\nOct 26\n\n\nLab 6\n—\nNov 02\n\n\nLab 7\n—\nNov 16\n\n\nLab 8\n—\nNov 23\n\n\nLab 9\n—\nNov 30\n\n\nLab 10\n—\nDec 02\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nLabs are worth 30% of your final grade, to be submitted during labs weekly on Mondays. See the Syllabus for full grading breakdown."
+  },
+  {
+    "objectID": "assignments.html#capstone-project",
+    "href": "assignments.html#capstone-project",
+    "title": "Assignments",
+    "section": "Capstone Project",
+    "text": "Capstone Project\nThe capstone project (15%) has multiple checkpoints across the term. Details and rubric will be posted here as each checkpoint approaches.\n\n\n\nCheckpoint\nDescription\nDue\n\n\n\n\nProposal\nDataset + research question\nTBD\n\n\nProgress Check\nDraft analysis\nTBD\n\n\nFinal Submission\nReport + presentation\nDec 3"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation:\n\nPhD in Mathematical and Statistical Modelling at Wilfrid Laurier University | 2026\nMMath in Statistics at University of Waterloo | 2020\nBBA/BA Financial Mathematics at Wilfrid Laurier University | 2019\n\nTeaching Experience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nFall 2026: Wednesdays 14:00–16:00 in room LH3073, or by appointment."
+  },
+  {
+    "objectID": "about.html#bio",
+    "href": "about.html#bio",
+    "title": "About",
+    "section": "",
+    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation:\n\nPhD in Mathematical and Statistical Modelling at Wilfrid Laurier University | 2026\nMMath in Statistics at University of Waterloo | 2020\nBBA/BA Financial Mathematics at Wilfrid Laurier University | 2019\n\nTeaching Experience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nFall 2026: Wednesdays 14:00–16:00 in room LH3073, or by appointment."
+  },
+  {
     "objectID": "courses.html",
     "href": "courses.html",
     "title": "Teaching Experience",
@@ -859,41 +894,6 @@
     "title": "Teaching Experience",
     "section": "Graduate TA Experience",
     "text": "Graduate TA Experience\n\nWilfrid Laurier Univesrity\n\nMA307/507 (Numerical Analysis)\nMA451/651 (Stochastic Calculus)\nMA477/677 (Quantitative Financial Risk Management)\nST359/559 (Probability II)\nST462/662 (Advanced Regression)\nST473/674 (Financial Data Analysis)\nST494/694 (Statistical Learning)"
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation:\n\nPhD in Mathematical and Statistical Modelling at Wilfrid Laurier University | 2026\nMMath in Statistics at University of Waterloo | 2020\nBBA/BA Financial Mathematics at Wilfrid Laurier University | 2019\n\nTeaching Experience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nFall 2026: Wednesdays 14:00–16:00 in room LH3073, or by appointment."
-  },
-  {
-    "objectID": "about.html#bio",
-    "href": "about.html#bio",
-    "title": "About",
-    "section": "",
-    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation:\n\nPhD in Mathematical and Statistical Modelling at Wilfrid Laurier University | 2026\nMMath in Statistics at University of Waterloo | 2020\nBBA/BA Financial Mathematics at Wilfrid Laurier University | 2019\n\nTeaching Experience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nFall 2026: Wednesdays 14:00–16:00 in room LH3073, or by appointment."
-  },
-  {
-    "objectID": "assignments.html",
-    "href": "assignments.html",
-    "title": "Assignments",
-    "section": "",
-    "text": "All labs and the capstone project are submitted through MyLearningSpace. This page tracks what’s due and when."
-  },
-  {
-    "objectID": "assignments.html#labs",
-    "href": "assignments.html#labs",
-    "title": "Assignments",
-    "section": "Labs",
-    "text": "Labs\n\n\n\nLab\nTopic\nDate\n\n\n\n\nLab 0\nIntroduction\nSep 14\n\n\nLab 1\n—\nSep 21\n\n\nLab 2\n—\nSep 28\n\n\nLab 3\n—\nOct 05\n\n\nLab 4\n—\nOct 19\n\n\nLab 5\n—\nOct 26\n\n\nLab 6\n—\nNov 02\n\n\nLab 7\n—\nNov 16\n\n\nLab 8\n—\nNov 23\n\n\nLab 9\n—\nNov 30\n\n\nLab 10\n—\nDec 02\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nLabs are worth 30% of your final grade, to be submitted during labs weekly on Mondays. See the Syllabus for full grading breakdown."
-  },
-  {
-    "objectID": "assignments.html#capstone-project",
-    "href": "assignments.html#capstone-project",
-    "title": "Assignments",
-    "section": "Capstone Project",
-    "text": "Capstone Project\nThe capstone project (15%) has multiple checkpoints across the term. Details and rubric will be posted here as each checkpoint approaches.\n\n\n\nCheckpoint\nDescription\nDue\n\n\n\n\nProposal\nDataset + research question\nTBD\n\n\nProgress Check\nDraft analysis\nTBD\n\n\nFinal Submission\nReport + presentation\nDec 3"
   },
   {
     "objectID": "exams/MT1_Practice.html",
@@ -1706,5 +1706,12 @@
     "title": "Lecture Slides",
     "section": "Lecture 6: Day 3 of Visualization",
     "text": "Lecture 6: Day 3 of Visualization\n\nLecture 6 Slides"
+  },
+  {
+    "objectID": "slides.html#lecture-7-visualization-and-midterm-review",
+    "href": "slides.html#lecture-7-visualization-and-midterm-review",
+    "title": "Lecture Slides",
+    "section": "Lecture 7: Visualization and Midterm Review",
+    "text": "Lecture 7: Visualization and Midterm Review\n\nLecture 7 Slides"
   }
 ]

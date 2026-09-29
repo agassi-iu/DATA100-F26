@@ -27,3 +27,9 @@ title: "Lecture Slides"
 ## Lecture 6: Day 3 of Visualization 
 - [Lecture 6 Slides](slides/DATA100-F26-Lecture-6.html)
 
+
+## Lecture 7: Visualization and Midterm Review 
+- [Lecture 7 Slides](slides/DATA100-F26-Lecture-7.html)
+
+
+

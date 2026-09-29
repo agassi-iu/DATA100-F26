@@ -71,7 +71,7 @@ subgroup_data <- mpg |>
 
 In the past two weeks, we have covered:
 
-- **Lecture 4**: the grammar of graphics with data, aesthetics, `geoms`, facets, stats, positions, coordinate systems
+- **Lecture 4**: the grammar of graphics with data, aesthetics, geoms, facets, stats, positions, coordinates
 - **Lecture 5**: exploratory data analysis with variation, covariation, outliers, missing data, confounding
 - **Lecture 6**: design principles with visual cues, honest axes, showing the data, easing comparisons
 
@@ -98,7 +98,7 @@ Inside `aes()` = **mapping**, which is driven by data and you get a legend.
 Outside `aes()`= **setting**, which is essentially a fixed constant, no legend.
 :::
 
-## Mapping vs. setting
+## Mapping vs. setting {.smaller}
 
 ::: {.callout-tip title="Mapping"}
 Ties an aesthetic to a variable in your data. The value changes per row,
@@ -106,9 +106,7 @@ and ggplot2 draws a legend. Written **inside** `aes()`.
 :::
 
 ::: {.callout-note title="Setting"}
-Gives an aesthetic one fixed value for every point, no matter what the data
-says. No legend, since there's nothing to decode. Written **outside**
-`aes()`.
+Gives an aesthetic one fixed value for every point, no matter what the data says. No legend, since there's nothing to decode. Written **outside** `aes()`.
 :::
 
 ```r
@@ -121,10 +119,8 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
   geom_point(color = "blue")
 ```
 
-::: {.callout-caution title="The classic trap"}
-`geom_point(aes(color = "blue"))` looks like a setting but is written
-inside `aes()` — so it's a mapping to the constant string `"blue"`,
-producing one default-palette color and a stray one-entry legend.
+::: {.callout-caution title="Trap"}
+`geom_point(aes(color = "blue"))` looks like a setting but is written inside `aes()`, so it's a mapping to the constant string `"blue"`, producing one default-palette color and a stray one-entry legend.
 :::
 
 ## Try it yourself
@@ -144,9 +140,9 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
 ## Geoms at a glance {.smaller}
 
 | Chart type | Geom | Notes |
-|---|---|---|
+|--|--|----|
 | Scatterplot | `geom_point()` | default position `"identity"` |
-| Jittered scatter | `geom_jitter()` | shorthand for `geom_point(position = "jitter")` |
+| Jittered scatter | `geom_jitter()` | same as `geom_point(position = "jitter")` |
 | Trend line | `geom_smooth()` | `se = FALSE` drops the confidence band |
 | Histogram | `geom_histogram()` | needs `binwidth`; continuous x |
 | Bar chart (counts) | `geom_bar()` | uses `stat_count()` automatically |
@@ -250,9 +246,8 @@ hwy" wastes the most prominent text on the slide.
 
 | Function | Purpose |
 |---|---|
-| `scale_x_continuous()` / `scale_y_continuous()` | tweak breaks, labels, limits on a numeric axis |
-| `coord_cartesian(xlim = ..., ylim = ...)` | **zooms** the view; refits nothing |
-| `scale_x_continuous(limits = ...)` | **discards** data outside the range before any stat runs |
+| `coord_cartesian(xlim = ..., ylim = ...)` | zooms the view; refits nothing |
+| `scale_x_continuous(limits = ...)` /`scale_y_continuous(limits = ...)` | discards data outside the range before any stat runs |
 
 ::: {.callout-caution title="Zooming"}
 `coord_cartesian()` and scale `limits` both "zoom," but only one of them actually refits a `geom_smooth()` curve on less data.
