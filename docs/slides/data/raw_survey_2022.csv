@@ -1,0 +1,990 @@
+Financial Wellness Survey Export -- Platform v2 -- Generated 2022
+respondent_id,year,age,province,income,savings_pct,benefit_retirement,benefit_health,benefit_wages,benefit_timeoff,benefit_worklife,twoweek_pay_delay_impact,debt_overwhelmed,emergency_fund_likelihood,financial_wellness_cluster
+2022-0001,2022,30-40,Ontario,87200,5.2,N,No,Y,N,No,Very manageable,Y,Manageable,Coping
+2022-0002,2022,30-40,British Columbia,210K,9.1,No,No,No,no,Yes,Very manageable,Yes,Difficult,Coping
+2022-0003,2022,18-30,Ontario,45100,15.5,No,No,N,no,Yes,Somewhat difficult,NA,Difficult,Coping
+2022-0004,2022,30-40,Manitoba,"$94,200",7.6,No,No,no,no,Yes,Very manageable,Yes,Difficult,Coping
+2022-0005,2022,30-40,Alberta,224000,6.4,No,No,Yes,No,no,Very difficult,NA,Manageable,Stressed
+2022-0006,2022,40-50,Ontario,101200,13.4,No,No,N,Yes,No,Very manageable,Yes,Difficult,Coping
+2022-0007,2022,40-50,Alberta,97K,13.3,No,No,No,N,Yes,Manageable,No,Neither,Coping
+2022-0008,2022,30-40,Ontario,"$36,200",12.5,Yes,No,No,N,No,Somewhat difficult,No,Difficult,Coping
+2022-0009,2022,30-40,Alberta,161900,7.1,No,N,No,yes,No,Neither,No,Very manageable,Coping
+2022-0010,2022,18-30,New Brunswick,"$30,000",3.2,No,No,No,No,Yes,Neither,No,Difficult,Stressed
+2022-0011,2022,40-50,Ontario,"$120,400",10.1,No,No,no,No,Yes,Somewhat manageable,No,Manageable,Comfortable
+2022-0012,2022,30-40,Alberta,"54,300",1.6,N,No,No,No,Yes,Neither,No,Manageable,Coping
+2022-0013,2022,40-50,Ontario,94K,5.4,No,N,N,No,Yes,Somewhat difficult,No,Manageable,Stressed
+2022-0014,2022,50-65,Ontario,"42,800",15.9,NA,NA,NA,NA,NA,Difficult,No,Neither,Coping
+2022-0015,2022,30-40,Quebec,"$154,200",2.7,N,No,No,Yes,N,Difficult,Yes,Manageable,Coping
+2022-0016,2022,18-30,Alberta,"58,100",12.6,N,no,No,No,Yes,Somewhat difficult,Yes,Neither,Coping
+2022-0017,2022,30-40,Ontario,"$30,000",9.9,No,no,N,No,Yes,Neither,No,Difficult,Stressed
+2022-0018,2022,40-50,Nova Scotia,"158,600",0.0,no,No,No,No,yes,Difficult,Yes,Very difficult,Stressed
+2022-0019,2022,30-40,New Brunswick,58800,4.6,Yes,No,No,No,N,Somewhat difficult,Yes,Neither,Stressed
+2022-0020,2022,30-40,Manitoba,96200,14.2,N,No,Yes,N,No,Difficult,Yes,Neither,Stressed
+2022-0021,2022,40-50,Manitoba,"$142,600",8.8,No,No,No,No,yes,Difficult,no,Very difficult,Stressed
+2022-0022,2022,40-50,ON,"$122,700",4.9,No,No,No,No,Yes,Manageable,N,Difficult,Comfortable
+2022-0023,2022,30-40,Alberta,"30,000",15.0,No,No,N,No,Yes,Difficult,No,Manageable,Coping
+2022-0024,2022,18-30,New Brunswick,94800,6.5,No,No,N,no,Yes,Somewhat manageable,N,Difficult,Coping
+2022-0025,2022,40-50,Ontario,92500,15.1,No,No,No,No,Yes,Neither,No,Manageable,Coping
+2022-0026,2022,30-40,Ontario,"$60,000",6.9,no,Yes,No,no,N,Somewhat manageable,Yes,Manageable,Coping
+2022-0027,2022,40-50,Alberta,"89,000",5.7,No,no,no,No,Yes,NA,No,Difficult,Stressed
+2022-0028,2022,40-50,Manitoba,"30,000",3.3,No,No,N,No,Yes,Neither,Yes,Difficult,Stressed
+2022-0029,2022,18-30,Northwest Territories and Nunavut,"$66,600",6.0,No,Yes,No,N,No,Very difficult,No,Difficult,Stressed
+2022-0030,2022,40-50,ON,"$30,000",7.6,No,No,No,yes,No,Manageable,NA,Difficult,Coping
+2022-0031,2022,40-50,Quebec,"$84,700",9.7,No,No,No,No,yes,Somewhat difficult,No,Neither,Coping
+2022-0032,2022,40-50,Ontario,NA,3.9,No,No,no,N,Yes,Very difficult,No,Manageable,Coping
+2022-0033,2022,40-50,Ontario,145200,13.9,No,No,No,Yes,no,Neither,no,Manageable,Coping
+2022-0034,2022,18-30,alberta,30000,19.2,Yes,No,No,No,N,Somewhat manageable,N,Very difficult,Comfortable
+2022-0035,2022,50-65,Saskatchewan,185K,1.3,No,yes,No,No,No,Neither,No,Manageable,Coping
+2022-0036,2022,40-50,British Columbia,144800,17.0,No,no,No,no,Yes,Manageable,No,Difficult,Coping
+2022-0037,2022,18-30,British Columbia,47500,9.9,No,No,No,N,Yes,Somewhat manageable,No,Manageable,Coping
+2022-0038,2022,30-40,British Columbia,"30,000",12.0,No,N,Yes,No,No,Somewhat manageable,Yes,Difficult,Coping
+2022-0039,2022,40-50,Alberta,"$30,000",15.6,No,N,No,no,Y,Very manageable,Yes,Neither,Coping
+2022-0040,2022,40-50,Ontario,"115,600",13.0,No,Yes,N,No,No,Neither,Yes,Neither,Coping
+2022-0041,2022,30-40,british columbia,"$44,100",11.8,No,N,Yes,No,No,NA,No,Difficult,Stressed
+2022-0042,2022,40-50,British Columbia,"$165,000",9.2,No,Yes,No,No,No,Manageable,No,Very manageable,Coping
+2022-0043,2022,18-30,Alberta,30K,25.2,No,No,No,No,Yes,Somewhat manageable,No,Difficult,Comfortable
+2022-0044,2022,18-30,Saskatchewan,"30,000",11.7,No,No,no,N,Yes,Somewhat difficult,Yes,Difficult,Coping
+2022-0045,2022,18-30,Ontario,"68,700",21.6,Y,No,No,No,No,Somewhat difficult,No,Manageable,Comfortable
+2022-0046,2022,18-30,Quebec,39200,13.4,No,no,No,No,Yes,Somewhat difficult,Yes,Neither,Coping
+2022-0048,2022,50-65,Quebec,176800,15.3,No,N,No,No,Y,Somewhat difficult,No,Difficult,Coping
+2022-0049,2022,40-50,Ontario,100400,8.3,No,No,No,No,Yes,Neither,No,Difficult,Coping
+2022-0050,2022,30-40,Alberta,NA,13.5,No,no,No,N,Yes,Very manageable,No,Very manageable,Comfortable
+2022-0051,2022,30-40,BC,96K,5.8,No,Yes,No,No,No,Somewhat manageable,NA,Difficult,Stressed
+2022-0052,2022,40-50,British Columbia,30000,6.4,No,no,Yes,No,N,Difficult,No,Difficult,Coping
+2022-0053,2022,18-30,Ontario,81K,4.7,NA,NA,NA,NA,NA,Somewhat difficult,Yes,Difficult,Coping
+2022-0054,2022,30-40,Alberta,87500,3.1,no,no,No,N,Yes,Manageable,NA,Very manageable,Comfortable
+2022-0055,2022,50-65,alberta,"$160,100",1.7,No,No,yes,No,No,Difficult,Yes,Manageable,Coping
+2022-0056,2022,18-30,Ontario,100800,30.0,N,No,No,No,Yes,Somewhat manageable,No,Difficult,Comfortable
+2022-0057,2022,30-40,Alberta,"$66,400",13.4,No,No,No,No,Yes,Manageable,N,Manageable,Comfortable
+2022-0058,2022,30-40,Alberta,141600,22.4,N,N,No,No,Yes,Somewhat manageable,No,Difficult,Coping
+2022-0059,2022,40-50,Alberta,79900,20.8,N,No,No,N,Yes,Neither,No,Difficult,Comfortable
+2022-0060,2022,30-40,Ontario,"$90,400",17.7,Yes,N,No,No,No,Manageable,No,Very manageable,Comfortable
+2022-0061,2022,40-50,Alberta,"$75,900",0.0,NA,NA,NA,NA,NA,Somewhat difficult,No,Manageable,Stressed
+2022-0062,2022,40-50,Alberta,"123,600",11.0,NA,NA,NA,NA,NA,Manageable,N,Difficult,Coping
+2022-0063,2022,50-65,British Columbia,107200,15.5,Yes,No,N,No,No,Difficult,No,Manageable,Stressed
+2022-0064,2022,30-40,Ontario,"169,400",20.3,No,Yes,N,No,No,Somewhat manageable,Yes,Manageable,Coping
+2022-0065,2022,30-40,British Columbia,190900,7.4,No,No,No,No,Yes,Neither,No,Neither,Stressed
+2022-0066,2022,50-65,Alberta,161K,4.1,No,N,Y,No,N,Somewhat difficult,No,Manageable,Coping
+2022-0067,2022,30-40,Quebec,156600,5.3,Y,No,No,No,No,Somewhat manageable,Yes,Neither,Coping
+2022-0068,2022,18-30,Quebec,"30,000",5.9,No,Yes,No,No,N,Somewhat manageable,Yes,Very manageable,Coping
+2022-0069,2022,40-50,Alberta,30000,12.4,no,No,Y,No,No,Difficult,No,Difficult,Stressed
+2022-0070,2022,50-65,British Columbia,"$93,400",20.8,Yes,No,No,No,No,NA,No,Neither,Coping
+2022-0071,2022,40-50,Alberta,98K,12.2,No,No,No,no,Yes,Neither,No,Difficult,Coping
+2022-0072,2022,30-40,ontario ,78600,9.2,No,No,No,No,Yes,Somewhat manageable,No,Manageable,Coping
+2022-0073,2022,18-30,British Columbia,30000,20.3,No,No,No,No,Y,Very difficult,no,Difficult,Coping
+2022-0074,2022,30-40,Quebec,"146,100",1.1,Yes,No,No,No,No,Somewhat difficult,No,Difficult,Stressed
+2022-0075,2022,50-65,ontario ,"$220,200",11.3,No,Y,No,No,No,Somewhat difficult,Y,Manageable,Coping
+2022-0076,2022,18-30,Ontario,131500,21.2,No,No,yes,No,No,Manageable,No,Neither,Comfortable
+2022-0077,2022,30-40,Alberta,139800,1.7,No,No,No,No,Yes,Somewhat difficult,No,Difficult,Stressed
+2022-0078,2022,30-40,Quebec,93800,7.2,NA,NA,NA,NA,NA,Neither,No,Difficult,Coping
+2022-0079,2022,30-40,Ontario,35900,2.4,No,no,no,yes,N,Somewhat difficult,N,Neither,Stressed
+2022-0080,2022,40-50,Ontario,98100,19.5,NA,NA,NA,NA,NA,NA,no,Difficult,Coping
+2022-0081,2022,40-50,Alberta,202800,15.6,Yes,No,no,no,no,Difficult,No,Difficult,Stressed
+2022-0082,2022,40-50,Ontario,"$79,900",11.7,NA,NA,NA,NA,NA,Somewhat manageable,no,Neither,Coping
+2022-0083,2022,18-30,Ontario,49300,9.4,No,No,N,No,Yes,Difficult,Yes,Very manageable,Coping
+2022-0085,2022,40-50,Ontario,"$153,200",11.0,No,no,No,No,Yes,Somewhat manageable,Yes,Difficult,Coping
+2022-0086,2022,30-40,Ontario,"38,600",7.7,no,Y,No,No,No,Manageable,No,Manageable,Coping
+2022-0087,2022,50-65,New Brunswick,109900,10.4,No,no,No,No,Yes,Somewhat difficult,Yes,Manageable,Coping
+2022-0088,2022,50-65,Ontario,"99,400",20.9,Yes,no,no,No,no,Manageable,No,Manageable,Comfortable
+2022-0089,2022,50-65,Quebec,129500,8.6,Yes,No,No,No,No,Very difficult,No,Neither,Coping
+2022-0090,2022,18-30,Ontario,"$128,700",16.7,No,No,N,Yes,No,Very manageable,Yes,Difficult,Comfortable
+2022-0091,2022,40-50,British Columbia,"60,300",9.9,NA,NA,NA,NA,NA,Somewhat manageable,No,Manageable,Coping
+2022-0092,2022,40-50,Alberta,"$159,500",4.4,no,No,Y,N,N,Somewhat difficult,no,Difficult,Stressed
+2022-0093,2022,40-50,Ontario,108600,3.8,No,No,N,N,Yes,NA,Yes,Difficult,Stressed
+2022-0094,2022,30-40,Prince Edward Island,200300,15.6,Yes,No,No,No,no,Somewhat difficult,No,Very difficult,Coping
+2022-0095,2022,50-65,alberta,128400,NA,yes,No,N,No,No,Somewhat manageable,no,Difficult,Coping
+2022-0096,2022,30-40,Manitoba,"85,200",29.0,yes,N,N,No,No,Very manageable,No,Manageable,Comfortable
+2022-0097,2022,40-50,Saskatchewan,"$121,700",11.8,No,No,No,No,Y,Difficult,No,Difficult,Coping
+2022-0098,2022,18-30,Ontario,46100,14.7,No,Yes,N,No,No,Very manageable,Yes,Manageable,Coping
+2022-0099,2022,40-50,British Columbia,30000,15.4,No,No,Yes,No,No,Manageable,No,Manageable,Coping
+2022-0100,2022,30-40,British Columbia,73500,6.8,NA,NA,NA,NA,NA,Very manageable,No,Difficult,Coping
+2022-0101,2022,40-50,Manitoba,86200,5.5,No,No,N,No,Yes,NA,No,Difficult,Coping
+2022-0102,2022,40-50,Alberta,"$30,000",0.8,No,No,No,Y,No,Difficult,Yes,Difficult,Stressed
+2022-0104,2022,30-40,Ontario,30000,15.2,No,No,No,Yes,no,Difficult,N,Manageable,Coping
+2022-0105,2022,40-50,ontario ,"$86,100",3.1,No,No,No,No,Yes,Neither,Yes,Neither,Stressed
+2022-0106,2022,30-40,Ontario,"$99,200",14.6,No,Yes,No,No,No,Somewhat difficult,No,Manageable,Coping
+2022-0107,2022,18-30,Alberta,69300,0.0,N,No,No,No,Yes,Neither,No,Very manageable,Stressed
+2022-0108,2022,40-50,Alberta,"79,900",4.1,Yes,No,No,No,No,Difficult,Yes,Difficult,Stressed
+2022-0109,2022,18-30,Alberta,"$70,700",26.2,N,No,No,No,yes,Neither,yes,Manageable,Comfortable
+2022-0110,2022,18-30,Alberta,"$30,000",16.8,NA,NA,NA,NA,NA,Somewhat difficult,NA,Manageable,Comfortable
+2022-0111,2022,18-30,Ontario,"72,500",6.0,yes,No,No,No,No,NA,No,Neither,Coping
+2022-0112,2022,40-50,AB,"$97,400",7.1,NA,NA,NA,NA,NA,Somewhat difficult,Yes,Difficult,Coping
+2022-0113,2022,30-40,Ontario,43500,0.0,No,No,No,Yes,No,Neither,No,Neither,Comfortable
+2022-0114,2022,18-30,Alberta,"$70,400",0.9,No,No,No,N,Y,Difficult,No,Neither,Stressed
+2022-0115,2022,30-40,Alberta,95600,17.3,N,No,No,No,Y,Somewhat difficult,Yes,Neither,Coping
+2022-0116,2022,50-65,Alberta,102700,3.1,No,No,Yes,No,no,NA,No,Difficult,Stressed
+2022-0117,2022,30-40,Ontario,203600,8.2,no,Yes,No,No,No,Neither,No,Difficult,Coping
+2022-0118,2022,30-40,Ontario,"$80,000",1.7,Yes,No,No,no,No,NA,Yes,Manageable,Comfortable
+2022-0119,2022,50-65,ON,95500,6.6,No,No,No,Yes,No,Neither,No,Manageable,Comfortable
+2022-0120,2022,40-50,Alberta,NA,NA,No,No,Y,No,No,Very difficult,No,Manageable,Comfortable
+2022-0121,2022,50-65,Ontario,"$59,500",14.7,No,No,No,No,Yes,Neither,No,Very difficult,Coping
+2022-0122,2022,18-30,Ontario,91300,3.2,No,No,No,N,Yes,Difficult,yes,Difficult,Coping
+2022-0123,2022,50-65,British Columbia,"$87,200",13.6,No,No,Yes,No,N,Difficult,no,NA,Comfortable
+2022-0124,2022,40-50,Alberta,73600,10.8,No,No,no,No,Yes,Difficult,No,Manageable,Coping
+2022-0125,2022,65+,Alberta,108100,3.8,No,No,No,No,Y,Somewhat difficult,No,Very difficult,Coping
+2022-0126,2022,30-40,Alberta,"$30,000",0.0,NA,NA,NA,NA,NA,Neither,No,Difficult,Stressed
+2022-0127,2022,18-30,Quebec,30000,10.0,No,No,No,No,Y,Difficult,Yes,Neither,Coping
+2022-0128,2022,30-40,Manitoba,"$66,900",8.9,NA,NA,NA,NA,NA,Somewhat difficult,No,Neither,Stressed
+2022-0129,2022,30-40,ON,NA,14.6,N,No,No,yes,no,Somewhat manageable,NA,Difficult,Coping
+2022-0130,2022,40-50,Ontario,"111,800",10.4,No,No,No,No,Yes,Somewhat manageable,Y,Difficult,Stressed
+2022-0132,2022,30-40,Ontario,126000,6.3,N,Yes,No,No,No,Neither,No,Difficult,Stressed
+2022-0133,2022,30-40,AB,111700,NA,No,No,No,No,Yes,Neither,No,Difficult,Stressed
+2022-0134,2022,40-50,Ontario,193K,10.5,No,No,No,Yes,No,Very manageable,Yes,Very difficult,Coping
+2022-0135,2022,30-40,alberta,"80,600",4.9,No,no,No,Yes,No,Neither,No,NA,Stressed
+2022-0136,2022,30-40,British Columbia,"$87,200",13.4,No,Yes,No,No,N,Neither,No,Very manageable,Comfortable
+2022-0137,2022,50-65,British Columbia,"$107,400",0.0,N,No,N,No,Yes,Very manageable,No,Very manageable,Coping
+2022-0138,2022,50-65,Ontario,189700,NA,No,No,No,Yes,No,Manageable,no,Very difficult,Coping
+2022-0139,2022,50-65,Ontario,NA,7.6,No,No,Yes,No,no,Difficult,No,Manageable,Stressed
+2022-0140,2022,30-40,ontario ,"54,600",7.6,no,Y,No,No,No,Neither,No,Difficult,Comfortable
+2022-0141,2022,18-30,alberta,86400,13.8,no,no,No,no,yes,Very manageable,N,Neither,Coping
+2022-0142,2022,30-40,Yukon,"46,200",8.3,Yes,N,No,no,N,Somewhat difficult,No,Manageable,Coping
+2022-0143,2022,30-40,Alberta,103200,3.9,No,No,Yes,No,N,Neither,Yes,Difficult,Stressed
+2022-0144,2022,30-40,Ontario,"$107,700",6.4,No,No,Y,No,No,Neither,No,Neither,Coping
+2022-0145,2022,30-40,Ontario,"68,500",21.8,No,No,No,No,yes,Manageable,no,NA,Comfortable
+2022-0146,2022,30-40,Ontario,118300,6.2,N,No,No,Y,no,Difficult,N,Difficult,Coping
+2022-0147,2022,18-30,New Brunswick,"30,000",0.5,No,No,No,No,Yes,Somewhat difficult,Yes,Very manageable,Stressed
+2022-0148,2022,18-30,ontario ,"75,600",11.7,No,N,No,No,Yes,Somewhat difficult,N,Difficult,Stressed
+2022-0149,2022,50-65,Ontario,"$89,400",5.1,N,Yes,N,No,No,Somewhat manageable,No,Very difficult,Stressed
+2022-0150,2022,18-30,Alberta,"215,100",10.1,No,No,N,No,Yes,Somewhat difficult,N,Very manageable,Coping
+2022-0151,2022,30-40,Ontario,97800,22.8,No,yes,No,No,No,Somewhat difficult,Yes,NA,Comfortable
+2022-0152,2022,50-65,Alberta,"$76,700",13.3,No,Y,no,No,No,Neither,N,Neither,Comfortable
+2022-0153,2022,50-65,Ontario,37600,14.7,yes,No,N,No,No,Somewhat difficult,no,Neither,Comfortable
+2022-0154,2022,40-50,ontario ,170K,7.5,no,no,Yes,no,No,Manageable,No,Very difficult,Stressed
+2022-0155,2022,40-50,ON,78500,7.2,NA,NA,NA,NA,NA,Neither,NA,Neither,Comfortable
+2022-0156,2022,40-50,Nova Scotia,63900,12.3,No,No,no,No,Yes,Somewhat difficult,No,Difficult,Coping
+2022-0157,2022,50-65,british columbia,130800,6.5,N,No,yes,No,No,Manageable,No,Neither,Coping
+2022-0158,2022,40-50,ON,"130,000",16.1,No,No,Yes,No,No,Somewhat difficult,N,Neither,Coping
+2022-0159,2022,18-30,British Columbia,"$88,700",8.7,No,N,No,No,Yes,Difficult,no,Manageable,Stressed
+2022-0160,2022,30-40,Ontario,82000,20.9,NA,NA,NA,NA,NA,Manageable,No,Very manageable,Comfortable
+2022-0161,2022,40-50,Nova Scotia,110000,6.8,No,Yes,No,No,No,Somewhat manageable,No,Neither,Comfortable
+2022-0162,2022,30-40,ON,"89,600",NA,NA,NA,NA,NA,NA,Very manageable,No,Very manageable,Comfortable
+2022-0163,2022,50-65,British Columbia,"135,300",9.8,N,Yes,no,No,N,Manageable,No,NA,Comfortable
+2022-0164,2022,30-40,British Columbia,109700,10.8,No,No,Yes,No,No,Somewhat difficult,NA,Manageable,Coping
+2022-0166,2022,50-65,Alberta,112300,7.2,Y,No,No,No,No,Very manageable,No,Difficult,Comfortable
+2022-0167,2022,30-40,British Columbia,46K,18.1,No,No,No,No,Y,Neither,No,Difficult,Coping
+2022-0168,2022,40-50,BC,86K,20.6,No,N,No,Y,No,Manageable,No,Very manageable,Comfortable
+2022-0169,2022,50-65,Ontario,144200,4.2,NA,NA,NA,NA,NA,Difficult,Yes,Difficult,Stressed
+2022-0171,2022,30-40,Ontario,30000,4.5,No,No,No,No,Yes,Somewhat manageable,No,Manageable,Coping
+2022-0172,2022,40-50,Quebec,"$150,900",12.2,No,no,No,Yes,No,Difficult,No,Difficult,Coping
+2022-0173,2022,40-50,Ontario,167500,15.6,no,No,no,No,Y,Manageable,No,Neither,Comfortable
+2022-0174,2022,50-65,British Columbia,"53,700",28.8,No,No,Yes,no,No,Somewhat difficult,No,Very manageable,Comfortable
+2022-0175,2022,18-30,AB,66500,5.1,No,No,No,No,Yes,Somewhat difficult,No,Very difficult,Stressed
+2022-0176,2022,18-30,Alberta,"40,000",11.4,No,N,No,No,Yes,Somewhat manageable,no,Manageable,Coping
+2022-0177,2022,40-50,ontario ,NA,0.0,No,N,No,No,Y,Difficult,Y,Manageable,Stressed
+2022-0178,2022,40-50,Ontario,NA,4.2,Yes,No,No,No,No,Very difficult,N,Very difficult,Stressed
+2022-0179,2022,30-40,Alberta,30000,12.1,No,N,No,Yes,No,Very manageable,Yes,Difficult,Coping
+2022-0180,2022,40-50,Alberta,"$42,100",8.8,No,No,No,No,Yes,NA,No,Neither,Coping
+2022-0181,2022,40-50,British Columbia,"$88,400",8.1,No,No,Yes,No,No,Somewhat difficult,NA,Manageable,Coping
+2022-0182,2022,18-30,British Columbia,67700,13.0,No,Yes,No,No,No,Difficult,N,Neither,Coping
+2022-0183,2022,30-40,Saskatchewan,30000,20.1,NA,NA,NA,NA,NA,Neither,Y,Very difficult,Coping
+2022-0184,2022,40-50,British Columbia,NA,19.0,No,Y,No,No,No,Somewhat manageable,Yes,Difficult,Comfortable
+2022-0185,2022,50-65,Alberta,"85,600",11.7,Yes,N,No,No,N,Neither,Yes,Difficult,Stressed
+2022-0186,2022,18-30,British Columbia,48K,14.7,No,N,No,No,Yes,Somewhat manageable,No,Difficult,Coping
+2022-0187,2022,30-40,Alberta,"$101,100",17.5,Yes,No,no,no,N,Very difficult,No,Difficult,Coping
+2022-0188,2022,30-40,Alberta,79100,13.7,Yes,no,No,No,No,Manageable,No,Manageable,Comfortable
+2022-0189,2022,40-50,Manitoba,139K,16.6,Yes,No,No,No,N,Somewhat manageable,No,Very difficult,Comfortable
+2022-0190,2022,30-40,British Columbia,43300,5.0,no,Yes,No,No,N,Very difficult,Y,Manageable,Stressed
+2022-0191,2022,30-40,Alberta,30000,14.3,No,No,No,Yes,No,Somewhat manageable,Yes,Manageable,Coping
+2022-0192,2022,50-65,Ontario,"$97,000",23.5,No,No,No,No,Yes,Neither,N,Manageable,Comfortable
+2022-0193,2022,30-40,Ontario,84000,11.8,No,No,Yes,No,No,Manageable,N,Neither,Coping
+2022-0194,2022,30-40,Alberta,30000,16.3,No,no,No,Yes,No,Neither,Yes,Difficult,Coping
+2022-0196,2022,30-40,British Columbia,"$85,600",10.4,No,No,Yes,No,N,Manageable,No,Difficult,Stressed
+2022-0197,2022,40-50,Saskatchewan,61100,17.1,NA,NA,NA,NA,NA,Neither,No,Difficult,Coping
+2022-0198,2022,40-50,quebec,"30,000",22.7,No,No,Y,No,No,Neither,Yes,Manageable,Comfortable
+2022-0199,2022,40-50,New Brunswick,"$148,800",NA,No,no,Yes,No,No,Somewhat difficult,No,Very difficult,Stressed
+2022-0200,2022,40-50,British Columbia,"68,900",15.3,No,N,Yes,No,No,Very manageable,yes,Difficult,Coping
+2022-0201,2022,50-65,Ontario,"$185,000",NA,Yes,N,No,N,No,Neither,NA,Manageable,Coping
+2022-0202,2022,30-40,Manitoba,"$77,900",19.4,No,N,no,No,Yes,Manageable,No,Manageable,Comfortable
+2022-0203,2022,18-30,Alberta,76200,20.1,NA,NA,NA,NA,NA,Manageable,NA,Difficult,Comfortable
+2022-0204,2022,18-30,ON,"$59,900",8.7,No,No,No,No,Yes,Somewhat manageable,No,Very difficult,Comfortable
+2022-0205,2022,30-40,Ontario,"30,000",8.4,Yes,No,no,No,No,Difficult,Yes,Difficult,Stressed
+2022-0206,2022,18-30,Ontario,30000,9.3,no,N,No,No,Yes,Manageable,No,Manageable,Comfortable
+2022-0207,2022,40-50,Ontario,"$85,200",15.0,No,No,No,N,Yes,Very manageable,No,Manageable,Comfortable
+2022-0208,2022,50-65,quebec,"$130,700",11.2,Yes,No,No,no,No,Somewhat manageable,No,Difficult,Coping
+2022-0209,2022,50-65,Ontario,30000,6.6,No,No,N,no,Y,Difficult,No,Neither,Coping
+2022-0210,2022,40-50,Ontario,96K,6.4,No,No,No,no,Yes,Difficult,No,Very manageable,Stressed
+2022-0211,2022,65+,Ontario,72900,18.5,yes,No,no,No,No,Very difficult,N,Manageable,Comfortable
+2022-0213,2022,18-30,Saskatchewan,"$59,000",14.4,No,yes,No,no,N,Somewhat manageable,N,Neither,Coping
+2022-0214,2022,50-65,Ontario,"146,700",12.7,No,Yes,No,N,No,Somewhat manageable,No,Very manageable,Comfortable
+2022-0215,2022,18-30,ontario ,110300,30.0,No,Yes,No,No,no,Very manageable,no,Very manageable,Comfortable
+2022-0216,2022,30-40,Ontario,"99,400",17.2,No,Yes,No,No,No,Manageable,no,Difficult,Comfortable
+2022-0217,2022,40-50,British Columbia,"$142,000",4.0,NA,NA,NA,NA,NA,Somewhat manageable,no,Difficult,Coping
+2022-0218,2022,30-40,Quebec,71000,1.1,No,No,No,No,Yes,Somewhat manageable,No,Very difficult,Stressed
+2022-0219,2022,30-40,Alberta,"$228,200",17.9,no,Yes,No,N,No,Somewhat manageable,no,Manageable,Coping
+2022-0220,2022,18-30,British Columbia,30000,4.0,No,No,No,No,Yes,Somewhat manageable,Yes,Very difficult,Stressed
+2022-0221,2022,30-40,Manitoba,64K,8.5,no,N,No,No,Yes,Very manageable,N,Very manageable,Comfortable
+2022-0222,2022,50-65,Ontario,153100,16.1,No,No,No,N,Yes,Neither,No,Very difficult,Coping
+2022-0223,2022,30-40,Ontario,"127,600",8.5,No,No,No,No,Yes,Somewhat difficult,No,Neither,Coping
+2022-0224,2022,18-30,Alberta,"99,400",9.3,No,No,N,No,Yes,Difficult,Yes,Difficult,Stressed
+2022-0225,2022,18-30,Alberta,101300,16.6,No,No,N,No,Yes,Manageable,No,Neither,Coping
+2022-0226,2022,18-30,British Columbia,30000,19.9,no,No,Yes,No,No,Somewhat difficult,No,Manageable,Comfortable
+2022-0227,2022,40-50,British Columbia,177000,25.4,No,No,N,No,Yes,Very manageable,No,Manageable,Coping
+2022-0228,2022,40-50,Alberta,85800,0.0,No,Yes,No,no,No,Difficult,no,Difficult,Stressed
+2022-0229,2022,18-30,Ontario,137300,1.9,No,Yes,No,No,No,Neither,N,Difficult,Stressed
+2022-0230,2022,18-30,British Columbia,"$30,000",9.5,No,No,No,Y,No,Somewhat difficult,No,Manageable,Coping
+2022-0231,2022,40-50,British Columbia,"110,300",17.3,N,No,Yes,No,No,Somewhat manageable,Yes,Manageable,Stressed
+2022-0232,2022,18-30,British Columbia,"45,300",30.0,No,no,No,No,Yes,Difficult,No,Manageable,Comfortable
+2022-0233,2022,40-50,Ontario,130600,18.7,no,No,N,N,Yes,Neither,NA,Manageable,Coping
+2022-0234,2022,30-40,Ontario,92K,2.0,No,No,No,Y,No,Neither,Yes,Difficult,Stressed
+2022-0235,2022,18-30,Alberta,"90,300",13.3,No,N,No,No,yes,Somewhat manageable,N,Very manageable,Comfortable
+2022-0236,2022,40-50,British Columbia,40100,6.0,No,No,No,Yes,No,Somewhat difficult,No,Neither,Coping
+2022-0237,2022,65+,Ontario,129K,2.1,No,No,No,Yes,No,Somewhat manageable,No,Manageable,Stressed
+2022-0238,2022,40-50,Alberta,94500,20.0,Yes,N,No,No,No,NA,Yes,Manageable,Coping
+2022-0239,2022,40-50,Ontario,117800,4.8,Yes,No,N,No,N,Very difficult,No,Difficult,Stressed
+2022-0240,2022,40-50,Saskatchewan,"$145,500",10.3,No,no,No,No,yes,Neither,No,Very difficult,Coping
+2022-0241,2022,18-30,Ontario,66000,23.4,no,No,No,No,Yes,Somewhat manageable,No,Manageable,Comfortable
+2022-0242,2022,18-30,Saskatchewan,30000,6.4,No,No,no,yes,no,Neither,No,Manageable,Comfortable
+2022-0243,2022,18-30,Manitoba,"62,400",11.3,No,no,Yes,No,No,Somewhat manageable,No,Neither,Coping
+2022-0244,2022,50-65,New Brunswick,252K,4.4,yes,No,No,No,No,Difficult,No,Very manageable,Coping
+2022-0245,2022,50-65,Alberta,199300,4.5,N,No,No,Yes,No,Somewhat difficult,no,Difficult,Stressed
+2022-0246,2022,40-50,Alberta,"$30,000",7.5,N,no,No,Yes,No,Somewhat difficult,No,Difficult,Coping
+2022-0247,2022,40-50,British Columbia,"96,200",2.8,No,No,No,Yes,no,Neither,No,Difficult,Stressed
+2022-0248,2022,18-30,Ontario,108100,12.4,No,No,No,No,Yes,Neither,No,NA,Coping
+2022-0249,2022,30-40,Ontario,"$76,400",7.1,No,No,No,No,Y,Difficult,Yes,Difficult,Stressed
+2022-0250,2022,50-65,British Columbia,"$100,000",16.5,Yes,no,No,no,No,Very manageable,No,Very manageable,Comfortable
+2022-0251,2022,40-50,ontario ,79700,20.6,N,No,no,N,Yes,Very manageable,No,Very difficult,Comfortable
+2022-0252,2022,30-40,Alberta,"107,100",5.8,No,Yes,No,No,No,Somewhat difficult,N,Manageable,Coping
+2022-0253,2022,18-30,British Columbia,30000,22.8,No,Y,No,No,No,Very manageable,No,Manageable,Comfortable
+2022-0254,2022,50-65,Alberta,"174,900",5.0,No,No,No,Yes,No,Difficult,No,Very difficult,Stressed
+2022-0255,2022,30-40,Ontario,85700,8.1,N,Yes,No,No,No,Somewhat difficult,No,Manageable,Coping
+2022-0256,2022,18-30,ON,"$30,000",2.0,No,No,Yes,N,No,Difficult,Yes,Neither,Stressed
+2022-0257,2022,18-30,Ontario,129700,4.8,No,No,No,No,yes,Difficult,N,Difficult,Stressed
+2022-0258,2022,18-30,Alberta,30000,22.2,No,No,No,No,Yes,Somewhat manageable,No,Difficult,Coping
+2022-0259,2022,30-40,New Brunswick,NA,10.6,No,No,No,No,yes,Neither,No,Difficult,Coping
+2022-0260,2022,40-50,Saskatchewan,"64,400",4.1,No,N,No,No,Yes,Manageable,No,Neither,Coping
+2022-0261,2022,30-40,Alberta,188200,16.5,No,No,Yes,No,No,Somewhat difficult,N,Difficult,Coping
+2022-0262,2022,40-50,New Brunswick,"$69,200",NA,No,No,no,No,Yes,Difficult,Y,Difficult,Stressed
+2022-0263,2022,40-50,Alberta,30K,7.4,No,No,Yes,no,No,Difficult,No,Manageable,Stressed
+2022-0264,2022,50-65,Alberta,"$80,400",7.4,NA,NA,NA,NA,NA,Difficult,No,Manageable,Coping
+2022-0265,2022,30-40,Nova Scotia,106800,18.7,No,No,Yes,No,N,Very manageable,Y,Manageable,Coping
+2022-0266,2022,65+,Alberta,"$174,200",3.0,yes,No,No,No,N,Somewhat difficult,No,Manageable,Stressed
+2022-0267,2022,30-40,Ontario,193K,19.4,Y,No,N,No,No,Somewhat manageable,No,Very difficult,Coping
+2022-0268,2022,18-30,Quebec,143800,4.7,No,No,No,N,Y,Somewhat manageable,No,Difficult,Coping
+2022-0269,2022,18-30,British Columbia,81400,9.2,Yes,No,No,no,No,Somewhat difficult,NA,Manageable,Coping
+2022-0270,2022,30-40,Alberta,40900,27.8,No,N,No,No,Yes,Neither,No,Manageable,Comfortable
+2022-0271,2022,18-30,Ontario,139700,12.0,no,No,No,No,Yes,Neither,N,Difficult,Coping
+2022-0273,2022,18-30,Quebec,"$30,000",9.4,NA,NA,NA,NA,NA,Somewhat difficult,No,Very difficult,Coping
+2022-0274,2022,40-50,british columbia,72100,12.5,No,Yes,No,No,N,Very difficult,NA,Neither,Coping
+2022-0275,2022,18-30,Ontario,30000,15.5,N,No,No,No,Yes,Somewhat difficult,no,Difficult,Stressed
+2022-0276,2022,30-40,Quebec,"$59,200",0.0,No,no,No,N,Yes,Difficult,No,Neither,Stressed
+2022-0277,2022,40-50,Alberta,"$88,800",6.5,no,No,No,Y,N,Manageable,No,Neither,Comfortable
+2022-0278,2022,65+,Ontario,"168,500",2.0,NA,NA,NA,NA,NA,Very difficult,No,Very difficult,Stressed
+2022-0279,2022,18-30,Ontario,51100,15.9,no,Y,No,No,No,Neither,No,Manageable,Coping
+2022-0280,2022,30-40,Ontario,30000,1.3,N,No,No,Yes,No,NA,Yes,Manageable,Coping
+2022-0281,2022,30-40,Alberta,30000,14.6,Yes,no,No,No,No,Manageable,No,Neither,Coping
+2022-0282,2022,18-30,New Brunswick,85500,21.7,No,Yes,N,No,No,NA,Yes,Very difficult,Comfortable
+2022-0283,2022,30-40,Alberta,"80,100",23.1,NA,NA,NA,NA,NA,Very difficult,Yes,Neither,Coping
+2022-0284,2022,40-50,Saskatchewan,"$77,300",11.2,no,N,No,Yes,N,Neither,Yes,Difficult,Stressed
+2022-0285,2022,30-40,Alberta,"$57,600",20.5,No,N,Y,No,No,Very manageable,NA,Difficult,Comfortable
+2022-0286,2022,65+,Alberta,149900,19.2,N,No,No,Yes,No,Somewhat manageable,Yes,Difficult,Coping
+2022-0287,2022,40-50,Quebec,167000,14.2,No,no,No,No,Y,Very manageable,No,Difficult,Coping
+2022-0288,2022,18-30,British Columbia,"33,000",8.2,N,No,No,No,Y,Manageable,No,Difficult,Coping
+2022-0289,2022,30-40,Ontario,"$88,400",4.1,Y,No,N,N,no,NA,Yes,Difficult,Coping
+2022-0290,2022,18-30,BC,"$122,900",7.6,N,no,N,N,Yes,Neither,no,Manageable,Coping
+2022-0292,2022,18-30,Alberta,"$59,200",12.1,No,No,N,No,yes,NA,NA,Neither,Coping
+2022-0293,2022,18-30,Nova Scotia,"$64,100",0.0,NA,NA,NA,NA,NA,Very manageable,No,Difficult,Coping
+2022-0294,2022,30-40,Ontario,"30,000",4.9,No,No,No,No,Yes,NA,Yes,Manageable,Stressed
+2022-0295,2022,40-50,British Columbia,"110,400",6.1,No,Yes,No,No,No,Difficult,Yes,Very difficult,Stressed
+2022-0296,2022,50-65,British Columbia,114100,NA,No,No,No,yes,No,Very manageable,No,Difficult,Coping
+2022-0297,2022,50-65,Alberta,"143,300",20.8,Yes,N,No,No,No,Somewhat manageable,Yes,Neither,Coping
+2022-0298,2022,40-50,Ontario,39700,12.1,No,Yes,No,No,no,Somewhat difficult,NA,Manageable,Coping
+2022-0299,2022,30-40,Alberta,89K,11.6,No,No,No,No,Yes,Very manageable,Yes,Manageable,Comfortable
+2022-0300,2022,40-50,British Columbia,"$174,100",0.0,Yes,No,No,No,No,Difficult,No,Difficult,Stressed
+2022-0301,2022,18-30,British Columbia,172900,15.1,No,No,No,No,Yes,Neither,No,Difficult,Coping
+2022-0302,2022,18-30,Nova Scotia,121000,11.9,No,no,No,No,Yes,Manageable,NA,Neither,Comfortable
+2022-0303,2022,40-50,ON,"$38,600",24.1,no,No,No,No,Yes,Very manageable,NA,Manageable,Comfortable
+2022-0304,2022,18-30,New Brunswick,94600,27.8,No,No,No,No,Yes,Somewhat manageable,No,Neither,Comfortable
+2022-0305,2022,30-40,Quebec,"$64,300",7.2,No,No,N,No,Yes,Somewhat manageable,No,Neither,Comfortable
+2022-0306,2022,40-50,Ontario,106K,8.8,no,No,No,No,Yes,Somewhat difficult,no,Very difficult,Stressed
+2022-0307,2022,40-50,Ontario,"55,900",18.8,Yes,No,no,No,No,Manageable,Yes,Very manageable,Coping
+2022-0308,2022,50-65,Ontario,30000,25.1,NA,NA,NA,NA,NA,Somewhat difficult,No,Difficult,Comfortable
+2022-0309,2022,40-50,Alberta,"87,800",0.0,no,No,N,No,Yes,Somewhat difficult,Yes,Difficult,Coping
+2022-0310,2022,40-50,Saskatchewan,129100,1.7,No,Yes,no,No,No,Somewhat manageable,N,Manageable,Stressed
+2022-0311,2022,30-40,Ontario,"96,900",9.0,no,Yes,no,No,No,Very manageable,No,Manageable,Comfortable
+2022-0312,2022,40-50,ontario ,NA,8.6,N,Yes,no,No,No,Difficult,No,Difficult,Stressed
+2022-0313,2022,30-40,Alberta,90300,13.5,No,No,N,N,Yes,Neither,N,Manageable,Coping
+2022-0314,2022,30-40,Alberta,107200,0.0,N,No,yes,no,No,Somewhat difficult,Yes,Very difficult,Stressed
+2022-0315,2022,65+,Ontario,"161,500",9.2,No,No,No,Y,No,Somewhat manageable,No,NA,Coping
+2022-0316,2022,40-50,New Brunswick,79300,15.8,No,No,no,No,Yes,Neither,No,Difficult,Coping
+2022-0317,2022,40-50,Ontario,"101,600",11.9,No,No,No,No,Y,Somewhat manageable,Yes,Very manageable,Coping
+2022-0318,2022,30-40,Manitoba,"165,200",19.0,No,Yes,No,No,no,Somewhat difficult,Yes,Difficult,Comfortable
+2022-0319,2022,50-65,Ontario,115100,8.8,No,N,No,No,Y,Manageable,No,Neither,Coping
+2022-0320,2022,40-50,Alberta,"105,600",4.6,No,No,No,no,Yes,Difficult,No,Neither,Coping
+2022-0321,2022,40-50,Alberta,"108,600",17.9,No,Y,No,No,No,Very manageable,No,Difficult,Comfortable
+2022-0322,2022,40-50,Alberta,83600,18.4,No,Yes,No,no,N,Difficult,No,Neither,Comfortable
+2022-0323,2022,50-65,Ontario,86200,9.1,Yes,N,No,no,No,Very difficult,yes,Neither,Stressed
+2022-0324,2022,50-65,Ontario,"$122,900",9.5,N,No,No,No,Yes,Difficult,Yes,Difficult,Stressed
+2022-0325,2022,40-50,Saskatchewan,"$69,200",11.5,No,No,Yes,No,No,Somewhat difficult,No,Very manageable,Coping
+2022-0326,2022,30-40,ON,"81,200",25.7,Yes,N,N,No,No,Somewhat manageable,No,Neither,Comfortable
+2022-0327,2022,50-65,Ontario,67000,8.8,Yes,No,No,No,N,Somewhat manageable,Yes,Neither,Coping
+2022-0328,2022,18-30,Ontario,"$78,900",0.0,Yes,No,No,No,no,Somewhat manageable,No,Difficult,Stressed
+2022-0329,2022,30-40,Ontario,"$105,700",13.9,No,N,N,Yes,No,NA,No,Neither,Coping
+2022-0330,2022,30-40,Saskatchewan,77900,11.8,No,N,No,no,Yes,Neither,No,Manageable,Coping
+2022-0331,2022,18-30,Ontario,"$30,000",14.0,No,No,No,Y,No,Somewhat difficult,No,Manageable,Coping
+2022-0332,2022,40-50,Alberta,134K,9.1,N,no,N,No,Yes,Very manageable,No,Manageable,Comfortable
+2022-0333,2022,18-30,ON,78000,30.0,Yes,N,No,No,N,Somewhat difficult,No,Manageable,Comfortable
+2022-0334,2022,30-40,Alberta,31300,15.3,N,No,No,yes,No,Somewhat difficult,No,Neither,Coping
+2022-0335,2022,30-40,Alberta,"$124,200",9.3,No,No,N,N,Yes,Difficult,no,Neither,Coping
+2022-0336,2022,30-40,Ontario,"30,000",5.4,no,No,No,No,Yes,Somewhat difficult,N,Difficult,Coping
+2022-0337,2022,30-40,Ontario,136300,17.5,No,N,No,no,Yes,Neither,No,Difficult,Coping
+2022-0338,2022,30-40,Alberta,86K,4.4,No,No,yes,No,No,Difficult,Yes,Neither,Coping
+2022-0339,2022,30-40,Alberta,NA,24.6,no,No,No,Yes,No,Difficult,No,Manageable,Coping
+2022-0340,2022,30-40,quebec,"$91,400",7.3,No,N,No,No,Yes,NA,No,Very difficult,Coping
+2022-0341,2022,30-40,Alberta,"$56,200",21.3,NA,NA,NA,NA,NA,Difficult,No,Neither,Coping
+2022-0342,2022,50-65,Alberta,"$81,700",5.1,No,No,No,No,Yes,Somewhat difficult,No,Difficult,Stressed
+2022-0343,2022,18-30,Ontario,30000,20.5,No,No,Yes,No,No,Neither,No,Neither,Coping
+2022-0344,2022,30-40,Ontario,80600,6.6,Yes,No,No,No,No,Manageable,NA,Manageable,Coping
+2022-0345,2022,30-40,Ontario,56700,11.1,No,No,N,no,Yes,Somewhat manageable,No,Manageable,Coping
+2022-0346,2022,40-50,Ontario,30K,15.8,NA,NA,NA,NA,NA,NA,Yes,Manageable,Coping
+2022-0347,2022,18-30,British Columbia,"$128,100",9.3,No,No,No,N,yes,Somewhat manageable,No,Neither,Stressed
+2022-0348,2022,30-40,british columbia,68800,25.7,no,No,No,No,yes,Somewhat manageable,No,Difficult,Comfortable
+2022-0349,2022,30-40,Ontario,51900,14.6,N,No,Yes,N,N,Somewhat manageable,NA,Manageable,Comfortable
+2022-0350,2022,50-65,Ontario,53100,11.5,N,No,No,Yes,No,NA,No,Difficult,Coping
+2022-0351,2022,40-50,British Columbia,"$134,500",18.5,NA,NA,NA,NA,NA,Somewhat manageable,N,Manageable,Coping
+2022-0352,2022,18-30,British Columbia,30000,6.8,No,Yes,No,N,No,Somewhat difficult,no,Manageable,Coping
+2022-0353,2022,30-40,British Columbia,"$87,700",14.4,No,No,No,Yes,No,Neither,No,Difficult,Coping
+2022-0354,2022,50-65,Alberta,"$77,300",16.5,No,N,No,No,Y,Neither,N,Neither,Comfortable
+2022-0355,2022,18-30,British Columbia,"$42,700",7.0,Yes,no,No,No,N,Somewhat difficult,No,Difficult,Stressed
+2022-0356,2022,30-40,Alberta,33300,6.4,No,No,No,No,yes,NA,yes,Manageable,Stressed
+2022-0357,2022,30-40,Ontario,59000,6.3,No,no,N,Yes,no,Neither,Yes,Difficult,Coping
+2022-0358,2022,30-40,British Columbia,"$82,900",4.7,N,No,N,No,Yes,Very manageable,no,Difficult,Stressed
+2022-0359,2022,65+,ON,147K,11.9,N,No,Yes,No,No,Somewhat difficult,No,Difficult,Coping
+2022-0360,2022,30-40,Ontario,43200,17.3,No,No,No,No,Yes,Very manageable,No,Manageable,Comfortable
+2022-0361,2022,40-50,Ontario,"$93,000",13.9,No,No,No,No,Yes,Somewhat manageable,Y,Neither,Stressed
+2022-0362,2022,30-40,Saskatchewan,"$120,900",17.1,Yes,no,No,no,No,Somewhat manageable,yes,Difficult,Coping
+2022-0363,2022,40-50,Manitoba,30000,12.7,No,N,No,No,Y,Difficult,No,Manageable,Coping
+2022-0364,2022,40-50,Alberta,"$104,700",12.7,No,No,No,No,Yes,Somewhat manageable,Yes,Difficult,Comfortable
+2022-0365,2022,30-40,ON,32000,6.1,NA,NA,NA,NA,NA,NA,No,Manageable,Coping
+2022-0366,2022,30-40,Alberta,35900,15.9,NA,NA,NA,NA,NA,Somewhat difficult,Y,Difficult,Stressed
+2022-0367,2022,18-30,British Columbia,86600,4.9,No,No,No,no,yes,Very manageable,no,Neither,Coping
+2022-0368,2022,18-30,Alberta,41700,11.7,No,No,N,No,Yes,Neither,No,Difficult,Coping
+2022-0369,2022,50-65,Quebec,"47,200",20.5,NA,NA,NA,NA,NA,Neither,Yes,Manageable,Comfortable
+2022-0370,2022,30-40,Alberta,"$145,700",9.1,N,No,No,No,Yes,Somewhat difficult,No,Difficult,Coping
+2022-0371,2022,18-30,Ontario,103000,1.0,No,N,No,No,Yes,Somewhat difficult,No,Difficult,Stressed
+2022-0372,2022,50-65,New Brunswick,"30,000",12.5,Yes,No,No,no,No,Manageable,No,Very difficult,Comfortable
+2022-0373,2022,18-30,Ontario,"$30,000",7.7,yes,no,N,No,No,Somewhat difficult,No,Difficult,Coping
+2022-0374,2022,30-40,British Columbia,"$115,200",2.5,No,No,No,No,Yes,Neither,No,Manageable,Stressed
+2022-0375,2022,50-65,Quebec,105800,19.0,yes,No,No,N,No,Difficult,No,Neither,Coping
+2022-0376,2022,30-40,Ontario,162000,17.9,No,N,Y,No,No,Manageable,Yes,Manageable,Comfortable
+2022-0377,2022,30-40,New Brunswick,"$117,800",7.9,No,Yes,no,No,no,Neither,No,Neither,Coping
+2022-0378,2022,18-30,British Columbia,82K,6.5,No,N,N,N,yes,NA,Yes,Difficult,Stressed
+2022-0379,2022,18-30,Ontario,"$30,000",15.0,NA,NA,NA,NA,NA,Somewhat manageable,No,Manageable,Coping
+2022-0380,2022,30-40,Ontario,"$111,600",4.3,No,No,No,No,Yes,Somewhat difficult,No,Difficult,Stressed
+2022-0381,2022,40-50,Manitoba,32200,16.4,NA,NA,NA,NA,NA,Neither,Yes,Very manageable,Coping
+2022-0382,2022,40-50,British Columbia,161300,3.4,no,no,No,No,Yes,Somewhat manageable,Yes,Manageable,Coping
+2022-0383,2022,30-40,Alberta,102100,11.9,N,Y,N,No,No,Somewhat difficult,Yes,Difficult,Stressed
+2022-0384,2022,30-40,Alberta,"48,800",10.9,No,Yes,No,No,No,Somewhat difficult,Yes,Difficult,Coping
+2022-0385,2022,18-30,AB,97K,17.7,N,Y,no,No,No,Very manageable,No,Manageable,Comfortable
+2022-0386,2022,40-50,Alberta,"$211,100",2.5,Yes,No,No,No,No,Somewhat manageable,Yes,Neither,Stressed
+2022-0387,2022,40-50,Alberta,"$82,100",9.4,No,No,no,N,Yes,Somewhat difficult,No,Difficult,Comfortable
+2022-0388,2022,50-65,Ontario,153500,1.0,Yes,No,No,No,No,NA,No,Difficult,Coping
+2022-0389,2022,30-40,Ontario,68400,6.4,No,No,No,No,Yes,Somewhat manageable,No,Difficult,Coping
+2022-0390,2022,18-30,ON,78K,8.9,No,No,N,No,Yes,Very difficult,Y,Neither,Stressed
+2022-0391,2022,30-40,Ontario,30000,1.2,N,No,yes,No,no,Somewhat difficult,No,Neither,Stressed
+2022-0392,2022,30-40,Ontario,84000,0.0,NA,NA,NA,NA,NA,Very difficult,No,Difficult,Stressed
+2022-0393,2022,40-50,Alberta,"$99,700",5.5,NA,NA,NA,NA,NA,Neither,No,Neither,Coping
+2022-0394,2022,30-40,Ontario,179900,15.3,No,No,No,no,Yes,Very manageable,Yes,Manageable,Comfortable
+2022-0395,2022,18-30,British Columbia,"30,000",15.6,N,No,No,No,Yes,Somewhat manageable,No,Very manageable,Comfortable
+2022-0396,2022,18-30,Ontario,"46,000",5.4,NA,NA,NA,NA,NA,NA,No,NA,Stressed
+2022-0397,2022,40-50,Saskatchewan,"$158,900",11.2,NA,NA,NA,NA,NA,Difficult,yes,Difficult,Stressed
+2022-0398,2022,50-65,Quebec,103400,12.2,No,no,No,No,yes,Somewhat difficult,No,Difficult,Stressed
+2022-0399,2022,40-50,British Columbia,NA,30.0,Yes,No,No,N,No,Very manageable,N,Manageable,Comfortable
+2022-0400,2022,40-50,Ontario,63300,0.0,No,No,Yes,No,No,Difficult,No,Difficult,Stressed
+2022-0401,2022,50-65,alberta,"61,400",1.7,N,Yes,No,No,No,Somewhat difficult,Yes,Difficult,Stressed
+2022-0402,2022,40-50,Alberta,"30,000",15.2,yes,No,No,No,N,Neither,N,Manageable,Coping
+2022-0403,2022,18-30,Alberta,"$43,500",8.3,yes,no,No,No,No,NA,Yes,Neither,Coping
+2022-0404,2022,40-50,Alberta,"$43,500",10.3,Yes,No,No,No,No,Somewhat difficult,N,Difficult,Stressed
+2022-0405,2022,50-65,Ontario,"$116,900",12.2,Yes,No,No,No,N,Somewhat manageable,Y,Difficult,Coping
+2022-0406,2022,40-50,Manitoba,NA,13.9,Yes,No,No,No,No,Difficult,No,Difficult,Stressed
+2022-0407,2022,40-50,Alberta,80K,11.2,No,No,No,Yes,No,Somewhat difficult,No,Difficult,Stressed
+2022-0408,2022,30-40,Yukon,58400,11.3,NA,NA,NA,NA,NA,Somewhat difficult,N,Difficult,Stressed
+2022-0409,2022,30-40,Ontario,84600,8.5,No,No,No,No,Yes,NA,N,Difficult,Coping
+2022-0410,2022,30-40,Manitoba,62100,17.3,No,No,No,No,Yes,Manageable,Yes,Difficult,Comfortable
+2022-0411,2022,30-40,Ontario,"35,400",9.2,Yes,no,no,No,No,Manageable,Y,Manageable,Coping
+2022-0412,2022,50-65,Ontario,"$115,300",7.5,N,N,No,No,Yes,Somewhat manageable,No,Very manageable,Comfortable
+2022-0413,2022,18-30,Ontario,"$110,400",19.8,no,Yes,No,No,no,Difficult,No,Very difficult,Coping
+2022-0414,2022,30-40,Ontario,"$96,400",15.5,No,N,Yes,No,No,Very manageable,Yes,Manageable,Coping
+2022-0415,2022,30-40,Quebec,58000,NA,No,No,no,Yes,No,Somewhat difficult,No,Difficult,Comfortable
+2022-0416,2022,18-30,British Columbia,59800,18.8,N,N,No,No,Y,Manageable,No,Manageable,Coping
+2022-0417,2022,40-50,Ontario,30000,13.6,NA,NA,NA,NA,NA,Manageable,Yes,Very manageable,Comfortable
+2022-0418,2022,30-40,Alberta,69500,0.0,No,No,No,No,Y,Manageable,N,Neither,Coping
+2022-0419,2022,30-40,Ontario,64K,17.0,N,No,N,No,Yes,Neither,No,Neither,Coping
+2022-0420,2022,50-65,British Columbia,"$76,300",0.0,No,No,Yes,No,No,Neither,No,Difficult,Stressed
+2022-0421,2022,50-65,British Columbia,"$70,400",9.8,No,No,No,Yes,No,Somewhat manageable,Yes,NA,Coping
+2022-0422,2022,40-50,Yukon,"80,000",NA,No,Y,N,No,No,Neither,No,Neither,Coping
+2022-0423,2022,40-50,Ontario,"147,100",20.7,No,Y,N,No,No,Somewhat manageable,No,Difficult,Comfortable
+2022-0424,2022,30-40,AB,141600,23.9,NA,NA,NA,NA,NA,Very difficult,Y,Manageable,Comfortable
+2022-0425,2022,50-65,british columbia,"79,600",14.5,NA,NA,NA,NA,NA,Somewhat difficult,No,Neither,Coping
+2022-0426,2022,40-50,British Columbia,"$79,100",21.8,yes,No,No,No,No,Very manageable,No,Difficult,Comfortable
+2022-0427,2022,30-40,Yukon,"$51,900",12.5,No,Yes,No,No,No,Somewhat manageable,No,Manageable,Comfortable
+2022-0429,2022,40-50,British Columbia,107800,0.0,No,No,N,Yes,N,Somewhat difficult,No,Difficult,Stressed
+2022-0430,2022,30-40,Ontario,93100,13.8,No,yes,No,No,N,Difficult,Yes,Difficult,Stressed
+2022-0431,2022,18-30,Manitoba,"$91,300",0.0,No,No,N,No,Yes,Very manageable,yes,Manageable,Stressed
+2022-0432,2022,40-50,Alberta,"$67,700",4.3,Yes,No,No,No,No,Very difficult,Yes,Very difficult,Stressed
+2022-0433,2022,30-40,ON,154K,8.8,Y,No,No,No,N,Manageable,no,NA,Comfortable
+2022-0434,2022,40-50,Alberta,"$98,900",2.3,No,No,Yes,No,No,Somewhat difficult,yes,Difficult,Stressed
+2022-0435,2022,40-50,quebec,54700,11.1,no,no,N,No,Yes,Difficult,No,Difficult,Coping
+2022-0436,2022,30-40,ontario ,68000,7.8,No,no,Yes,No,N,Somewhat difficult,No,Very manageable,Coping
+2022-0437,2022,40-50,Alberta,164K,17.9,No,N,N,Yes,No,Somewhat manageable,Yes,Neither,Coping
+2022-0438,2022,30-40,Ontario,59700,7.1,No,No,No,No,Yes,Very difficult,No,Difficult,Stressed
+2022-0439,2022,30-40,ontario ,"$130,000",8.2,No,No,No,no,Yes,Manageable,No,Difficult,Coping
+2022-0440,2022,30-40,Ontario,49700,10.2,No,No,Yes,No,No,Somewhat manageable,Y,Very manageable,Coping
+2022-0441,2022,50-65,Ontario,"$72,700",18.3,No,No,No,No,Yes,Difficult,No,Manageable,Coping
+2022-0442,2022,30-40,AB,"$118,500",10.5,no,No,yes,No,No,Difficult,No,Very difficult,Stressed
+2022-0443,2022,50-65,Alberta,70K,4.2,No,No,No,Yes,No,Difficult,No,Neither,Coping
+2022-0444,2022,50-65,ontario ,162600,2.6,No,Yes,No,No,No,Neither,N,Difficult,Stressed
+2022-0445,2022,30-40,Alberta,"$94,100",13.8,No,N,No,No,Y,NA,No,Manageable,Coping
+2022-0446,2022,18-30,british columbia,"$30,000",13.1,NA,NA,NA,NA,NA,Very difficult,No,Neither,Coping
+2022-0447,2022,50-65,Ontario,106K,0.7,N,No,N,no,Yes,Somewhat difficult,Yes,Very difficult,Stressed
+2022-0448,2022,30-40,Alberta,57K,23.2,No,No,No,No,Yes,Manageable,No,Manageable,Comfortable
+2022-0449,2022,18-30,Ontario,"$92,400",1.5,No,Yes,No,N,No,Somewhat difficult,No,Manageable,Stressed
+2022-0450,2022,30-40,Ontario,"$173,900",27.1,No,No,No,No,Yes,Difficult,No,Neither,Comfortable
+2022-0451,2022,30-40,Ontario,"$64,000",21.7,No,Yes,No,No,No,Difficult,NA,Difficult,Comfortable
+2022-0452,2022,50-65,Alberta,"140,700",4.2,Y,No,No,N,N,Somewhat difficult,Yes,Very manageable,Coping
+2022-0453,2022,40-50,New Brunswick,"$94,200",7.8,No,No,No,No,yes,Somewhat manageable,N,Difficult,Coping
+2022-0454,2022,50-65,Ontario,"113,700",3.3,No,No,no,No,Yes,Somewhat difficult,N,Difficult,Stressed
+2022-0455,2022,40-50,Manitoba,91K,19.1,no,No,No,No,Yes,Somewhat manageable,No,Manageable,Comfortable
+2022-0456,2022,30-40,Ontario,"41,100",9.8,N,No,N,No,Y,Somewhat difficult,Yes,Difficult,Coping
+2022-0457,2022,30-40,Ontario,99300,0.3,No,No,No,No,yes,Somewhat difficult,Y,Difficult,Stressed
+2022-0458,2022,40-50,British Columbia,86100,2.6,No,No,No,N,yes,Very difficult,Yes,Difficult,Coping
+2022-0459,2022,40-50,british columbia,"$59,800",8.7,No,No,No,No,Yes,Somewhat difficult,No,Very difficult,Stressed
+2022-0460,2022,50-65,Ontario,158700,12.7,No,no,No,No,Yes,Neither,Yes,Neither,Coping
+2022-0461,2022,30-40,Alberta,"90,500",11.6,No,Y,no,No,No,Somewhat difficult,No,Manageable,Coping
+2022-0462,2022,40-50,Ontario,81600,7.4,No,No,No,No,Yes,Somewhat difficult,Yes,Very difficult,Stressed
+2022-0463,2022,40-50,Ontario,"167,500",13.7,No,N,No,No,Y,Neither,Yes,Manageable,Comfortable
+2022-0464,2022,30-40,Alberta,30000,6.9,NA,NA,NA,NA,NA,Somewhat difficult,N,Difficult,Stressed
+2022-0465,2022,18-30,ontario ,"$132,600",26.2,Yes,no,No,No,No,Difficult,N,Very difficult,Coping
+2022-0466,2022,18-30,New Brunswick,31K,18.0,No,No,Y,No,N,Neither,No,Neither,Coping
+2022-0467,2022,30-40,British Columbia,96100,16.0,no,No,yes,No,N,Manageable,Yes,Neither,Comfortable
+2022-0468,2022,40-50,Saskatchewan,72600,7.9,N,No,Yes,No,No,Very difficult,no,Neither,Coping
+2022-0469,2022,50-65,Ontario,66K,0.0,no,No,no,No,yes,Manageable,No,Neither,Comfortable
+2022-0470,2022,18-30,Ontario,131700,17.4,yes,N,No,No,No,Somewhat manageable,No,Manageable,Coping
+2022-0471,2022,30-40,ON,172300,23.5,No,No,Y,No,No,Very manageable,N,Very manageable,Comfortable
+2022-0472,2022,30-40,ON,72900,3.3,No,No,No,no,yes,Difficult,NA,Difficult,Stressed
+2022-0473,2022,40-50,Newfoundland and Labrador,122K,2.4,No,Y,N,N,No,Somewhat difficult,NA,Manageable,Coping
+2022-0474,2022,30-40,alberta,"83,800",0.2,No,Y,No,No,No,NA,No,Difficult,Stressed
+2022-0475,2022,30-40,Alberta,169000,21.1,No,No,no,No,yes,Very manageable,No,Difficult,Comfortable
+2022-0476,2022,18-30,New Brunswick,30000,17.4,No,No,No,No,Yes,Somewhat manageable,No,NA,Comfortable
+2022-0477,2022,40-50,Nova Scotia,117900,15.1,NA,NA,NA,NA,NA,Somewhat difficult,N,Manageable,Coping
+2022-0478,2022,30-40,ON,50600,11.5,No,No,N,No,Yes,Somewhat manageable,No,Manageable,Coping
+2022-0479,2022,30-40,Northwest Territories and Nunavut,30000,16.8,NA,NA,NA,NA,NA,Very difficult,Yes,Very manageable,Coping
+2022-0480,2022,30-40,Ontario,NA,7.8,N,Yes,No,No,No,Somewhat difficult,No,Neither,Stressed
+2022-0481,2022,50-65,ON,203400,16.0,No,No,No,N,Yes,Neither,No,Neither,Coping
+2022-0483,2022,18-30,british columbia,"114,500",3.6,No,no,No,No,yes,Somewhat manageable,Yes,Very manageable,Coping
+2022-0484,2022,50-65,Quebec,172400,4.2,No,Yes,No,No,No,Difficult,Y,Neither,Stressed
+2022-0485,2022,40-50,ontario ,"$90,900",25.6,No,Yes,No,No,No,Manageable,Yes,Manageable,Comfortable
+2022-0486,2022,40-50,Alberta,108000,15.4,Yes,No,no,No,No,Somewhat difficult,Yes,Manageable,Stressed
+2022-0487,2022,40-50,British Columbia,NA,NA,No,No,no,N,Yes,Difficult,Yes,Difficult,Coping
+2022-0488,2022,30-40,British Columbia,"$54,200",2.9,No,No,no,N,Yes,Somewhat manageable,Y,Manageable,Stressed
+2022-0489,2022,30-40,Ontario,129400,0.0,No,yes,no,No,No,Neither,No,Very manageable,Stressed
+2022-0490,2022,40-50,Ontario,"$108,000",10.3,no,N,no,Y,No,Somewhat manageable,N,Neither,Stressed
+2022-0491,2022,50-65,Ontario,"$129,400",7.7,No,No,no,No,Yes,Somewhat manageable,No,Difficult,Coping
+2022-0492,2022,50-65,Ontario,116K,28.8,No,No,Yes,No,No,Somewhat difficult,N,Difficult,Coping
+2022-0493,2022,18-30,British Columbia,"178,600",6.6,No,No,Yes,No,No,Neither,Yes,Very manageable,Coping
+2022-0494,2022,50-65,Manitoba,92K,23.6,N,No,No,no,Yes,Neither,N,Manageable,Coping
+2022-0495,2022,30-40,Quebec,164300,15.5,N,No,No,No,Y,Very difficult,No,Manageable,Coping
+2022-0496,2022,30-40,Saskatchewan,83200,0.9,No,No,No,N,Yes,Difficult,Yes,Manageable,Stressed
+2022-0497,2022,30-40,Ontario,171700,7.2,No,No,No,No,Yes,Difficult,No,Difficult,Stressed
+2022-0498,2022,40-50,British Columbia,"$43,800",15.6,No,No,no,Yes,no,Very difficult,No,Manageable,Coping
+2022-0499,2022,40-50,Alberta,108200,9.6,No,Yes,N,no,No,Manageable,No,Difficult,Coping
+2022-0500,2022,30-40,British Columbia,"65,800",16.0,No,No,No,No,Yes,Difficult,no,Difficult,Coping
+2022-0501,2022,40-50,New Brunswick,112K,10.1,Yes,N,No,no,No,Somewhat difficult,No,Difficult,Stressed
+2022-0502,2022,40-50,british columbia,154100,22.2,No,N,No,No,Yes,Very manageable,N,Neither,Comfortable
+2022-0503,2022,30-40,quebec,"98,400",5.9,No,N,No,No,Yes,Somewhat difficult,No,Difficult,Stressed
+2022-0504,2022,30-40,Ontario,"139,000",4.0,No,No,No,N,Yes,Somewhat difficult,No,Manageable,Coping
+2022-0505,2022,40-50,New Brunswick,64000,5.6,No,N,No,N,Yes,Somewhat difficult,yes,Very difficult,Stressed
+2022-0506,2022,30-40,British Columbia,47K,12.1,Yes,no,N,No,No,Somewhat manageable,No,Manageable,Coping
+2022-0507,2022,18-30,Manitoba,65300,0.0,N,no,No,Yes,N,Manageable,No,Difficult,Coping
+2022-0508,2022,40-50,Ontario,"103,100",12.0,No,No,Yes,N,No,Somewhat difficult,N,Manageable,Coping
+2022-0509,2022,30-40,Ontario,71700,5.5,Yes,N,N,No,No,NA,Yes,Difficult,Stressed
+2022-0510,2022,50-65,Alberta,70600,3.2,Yes,No,N,N,N,Somewhat manageable,No,Manageable,Coping
+2022-0511,2022,18-30,ON,"124,400",4.3,NA,NA,NA,NA,NA,Difficult,No,NA,Stressed
+2022-0512,2022,30-40,alberta,"68,900",9.1,No,N,Yes,no,No,Somewhat manageable,Yes,Difficult,Coping
+2022-0513,2022,30-40,British Columbia,149300,15.7,No,No,Yes,No,N,Somewhat difficult,No,Difficult,Stressed
+2022-0514,2022,18-30,Yukon,72600,7.1,No,Yes,No,N,N,Neither,No,Very difficult,Stressed
+2022-0515,2022,30-40,AB,"$113,400",17.2,No,No,no,N,Yes,Very manageable,Yes,Difficult,Coping
+2022-0516,2022,50-65,alberta,149400,NA,No,Y,No,No,No,Somewhat difficult,No,Difficult,Stressed
+2022-0517,2022,40-50,Ontario,51800,0.0,no,N,No,no,Y,Somewhat manageable,Yes,Difficult,Stressed
+2022-0518,2022,18-30,Manitoba,93400,22.7,no,No,No,Y,No,Manageable,No,Manageable,Comfortable
+2022-0519,2022,18-30,AB,"$153,400",13.4,Yes,no,No,N,No,Neither,No,Difficult,Comfortable
+2022-0520,2022,18-30,Alberta,"$71,100",15.7,No,No,No,Yes,no,Very manageable,Yes,Difficult,Comfortable
+2022-0521,2022,30-40,Alberta,126100,4.7,Yes,No,No,no,No,Somewhat manageable,No,Difficult,Coping
+2022-0522,2022,30-40,ON,112700,11.4,N,No,No,No,Yes,Very manageable,N,Neither,Coping
+2022-0523,2022,30-40,British Columbia,"100,900",25.5,Yes,No,No,no,N,Somewhat manageable,No,Manageable,Comfortable
+2022-0524,2022,18-30,Ontario,66K,10.7,No,Y,No,No,No,Difficult,No,Neither,Stressed
+2022-0525,2022,30-40,Ontario,116K,20.5,No,No,No,Yes,No,Manageable,No,Neither,Coping
+2022-0526,2022,50-65,alberta,"146,200",14.6,Yes,No,No,No,No,Very difficult,No,Difficult,Stressed
+2022-0527,2022,50-65,British Columbia,50900,3.7,No,No,Yes,No,No,Manageable,Yes,NA,Comfortable
+2022-0528,2022,18-30,Alberta,69400,3.8,No,No,N,Yes,no,Neither,No,Difficult,Coping
+2022-0529,2022,18-30,British Columbia,"$65,800",0.2,NA,NA,NA,NA,NA,Somewhat difficult,No,Manageable,Coping
+2022-0530,2022,18-30,british columbia,"$55,400",14.8,Yes,No,No,No,No,Somewhat difficult,No,Difficult,Coping
+2022-0531,2022,40-50,Ontario,157800,2.5,N,No,N,no,Y,Neither,No,Manageable,Stressed
+2022-0532,2022,18-30,British Columbia,NA,NA,No,No,No,no,Yes,Very difficult,No,Neither,Coping
+2022-0533,2022,50-65,Ontario,50300,9.7,Yes,No,No,No,N,Somewhat manageable,No,Neither,Coping
+2022-0534,2022,40-50,Ontario,131300,13.3,N,No,no,no,Yes,Somewhat manageable,N,Neither,Coping
+2022-0535,2022,30-40,Ontario,30K,2.1,no,No,N,no,Yes,NA,No,Manageable,Coping
+2022-0536,2022,50-65,British Columbia,30000,0.0,No,No,no,No,Yes,Difficult,No,Difficult,Stressed
+2022-0537,2022,30-40,BC,"135,400",11.0,NA,NA,NA,NA,NA,Very difficult,No,Neither,Coping
+2022-0538,2022,40-50,Saskatchewan,"105,400",18.2,No,N,No,No,Yes,Manageable,No,Manageable,Coping
+2022-0539,2022,30-40,BC,"100,100",5.9,No,No,Yes,N,No,Very difficult,No,Difficult,Stressed
+2022-0540,2022,18-30,Ontario,44K,12.5,NA,NA,NA,NA,NA,Somewhat manageable,No,Manageable,Comfortable
+2022-0541,2022,30-40,Ontario,30000,0.0,no,Yes,No,No,No,Very manageable,no,Difficult,Coping
+2022-0542,2022,65+,Ontario,"$69,700",16.7,No,No,Yes,No,No,Somewhat difficult,No,Difficult,Coping
+2022-0543,2022,40-50,British Columbia,88400,12.8,No,No,No,No,Yes,Somewhat manageable,N,Manageable,Comfortable
+2022-0544,2022,40-50,alberta,"30,900",4.1,No,No,no,No,Yes,Very manageable,No,Difficult,Coping
+2022-0546,2022,50-65,Ontario,83400,2.4,Yes,No,No,N,No,Somewhat difficult,No,Very difficult,Coping
+2022-0547,2022,18-30,Ontario,75300,5.2,No,No,No,No,Yes,Neither,N,Very manageable,Coping
+2022-0548,2022,18-30,Ontario,69300,4.8,NA,NA,NA,NA,NA,Neither,Yes,Difficult,Stressed
+2022-0549,2022,30-40,Quebec,"$98,800",0.0,No,N,No,No,Yes,Somewhat manageable,no,Difficult,Stressed
+2022-0550,2022,50-65,Saskatchewan,"149,500",12.1,NA,NA,NA,NA,NA,Somewhat manageable,No,Manageable,Coping
+2022-0551,2022,50-65,Ontario,107300,4.8,NA,NA,NA,NA,NA,Manageable,Y,Difficult,Stressed
+2022-0552,2022,30-40,Alberta,91700,17.1,N,No,No,No,Yes,Very difficult,Y,Neither,Stressed
+2022-0553,2022,30-40,Manitoba,"$89,800",0.8,no,N,No,Yes,No,Somewhat manageable,No,Manageable,Coping
+2022-0554,2022,18-30,Ontario,"$30,000",12.0,No,N,No,No,Yes,Difficult,N,Neither,Coping
+2022-0555,2022,40-50,ON,"123,800",6.9,NA,NA,NA,NA,NA,Somewhat manageable,Yes,Neither,Stressed
+2022-0556,2022,40-50,Alberta,100500,4.8,No,N,No,No,Yes,Very manageable,Yes,Very manageable,Coping
+2022-0557,2022,40-50,Ontario,"$131,700",18.7,No,N,No,No,Yes,Somewhat manageable,Yes,Difficult,Comfortable
+2022-0558,2022,50-65,British Columbia,42K,15.6,Yes,No,N,No,No,Manageable,No,Very difficult,Coping
+2022-0559,2022,30-40,British Columbia,"$71,200",18.7,No,Yes,No,No,N,Manageable,N,Manageable,Comfortable
+2022-0560,2022,40-50,Ontario,45900,19.3,Y,No,No,No,No,Difficult,No,Neither,Coping
+2022-0561,2022,30-40,New Brunswick,"$115,200",0.0,No,No,Yes,No,No,Somewhat difficult,Yes,Difficult,Stressed
+2022-0562,2022,40-50,Ontario,30000,5.9,No,No,Yes,No,No,Very manageable,No,Difficult,Coping
+2022-0563,2022,30-40,ON,"34,600",28.3,No,No,No,No,Yes,Somewhat manageable,no,Manageable,Comfortable
+2022-0564,2022,40-50,Ontario,125700,16.5,No,No,No,No,Yes,Very difficult,No,Manageable,Coping
+2022-0565,2022,40-50,British Columbia,66000,21.8,No,Y,No,No,No,Very manageable,Yes,Very manageable,Comfortable
+2022-0566,2022,40-50,Ontario,"$45,100",26.6,No,No,no,No,Yes,Somewhat manageable,No,Manageable,Comfortable
+2022-0567,2022,40-50,British Columbia,150K,NA,No,No,no,No,yes,Difficult,No,Manageable,Stressed
+2022-0568,2022,18-30,Ontario,108900,15.8,No,Y,No,No,No,NA,No,Neither,Coping
+2022-0569,2022,18-30,Alberta,"$106,600",17.4,No,No,No,No,Yes,Somewhat manageable,Y,Neither,Coping
+2022-0570,2022,30-40,Yukon,"$127,900",2.7,Yes,No,No,No,No,Difficult,Yes,Neither,Stressed
+2022-0571,2022,18-30,Ontario,52900,26.8,No,No,No,No,Y,Difficult,No,Neither,Coping
+2022-0572,2022,30-40,New Brunswick,NA,19.4,No,N,No,No,Yes,Very manageable,No,Manageable,Comfortable
+2022-0573,2022,30-40,British Columbia,52K,0.0,Yes,No,N,No,No,Neither,No,Difficult,Coping
+2022-0574,2022,50-65,Manitoba,122400,7.9,Yes,No,no,No,N,Somewhat difficult,Yes,Difficult,Stressed
+2022-0575,2022,40-50,Ontario,"66,600",NA,No,No,No,No,Yes,Manageable,Y,Manageable,Coping
+2022-0576,2022,50-65,Ontario,"$86,300",11.8,Yes,No,No,No,No,Very difficult,No,Very difficult,Stressed
+2022-0577,2022,40-50,Ontario,126K,21.8,No,N,No,No,Yes,Very manageable,No,Manageable,Comfortable
+2022-0578,2022,30-40,QC,"140,200",3.0,no,No,No,No,Yes,Neither,Yes,Difficult,Stressed
+2022-0579,2022,40-50,Nova Scotia,112900,28.5,N,Yes,No,No,No,Very manageable,No,Neither,Comfortable
+2022-0580,2022,40-50,Ontario,193K,16.6,No,N,No,No,Y,Somewhat difficult,No,Manageable,Coping
+2022-0581,2022,50-65,Newfoundland and Labrador,75700,6.0,no,No,Yes,No,No,Somewhat difficult,No,Difficult,Coping
+2022-0582,2022,30-40,Ontario,"$30,000",10.1,Yes,No,No,No,No,Somewhat manageable,Yes,Very manageable,Coping
+2022-0583,2022,18-30,Ontario,NA,8.6,NA,NA,NA,NA,NA,Somewhat manageable,no,Very manageable,Stressed
+2022-0584,2022,18-30,ontario ,30000,8.8,No,No,No,Yes,No,Very manageable,N,Neither,Coping
+2022-0585,2022,30-40,Alberta,"$70,300",15.7,No,No,no,No,Yes,Somewhat manageable,Yes,Neither,Comfortable
+2022-0586,2022,18-30,British Columbia,"$30,000",18.3,No,Yes,No,No,No,Manageable,No,Difficult,Comfortable
+2022-0587,2022,50-65,British Columbia,"$78,000",0.7,Yes,N,No,No,No,Difficult,No,Neither,Stressed
+2022-0588,2022,40-50,Saskatchewan,"$30,000",0.0,No,No,No,No,Yes,Somewhat manageable,N,Difficult,Coping
+2022-0589,2022,30-40,Ontario,"56,300",19.7,N,No,N,no,Yes,Very manageable,no,Very manageable,Comfortable
+2022-0590,2022,18-30,Manitoba,"50,800",NA,no,No,Y,No,No,Very manageable,No,Very manageable,Comfortable
+2022-0591,2022,50-65,Manitoba,"112,500",5.0,N,no,No,No,Yes,Somewhat difficult,No,Difficult,Coping
+2022-0592,2022,18-30,Nova Scotia,132500,0.0,No,No,No,Yes,No,Manageable,No,Neither,Stressed
+2022-0593,2022,18-30,quebec,105800,6.5,No,No,Yes,No,No,Neither,No,Manageable,Comfortable
+2022-0594,2022,30-40,Saskatchewan,"30,000",13.6,no,No,No,No,Yes,Neither,no,Neither,Coping
+2022-0595,2022,40-50,Ontario,"$121,900",9.7,no,no,No,No,Y,Neither,No,Difficult,Coping
+2022-0596,2022,40-50,Ontario,"$106,100",16.2,No,N,No,Yes,No,Manageable,No,Manageable,Comfortable
+2022-0597,2022,50-65,British Columbia,"$106,100",0.0,No,No,N,No,Yes,Neither,no,Difficult,Stressed
+2022-0598,2022,50-65,British Columbia,"108,400",13.4,No,No,Yes,no,No,Manageable,No,Very manageable,Comfortable
+2022-0599,2022,30-40,ON,100200,7.9,NA,NA,NA,NA,NA,Very difficult,Yes,Difficult,Stressed
+2022-0600,2022,50-65,Ontario,"$73,400",10.7,No,No,No,No,Yes,Somewhat difficult,No,Neither,Coping
+2022-0601,2022,30-40,British Columbia,"$68,900",23.8,No,No,Y,No,N,Manageable,Yes,Very manageable,Comfortable
+2022-0602,2022,18-30,Ontario,"$116,200",24.8,no,no,No,Yes,No,Manageable,N,Manageable,Comfortable
+2022-0603,2022,30-40,British Columbia,42800,16.2,NA,NA,NA,NA,NA,Manageable,No,Manageable,Comfortable
+2022-0604,2022,18-30,British Columbia,30000,5.0,No,no,No,N,Y,Somewhat manageable,No,Neither,Comfortable
+2022-0605,2022,30-40,British Columbia,74900,2.2,No,Yes,No,No,No,Very difficult,Yes,Difficult,Stressed
+2022-0606,2022,18-30,Ontario,"$30,000",17.3,No,No,Y,No,No,Very manageable,No,Neither,Comfortable
+2022-0607,2022,30-40,ON,"$30,000",12.6,No,No,Yes,no,No,Manageable,No,Very manageable,Comfortable
+2022-0608,2022,40-50,Ontario,83300,NA,No,No,No,no,Yes,NA,No,Difficult,Coping
+2022-0609,2022,50-65,ON,NA,11.4,No,No,No,No,Yes,Neither,No,Neither,Coping
+2022-0610,2022,18-30,Ontario,56600,18.2,No,N,No,No,Yes,Difficult,N,NA,Stressed
+2022-0611,2022,18-30,Manitoba,"$76,400",8.1,No,No,Yes,No,no,Somewhat difficult,No,NA,Coping
+2022-0612,2022,30-40,Ontario,30000,NA,No,No,No,N,Yes,Difficult,No,Manageable,Coping
+2022-0613,2022,40-50,BC,"$125,400",3.1,NA,NA,NA,NA,NA,Somewhat manageable,No,Difficult,Coping
+2022-0614,2022,30-40,Ontario,91700,18.5,No,No,No,Yes,No,NA,No,NA,Coping
+2022-0615,2022,30-40,Alberta,43300,16.2,no,No,yes,N,No,Somewhat difficult,No,Neither,Coping
+2022-0616,2022,40-50,New Brunswick,"$112,500",10.0,No,No,No,N,yes,Very manageable,No,Difficult,Stressed
+2022-0617,2022,50-65,Ontario,NA,27.5,No,No,Y,No,No,Somewhat manageable,N,Very manageable,Comfortable
+2022-0618,2022,30-40,Alberta,"$37,000",3.9,No,Y,N,No,No,Somewhat difficult,yes,Difficult,Stressed
+2022-0619,2022,18-30,Nova Scotia,"$91,600",4.5,N,Yes,No,No,No,Difficult,No,Difficult,Stressed
+2022-0620,2022,40-50,ontario ,"$154,400",NA,No,No,No,No,Yes,Difficult,N,Difficult,Stressed
+2022-0621,2022,30-40,ontario ,74100,22.4,Yes,No,No,No,No,Very difficult,Yes,Neither,Comfortable
+2022-0622,2022,30-40,Alberta,"$42,100",2.5,No,No,No,Yes,No,Very manageable,No,Manageable,Comfortable
+2022-0623,2022,30-40,alberta,72K,8.3,No,Yes,No,No,N,Somewhat difficult,N,Difficult,Stressed
+2022-0624,2022,50-65,British Columbia,149200,3.1,Yes,No,No,N,No,Somewhat difficult,Y,Difficult,Stressed
+2022-0625,2022,40-50,Ontario,33200,16.4,No,No,Yes,No,No,Very manageable,No,Manageable,Coping
+2022-0626,2022,50-65,Quebec,"$136,900",8.0,N,No,No,Yes,No,Very difficult,No,Difficult,Stressed
+2022-0627,2022,50-65,British Columbia,NA,0.6,No,yes,no,No,No,Somewhat manageable,N,Manageable,Coping
+2022-0628,2022,40-50,Ontario,111100,7.3,No,No,yes,No,No,Very difficult,Yes,Difficult,Stressed
+2022-0629,2022,30-40,Ontario,52800,12.3,no,No,No,No,Yes,Neither,No,Manageable,Coping
+2022-0630,2022,50-65,Saskatchewan,79600,13.2,Yes,No,No,No,No,Manageable,No,Difficult,Coping
+2022-0631,2022,40-50,Alberta,"$175,200",14.5,No,No,No,No,Yes,Difficult,No,Neither,Coping
+2022-0632,2022,65+,Ontario,"$64,500",20.0,Yes,no,No,No,N,Very manageable,No,Difficult,Coping
+2022-0633,2022,40-50,Ontario,120300,8.1,No,No,No,No,Y,Somewhat difficult,No,Very difficult,Stressed
+2022-0634,2022,40-50,British Columbia,"188,600",6.1,Yes,No,N,No,N,Difficult,Yes,NA,Stressed
+2022-0635,2022,40-50,Alberta,"$128,800",11.7,N,No,No,N,Yes,Very difficult,N,Difficult,Stressed
+2022-0636,2022,30-40,Alberta,"$30,000",17.2,No,No,No,No,Yes,Somewhat difficult,no,Manageable,Stressed
+2022-0637,2022,30-40,Nova Scotia,30000,24.4,No,No,No,No,Y,Manageable,Yes,Neither,Comfortable
+2022-0638,2022,40-50,Ontario,58K,7.0,No,No,N,No,Y,Difficult,Yes,Manageable,Stressed
+2022-0639,2022,40-50,Ontario,NA,13.6,yes,No,No,No,No,Neither,No,Neither,Coping
+2022-0640,2022,50-65,alberta,"$122,300",7.3,N,Yes,N,no,No,Very difficult,No,NA,Stressed
+2022-0642,2022,30-40,Manitoba,NA,30.0,No,No,No,No,Yes,Somewhat manageable,yes,Difficult,Comfortable
+2022-0643,2022,30-40,Saskatchewan,43400,12.8,No,no,No,Yes,N,Manageable,N,Manageable,Comfortable
+2022-0644,2022,18-30,Alberta,"$57,000",17.9,No,No,no,No,Yes,Somewhat manageable,Yes,NA,Coping
+2022-0645,2022,50-65,ontario ,219200,17.1,NA,NA,NA,NA,NA,Manageable,No,Very manageable,Comfortable
+2022-0646,2022,30-40,QC,34K,2.1,No,No,No,no,Y,Manageable,N,Very difficult,Coping
+2022-0647,2022,50-65,Ontario,"$59,200",16.7,No,No,No,No,Yes,Very manageable,NA,Neither,Comfortable
+2022-0648,2022,40-50,Ontario,"37,800",14.2,No,No,No,No,Yes,Neither,No,Difficult,Comfortable
+2022-0649,2022,40-50,Manitoba,"$127,800",8.9,No,No,No,Y,N,Difficult,No,Neither,Stressed
+2022-0650,2022,30-40,ontario ,86400,NA,No,No,No,N,Yes,Somewhat manageable,No,Neither,Coping
+2022-0651,2022,30-40,Ontario,31700,0.9,No,No,No,Yes,No,Very difficult,No,Manageable,Stressed
+2022-0652,2022,18-30,New Brunswick,53900,NA,No,Yes,N,No,no,Somewhat difficult,N,Difficult,Stressed
+2022-0653,2022,50-65,Yukon,81900,25.6,No,No,N,No,Yes,Very difficult,no,Difficult,Comfortable
+2022-0654,2022,40-50,British Columbia,"106,300",13.9,No,No,No,No,Yes,Somewhat manageable,No,Neither,Stressed
+2022-0655,2022,50-65,Manitoba,"$245,200",12.4,Yes,N,No,N,No,Somewhat manageable,No,Neither,Coping
+2022-0656,2022,50-65,Quebec,"143,000",17.7,No,No,no,Yes,No,Manageable,N,Manageable,Comfortable
+2022-0657,2022,30-40,British Columbia,77900,15.2,No,No,Yes,no,N,Neither,Yes,Neither,Coping
+2022-0658,2022,40-50,Alberta,"$64,300",7.5,Yes,No,N,No,No,Very manageable,No,Manageable,Coping
+2022-0659,2022,40-50,British Columbia,"30,000",11.8,No,No,No,No,Yes,Somewhat manageable,Y,Difficult,Coping
+2022-0660,2022,18-30,ON,105700,16.8,No,No,No,N,Yes,Very manageable,No,Very manageable,Comfortable
+2022-0661,2022,30-40,Ontario,121000,0.0,No,No,no,yes,No,Neither,No,Difficult,Stressed
+2022-0662,2022,40-50,Alberta,"77,200",6.6,Yes,N,No,No,No,Very difficult,Yes,Manageable,Stressed
+2022-0663,2022,30-40,Ontario,"$141,700",8.4,No,No,No,No,Y,Difficult,No,Difficult,Coping
+2022-0664,2022,30-40,Ontario,85100,16.3,Yes,No,N,No,No,Neither,No,Manageable,Comfortable
+2022-0665,2022,30-40,Ontario,"125,700",7.8,N,No,N,No,Yes,Somewhat difficult,No,Manageable,Stressed
+2022-0666,2022,50-65,ontario ,142300,18.6,Y,No,No,No,No,Somewhat manageable,No,Manageable,Coping
+2022-0667,2022,18-30,Saskatchewan,"$48,100",12.1,No,N,No,No,Yes,Somewhat manageable,No,Manageable,Comfortable
+2022-0668,2022,40-50,British Columbia,51K,4.3,Yes,No,No,No,No,Manageable,No,Difficult,Stressed
+2022-0669,2022,30-40,British Columbia,78200,2.2,Yes,no,No,No,no,Very difficult,No,Manageable,Stressed
+2022-0670,2022,30-40,Ontario,"120,100",6.0,N,no,No,Y,no,Somewhat manageable,N,Neither,Coping
+2022-0671,2022,30-40,New Brunswick,"$60,100",3.0,No,No,No,No,Yes,Somewhat difficult,NA,Difficult,Stressed
+2022-0672,2022,40-50,Ontario,124000,NA,NA,NA,NA,NA,NA,Difficult,yes,Difficult,Stressed
+2022-0673,2022,40-50,Alberta,"49,400",14.5,N,No,No,No,Y,Very difficult,NA,Neither,Coping
+2022-0674,2022,40-50,Alberta,132000,12.9,No,No,Yes,No,No,Somewhat manageable,No,Difficult,Coping
+2022-0675,2022,50-65,Quebec,"$125,100",4.7,Y,No,No,N,No,Somewhat manageable,No,Manageable,Coping
+2022-0676,2022,50-65,AB,52400,18.8,No,No,Yes,No,No,Somewhat difficult,No,Difficult,Coping
+2022-0677,2022,40-50,Ontario,94K,NA,No,Yes,no,No,No,NA,No,Neither,Coping
+2022-0678,2022,30-40,Ontario,126100,5.6,N,No,No,No,Yes,Somewhat manageable,No,Manageable,Coping
+2022-0679,2022,40-50,Alberta,"36,000",26.6,N,No,N,Yes,No,Somewhat manageable,Y,Manageable,Comfortable
+2022-0680,2022,40-50,British Columbia,"45,500",20.3,N,N,N,no,Y,Manageable,no,Very manageable,Comfortable
+2022-0681,2022,18-30,Manitoba,71500,10.1,No,no,no,No,Yes,Neither,No,Difficult,Coping
+2022-0682,2022,18-30,Ontario,168K,20.5,NA,NA,NA,NA,NA,Very manageable,Yes,Manageable,Comfortable
+2022-0683,2022,18-30,British Columbia,30K,17.8,No,No,No,Yes,No,Manageable,no,Manageable,Comfortable
+2022-0684,2022,40-50,ontario ,116300,8.7,No,N,No,No,Yes,Very difficult,No,Difficult,Stressed
+2022-0685,2022,40-50,British Columbia,"$109,000",19.3,No,N,N,Yes,No,Very manageable,No,Manageable,Comfortable
+2022-0686,2022,18-30,Alberta,"39,500",15.6,no,No,no,No,Y,Somewhat manageable,No,Difficult,Comfortable
+2022-0687,2022,50-65,alberta,"$117,600",0.0,No,No,No,No,Yes,Very manageable,yes,Neither,Coping
+2022-0688,2022,40-50,British Columbia,70600,8.6,No,yes,no,No,No,Somewhat difficult,N,Difficult,Stressed
+2022-0689,2022,50-65,Manitoba,"96,100",8.8,No,No,No,No,Yes,Very difficult,No,Neither,Coping
+2022-0690,2022,40-50,Saskatchewan,"$30,000",15.7,No,No,Yes,No,No,Somewhat manageable,No,Manageable,Coping
+2022-0691,2022,18-30,alberta,"$69,300",13.9,No,No,No,No,Y,Difficult,No,Very difficult,Coping
+2022-0692,2022,40-50,Ontario,"$142,500",8.9,No,No,Yes,No,No,Manageable,no,Neither,Coping
+2022-0693,2022,40-50,Ontario,"104,900",11.1,no,No,no,No,Y,Somewhat manageable,Y,Difficult,Stressed
+2022-0694,2022,30-40,Ontario,"134,000",7.0,yes,No,N,No,no,NA,no,Neither,Stressed
+2022-0695,2022,18-30,Ontario,"93,500",19.1,Yes,No,No,No,No,Manageable,No,Difficult,Comfortable
+2022-0696,2022,40-50,Alberta,"88,500",5.3,No,No,No,yes,No,Somewhat difficult,No,Difficult,Stressed
+2022-0697,2022,18-30,ON,"40,600",21.1,NA,NA,NA,NA,NA,Neither,No,Manageable,Coping
+2022-0698,2022,50-65,British Columbia,"$85,200",2.4,No,no,Yes,No,No,NA,N,Difficult,Stressed
+2022-0699,2022,30-40,Ontario,30000,9.1,Yes,No,No,No,No,Very manageable,N,Manageable,Coping
+2022-0700,2022,50-65,Alberta,"$108,100",3.6,Y,No,No,No,No,Somewhat difficult,Yes,Difficult,Coping
+2022-0701,2022,18-30,ontario ,"$64,300",9.6,no,Yes,No,No,No,Difficult,yes,Manageable,Stressed
+2022-0702,2022,40-50,ontario ,"178,800",7.5,No,No,no,Y,No,Somewhat difficult,Yes,NA,Coping
+2022-0703,2022,50-65,Ontario,142K,8.2,NA,NA,NA,NA,NA,Very manageable,yes,Difficult,Coping
+2022-0704,2022,18-30,AB,30300,3.4,No,yes,No,No,No,Somewhat manageable,NA,Difficult,Stressed
+2022-0706,2022,30-40,Ontario,"$72,200",3.5,No,No,No,N,Y,Somewhat difficult,no,Neither,Coping
+2022-0707,2022,30-40,Ontario,119K,0.0,No,No,No,No,Yes,Manageable,Yes,Difficult,Coping
+2022-0708,2022,40-50,british columbia,83500,13.7,No,no,Yes,No,No,Neither,No,Difficult,Coping
+2022-0709,2022,18-30,Alberta,93100,3.2,No,N,No,N,Yes,Very manageable,N,Manageable,Comfortable
+2022-0710,2022,30-40,british columbia,79K,10.3,N,No,No,no,Y,Somewhat manageable,Yes,Difficult,Stressed
+2022-0711,2022,40-50,Ontario,"$134,900",13.8,No,No,No,No,Yes,Neither,Yes,Neither,Stressed
+2022-0712,2022,30-40,Manitoba,"$30,000",10.0,No,Y,No,No,No,Difficult,NA,Manageable,Coping
+2022-0713,2022,18-30,Ontario,"152,200",18.8,No,yes,N,No,No,Somewhat manageable,Yes,Difficult,Coping
+2022-0714,2022,50-65,Ontario,52K,17.8,No,Yes,No,no,No,Very manageable,No,Manageable,Comfortable
+2022-0715,2022,40-50,Ontario,143200,14.0,No,Yes,N,N,No,Difficult,N,Manageable,Stressed
+2022-0716,2022,18-30,Ontario,58K,8.3,N,No,N,N,Yes,Manageable,No,Manageable,Coping
+2022-0717,2022,18-30,Ontario,60K,0.0,No,No,Yes,no,No,Neither,yes,Very difficult,Coping
+2022-0718,2022,18-30,ON,"$61,400",5.6,N,Yes,No,No,No,Manageable,Yes,Difficult,Stressed
+2022-0719,2022,40-50,British Columbia,"$113,300",21.2,No,Yes,No,No,No,Somewhat manageable,No,Manageable,Coping
+2022-0720,2022,40-50,Ontario,"$117,400",14.2,no,Yes,No,No,No,Difficult,no,Neither,Coping
+2022-0721,2022,40-50,Saskatchewan,"$156,400",3.4,No,No,No,yes,No,Somewhat difficult,Yes,Difficult,Stressed
+2022-0722,2022,30-40,Ontario,NA,13.0,Yes,N,No,No,No,Very difficult,No,Difficult,Coping
+2022-0723,2022,18-30,quebec,"$90,100",10.9,No,No,No,No,Yes,Difficult,Yes,Neither,Stressed
+2022-0724,2022,50-65,Yukon,"192,200",17.4,Yes,No,No,N,No,Very manageable,no,Manageable,Comfortable
+2022-0725,2022,30-40,Ontario,"$84,100",19.1,N,No,No,No,Y,Difficult,NA,Manageable,Stressed
+2022-0726,2022,40-50,Ontario,146900,3.4,NA,NA,NA,NA,NA,Somewhat manageable,No,Manageable,Stressed
+2022-0727,2022,18-30,Ontario,"82,900",11.0,No,No,No,no,Yes,Very difficult,No,Difficult,Stressed
+2022-0728,2022,30-40,British Columbia,52000,9.8,NA,NA,NA,NA,NA,Somewhat difficult,No,Difficult,Stressed
+2022-0729,2022,50-65,AB,117100,2.5,no,Yes,No,No,N,Manageable,No,Very difficult,Stressed
+2022-0730,2022,30-40,Nova Scotia,102K,8.5,No,No,No,No,Yes,Somewhat manageable,yes,Difficult,Coping
+2022-0731,2022,40-50,Ontario,"103,400",11.1,No,no,N,No,yes,Somewhat manageable,No,Very difficult,Stressed
+2022-0733,2022,30-40,Ontario,123K,7.7,Y,No,No,No,No,Somewhat difficult,Yes,Difficult,Stressed
+2022-0734,2022,30-40,Ontario,86K,1.2,No,No,No,no,Yes,Somewhat manageable,N,Neither,Coping
+2022-0735,2022,50-65,Ontario,"$30,000",9.3,Yes,No,No,No,N,Very difficult,Yes,Difficult,Stressed
+2022-0736,2022,18-30,British Columbia,153K,12.7,no,No,N,N,Y,Neither,Yes,Difficult,Coping
+2022-0737,2022,40-50,Ontario,87100,10.6,NA,NA,NA,NA,NA,Somewhat difficult,No,Neither,Coping
+2022-0738,2022,50-65,Alberta,"68,300",13.2,Yes,No,no,No,no,Manageable,No,Very difficult,Coping
+2022-0739,2022,30-40,British Columbia,"$30,000",4.0,No,no,No,N,Y,Somewhat difficult,No,Difficult,Stressed
+2022-0740,2022,30-40,Alberta,67200,13.9,N,N,No,No,Yes,Manageable,No,Manageable,Comfortable
+2022-0741,2022,40-50,Alberta,"$64,900",9.5,No,No,No,No,Yes,Very manageable,No,Manageable,Coping
+2022-0742,2022,18-30,british columbia,"30,000",3.7,NA,NA,NA,NA,NA,Very difficult,no,Neither,Stressed
+2022-0743,2022,30-40,ON,NA,24.1,No,No,N,No,Yes,Very manageable,Yes,Manageable,Coping
+2022-0744,2022,50-65,Newfoundland and Labrador,"139,000",24.4,No,Yes,No,No,No,Somewhat difficult,No,Neither,Comfortable
+2022-0745,2022,40-50,British Columbia,200500,5.2,NA,NA,NA,NA,NA,Somewhat difficult,Yes,Difficult,Coping
+2022-0746,2022,30-40,Ontario,128000,23.2,No,No,Yes,No,No,Somewhat manageable,No,Neither,Coping
+2022-0747,2022,40-50,Ontario,148K,8.4,No,Y,No,No,No,Somewhat difficult,No,Very manageable,Coping
+2022-0748,2022,40-50,Quebec,NA,6.1,No,No,N,No,Yes,Somewhat difficult,yes,Difficult,Stressed
+2022-0749,2022,40-50,Ontario,"108,700",24.3,No,No,No,Yes,No,Very manageable,Yes,Difficult,Comfortable
+2022-0750,2022,30-40,Alberta,100800,0.0,No,No,N,No,Yes,Neither,No,Manageable,Stressed
+2022-0751,2022,50-65,Quebec,84K,4.8,Yes,N,No,No,no,Difficult,N,NA,Stressed
+2022-0752,2022,50-65,Ontario,92700,3.1,Yes,N,No,No,No,Difficult,No,Difficult,Stressed
+2022-0753,2022,40-50,Ontario,"144,700",12.2,Y,No,No,No,No,Difficult,No,Manageable,Coping
+2022-0754,2022,18-30,Ontario,"129,500",20.6,No,no,No,No,Yes,Manageable,No,Manageable,Comfortable
+2022-0755,2022,18-30,Nova Scotia,75K,17.5,NA,NA,NA,NA,NA,Neither,Yes,Manageable,Comfortable
+2022-0756,2022,30-40,ontario ,30K,17.1,No,No,no,Yes,No,Somewhat manageable,Yes,Manageable,Comfortable
+2022-0757,2022,40-50,Ontario,76700,17.4,Yes,No,N,No,No,Manageable,No,Very manageable,Coping
+2022-0758,2022,18-30,Ontario,30K,12.8,No,No,Yes,no,no,Very manageable,No,Difficult,Coping
+2022-0759,2022,40-50,Alberta,"$102,800",11.2,No,No,Yes,N,No,Manageable,No,Manageable,Coping
+2022-0760,2022,50-65,Alberta,"$125,300",6.7,No,N,No,Yes,No,NA,NA,Very difficult,Stressed
+2022-0761,2022,40-50,alberta,87000,30.0,no,No,N,no,Yes,Manageable,No,Manageable,Comfortable
+2022-0762,2022,30-40,British Columbia,90K,12.0,Yes,No,No,No,No,Somewhat difficult,N,Manageable,Coping
+2022-0763,2022,18-30,Manitoba,95800,7.9,No,No,No,yes,No,Neither,No,Manageable,Coping
+2022-0764,2022,40-50,Quebec,"$108,800",0.0,No,No,No,No,Y,Neither,No,Manageable,Coping
+2022-0765,2022,30-40,British Columbia,30000,8.0,N,Yes,no,No,No,Very manageable,No,Manageable,Comfortable
+2022-0766,2022,40-50,British Columbia,84800,3.7,No,no,No,Y,No,Somewhat difficult,Yes,Neither,Stressed
+2022-0767,2022,40-50,British Columbia,"$121,000",10.3,No,no,No,No,Yes,Somewhat difficult,No,Difficult,Coping
+2022-0768,2022,50-65,ON,"188,400",7.7,No,Y,No,no,No,Somewhat manageable,No,Very manageable,Coping
+2022-0769,2022,18-30,Ontario,"$55,400",20.5,Yes,N,No,No,No,Very manageable,No,Manageable,Comfortable
+2022-0770,2022,40-50,Ontario,122000,3.2,No,Yes,No,No,No,Very difficult,No,Difficult,Stressed
+2022-0771,2022,30-40,Saskatchewan,"127,900",1.4,No,no,No,no,Y,Neither,Y,Difficult,Stressed
+2022-0772,2022,30-40,Yukon,"$78,700",14.7,NA,NA,NA,NA,NA,Somewhat difficult,Yes,Difficult,Coping
+2022-0773,2022,40-50,Ontario,162400,27.6,NA,NA,NA,NA,NA,Neither,Yes,Manageable,Comfortable
+2022-0774,2022,50-65,ontario ,"$168,100",10.2,No,Yes,No,N,N,Very manageable,Yes,Neither,Comfortable
+2022-0775,2022,50-65,Manitoba,184500,12.5,No,Yes,No,No,No,Very difficult,yes,Difficult,Coping
+2022-0776,2022,40-50,Ontario,120400,0.0,No,No,No,N,Y,Neither,N,Manageable,Stressed
+2022-0777,2022,30-40,British Columbia,"$206,500",0.0,No,No,Yes,No,No,Very difficult,No,Manageable,Stressed
+2022-0778,2022,30-40,Ontario,54700,7.5,No,yes,No,No,no,Somewhat manageable,No,Neither,Coping
+2022-0779,2022,18-30,Alberta,164700,11.7,yes,No,No,No,N,Somewhat difficult,no,Manageable,Stressed
+2022-0780,2022,50-65,British Columbia,"$152,400",6.3,No,No,No,Yes,No,Manageable,No,Neither,Coping
+2022-0781,2022,30-40,Alberta,"$151,000",12.3,N,N,No,Yes,N,Very manageable,No,Neither,Comfortable
+2022-0782,2022,40-50,Ontario,"$83,000",11.2,No,N,No,No,Yes,Somewhat manageable,No,Manageable,Coping
+2022-0783,2022,40-50,Ontario,"144,200",11.2,No,No,No,Yes,No,Neither,Yes,Neither,Coping
+2022-0784,2022,18-30,Alberta,"$138,800",2.1,No,No,No,Y,No,Difficult,yes,Neither,Stressed
+2022-0785,2022,18-30,Ontario,30000,15.9,No,No,Yes,No,No,Somewhat difficult,No,Difficult,Stressed
+2022-0786,2022,50-65,Manitoba,"$110,300",9.4,Yes,N,No,No,No,Neither,Yes,Neither,Coping
+2022-0787,2022,40-50,Ontario,"$30,000",11.7,No,no,No,No,Yes,Difficult,N,Difficult,Coping
+2022-0788,2022,30-40,Alberta,"70,600",NA,Yes,N,No,No,No,Somewhat manageable,no,Manageable,Stressed
+2022-0789,2022,30-40,Alberta,46200,8.2,No,No,No,No,Yes,Difficult,N,Difficult,Stressed
+2022-0790,2022,50-65,ontario ,98600,12.2,Yes,No,N,N,No,Very difficult,no,Difficult,Stressed
+2022-0791,2022,50-65,Ontario,252700,NA,No,No,Y,No,No,Manageable,No,Difficult,Coping
+2022-0792,2022,18-30,ontario ,"148,900",6.4,Yes,No,No,N,N,Neither,No,Manageable,Coping
+2022-0793,2022,50-65,Ontario,"48,000",17.6,No,No,No,No,Yes,Somewhat manageable,No,Difficult,Coping
+2022-0794,2022,50-65,Saskatchewan,"$135,800",14.3,Yes,N,No,N,No,Somewhat difficult,Yes,Manageable,Coping
+2022-0795,2022,30-40,British Columbia,127K,10.9,No,no,No,No,Yes,Difficult,No,Difficult,Stressed
+2022-0796,2022,18-30,Manitoba,52100,10.4,No,No,No,no,yes,Somewhat manageable,No,Difficult,Coping
+2022-0797,2022,50-65,Saskatchewan,"$118,400",5.1,no,No,No,Yes,no,Difficult,yes,Very difficult,Stressed
+2022-0798,2022,40-50,Alberta,112800,24.6,No,Yes,No,No,No,Manageable,no,Difficult,Comfortable
+2022-0799,2022,18-30,ON,"$30,000",10.8,No,N,No,No,Yes,Difficult,no,Neither,Stressed
+2022-0800,2022,30-40,Alberta,34K,20.4,no,No,No,Y,No,Somewhat difficult,no,Manageable,Coping
+2022-0802,2022,30-40,AB,95K,17.3,No,No,No,Yes,no,Somewhat manageable,No,Manageable,Comfortable
+2022-0803,2022,30-40,Ontario,"$41,100",0.0,No,N,No,No,Yes,Difficult,yes,Difficult,Stressed
+2022-0804,2022,18-30,Ontario,NA,6.7,no,No,No,yes,No,Very manageable,Yes,Very manageable,Comfortable
+2022-0805,2022,50-65,Alberta,117000,4.0,No,No,No,N,Yes,Somewhat difficult,N,Manageable,Stressed
+2022-0806,2022,40-50,Alberta,149K,10.3,No,No,No,Y,N,Neither,No,Manageable,Comfortable
+2022-0807,2022,50-65,British Columbia,"$111,700",15.9,No,Y,No,N,No,Neither,No,Difficult,Coping
+2022-0808,2022,40-50,British Columbia,"$175,600",0.0,no,No,Y,No,No,NA,no,Difficult,Stressed
+2022-0809,2022,50-65,Manitoba,"$77,700",3.5,No,No,No,N,Yes,Difficult,No,Very manageable,Stressed
+2022-0810,2022,18-30,Saskatchewan,"$84,700",8.2,No,No,Yes,No,N,Manageable,Yes,Difficult,Coping
+2022-0811,2022,40-50,AB,75300,26.4,No,Yes,No,No,No,Manageable,Y,NA,Comfortable
+2022-0812,2022,40-50,New Brunswick,"$123,900",13.7,No,No,Y,No,No,Manageable,N,Very manageable,Comfortable
+2022-0813,2022,50-65,Nova Scotia,"$76,400",8.3,No,no,No,N,Y,Difficult,No,Neither,Stressed
+2022-0814,2022,40-50,British Columbia,192400,12.2,no,No,Yes,N,No,Difficult,Y,Neither,Coping
+2022-0815,2022,30-40,british columbia,"30,000",10.5,no,Yes,No,No,N,Neither,No,Difficult,Stressed
+2022-0816,2022,40-50,Ontario,177K,10.3,No,Yes,No,No,No,Somewhat difficult,NA,Manageable,Stressed
+2022-0817,2022,18-30,Ontario,"64,500",10.8,Yes,No,No,No,N,Somewhat manageable,No,Difficult,Coping
+2022-0818,2022,18-30,Ontario,84600,0.8,NA,NA,NA,NA,NA,Very manageable,No,Manageable,Coping
+2022-0819,2022,40-50,Manitoba,172K,4.8,No,N,Yes,No,No,Difficult,No,NA,Stressed
+2022-0820,2022,30-40,Ontario,126900,17.9,No,No,No,No,Yes,Very manageable,N,Manageable,Comfortable
+2022-0821,2022,30-40,Quebec,49000,12.7,no,No,No,No,Yes,Neither,no,Manageable,Coping
+2022-0822,2022,40-50,Ontario,"$135,000",12.8,yes,No,No,no,No,Somewhat manageable,No,Manageable,Comfortable
+2022-0823,2022,50-65,Quebec,"$208,900",11.7,N,No,No,No,yes,Very difficult,Y,Difficult,Stressed
+2022-0824,2022,40-50,British Columbia,"$54,600",18.1,NA,NA,NA,NA,NA,Manageable,No,Difficult,Comfortable
+2022-0825,2022,50-65,Yukon,"230,400",5.5,No,No,No,No,Yes,Somewhat difficult,N,Manageable,Coping
+2022-0826,2022,40-50,ON,118300,8.3,N,no,No,No,Yes,Somewhat manageable,No,Neither,Coping
+2022-0827,2022,40-50,Ontario,"$74,300",15.6,No,No,No,Yes,No,Somewhat difficult,N,Difficult,Stressed
+2022-0828,2022,40-50,Ontario,"$49,800",22.7,No,N,No,No,Yes,Manageable,Yes,Very manageable,Comfortable
+2022-0829,2022,18-30,Saskatchewan,"56,300",17.3,Yes,No,No,No,N,Neither,N,Manageable,Coping
+2022-0830,2022,50-65,Newfoundland and Labrador,"$30,000",10.7,No,No,No,no,Yes,Manageable,Yes,Very manageable,Comfortable
+2022-0831,2022,18-30,Ontario,"36,200",6.9,N,No,Yes,No,No,Neither,Y,Neither,Coping
+2022-0832,2022,30-40,Ontario,66400,13.2,No,No,No,no,Yes,Very manageable,No,Very manageable,Comfortable
+2022-0833,2022,30-40,Ontario,"$36,300",12.1,No,No,No,No,Yes,Difficult,No,Manageable,Coping
+2022-0834,2022,30-40,Ontario,"$113,900",16.8,No,No,No,No,Yes,Very manageable,no,Difficult,Comfortable
+2022-0835,2022,30-40,Alberta,71600,3.6,Y,N,No,No,No,Very difficult,No,Very manageable,Stressed
+2022-0836,2022,50-65,British Columbia,91200,4.2,No,No,No,Yes,No,Difficult,Yes,Difficult,Stressed
+2022-0837,2022,50-65,Manitoba,93200,6.2,no,No,No,No,Yes,Somewhat manageable,Y,Manageable,Coping
+2022-0838,2022,30-40,Ontario,95800,9.9,No,No,No,No,Yes,Difficult,Yes,Manageable,Coping
+2022-0839,2022,30-40,Ontario,"84,700",17.7,No,No,No,No,Yes,Somewhat difficult,No,Manageable,Coping
+2022-0840,2022,18-30,Ontario,32K,NA,No,No,No,No,Yes,Somewhat difficult,No,Difficult,Coping
+2022-0841,2022,40-50,ontario ,108K,13.1,No,No,No,No,Y,Somewhat manageable,Yes,Very difficult,Coping
+2022-0842,2022,30-40,Ontario,83000,27.7,No,No,Y,No,No,Manageable,no,Neither,Comfortable
+2022-0843,2022,18-30,Alberta,30000,9.9,no,N,No,Yes,No,Difficult,No,Manageable,Coping
+2022-0844,2022,40-50,Ontario,"$77,100",14.3,No,No,No,No,Yes,Manageable,No,Very manageable,Comfortable
+2022-0845,2022,40-50,Quebec,"$126,500",10.6,No,No,No,No,yes,Difficult,No,Very difficult,Stressed
+2022-0846,2022,50-65,Ontario,136600,5.1,Yes,No,No,N,N,Very manageable,No,Difficult,Coping
+2022-0847,2022,30-40,QC,"77,000",17.8,N,Yes,No,No,N,Somewhat difficult,no,Manageable,Comfortable
+2022-0848,2022,30-40,Yukon,"$117,800",0.8,No,N,Yes,N,No,Somewhat difficult,No,Difficult,Stressed
+2022-0849,2022,50-65,Manitoba,"$77,000",0.0,No,No,No,No,Yes,Neither,No,Difficult,Coping
+2022-0850,2022,30-40,Ontario,42600,10.1,No,No,No,No,Yes,Neither,Yes,Difficult,Coping
+2022-0851,2022,40-50,Ontario,"$90,900",3.4,no,No,N,No,Yes,Very manageable,NA,Neither,Coping
+2022-0853,2022,40-50,British Columbia,110200,11.6,No,No,Yes,No,No,Neither,Yes,Manageable,Stressed
+2022-0855,2022,30-40,Alberta,158200,6.5,No,No,Yes,No,No,Somewhat difficult,No,Difficult,Stressed
+2022-0856,2022,18-30,Ontario,54700,17.1,Y,No,No,No,N,Neither,Yes,Manageable,Coping
+2022-0857,2022,30-40,Alberta,"$191,200",13.4,N,N,Yes,No,No,Somewhat difficult,Yes,Very manageable,Coping
+2022-0858,2022,50-65,New Brunswick,86900,4.1,No,No,No,N,Yes,Very difficult,No,Difficult,Stressed
+2022-0859,2022,30-40,ontario ,30000,0.0,No,N,No,Y,No,Very difficult,No,Manageable,Stressed
+2022-0860,2022,40-50,New Brunswick,"95,200",29.4,No,yes,No,No,No,Very manageable,Y,Manageable,Comfortable
+2022-0861,2022,50-65,Ontario,104500,4.7,Yes,No,No,N,no,Somewhat manageable,N,Manageable,Coping
+2022-0862,2022,30-40,Northwest Territories and Nunavut,NA,12.9,NA,NA,NA,NA,NA,Difficult,N,Difficult,Stressed
+2022-0863,2022,50-65,Alberta,238100,21.8,No,yes,No,No,No,Manageable,No,Difficult,Comfortable
+2022-0864,2022,40-50,Yukon,114900,5.1,No,N,N,Yes,No,Somewhat manageable,no,Difficult,Coping
+2022-0865,2022,40-50,Ontario,"$114,700",7.6,N,Yes,No,No,No,Difficult,Y,Neither,Stressed
+2022-0866,2022,40-50,Ontario,"80,400",23.8,No,No,Yes,No,no,Neither,Yes,Manageable,Coping
+2022-0867,2022,50-65,Ontario,NA,20.2,NA,NA,NA,NA,NA,Somewhat manageable,NA,Neither,Coping
+2022-0868,2022,30-40,Alberta,"$129,300",3.4,no,No,No,no,Yes,NA,no,Very difficult,Stressed
+2022-0869,2022,18-30,Ontario,"30,000",NA,NA,NA,NA,NA,NA,Manageable,No,Difficult,Comfortable
+2022-0870,2022,18-30,British Columbia,"$30,000",6.5,No,No,No,No,Yes,NA,Yes,Difficult,Stressed
+2022-0871,2022,50-65,Ontario,"$95,600",5.2,N,Yes,No,N,No,Very difficult,no,Manageable,Stressed
+2022-0872,2022,50-65,Alberta,"$178,600",12.0,No,No,N,No,Yes,Somewhat difficult,No,Difficult,Stressed
+2022-0873,2022,30-40,Ontario,"$62,300",23.2,Yes,No,No,N,No,Manageable,No,Manageable,Comfortable
+2022-0874,2022,18-30,British Columbia,"$77,800",0.8,No,No,Yes,No,N,Very manageable,No,Neither,Coping
+2022-0875,2022,30-40,BC,79400,21.2,N,N,N,No,Yes,Neither,No,Very manageable,Comfortable
+2022-0876,2022,40-50,Alberta,"165,300",5.1,N,No,N,No,Yes,Neither,Yes,Manageable,Stressed
+2022-0877,2022,30-40,ON,NA,18.3,No,N,No,No,Yes,Very manageable,Yes,Difficult,Comfortable
+2022-0878,2022,40-50,British Columbia,129800,12.5,No,No,No,N,yes,Somewhat manageable,No,Manageable,Coping
+2022-0879,2022,30-40,Ontario,"$71,100",18.2,no,N,N,No,Yes,Very manageable,Yes,Manageable,Coping
+2022-0880,2022,50-65,British Columbia,154200,10.9,No,No,No,Y,No,Very manageable,Yes,Manageable,Stressed
+2022-0881,2022,40-50,Ontario,"55,000",12.8,No,Yes,no,No,No,Very manageable,No,Manageable,Comfortable
+2022-0882,2022,40-50,British Columbia,"101,700",5.7,No,no,No,Yes,No,Very manageable,Yes,Difficult,Stressed
+2022-0883,2022,40-50,Saskatchewan,88K,NA,No,No,No,No,yes,Somewhat manageable,No,Neither,Coping
+2022-0884,2022,40-50,British Columbia,"$48,900",0.9,No,N,No,No,Yes,Neither,N,Manageable,Coping
+2022-0885,2022,40-50,Alberta,35000,5.5,No,N,no,No,yes,Somewhat manageable,no,Difficult,Stressed
+2022-0886,2022,18-30,BC,44K,30.0,No,No,No,Yes,No,Very manageable,Yes,Very manageable,Comfortable
+2022-0887,2022,40-50,Alberta,"102,500",6.0,No,Yes,No,No,No,Somewhat difficult,no,Difficult,Comfortable
+2022-0888,2022,40-50,Ontario,66K,NA,No,Yes,No,No,N,NA,No,Manageable,Coping
+2022-0889,2022,50-65,British Columbia,94K,10.7,No,No,no,N,Y,Somewhat difficult,No,Neither,Coping
+2022-0890,2022,40-50,Quebec,30000,12.7,Yes,No,No,N,No,Manageable,No,Very difficult,Coping
+2022-0891,2022,18-30,ON,"$53,500",5.2,No,no,No,No,Y,Somewhat difficult,No,Neither,Coping
+2022-0892,2022,18-30,British Columbia,"$126,200",0.0,Yes,No,no,N,no,Difficult,Yes,Difficult,Stressed
+2022-0894,2022,40-50,AB,"88,700",19.0,No,No,no,No,Yes,Difficult,No,Neither,Coping
+2022-0895,2022,30-40,Alberta,101K,5.1,No,N,No,Yes,No,Very manageable,No,Difficult,Coping
+2022-0896,2022,18-30,British Columbia,30K,8.0,No,N,N,No,Yes,Neither,No,Manageable,Coping
+2022-0897,2022,18-30,Alberta,"$150,200",NA,yes,No,no,no,No,Difficult,Yes,Difficult,Stressed
+2022-0898,2022,18-30,Alberta,"$160,400",12.9,N,No,no,Yes,no,Somewhat manageable,Yes,Neither,Comfortable
+2022-0899,2022,18-30,Saskatchewan,65K,7.7,No,N,No,no,Yes,NA,No,Manageable,Stressed
+2022-0900,2022,30-40,Ontario,216500,11.3,No,No,No,No,Yes,Somewhat difficult,N,Very difficult,Stressed
+2022-0901,2022,65+,Quebec,98K,17.1,Yes,no,No,N,No,Neither,Yes,Difficult,Coping
+2022-0902,2022,50-65,BC,"$60,400",3.0,Yes,N,No,No,No,Somewhat difficult,No,Neither,Coping
+2022-0903,2022,18-30,Ontario,36500,2.4,No,No,No,No,Yes,Somewhat manageable,Y,Difficult,Stressed
+2022-0904,2022,40-50,Manitoba,82000,12.8,NA,NA,NA,NA,NA,Somewhat manageable,Yes,Neither,Coping
+2022-0905,2022,18-30,Alberta,NA,22.6,N,No,No,No,Y,Somewhat manageable,No,Manageable,Coping
+2022-0906,2022,18-30,Ontario,51900,2.2,no,No,No,No,Yes,Difficult,Y,Difficult,Stressed
+2022-0907,2022,18-30,Alberta,30000,14.5,No,No,No,Yes,N,Very manageable,No,Very manageable,Comfortable
+2022-0908,2022,30-40,Manitoba,41K,13.5,N,No,no,No,yes,Somewhat manageable,No,Very difficult,Coping
+2022-0909,2022,30-40,Ontario,144000,14.7,No,No,N,No,Yes,Neither,No,Difficult,Coping
+2022-0910,2022,40-50,Ontario,"$144,400",9.4,N,N,No,No,Yes,Manageable,Yes,Difficult,Stressed
+2022-0911,2022,40-50,Ontario,"77,700",5.9,No,No,No,No,Yes,Manageable,no,Difficult,Coping
+2022-0912,2022,30-40,British Columbia,30000,14.3,No,No,No,No,Y,Manageable,No,Manageable,Comfortable
+2022-0913,2022,30-40,Alberta,34K,7.1,No,N,No,No,Yes,Neither,No,Manageable,Stressed
+2022-0914,2022,18-30,Yukon,"$156,600",12.3,Yes,No,No,N,No,Difficult,no,Manageable,Stressed
+2022-0915,2022,18-30,Alberta,100400,4.8,No,No,Yes,No,No,Somewhat difficult,No,Neither,Stressed
+2022-0916,2022,18-30,British Columbia,"$66,300",5.9,NA,NA,NA,NA,NA,Difficult,Yes,Very difficult,Stressed
+2022-0917,2022,40-50,BC,195400,10.8,No,N,No,No,Y,Manageable,no,Very manageable,Comfortable
+2022-0918,2022,30-40,Quebec,181900,22.2,N,Yes,N,N,No,Neither,No,Difficult,Coping
+2022-0919,2022,18-30,Ontario,"$55,200",11.9,No,No,No,Yes,No,Somewhat difficult,N,Manageable,Coping
+2022-0920,2022,30-40,Nova Scotia,87600,25.5,No,No,No,N,Yes,Very manageable,No,Manageable,Comfortable
+2022-0921,2022,18-30,Saskatchewan,38400,18.2,No,No,No,No,Yes,Neither,N,Difficult,Comfortable
+2022-0922,2022,50-65,AB,105800,18.6,No,No,No,N,Yes,Very manageable,No,Manageable,Comfortable
+2022-0923,2022,30-40,Quebec,30000,2.0,Yes,No,no,No,No,Somewhat difficult,Yes,Manageable,Coping
+2022-0924,2022,40-50,Alberta,"$30,000",0.0,No,No,No,Yes,No,Very difficult,Yes,Difficult,Coping
+2022-0925,2022,50-65,Manitoba,"$30,000",12.3,NA,NA,NA,NA,NA,Very difficult,NA,Neither,Stressed
+2022-0926,2022,18-30,Alberta,127700,11.5,No,N,No,N,Yes,Neither,Y,Very manageable,Coping
+2022-0927,2022,40-50,Yukon,30000,12.2,No,yes,no,No,No,NA,Y,Difficult,Coping
+2022-0928,2022,40-50,Quebec,198K,0.0,No,no,N,no,Yes,Difficult,Yes,Difficult,Stressed
+2022-0929,2022,40-50,ontario ,55000,5.6,No,No,No,No,Y,Somewhat manageable,NA,Neither,Coping
+2022-0930,2022,40-50,British Columbia,NA,17.4,NA,NA,NA,NA,NA,Neither,NA,Manageable,Coping
+2022-0931,2022,18-30,BC,"47,700",21.4,No,No,No,No,Yes,Difficult,Y,Neither,Coping
+2022-0932,2022,40-50,Nova Scotia,30000,2.9,No,no,No,No,Yes,Difficult,N,Difficult,Stressed
+2022-0933,2022,30-40,British Columbia,"$145,200",15.0,N,N,No,no,Yes,Difficult,No,Difficult,Coping
+2022-0934,2022,40-50,AB,"$166,100",12.1,Y,No,No,No,No,Difficult,Y,Very manageable,Coping
+2022-0935,2022,50-65,Ontario,NA,10.3,No,Yes,No,No,N,Somewhat difficult,No,Manageable,Coping
+2022-0936,2022,40-50,Ontario,"$85,400",22.1,N,No,No,No,Yes,Somewhat manageable,N,Neither,Coping
+2022-0937,2022,40-50,quebec,51K,3.7,No,No,Yes,No,No,NA,No,Manageable,Stressed
+2022-0938,2022,40-50,Ontario,96000,12.2,N,no,No,No,Yes,Neither,N,Neither,Stressed
+2022-0939,2022,40-50,British Columbia,107K,13.3,No,No,Yes,No,No,Somewhat manageable,No,Very manageable,Coping
+2022-0940,2022,50-65,Ontario,99400,5.9,No,N,No,No,Yes,Somewhat difficult,Yes,Difficult,Stressed
+2022-0941,2022,30-40,alberta,30K,19.2,No,Yes,No,No,No,Somewhat difficult,NA,Difficult,Coping
+2022-0942,2022,40-50,Ontario,NA,20.0,No,no,No,No,Yes,Very difficult,No,Very manageable,Comfortable
+2022-0943,2022,50-65,Ontario,141700,5.5,Y,no,No,No,No,Somewhat difficult,No,Difficult,Stressed
+2022-0944,2022,30-40,Alberta,70600,19.3,No,No,N,No,Y,Somewhat difficult,No,NA,Coping
+2022-0946,2022,40-50,Quebec,52500,18.2,No,No,No,N,Yes,Very manageable,No,Neither,Coping
+2022-0947,2022,30-40,Ontario,"56,500",0.0,No,Y,N,No,No,Difficult,No,Difficult,Stressed
+2022-0948,2022,18-30,Ontario,139400,8.2,No,No,N,No,Yes,Very difficult,Yes,Difficult,Stressed
+2022-0949,2022,40-50,Ontario,42000,19.5,No,No,No,No,Yes,Very manageable,No,NA,Comfortable
+2022-0950,2022,50-65,ON,"$151,500",5.8,NA,NA,NA,NA,NA,NA,No,Very difficult,Stressed
+2022-0951,2022,18-30,Alberta,62400,14.7,No,No,No,no,Yes,Neither,No,Difficult,Coping
+2022-0952,2022,50-65,Ontario,120200,19.8,No,No,Yes,No,No,Somewhat difficult,N,Manageable,Comfortable
+2022-0953,2022,18-30,Quebec,30000,9.4,no,No,N,N,Yes,Difficult,no,Neither,Stressed
+2022-0954,2022,30-40,Alberta,"64,900",9.4,N,Yes,No,No,No,Very manageable,No,Neither,Coping
+2022-0955,2022,50-65,Alberta,122700,13.5,No,No,Yes,No,No,Somewhat difficult,Yes,Difficult,Stressed
+2022-0956,2022,30-40,Ontario,58000,9.9,No,No,Yes,No,N,Somewhat difficult,No,Neither,Stressed
+2022-0957,2022,40-50,Ontario,108100,14.3,No,No,No,No,Yes,Somewhat difficult,No,Difficult,Coping
+2022-0958,2022,40-50,Manitoba,"126,400",NA,Yes,No,No,No,No,Somewhat manageable,No,Neither,Comfortable
+2022-0959,2022,18-30,Ontario,167100,11.8,No,No,No,Yes,No,NA,Yes,Difficult,Stressed
+2022-0960,2022,40-50,Ontario,105400,11.1,no,No,No,No,Yes,Difficult,No,Neither,Stressed
+2022-0961,2022,40-50,ontario ,"$30,000",17.2,no,N,No,Yes,No,NA,No,Difficult,Comfortable
+2022-0962,2022,50-65,Alberta,"$181,200",11.0,Yes,no,No,No,No,Somewhat difficult,Yes,Difficult,Stressed
+2022-0963,2022,18-30,Alberta,"57,300",19.2,No,No,No,Yes,No,Very manageable,No,Manageable,Comfortable
+2022-0964,2022,30-40,New Brunswick,"$183,100",NA,No,No,N,No,Yes,Manageable,No,Manageable,Coping
+2022-0965,2022,18-30,Quebec,147000,17.6,No,Yes,No,No,N,Manageable,No,Manageable,Coping
+2022-0966,2022,18-30,Ontario,46700,13.6,No,N,yes,N,N,Manageable,No,Very manageable,Comfortable
+2022-0967,2022,50-65,British Columbia,"$147,100",25.0,NA,NA,NA,NA,NA,Somewhat manageable,Yes,Manageable,Coping
+2022-0968,2022,30-40,Quebec,60300,0.0,NA,NA,NA,NA,NA,Somewhat manageable,No,Difficult,Stressed
+2022-0969,2022,30-40,Manitoba,"$79,600",22.5,Yes,No,No,No,No,Difficult,No,Difficult,Comfortable
+2022-0970,2022,30-40,Ontario,"$114,800",13.1,No,N,No,No,Yes,Somewhat manageable,N,Difficult,Comfortable
+2022-0971,2022,30-40,Alberta,135K,30.0,Yes,No,No,No,No,Neither,No,Neither,Comfortable
+2022-0972,2022,30-40,Ontario,"125,800",12.5,No,No,No,No,Y,Very manageable,Y,Difficult,Coping
+2022-0973,2022,18-30,Ontario,71200,6.2,No,N,No,Yes,No,Very manageable,N,Difficult,Coping
+2022-0974,2022,30-40,Ontario,"$209,700",9.4,No,No,No,Yes,No,Manageable,No,Manageable,Coping
+2022-0975,2022,30-40,British Columbia,"65,700",2.4,No,No,Yes,No,No,Difficult,Yes,Neither,Stressed
+2022-0976,2022,30-40,New Brunswick,"30,000",9.2,N,No,No,No,Yes,Very manageable,No,Difficult,Coping
+2022-0977,2022,40-50,Alberta,30K,9.0,no,yes,No,No,No,Very difficult,NA,Neither,Coping
+2022-0978,2022,40-50,Saskatchewan,"$168,200",6.5,No,No,No,No,Yes,Somewhat difficult,No,Difficult,Coping
+2022-0979,2022,30-40,Alberta,76K,12.6,No,N,No,Yes,No,Somewhat manageable,No,Neither,Coping
+2022-0980,2022,30-40,Ontario,"95,000",13.3,NA,NA,NA,NA,NA,NA,No,Neither,Coping
+2022-0981,2022,65+,Ontario,"$101,900",5.0,no,No,No,No,Yes,Manageable,NA,Difficult,Coping
+2022-0982,2022,50-65,Alberta,"104,900",1.1,Yes,No,No,No,No,Somewhat difficult,No,Difficult,Coping
+2022-0983,2022,18-30,Manitoba,31K,20.2,No,Yes,No,No,No,Somewhat manageable,No,Very manageable,Comfortable
+2022-0984,2022,18-30,alberta,"$97,100",14.2,NA,NA,NA,NA,NA,Neither,Yes,Neither,Coping
+2022-0985,2022,18-30,ontario ,65600,9.7,No,No,No,No,Yes,Very difficult,No,Difficult,Stressed
+2022-0986,2022,50-65,Yukon,"$131,300",NA,Yes,N,no,No,No,Neither,Yes,Very difficult,Stressed
+2022-0987,2022,30-40,New Brunswick,"99,500",20.4,No,no,No,N,Yes,Somewhat difficult,no,Difficult,Coping
+2022-0988,2022,40-50,Yukon,73200,17.0,No,No,No,Y,No,Somewhat difficult,Yes,Difficult,Coping
+2022-0989,2022,50-65,Alberta,"53,100",30.0,No,No,Yes,No,No,Somewhat manageable,No,Very manageable,Comfortable
+2022-0990,2022,30-40,Manitoba,30000,21.5,No,No,No,No,Yes,Somewhat difficult,no,Difficult,Stressed
+2022-0991,2022,40-50,Quebec,253K,0.0,Yes,No,No,No,No,Neither,No,Difficult,Stressed
+2022-0992,2022,40-50,Quebec,173K,0.0,No,Yes,N,No,No,Somewhat difficult,Y,Very manageable,Coping
+2022-0993,2022,30-40,British Columbia,146500,NA,No,No,No,No,Y,NA,N,Neither,Coping
+2022-0994,2022,50-65,ontario ,"$75,800",21.5,N,Yes,No,No,No,Very manageable,Yes,Neither,Comfortable
+2022-0995,2022,18-30,Quebec,"$75,500",17.5,No,No,no,N,Yes,Manageable,No,Manageable,Comfortable
+2022-0996,2022,50-65,Ontario,"73,200",15.2,NA,NA,NA,NA,NA,Neither,Yes,Neither,Coping
+2022-0997,2022,30-40,Ontario,30000,16.1,yes,No,No,N,no,Neither,No,Very manageable,Comfortable
+2022-0998,2022,30-40,Alberta,"51,600",2.5,No,No,No,yes,No,Very manageable,Yes,Very difficult,Stressed
+2022-0999,2022,18-30,Alberta,136800,7.7,No,No,Yes,no,No,Somewhat manageable,No,Manageable,Coping
+2022-1000,2022,18-30,Ontario,"$115,500",16.6,NA,NA,NA,NA,NA,Neither,No,Neither,Comfortable
+2022-0539,2022,30-40,BC,"100,100",5.9,No,No,Yes,N,No,Very difficult,No,Difficult,Stressed
+2022-0368,2022,18-30,Alberta,41700,11.7,No,No,N,No,Yes,Neither,No,Difficult,Coping
+2022-0933,2022,30-40,British Columbia,"$145,200",15.0,N,N,No,no,Yes,Difficult,No,Difficult,Coping
+2022-0145,2022,30-40,Ontario,"68,500",21.8,No,No,No,No,yes,Manageable,no,NA,Comfortable
+2022-0453,2022,40-50,New Brunswick,"$94,200",7.8,No,No,No,No,yes,Somewhat manageable,N,Difficult,Coping
+2022-0114,2022,18-30,Alberta,"$70,400",0.9,No,No,No,N,Y,Difficult,No,Neither,Stressed
+2022-0025,2022,40-50,Ontario,92500,15.1,No,No,No,No,Yes,Neither,No,Manageable,Coping
+2022-0153,2022,50-65,Ontario,37600,14.7,yes,No,N,No,No,Somewhat difficult,no,Neither,Comfortable
+2022-0371,2022,18-30,Ontario,103000,1.0,No,N,No,No,Yes,Somewhat difficult,No,Difficult,Stressed
