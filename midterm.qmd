@@ -7,5 +7,5 @@ format: html
 
 ## Midterm 1: Written Exam
 
-- [Information](midterm/MT1_F26_Info.qmd)
-- [Practice](midterm/MT1_Practice.qmd)
+- [Information](exams/MT1_F26_Info.qmd)
+- [Practice](exams/MT1_Practice.qmd)
