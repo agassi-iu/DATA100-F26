@@ -271,7 +271,7 @@ ggplot(gdp, aes(x = fct_reorder(country, ratio), y = ratio)) +
 ## Meet ET
 
 ::: {.callout-warning title="How tall are you humans?"}
-The extra-terrestrial arrives Earth for the first time. Instead of asking if you have any mass destructive weapons or asking for the most appropriate swear words in human language, the alien asks you: How tall are you guys?
+The extra-terrestrial arrives Earth for the first time. Instead of asking if you have any mass destructive weapons or asking for the most inappropriate curses words in human language, the alien asks you: How tall are you guys?
 :::
 
 ::: {.callout-tip title="Uh-oh, what do I do?"}

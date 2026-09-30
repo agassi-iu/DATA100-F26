@@ -17,30 +17,31 @@ format:
 | **Term** | *Fall 2026* |
 | **Date** | *Tuesday, October 6, 2026* |
 | **Time** | *16:00 - 17:20* |
-| **Duration** | *80 minutes* |
+| **Duration** | *80 minutes (in-class)* |
 | **Location** | *LH1010* |
 | **Sections covered** | *Chapters 9-11 Visualization* |
 
 
 ## What to bring
 
-- Student ID card
+- Student ID card (Laurier One-Card)
 - Pens/pencils
 - One double-sided handwritten formula sheet
-  - Everything must be handwritten (not even printed off from written notes on tablet)
+  - You can put whatever you want on these formula sheets.
+  - But everything must be handwritten (not even printed off from written notes on tablet)
   - I will be checking these formula sheets on the day of the exam
 
 - *Everything else (e.g. phones, smart watches, other electronics, bags, etc.) should be turned off and stored away at the front of the room.*
 
 ## Format
 
-15 multiple choice questions and 4 short answer questions.
+15 multiple choice questions and 3 short answer questions.
 
 
 ## How to prepare
 
-- Review lecture slides, in-class exercises, and the course readings
+- Review lecture slides/materials, in-class exercises, and course references in the textbook (see course syllabus)
 - Review pre-lab and in-lab assignments
-- Practice reading plots *cold*
+- Practice reading and interpretting plots
 - Redo the practice questions set posted on the course site
 

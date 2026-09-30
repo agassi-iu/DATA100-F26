@@ -178,7 +178,7 @@ Your student number is just a stand-in for your name. Numbers are assigned (most
 #| echo: false
 #| results: asis
 
-nhl_teams <- read_csv("data/game_teams_stats.csv") |>
+nhl_teams <- read.csv(here("exams/data/game_teams_stats.csv")) |>
   na.omit() |>
   filter(shots < 75, settled_in == "REG") |>
   mutate(won = if_else(won, "Won", "Lost"))
@@ -418,13 +418,102 @@ cat(paste0(qnum, ". "),
 qnum <- qnum + 1
 
 
+
+
+cat(paste0(qnum, ". "),
+  "Two plots show the same scatterplot of `hwy` against `displ` with a `geom_smooth()` line. Plot A adds `coord_cartesian(xlim = c(5, 6))` and Plot B adds `scale_x_continuous(limits = c(5, 6))`. Which statement is true?",
+    longmcq(
+    sample(c(
+      "Both fit the smooth line using only the points inside the window.",
+      answer = "Plot A fits the smooth line using all of the data and then crops the view, while Plot B fits it using only the points inside the window.",
+      "Neither changes the smooth line.",
+      "Plot A fits the smooth line using only the points inside the window, while Plot B fits it using all of the data."
+    ))
+  )
+)
+
+qnum <- qnum + 1
 ```
 :::
 
 
 
-`r hide("I need a hint")`
+`r qnum`. Consider the following three charts, all of which use the exact same data but with different aesthetic mappings and/or faceting. The data shown are from the `gapminder` data set, which includes 185 different countries, separated into Economic Regions and Continents. The plots show the GDP per capita for each country in 1972 and 2002, where data from countries within a region / continent are summarised together into box plots. 
+    a. [3 marks] For each plot, give at least one interpretation that cannot be discerned from the other plots.
+    b. [2 marks] Which plot best answers the question "Has GDP per Capita increased between 1972 and 2002?" Justify your answer.
 
-See the documentation for `plot()` (`?plot`)
+```{r}
+library(gapminder)
 
-`r unhide()`
+p1 <- gapminder |> 
+  filter(year %in% c(1972, 2002)) |>
+  ggplot() +
+  theme_bw() +
+  aes(y = gdpPercap, fill = factor(year), x = continent) +
+  geom_boxplot() + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  scale_y_continuous(trans = "log2") + 
+  scale_fill_grey(start = 0.4, end = 0.9) +
+  labs(
+    y = "GDP Per Capita",
+    x = "Economic Region",
+    title = "GDP per Capita for Economic Regions",
+    subtitle = ""
+  ) +
+  facet_wrap(~ continent, scales = "free_y") +
+  coord_flip()
+
+p2 <- gapminder |> 
+  filter(year %in% c(1972, 2002)) |>
+  ggplot() +
+  theme_bw() +
+  aes(y = gdpPercap, x = factor(year)) +
+  scale_y_continuous(trans = "log2") + 
+  geom_boxplot() + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  scale_fill_grey(start = 0, end = 0.9) +
+  #scale_fill_pattern() +
+  labs(
+    y = "GDP Per Capita",
+    x = "Year",
+    title = "GDP per Capita for Economic Regions",
+    subtitle = ""
+  ) +
+  facet_wrap(~ continent, scales = "free_y") +
+  coord_flip()
+
+p3 <- gapminder |> 
+  filter(year %in% c(1972, 2002)) |>
+  ggplot() +
+  theme_bw() +
+  aes(y = gdpPercap, x = factor(year), fill = continent) +
+  geom_boxplot() + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  scale_y_continuous(trans = "log2") + 
+  scale_fill_grey(start = 0.4, end = 0.9) +
+  labs(
+    y = "GDP Per Capita",
+    x = "Year",
+    title = "GDP per Capita for Economic Regions",
+    subtitle = ""
+  ) +
+  coord_flip()
+```
+
+```{r}
+#| fig-width: 10
+#| fig-height: 3
+p3
+```
+
+```{r}
+#| fig-width: 10
+#| fig-height: 4.5
+p1
+```
+
+```{r}
+#| fig-width: 10
+#| fig-height: 5
+p2
+```

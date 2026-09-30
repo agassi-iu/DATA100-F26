@@ -15,11 +15,12 @@ Welcome to **DATA100 — Introduction to Data Analytics**! This course introduce
 
 ## Quick Links
 
+- [👋 About](about.qmd) — more about your instructor
 - [📄 Syllabus](syllabus.qmd) — grading breakdown, policies, and expectations
 - [🗓️ Schedule](schedule.qmd) — weekly topics and readings
 - [📊 Slides](slides.qmd) — lecture slide decks
 - [📝 Assignments](assignments.qmd) — labs, capstone project, and due dates
-- [👋 About](about.qmd) — more about your instructor
+- [🎯 Midterms](midterm.qmd) — midterm, information, practices 
 
 ## Course Hub
 
