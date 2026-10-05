@@ -805,88 +805,18 @@
     "text": "Next Time (Next Week)\n\nWe are going to look at a very simple example of:\n\nWhat can we do with data?\nHow do we work with data?\nWhy might this course be useful (at all)?"
   },
   {
-    "objectID": "midterm.html",
-    "href": "midterm.html",
-    "title": "Midterm",
+    "objectID": "schedule.html",
+    "href": "schedule.html",
+    "title": "Schedule",
     "section": "",
-    "text": "Information\nPractice"
+    "text": "Note\n\n\n\nThis schedule is a tentative schedule. It may subject to change depending on the speed or circumstances of our lectures."
   },
   {
-    "objectID": "midterm.html#midterm-1-written-exam",
-    "href": "midterm.html#midterm-1-written-exam",
-    "title": "Midterm",
-    "section": "",
-    "text": "Information\nPractice"
-  },
-  {
-    "objectID": "exams/MT1_Practice.html",
-    "href": "exams/MT1_Practice.html",
-    "title": "Midterm 1 Practice Problems",
-    "section": "",
-    "text": "As a study note, you should spend just as much time understanding the topics as you do solving the questions below.\nIt is strongly recommended that you write your full solutions on paper for each question before looking at the solutions. This will help you understand the concepts better and will also help you if you need to refer to your notes later.\n\n\n\n\n\n\nImportantDon’t shortcut your learning!\n\n\n\nYou can take a forklift to the gym and lift all the weights, but it doesn’t mean you got any stronger. You can read and understand the solutions, but it doesn’t mean you got any smarter.\nYou gain muscle by lifting weights that are near the limit of what you can handle - too heavy and you’ll just fail, too light and you won’t gain muscle. You gain knowledge in a similar way. In both cases, it should be a managable struggle!!!\n\n\n\n\nIn a histogram, how are the “bins” usually created?\n\n Where there are more data, more bins are created. Bins are always 1 unit wide. Bin is short for binary and has nothing to do with visualization. Bins are chosen as equal lengths across the range of the data.\n\nWhich of the following best describes a violin plot?\n\n A bigger version of a viola plot. A plot of measurements taken from violins. A better version of a histogram. A sideways density plot, mirrored across the axis.\n\nWhich of the following plots would allow a comparison between two categorical variables?\n\n Bar plots Histograms Violin plots Box plots\n\n\n\n\n\nid\nname\nheight\nyear\ngrade\n\n\n\n\n1\nBonk\n1.2\n1\n56\n\n\n2\nLilah\n0.4\nNA\nNA\n\n\n3\nJune\n1.4\n3\n88\n\n\n4\nJudy\n1.6\n2\n75\n\n\n5\nJulie\n1.7\n1\n72\n\n\n6\nJodie\n1.9\n1\n83\n\n\n7\nJill\n1.4\n2\n81\n\n\n\n\nConsider the data above. Which of the following plots would provide meaningful information?\n\n A boxplot of grade versus year A scatterplot of height versus grade A bar plot of ID versus Name A bar plot of height versus grade\n\nSuppose we have a data set named “sales” with columns product, volume, and city, containing the name of the product and the number of that product that was sold in each city. Fill in the blanks for the following plotting code. The resulting plot is shown below.\n\nggplot(  ) + aes(x =  , y =  , fill =  ) + geom_col(position=\"dodge\")\n\n\n\nstudent_number\nassessment\ngrade\n\n\n\n\n123456789\nA1\n90\n\n\n123456789\nA2\n83\n\n\n123456789\nA3\n74\n\n\n123456789\nMT\n89\n\n\n124624353\nA1\n60\n\n\n124624353\nA2\n65\n\n\n124624353\nA3\n70\n\n\n124624353\nMT\n76\n\n\n984367234\nA1\n73\n\n\n984367234\nA2\n74\n\n\n984367234\nA3\n76\n\n\n984367234\nMT\n71\n\n\n\n\nConsider the data above. What kind of variable is your student number, and what kind of plot might it be useful?\n\n Quantitative discrete, bar plot with heights defined by grade Quantitative discrete, scatter plot of grade versus assessment Unordered qualitative, bar plot with heights defined by grade Unordered qualitative, scatter plot of grade versus assessment\n\n\n\n\nExplanation\n\nYour student number is just a stand-in for your name. Numbers are assigned (mostly) randomly and have no order. They’re names made of digits, not numbers! You can’t add or multiply them.\n\n\n\nWhat’s the take-away message from the plot above (labelled Figure 2)?\n\n The blue team always wins. If you score 4 goals, you're guaranteed to win. Scoring more goals than the other team only has a slight correlation with winning the game. Taking more shots has a very slight correlation with scoring more goals.\n\nFigure 2 used veritcal jittering for the number of goals. Why?\n\n for display purposes. The jittering is done because goals is a continuous variable but was only measured to the nearest whole number; jittering makes it continuous rather than discrete. This jittering is inapproriate - it implies that there were games with 4.2 goals which is impossible. Since goals are whole numbers, all games with, say, 20 shots and 4 goals will be plotted in the exact same spot. Jittering allows us to see this.\n\nFrom the plot above (Figure 2), how many shots do you need to take in order to have more than a 50% chance to win the game?\n\n 20 40 60 It is impossible to tell from this plot.\n\n\nIn Figure 2, does it appear that shooting more makes you more likely to win?\n\n\nAnswer\n\nNot really! As you take more shots you get more goals, but perhaps your opponent shoots more as well. If you look at, say, 20 shots in a game, it looks like slightly more than half of the games were won. If you look at 40 shots, it still looks like slightly more than half of the games were won.\nIt really matters what the opponent does!\n\n\n\nWhat is the interpretation of the plot above (Figure 3)?\n\n The number of shots is uncorrelated with whether the team wins - it's still a 50-50 chance. There's more variation at the extremes because there were fewer games with that number of shots. The overall chance of winning is not exactly 50% because very few of the values are actually 50%. This plot shows how many games a team won at each number of shots. If a team takes 60 shots, they are guaranteed to lose, but if they take exactly 55 shots they have a 75% chance of winning. During a game, a team should stop shooting when they hit 55 shots.\n\nA survey asks respondents for their country, and answers come back as “Canada”, “canada”, and “CAN”. Why do we need to clean these entries before creating a summary chart?\n\n It changes the numbers from integers to decimals. R will automatically delete all responses that aren't spelled correctly. R will automatically throw an error and refuse to make the plot The computer treats them as 3 completely separate responses.\n\nYou want to compare the relative proportions of car classes across different drive types (drv), ensuring that every bar reaches 100% height regardless of the total count in each drive category. Which position adjustment should you use in geom_bar()?\n\n position = “fill” position = “dodge” position = “stack” position = “identity”\n\nI want to examine the distribution of a single continuous variable (hwy mileage) to check for bimodality and skewness across the entire dataset. Which geometric object is best suited for this task?\n\n geom_bar() geom_boxplot() geom_histogram() geom_point()\n\nYou plot City Mileage (cty) vs. Highway Mileage (hwy) for 234 cars using geom_point(). When you look at the plot, you only see about 100 dots. What is happening, and why is this plot misleading?\n\n Multiple cars have identical rounded mileage values, causing their points to land on exact same coordinates and stack directly on top of each other. Over half of the cars in the dataset have missing mileage values. geom_point() only plots a random sample of the data when datasets exceed 100 rows. Cars with identical highway and city mileage automatically cancel each other out on the graph.\n\nI created a histogram of continuous highway gas mileage (hwy) using geom_histogram(). By default, ggplot2 uses 30 bins and displays a warning suggesting that the user pick a better binwidth. What happens to the story the plot tells if the student sets an extremely small bin width (e.g., binwidth = 0.1) versus an extremely large bin width (e.g., binwidth = 20)?\n\n An extremely small bin width converts the plot into a boxplot; an extremely large bin width converts it into a scatterplot. An extremely small bin width only plots outliers; an extremely large bin width only plots the median. ggplot2 automatically rejects bin widths smaller than 1.0 with a fatal error. An extremely small bin width creates too much visual noise (individual spikes), while an extremely large bin width over-smooths the data and hides features like bimodality or skewness.\n\nWhen we want to deal with outliers, it is better to apply “filter(…)” so that we can isolate (and only work with) data without outliers, rather than using the “mutate(…)” function to change these outlier values to NA instead.\n\n False True\n\nWhen you plot with NA values, how do they appear in the plots?\n\n They show up as -999 They are not visible at all The NA values are outliers, and tidyverse has automatically removed them from the data set. They show up as zero, 0\n\nWhat is variation in the context of EDA?\n\n The tendency of two variables to move together The number of bins used in a histogram The tendency of a single variable's values differ from one measurement to the next A coding error that produces incorrect plots\n\nA violin plot shows two distinct humps for one group. What does a boxplot of the same group most likely fail to reveal?\n\n That the group actually has two common value ranges rather than one smooth distribution  Whether outliers exist The group's median value The exact sample size of the group \n\nYou track two things over a month: (1) how many hours you sleep each night, which bounces around from 5 to 9 depending on the day, and (2) on days you drink more cups of coffee after 3pm, you tend to sleep noticeably fewer hours that night. Which of these is variation, and which is covariation?\n\n Both are examples of covariation Both are examples of variation Sleep hours night to night = variation; cups of afternoon coffee vs. hours slept = covariation Sleep hours night to night = covariation; cups of afternoon coffee vs. hours slept = variation\n\nTwo plots show the same scatterplot of hwy against displ with a geom_smooth() line. Plot A adds coord_cartesian(xlim = c(5, 6)) and Plot B adds scale_x_continuous(limits = c(5, 6)). Which statement is true?\n\n Both fit the smooth line using only the points inside the window. Neither changes the smooth line. Plot A fits the smooth line using all of the data and then crops the view, while Plot B fits it using only the points inside the window. Plot A fits the smooth line using only the points inside the window, while Plot B fits it using all of the data.\n\n\n\n\nConsider the following three charts, all of which use the exact same data but with different aesthetic mappings and/or faceting. The data shown are from the gapminder data set, which includes 185 different countries, separated into Economic Regions and Continents. The plots show the GDP per capita for each country in 1972 and 2002, where data from countries within a region / continent are summarised together into box plots.\n\n[3 marks] For each plot, give at least one interpretation that cannot be discerned from the other plots.\n[2 marks] Which plot best answers the question “Has GDP per Capita increased between 1972 and 2002?” Justify your answer."
-  },
-  {
-    "objectID": "courses.html",
-    "href": "courses.html",
-    "title": "Teaching Experience",
-    "section": "",
-    "text": "DATA100 (Introduction to Data Analytics)\nST230 (Introduction to Probability and Statistics in Sciences)"
-  },
-  {
-    "objectID": "courses.html#current-courses",
-    "href": "courses.html#current-courses",
-    "title": "Teaching Experience",
-    "section": "",
-    "text": "DATA100 (Introduction to Data Analytics)\nST230 (Introduction to Probability and Statistics in Sciences)"
-  },
-  {
-    "objectID": "courses.html#past-courses",
-    "href": "courses.html#past-courses",
-    "title": "Teaching Experience",
-    "section": "Past Courses",
-    "text": "Past Courses\n\nST474/674 (Monte Carlo Methods)"
-  },
-  {
-    "objectID": "courses.html#graduate-ta-experience",
-    "href": "courses.html#graduate-ta-experience",
-    "title": "Teaching Experience",
-    "section": "Graduate TA Experience",
-    "text": "Graduate TA Experience\n\nWilfrid Laurier Univesrity\n\nMA307/507 (Numerical Analysis)\nMA451/651 (Stochastic Calculus)\nMA477/677 (Quantitative Financial Risk Management)\nST359/559 (Probability II)\nST462/662 (Advanced Regression)\nST473/674 (Financial Data Analysis)\nST494/694 (Statistical Learning)"
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation:\n\nPhD in Mathematical and Statistical Modelling at Wilfrid Laurier University | 2026\nMMath in Statistics at University of Waterloo | 2020\nBBA/BA Financial Mathematics at Wilfrid Laurier University | 2019\n\nTeaching Experience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nFall 2026: Wednesdays 14:00–16:00 in room LH3073, or by appointment."
-  },
-  {
-    "objectID": "about.html#bio",
-    "href": "about.html#bio",
-    "title": "About",
-    "section": "",
-    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation:\n\nPhD in Mathematical and Statistical Modelling at Wilfrid Laurier University | 2026\nMMath in Statistics at University of Waterloo | 2020\nBBA/BA Financial Mathematics at Wilfrid Laurier University | 2019\n\nTeaching Experience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nFall 2026: Wednesdays 14:00–16:00 in room LH3073, or by appointment."
-  },
-  {
-    "objectID": "assignments.html",
-    "href": "assignments.html",
-    "title": "Assignments",
-    "section": "",
-    "text": "All labs and the capstone project are submitted through MyLearningSpace. This page tracks what’s due and when."
-  },
-  {
-    "objectID": "assignments.html#labs",
-    "href": "assignments.html#labs",
-    "title": "Assignments",
-    "section": "Labs",
-    "text": "Labs\n\n\n\nLab\nTopic\nDate\n\n\n\n\nLab 0\nIntroduction\nSep 14\n\n\nLab 1\n—\nSep 21\n\n\nLab 2\n—\nSep 28\n\n\nLab 3\n—\nOct 05\n\n\nLab 4\n—\nOct 19\n\n\nLab 5\n—\nOct 26\n\n\nLab 6\n—\nNov 02\n\n\nLab 7\n—\nNov 16\n\n\nLab 8\n—\nNov 23\n\n\nLab 9\n—\nNov 30\n\n\nLab 10\n—\nDec 02\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nLabs are worth 30% of your final grade, to be submitted during labs weekly on Mondays. See the Syllabus for full grading breakdown."
-  },
-  {
-    "objectID": "assignments.html#capstone-project",
-    "href": "assignments.html#capstone-project",
-    "title": "Assignments",
-    "section": "Capstone Project",
-    "text": "Capstone Project\nThe capstone project (15%) has multiple checkpoints across the term. Details and rubric will be posted here as each checkpoint approaches.\n\n\n\nCheckpoint\nDescription\nDue\n\n\n\n\nProposal\nDataset + research question\nTBD\n\n\nProgress Check\nDraft analysis\nTBD\n\n\nFinal Submission\nReport + presentation\nDec 3"
+    "objectID": "schedule.html#course-schedule",
+    "href": "schedule.html#course-schedule",
+    "title": "Schedule",
+    "section": "Course Schedule",
+    "text": "Course Schedule\n\n\n\n\n\n\n\n\n\nWeek\nDay 1 (Tuesdays)\nDay 2 (Thursdays)\nAssessment\n\n\n\n\n1\n–\nIntroduction\nL0\n\n\n2\nWhole Game 1\nWhole Game 2\nL1\n\n\n3\nVisualization 1\nVisualization 2\nL2\n\n\n4\nVisualization 3\nVisualization recap\nL3\n\n\n5\nMidterm 1\nGroup project guidance 1\nM1\n\n\n6\nLogical vectors\nWords and numbers\nL4\n\n\n7\nFancy words and numbers\nMissing values and joins\nL5\n\n\n8\nPivot and Midterm 2 Review\nCase study\nL6\n\n\n9\nGroup project guidance 2\nImport: Excel, databases, and beyond\nM2\n\n\n10\nData science in practice\nRelationship between variables\nL7 , GP1\n\n\n11\nStructured relationships\nPredictive modelling\nL8 , GP 2\n\n\n12\nGroup project guidance 3\nModelling workflow\nL9\n\n\n13\nReview\n–\nL10 , GP3"
   },
   {
     "objectID": "index.html",
@@ -917,18 +847,214 @@
     "text": "Course Hub\nAnnouncements, submissions, and discussions happen on MyLearningSpace — this site is your reference hub for slides, schedule, and syllabus details.\n\n\n\n\n\n\nTipBefore the first class\n\n\n\nPlease install R and RStudio before our first lab. See the Slides page for the Lecture 1 walkthrough on installation."
   },
   {
-    "objectID": "schedule.html",
-    "href": "schedule.html",
-    "title": "Schedule",
+    "objectID": "assignments.html",
+    "href": "assignments.html",
+    "title": "Assignments",
     "section": "",
-    "text": "Note\n\n\n\nThis schedule is a tentative schedule. It may subject to change depending on the speed or circumstances of our lectures."
+    "text": "All labs and the capstone project are submitted through MyLearningSpace. This page tracks what’s due and when."
   },
   {
-    "objectID": "schedule.html#course-schedule",
-    "href": "schedule.html#course-schedule",
-    "title": "Schedule",
-    "section": "Course Schedule",
-    "text": "Course Schedule\n\n\n\n\n\n\n\n\n\nWeek\nDay 1 (Tuesdays)\nDay 2 (Thursdays)\nAssessment\n\n\n\n\n1\n–\nIntroduction\nL0\n\n\n2\nWhole Game 1\nWhole Game 2\nL1\n\n\n3\nVisualization 1\nVisualization 2\nL2\n\n\n4\nVisualization 3\nVisualization recap\nL3\n\n\n5\nMidterm 1\nGroup project guidance 1\nM1\n\n\n6\nLogical vectors\nWords and numbers\nL4\n\n\n7\nFancy words and numbers\nMissing values and joins\nL5\n\n\n8\nPivot and Midterm 2 Review\nCase study\nL6\n\n\n9\nGroup project guidance 2\nImport: Excel, databases, and beyond\nM2\n\n\n10\nData science in practice\nRelationship between variables\nL7 , GP1\n\n\n11\nStructured relationships\nPredictive modelling\nL8 , GP 2\n\n\n12\nGroup project guidance 3\nModelling workflow\nL9\n\n\n13\nReview\n–\nL10 , GP3"
+    "objectID": "assignments.html#labs",
+    "href": "assignments.html#labs",
+    "title": "Assignments",
+    "section": "Labs",
+    "text": "Labs\n\n\n\nLab\nTopic\nDate\n\n\n\n\nLab 0\nIntroduction\nSep 14\n\n\nLab 1\n—\nSep 21\n\n\nLab 2\n—\nSep 28\n\n\nLab 3\n—\nOct 05\n\n\nLab 4\n—\nOct 19\n\n\nLab 5\n—\nOct 26\n\n\nLab 6\n—\nNov 02\n\n\nLab 7\n—\nNov 16\n\n\nLab 8\n—\nNov 23\n\n\nLab 9\n—\nNov 30\n\n\nLab 10\n—\nDec 02\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nLabs are worth 30% of your final grade, to be submitted during labs weekly on Mondays. See the Syllabus for full grading breakdown."
+  },
+  {
+    "objectID": "assignments.html#capstone-project",
+    "href": "assignments.html#capstone-project",
+    "title": "Assignments",
+    "section": "Capstone Project",
+    "text": "Capstone Project\nThe capstone project (15%) has multiple checkpoints across the term. Details and rubric will be posted here as each checkpoint approaches.\n\n\n\nCheckpoint\nDescription\nDue\n\n\n\n\nProposal\nDataset + research question\nTBD\n\n\nProgress Check\nDraft analysis\nTBD\n\n\nFinal Submission\nReport + presentation\nDec 3"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation:\n\nPhD in Mathematical and Statistical Modelling at Wilfrid Laurier University | 2026\nMMath in Statistics at University of Waterloo | 2020\nBBA/BA Financial Mathematics at Wilfrid Laurier University | 2019\n\nTeaching Experience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nFall 2026: Wednesdays 14:00–16:00 in room LH3073, or by appointment."
+  },
+  {
+    "objectID": "about.html#bio",
+    "href": "about.html#bio",
+    "title": "About",
+    "section": "",
+    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation:\n\nPhD in Mathematical and Statistical Modelling at Wilfrid Laurier University | 2026\nMMath in Statistics at University of Waterloo | 2020\nBBA/BA Financial Mathematics at Wilfrid Laurier University | 2019\n\nTeaching Experience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nFall 2026: Wednesdays 14:00–16:00 in room LH3073, or by appointment."
+  },
+  {
+    "objectID": "courses.html",
+    "href": "courses.html",
+    "title": "Teaching Experience",
+    "section": "",
+    "text": "DATA100 (Introduction to Data Analytics)\nST230 (Introduction to Probability and Statistics in Sciences)"
+  },
+  {
+    "objectID": "courses.html#current-courses",
+    "href": "courses.html#current-courses",
+    "title": "Teaching Experience",
+    "section": "",
+    "text": "DATA100 (Introduction to Data Analytics)\nST230 (Introduction to Probability and Statistics in Sciences)"
+  },
+  {
+    "objectID": "courses.html#past-courses",
+    "href": "courses.html#past-courses",
+    "title": "Teaching Experience",
+    "section": "Past Courses",
+    "text": "Past Courses\n\nST474/674 (Monte Carlo Methods)"
+  },
+  {
+    "objectID": "courses.html#graduate-ta-experience",
+    "href": "courses.html#graduate-ta-experience",
+    "title": "Teaching Experience",
+    "section": "Graduate TA Experience",
+    "text": "Graduate TA Experience\n\nWilfrid Laurier Univesrity\n\nMA307/507 (Numerical Analysis)\nMA451/651 (Stochastic Calculus)\nMA477/677 (Quantitative Financial Risk Management)\nST359/559 (Probability II)\nST462/662 (Advanced Regression)\nST473/674 (Financial Data Analysis)\nST494/694 (Statistical Learning)"
+  },
+  {
+    "objectID": "exams/MT1_Practice.html",
+    "href": "exams/MT1_Practice.html",
+    "title": "Midterm 1 Practice Problems",
+    "section": "",
+    "text": "As a study note, you should spend just as much time understanding the topics as you do solving the questions below.\nIt is strongly recommended that you write your full solutions on paper for each question before looking at the solutions. This will help you understand the concepts better and will also help you if you need to refer to your notes later.\n\n\n\n\n\n\nImportantDon’t shortcut your learning!\n\n\n\nYou can take a forklift to the gym and lift all the weights, but it doesn’t mean you got any stronger. You can read and understand the solutions, but it doesn’t mean you got any smarter.\nYou gain muscle by lifting weights that are near the limit of what you can handle - too heavy and you’ll just fail, too light and you won’t gain muscle. You gain knowledge in a similar way. In both cases, it should be a managable struggle!!!\n\n\n\n\nIn a histogram, how are the “bins” usually created?\n\n Where there are more data, more bins are created. Bins are always 1 unit wide. Bin is short for binary and has nothing to do with visualization. Bins are chosen as equal lengths across the range of the data.\n\nWhich of the following best describes a violin plot?\n\n A bigger version of a viola plot. A plot of measurements taken from violins. A better version of a histogram. A sideways density plot, mirrored across the axis.\n\nWhich of the following plots would allow a comparison between two categorical variables?\n\n Bar plots Histograms Violin plots Box plots\n\n\n\n\n\nid\nname\nheight\nyear\ngrade\n\n\n\n\n1\nBonk\n1.2\n1\n56\n\n\n2\nLilah\n0.4\nNA\nNA\n\n\n3\nJune\n1.4\n3\n88\n\n\n4\nJudy\n1.6\n2\n75\n\n\n5\nJulie\n1.7\n1\n72\n\n\n6\nJodie\n1.9\n1\n83\n\n\n7\nJill\n1.4\n2\n81\n\n\n\n\nConsider the data above. Which of the following plots would provide meaningful information?\n\n A boxplot of grade versus year A scatterplot of height versus grade A bar plot of ID versus Name A bar plot of height versus grade\n\nSuppose we have a data set named “sales” with columns product, volume, and city, containing the name of the product and the number of that product that was sold in each city. Fill in the blanks for the following plotting code. The resulting plot is shown below.\n\nggplot(  ) + aes(x =  , y =  , fill =  ) + geom_col(position=\"dodge\")\n\n\n\nstudent_number\nassessment\ngrade\n\n\n\n\n123456789\nA1\n90\n\n\n123456789\nA2\n83\n\n\n123456789\nA3\n74\n\n\n123456789\nMT\n89\n\n\n124624353\nA1\n60\n\n\n124624353\nA2\n65\n\n\n124624353\nA3\n70\n\n\n124624353\nMT\n76\n\n\n984367234\nA1\n73\n\n\n984367234\nA2\n74\n\n\n984367234\nA3\n76\n\n\n984367234\nMT\n71\n\n\n\n\nConsider the data above. What kind of variable is your student number, and what kind of plot might it be useful?\n\n Quantitative discrete, bar plot with heights defined by grade Quantitative discrete, scatter plot of grade versus assessment Unordered qualitative, bar plot with heights defined by grade Unordered qualitative, scatter plot of grade versus assessment\n\n\n\n\nExplanation\n\nYour student number is just a stand-in for your name. Numbers are assigned (mostly) randomly and have no order. They’re names made of digits, not numbers! You can’t add or multiply them.\n\n\n\nWhat’s the take-away message from the plot above (labelled Figure 2)?\n\n The blue team always wins. If you score 4 goals, you're guaranteed to win. Scoring more goals than the other team only has a slight correlation with winning the game. Taking more shots has a very slight correlation with scoring more goals.\n\nFigure 2 used veritcal jittering for the number of goals. Why?\n\n for display purposes. The jittering is done because goals is a continuous variable but was only measured to the nearest whole number; jittering makes it continuous rather than discrete. This jittering is inapproriate - it implies that there were games with 4.2 goals which is impossible. Since goals are whole numbers, all games with, say, 20 shots and 4 goals will be plotted in the exact same spot. Jittering allows us to see this.\n\nFrom the plot above (Figure 2), how many shots do you need to take in order to have more than a 50% chance to win the game?\n\n 20 40 60 It is impossible to tell from this plot.\n\n\nIn Figure 2, does it appear that shooting more makes you more likely to win?\n\n\nAnswer\n\nNot really! As you take more shots you get more goals, but perhaps your opponent shoots more as well. If you look at, say, 20 shots in a game, it looks like slightly more than half of the games were won. If you look at 40 shots, it still looks like slightly more than half of the games were won.\nIt really matters what the opponent does!\n\n\n\nWhat is the interpretation of the plot above (Figure 3)?\n\n The number of shots is uncorrelated with whether the team wins - it's still a 50-50 chance. There's more variation at the extremes because there were fewer games with that number of shots. The overall chance of winning is not exactly 50% because very few of the values are actually 50%. This plot shows how many games a team won at each number of shots. If a team takes 60 shots, they are guaranteed to lose, but if they take exactly 55 shots they have a 75% chance of winning. During a game, a team should stop shooting when they hit 55 shots.\n\nA survey asks respondents for their country, and answers come back as “Canada”, “canada”, and “CAN”. Why do we need to clean these entries before creating a summary chart?\n\n It changes the numbers from integers to decimals. R will automatically delete all responses that aren't spelled correctly. R will automatically throw an error and refuse to make the plot The computer treats them as 3 completely separate responses.\n\nYou want to compare the relative proportions of car classes across different drive types (drv), ensuring that every bar reaches 100% height regardless of the total count in each drive category. Which position adjustment should you use in geom_bar()?\n\n position = “fill” position = “dodge” position = “stack” position = “identity”\n\nI want to examine the distribution of a single continuous variable (hwy mileage) to check for bimodality and skewness across the entire dataset. Which geometric object is best suited for this task?\n\n geom_bar() geom_boxplot() geom_histogram() geom_point()\n\nYou plot City Mileage (cty) vs. Highway Mileage (hwy) for 234 cars using geom_point(). When you look at the plot, you only see about 100 dots. What is happening, and why is this plot misleading?\n\n Multiple cars have identical rounded mileage values, causing their points to land on exact same coordinates and stack directly on top of each other. Over half of the cars in the dataset have missing mileage values. geom_point() only plots a random sample of the data when datasets exceed 100 rows. Cars with identical highway and city mileage automatically cancel each other out on the graph.\n\nI created a histogram of continuous highway gas mileage (hwy) using geom_histogram(). By default, ggplot2 uses 30 bins and displays a warning suggesting that the user pick a better binwidth. What happens to the story the plot tells if the student sets an extremely small bin width (e.g., binwidth = 0.1) versus an extremely large bin width (e.g., binwidth = 20)?\n\n An extremely small bin width converts the plot into a boxplot; an extremely large bin width converts it into a scatterplot. An extremely small bin width only plots outliers; an extremely large bin width only plots the median. ggplot2 automatically rejects bin widths smaller than 1.0 with a fatal error. An extremely small bin width creates too much visual noise (individual spikes), while an extremely large bin width over-smooths the data and hides features like bimodality or skewness.\n\nWhen we want to deal with outliers, it is better to apply “filter(…)” so that we can isolate (and only work with) data without outliers, rather than using the “mutate(…)” function to change these outlier values to NA instead.\n\n False True\n\nWhen you plot with NA values, how do they appear in the plots?\n\n They show up as -999 They are not visible at all The NA values are outliers, and tidyverse has automatically removed them from the data set. They show up as zero, 0\n\nWhat is variation in the context of EDA?\n\n The tendency of two variables to move together The number of bins used in a histogram The tendency of a single variable's values differ from one measurement to the next A coding error that produces incorrect plots\n\nA violin plot shows two distinct humps for one group. What does a boxplot of the same group most likely fail to reveal?\n\n That the group actually has two common value ranges rather than one smooth distribution  Whether outliers exist The group's median value The exact sample size of the group \n\nYou track two things over a month: (1) how many hours you sleep each night, which bounces around from 5 to 9 depending on the day, and (2) on days you drink more cups of coffee after 3pm, you tend to sleep noticeably fewer hours that night. Which of these is variation, and which is covariation?\n\n Both are examples of covariation Both are examples of variation Sleep hours night to night = variation; cups of afternoon coffee vs. hours slept = covariation Sleep hours night to night = covariation; cups of afternoon coffee vs. hours slept = variation\n\nTwo plots show the same scatterplot of hwy against displ with a geom_smooth() line. Plot A adds coord_cartesian(xlim = c(5, 6)) and Plot B adds scale_x_continuous(limits = c(5, 6)). Which statement is true?\n\n Both fit the smooth line using only the points inside the window. Neither changes the smooth line. Plot A fits the smooth line using all of the data and then crops the view, while Plot B fits it using only the points inside the window. Plot A fits the smooth line using only the points inside the window, while Plot B fits it using all of the data.\n\n\n\n\nConsider the following three charts, all of which use the exact same data but with different aesthetic mappings and/or faceting. The data shown are from the gapminder data set, which includes 185 different countries, separated into Economic Regions and Continents. The plots show the GDP per capita for each country in 1972 and 2002, where data from countries within a region / continent are summarised together into box plots.\n\n[3 marks] For each plot, give at least one interpretation that cannot be discerned from the other plots.\n[2 marks] Which plot best answers the question “Has GDP per Capita increased between 1972 and 2002?” Justify your answer."
+  },
+  {
+    "objectID": "midterm.html",
+    "href": "midterm.html",
+    "title": "Midterm",
+    "section": "",
+    "text": "Information\nPractice"
+  },
+  {
+    "objectID": "midterm.html#midterm-1-written-exam",
+    "href": "midterm.html#midterm-1-written-exam",
+    "title": "Midterm",
+    "section": "",
+    "text": "Information\nPractice"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#todays-agenda",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#todays-agenda",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Today’s Agenda",
+    "text": "Today’s Agenda\n\n\n\n\n\n\n\nExercise\n\n\nYou will do a mini version of a small part of the group project, from questioning to exploration, in about 60 minutes of the class.\n\n\n\n\n\n\n\n\n\n\n\nExpectations\n\n\nYou are not expected to know everything yet.\n\nThis is only for practice, and it counts for our weekly participation.\nMy goal is for you all to attempt creating your own plots. I genuinely don’t care if you can create a stellar plot and/or analysis with time constraints.\nI care more about your effort and creativity! Surprise me!"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#the-tentative-deadlines",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#the-tentative-deadlines",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "The tentative deadlines",
+    "text": "The tentative deadlines\n\n\n\nCheckpoint\nWhat it is\n\n\n\n\n1. Project proposal\nResearch question and data choice\n\n\n2. EDA report\nWhat is the data telling you?\n\n\n3. Peer review\nGive feedback on another team’s report\n\n\n4. Final report\nYour full-complete analysis\n\n\n\nDetails and rubric will be released soon."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#todays-participation-credit",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#todays-participation-credit",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Today’s Participation Credit",
+    "text": "Today’s Participation Credit\n\nGet into groups and set up.\nRead the data description and come up with two interesting questions.\nMake two plots to explore them.\nPropose one new variable for your analysis.\nKnit into a pdf and submit to Gradescope.\nIf you are done early, come up and show me your results before you go."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#meet-the-data",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#meet-the-data",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Meet the data:",
+    "text": "Meet the data:\n\n\n\n\n\n\n\nSurvey Results\n\n\nA survey of university students about their sleep and study habits.\n\n\n\n\n\n\n\n\n\n\n\nDisclaimer\n\n\nThe data is totally simulated for this class. Don’t treat the findings as real facts about students or sleep. I have nothing do with all the claims that you might make about these students!\n\n\n\n\nEach row is one student. Each column is one variable."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#data-description-i",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#data-description-i",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Data description (i)",
+    "text": "Data description (i)\n\n\n\n\n\n\n\n\nVariable\nType\nDescription\n\n\n\n\nprogram\nCategorical\nArts, Business, Science, Health Sci, Engineering\n\n\nnum_courses\nNumeric (count)\nCourses this term (3 to 6)\n\n\nstudy_hours_week\nNumeric\nAverage study hours per week\n\n\nsleep_hours\nNumeric\nAverage hours of sleep per night\n\n\nfavourite_drink\nCategorical\nCoffee, Tea, Energy drink, Pop, Water"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#data-description-ii",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#data-description-ii",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Data description (ii)",
+    "text": "Data description (ii)\n\n\n\n\n\n\n\n\nVariable\nType\nDescription\n\n\n\n\nhas_early_class\nBinary\nAny 8:30 am class? (Yes / No)\n\n\nwork_hours_week\nNumeric\nPaid work hours per week (0 = no job)\n\n\nstress_level\nOrdinal (1-5)\nSelf-rated stress (1 = low, 5 = high)\n\n\nsleep_quality\nOrdinal (1-5)\nSelf-rated sleep quality (1 = poor, 5 = great)\n\n\navg_grade\nNumeric\nAverage grade (%)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#two-kinds-of-questions",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#two-kinds-of-questions",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Two kinds of questions",
+    "text": "Two kinds of questions\n\n\n\n\n\n\n\nTask\n\n\nI want you to generate two questions for this mini-project.\n\n\n\n\n\n\n\n\n\n\n\nNumeric x Numeric\n\n\nChoices of numeric variables: number of courses, number of study hours per week, average hours of sleep per night, number of work hours per week, and average grades.\n\n\n\n\n\n\n\n\n\n\n\nNumeric x Categorical\n\n\nChoices of categorical variables: program type, favourite drinks, early classes?, stress level, and sleep quality."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#numeric-x-numeric",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#numeric-x-numeric",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Numeric x Numeric",
+    "text": "Numeric x Numeric\n\n\n\n\n\n\n\nPurpose\n\n\nIs one number related to another?\n\n\n\n\n\n\n\n\n\n\n\nPlots\n\n\nE.g. scatterplots, jitter, geom_smooth, colouring points by a categorical variable (aes(colour = ...)), etc.\nExample: “Is the relationship between sleep hours and average grades the same across programs?”"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#example-plot",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#example-plot",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Example plot",
+    "text": "Example plot\n\nDoes the pattern look the same in every program?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#numeric-x-categorical",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#numeric-x-categorical",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Numeric x Categorical",
+    "text": "Numeric x Categorical\n\n\n\n\n\n\n\nPurpose\n\n\nDoes a number differ across groups?\n\n\n\n\n\n\n\n\n\n\n\nPlots\n\n\nE.g. boxplots, bar plots, histograms with facet grids, etc.\nExample: “How does the distribution of weekly study hours differ across programs?”"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#example-plot-1",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#example-plot-1",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Example plot",
+    "text": "Example plot\n\nHow do the centre and spread differ across programs?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#weak-vs.-strong-questions",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#weak-vs.-strong-questions",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Weak vs. strong questions",
+    "text": "Weak vs. strong questions\n\n\n\n\n\n\n\nWeak Questions\n\n\nA weak question is vague. It doesn’t say which variables to use, what to compare, or what a plot or table would show.\n\nIs sleep related to anything?\nAnalyze and see which undergraduate program is the best.\n\n\n\n\n\n\n\n\n\n\n\n\nStrong Questions\n\n\nA strong question is specific enough that the reader could make the plot without asking you anything.\n\nDo students with more courses study more hours per week?\nDoes average stress level of students differ by their program?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#careful-with-your-wording",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#careful-with-your-wording",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Careful with your wording",
+    "text": "Careful with your wording\n\n\n\n\n\n\n\nInstead of\nTry\n\n\n\n\n“Energy drinks cause less sleep.”\n“Energy drink drinkers tend to sleep less.”\n\n\n“Working makes students study less.”\n“More work hours is associated with fewer study hours.”\n\n\n\nData like this shows patterns, not proof of cause."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#getting-started",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#getting-started",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Getting started",
+    "text": "Getting started\n\n\n\n\n\n\n\nGroups\n\n\nForm a group with your neighbours. Maximum group of four.\n\n\n\n\n\nDownload sleep_survey.csv and mini_project_template.Rmd from the MyLearningSpace\nPut them in the same folder, then open the .Rmd in RStudio."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#step-1-write-two-questions",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#step-1-write-two-questions",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Step 1: Write two questions",
+    "text": "Step 1: Write two questions\nRead the data description in the lecture slides, then fill in Part 1 of the Rmd:\n\nOne numeric × numeric question\nOne categorical × numeric question\n\nName your variables and say what you’d compare."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#step-2-plots",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#step-2-plots",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Step 2: Plots",
+    "text": "Step 2: Plots\n1 (numeric × numeric) and 1 (categorical × numeric)\n\nMake a scatterplot for your first question\nAdd appropriate axis labels\nWrite 2 to 3 sentences on what you observe for each plot"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#step-3-one-new-variable",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#step-3-one-new-variable",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Step 3: One new variable",
+    "text": "Step 3: One new variable\nWhat one variable could you add to this survey that would make the analysis more interesting?\n\nExplain what it would let you ask or change how you read an existing pattern.\n\nA variable that changes how you read a pattern beats just another column.\n\nExample: year_of_study. Upper-year students might both study more and earn higher grades, so year could change how we read the study hours vs. grades pattern."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#wrap-up-and-submit",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#wrap-up-and-submit",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Wrap-up and submit",
+    "text": "Wrap-up and submit\n\nKnit your Rmd to PDF\nUpload the PDF to Gradescope (one per group, add all members)\nUnfinished is okay. Submit what you have.\n\n\n\n\n\n\n\n\nNext Project Guidance\n\n\nTuesday, November 10. More details will come!\n\n\n\n\n\n\n\n\n\n\n\nHomework for Reading Week\n\n\nMake a group of 4-5 students among yourselves. Think about the type of data that you want to work with for your final project."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-2.html#the-whole-game",
@@ -1727,5 +1853,12 @@
     "title": "Lecture Slides",
     "section": "Lecture 7: Visualization and Midterm Review",
     "text": "Lecture 7: Visualization and Midterm Review\n\nLecture 7 Slides"
+  },
+  {
+    "objectID": "slides.html#lecture-8-group-project-guidance-1",
+    "href": "slides.html#lecture-8-group-project-guidance-1",
+    "title": "Lecture Slides",
+    "section": "Lecture 8: Group Project Guidance 1",
+    "text": "Lecture 8: Group Project Guidance 1\n\nLecture 8 Slides"
   }
 ]

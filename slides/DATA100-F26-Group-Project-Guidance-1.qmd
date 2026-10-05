@@ -1,0 +1,272 @@
+---
+title: "DATA100 Introduction to Data Analytics"
+subtitle: "Mini-Project: Sleep Habits of University Students"
+author: "Agassi Iu"
+institute: "Wilfrid Laurier University"
+date: "October 08, 2026"
+format:
+  live-revealjs:
+    theme: sky
+    slide-number: true
+    transition: slide
+    incremental: true
+    embed-resources: true # Embeds figures and libraries into a single portable HTML file
+filters:
+  - live
+webr:
+  packages:
+    - ggplot2
+    - dplyr
+    - tidyr
+    - tibble
+    - readr
+execute:
+  echo: true
+  warning: false   # Hides warnings and package loading messages
+  message: false
+  fig-width: 7
+  fig-height: 4
+  fig-align: center
+---
+
+```{r}
+#| include: false
+library(ggplot2)
+library(tidyverse)
+sleep <- read_csv("data/sleep_survey.csv")
+```
+
+## Today's Agenda
+
+::: {.callout-tip title="Exercise"}
+You will do a **mini version** of a **small part** of the group project, from questioning to exploration, in about 60 minutes of the class.
+:::
+
+::: {.callout-caution title="Expectations"}
+You are **not** expected to know everything yet. 
+
+- This is only for practice, and it counts for our weekly participation.
+
+- My goal is for you all to attempt creating your own plots. I genuinely don't care if you can create a stellar plot and/or analysis with time constraints. 
+
+- I care more about your effort and creativity! Surprise me!
+
+:::
+
+## The tentative deadlines
+
+| Checkpoint | What it is |
+|---|---|
+| 1. Project proposal | Research question and data choice |
+| 2. EDA report | What is the data telling you? |
+| 3. Peer review | Give feedback on another team's report |
+| 4. Final report | Your full-complete analysis |
+
+*Details and rubric will be released soon.*
+
+
+
+## Today's Participation Credit
+
+1. Get into groups and set up.
+2. Read the data description and come up with *two interesting questions*.
+3. Make two plots to explore them.
+4. Propose *one new variable* for your analysis.
+5. Knit into a *pdf* and submit to Gradescope.
+6. **If you are done early, come up and show me your results before you go.**
+
+
+## Meet the data: 
+
+::: {.callout-tip title="Survey Results"}
+A survey of university students about their sleep and study habits.
+:::
+
+::: {.callout-warning title="Disclaimer"}
+**The data is totally simulated** for this class. Don't treat the findings as real facts about students or sleep. I have nothing do with all the claims that you might make about these students!
+:::
+
+Each row is *one student*. Each column is *one variable*.
+
+
+## Data description (i){.smaller}
+
+| Variable | Type | Description |
+|---|---|---|
+| `program` | Categorical | Arts, Business, Science, Health Sci, Engineering |
+| `num_courses` | Numeric (count) | Courses this term (3 to 6) |
+| `study_hours_week` | Numeric | Average study hours per week |
+| `sleep_hours` | Numeric | Average hours of sleep per night |
+| `favourite_drink` | Categorical | Coffee, Tea, Energy drink, Pop, Water |
+
+
+## Data description (ii){.smaller}
+
+| Variable | Type | Description |
+|---|---|---|
+| `has_early_class` | Binary | Any 8:30 am class? (Yes / No) |
+| `work_hours_week` | Numeric | Paid work hours per week (0 = no job) |
+| `stress_level` | Ordinal (1-5) | Self-rated stress (1 = low, 5 = high) |
+| `sleep_quality` | Ordinal (1-5) | Self-rated sleep quality (1 = poor, 5 = great) |
+| `avg_grade` | Numeric | Average grade (%) |
+
+
+
+
+
+## Two kinds of questions
+
+::: {.callout-note title="Task"}
+I want you to generate two questions for this mini-project.
+:::
+
+::: {.callout-important title="Numeric x Numeric"}
+Choices of numeric variables: *number of courses*, *number of study hours per week*, *average hours of sleep per night*, *number of work hours per week*, and *average grades*.
+:::
+
+::: {.callout-caution title="Numeric x Categorical"}
+Choices of categorical variables: *program type*, *favourite drinks*, *early classes?*, *stress level*, and *sleep quality*.
+:::
+
+
+## Numeric x Numeric
+
+::: {.callout-note title="Purpose"}
+Is one number related to another?
+:::
+
+::: {.callout-tip title="Plots"}
+E.g. scatterplots, jitter, `geom_smooth`, colouring points by a categorical variable (`aes(colour = ...)`), etc.
+
+Example: *"Is the relationship between sleep hours and average grades the same across programs?"*
+:::
+
+## Example plot
+
+```{r}
+#| echo: false
+ggplot(sleep, aes(x = sleep_hours, y = avg_grade, colour = program)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(x = "Average sleep per night (hours)",
+       y = "Average grade (%)",
+       colour = "Program")
+```
+
+*Does the pattern look the same in every program?*
+
+
+## Numeric x Categorical
+
+::: {.callout-note title="Purpose"}
+Does a number differ across groups?
+:::
+
+::: {.callout-tip title="Plots"}
+E.g. boxplots, bar plots, histograms with facet grids, etc.
+
+Example: *"How does the distribution of weekly study hours differ across programs?"*
+:::
+
+## Example plot
+
+```{r}
+#| echo: false
+ggplot(sleep, aes(x = study_hours_week)) +
+  geom_histogram(bins = 15, fill = "steelblue", colour = "white") +
+  facet_wrap(~ program) +
+  labs(x = "Study hours per week", y = "Number of students")
+```
+
+*How do the centre and spread differ across programs?*
+
+
+## Weak vs. strong questions
+
+::: {.callout-caution title="Weak Questions"}
+A weak question is vague. It doesn't say which variables to use, what to compare, or what a plot or table would show. 
+
+- *Is sleep related to anything?*
+
+- *Analyze and see which undergraduate program is the best.*
+
+:::
+
+
+::: {.callout-tip title="Strong Questions"}
+A strong question is specific enough that the reader could make the plot without asking you anything.
+
+- *Do students with more courses study more hours per week?*
+
+- *Does average stress level of students differ by their program?*
+
+:::
+
+
+
+## Careful with your wording
+
+| Instead of | Try |
+|---|---|
+| "Energy drinks **cause** less sleep." | "Energy drink drinkers **tend to sleep less**." |
+| "Working **makes** students study less." | "More work hours is **associated with** fewer study hours." |
+
+Data like this shows **patterns**, not **proof of cause**.
+
+
+## Getting started
+
+::: {.callout-note title="Groups"}
+Form a group with your neighbours. Maximum group of four.
+:::
+
+1. Download `sleep_survey.csv` and `mini_project_template.Rmd` from the *MyLearningSpace*
+2. Put them in the *same folder*, then open the *.Rmd* in *RStudio*.
+
+
+## Step 1: Write two questions
+
+Read the data description in the lecture slides, then fill in **Part 1** of the Rmd:
+
+1. One **numeric × numeric** question
+2. One **categorical × numeric** question
+
+Name your variables and say what you'd compare.
+
+
+## Step 2: Plots
+
+1 (numeric × numeric) and 1 (categorical × numeric)
+
+- Make a **scatterplot** for your first question
+- Add appropriate axis labels 
+- Write **2 to 3 sentences** on what you observe for each plot
+
+
+## Step 3: One new variable
+
+What **one variable** could you add to this survey that would make the analysis **more interesting**?
+
+
+- Explain what it would let you ask or change how you read an existing pattern.
+
+  - *A variable that changes how you read a pattern beats just another column.*
+
+- **Example:** `year_of_study`. Upper-year students might both study more *and* earn higher grades, so year could change how we read the study hours vs. grades pattern.
+
+
+
+## Wrap-up and submit
+
+1. **Knit** your Rmd to PDF
+2. **Upload** the PDF to Gradescope *(one per group, add all members)*
+3. Unfinished is okay. Submit what you have.
+
+
+::: {.callout-note title="Next Project Guidance"}
+Tuesday, November 10. More details will come!
+:::
+
+::: {.callout-warning title="Homework for Reading Week"}
+Make a group of 4-5 students among yourselves. Think about the type of data that you want to work with for your final project.
+:::

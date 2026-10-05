@@ -32,4 +32,6 @@ title: "Lecture Slides"
 - [Lecture 7 Slides](slides/DATA100-F26-Lecture-7.html)
 
 
+## Lecture 8: Group Project Guidance 1
+- [Lecture 8 Slides](slides/DATA100-F26-Group-Project-Guidance-1.html)
 

@@ -23,6 +23,8 @@ website:
         text: Slides
       - href: assignments.qmd
         text: Assignments
+      - href: midterm.qmd
+        text: Midterms
 
     right:
       - icon: github
