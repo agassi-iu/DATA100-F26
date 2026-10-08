@@ -36,6 +36,9 @@ library(tidyverse)
 sleep <- read_csv("data/sleep_survey.csv")
 ```
 
+
+
+
 ## Today's Agenda
 
 ::: {.callout-tip title="Exercise"}
@@ -52,6 +55,25 @@ You are **not** expected to know everything yet.
 - I care more about your effort and creativity! Surprise me!
 
 :::
+
+# Midterm
+
+## Midterm Review
+
+I finished marking your exams! :)
+
+::: {.callout-note title="Multiple Choice"}
+- Problematic MC's: Q2, Q5, Q10, Q13
+- The rest: pretty well-done.
+:::
+
+::: {.callout-caution title="Short Answers"}
+- Everything looks great except for Q18-b.
+:::
+
+
+
+# Today's Exercise
 
 ## The tentative deadlines
 
