@@ -1,0 +1,992 @@
+---
+title: "DATA100 Introduction to Data Analytics"
+subtitle: "Lecture 8: Logical Vectors"
+author: "Agassi Iu"
+institute: "Wilfrid Laurier University"
+date: "October 20, 2026"
+format:
+  live-revealjs:
+    theme: sky
+    slide-number: true
+    transition: slide
+    incremental: true
+    embed-resources: true # Embeds figures and libraries into a single portable HTML file
+    # OPTION B for the data file (instead of a URL): ship the CSV with the deck.
+    # Untested with embed-resources, so check it renders before relying on it.
+    # resources:
+    #   - sleep_survey_v2.csv
+filters:
+  - live
+webr:
+  packages:
+    - ggplot2
+    - dplyr
+    - tidyr
+    - tibble
+    - readr
+    - stringr
+    - forcats
+    - purrr
+    - scales
+execute:
+  echo: true
+  warning: false   # Hides warnings and package loading messages
+  message: false
+  fig-width: 7
+  fig-height: 4
+  fig-align: center
+---
+
+# The question
+
+## Do students who sleep less get lower grades, and does it depend on their program? {.center}
+
+- We have a survey of **1,000 students**
+- Today we answer this question, and learn Chapter 12 (logical vectors) *along the way*
+
+::: {.notes}
+~5 min for this whole opening block. Resist explaining any code yet: the point is to show the answer first.
+:::
+
+
+## Setup
+
+<!-- r setup -->
+```{r echo=FALSE}
+#| context: setup
+library(dplyr)
+library(tibble)
+library(ggplot2)
+library(readr)
+
+survey <- read_csv("data/sleep_survey_v2.csv", show_col_types = FALSE)
+```
+
+<!-- webr setup -->
+```{webr}
+#| context: setup
+#| autorun: true
+library(dplyr)
+library(tibble)
+library(ggplot2)
+library(readr)
+
+survey <- read_csv("data/sleep_survey_v2.csv", show_col_types = FALSE)
+
+```
+
+## Answer
+
+```{r echo=FALSE}
+#| context: output
+#| autorun: true
+survey |>
+  mutate(
+    sleep_group = case_when(
+      sleep_hours < 6    ~ "Short",
+      sleep_hours <= 7.5 ~ "Normal",
+      sleep_hours > 7.5  ~ "Long"
+    )
+  ) |>
+  filter(!is.na(sleep_group), !is.na(avg_grade)) |>
+  ggplot(aes(x = sleep_group, y = avg_grade, fill = sleep_group)) +
+  geom_boxplot(alpha = 0.6, show.legend = FALSE, width = 0.5, outlier.shape = NA) +
+  scale_x_discrete(limits = c("Short", "Normal", "Long")) +
+  labs(
+    title = "Grade distribution across sleep groups",
+    x = "Sleep group", y = "Average grade"
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+
+## Answer: split by program
+
+```{r echo=FALSE}
+survey |>
+  mutate(
+    sleep_group = case_when(
+      sleep_hours < 6    ~ "Short",
+      sleep_hours <= 7.5 ~ "Normal",
+      sleep_hours > 7.5  ~ "Long"
+    )
+  ) |>
+  filter(!is.na(sleep_group), !is.na(avg_grade), !is.na(program)) |>
+  ggplot(aes(x = sleep_group, y = avg_grade, fill = sleep_group)) +
+  geom_boxplot(alpha = 0.6, show.legend = FALSE, width = 0.5, outlier.shape = NA) +
+  facet_wrap(~ program) +
+  scale_x_discrete(limits = c("Short", "Normal", "Long")) +
+  labs(
+    title = "But within each program, the pattern mostly disappears",
+    x = "Sleep group", y = "Average grade"
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+
+## So how did we get here?
+
+Everything on the last two slides came from **one pipeline**:
+
+```r
+sleep_summary <- survey |>
+  mutate(
+    sleep_group = case_when(
+      sleep_hours < 6    ~ "Short",
+      sleep_hours <= 7.5 ~ "Normal",
+      sleep_hours > 7.5  ~ "Long"
+    )
+  ) |>
+  filter(!is.na(sleep_group), !is.na(avg_grade)) |>
+  group_by(program, sleep_group) |>
+  summarize(
+    n = n(),
+    mean_grade = mean(avg_grade),
+    pct_passing = mean(avg_grade >= 60),
+    any_fail = any(avg_grade < 50),
+    .groups = "drop"
+  )
+```
+
+## The plan for today {.smaller}
+
+We rebuild the pipeline one action at a time. 
+
+Each actionverb needs a different part of Chapter 12:
+
+| Step | Action | Chapter 12 tools we need |
+|------|------|--------------------------|
+| 1 | `mutate()` | comparisons (`<`, `==`), `if_else()`, `case_when()` |
+| 2 | `filter()` | missing values, `is.na()`, `&`, <code>&#124;</code>, `!`, `%in%` |
+| 3 | `group_by()` + `summarize()` | `sum()`, `mean()`, `any()`, `all()` |
+
+::: {.callout-tip title="Not everything fits in this 80-minute lecture"}
+I have left some of the Chapter 12 tools in the *appendix table* at the end of this deck of slides. Each row says what the tool does and which section of the chapter to read. You should definitely take a look at the text for more details.
+:::
+
+## Meet the data
+
+```{webr}
+
+glimpse(survey)
+```
+
+::: {.callout-note title="About this data"}
+- This is a **simulated** survey, built for teaching
+- A blank cell means the student left the question unanswered. R reads it as `NA`
+- You will see those blanks cause trouble in a few minutes
+:::
+
+## What is a logical vector?
+
+::: {.callout-note title="Definition"}
+A **logical vector** is the simplest kind of vector: every element is exactly one of three values.
+
+- `TRUE`
+- `FALSE`
+- `NA` (missing)
+:::
+
+- Raw data rarely arrives as logical vectors
+- But you will create and use them in almost every analysis
+
+
+# Step 1: mutate()
+
+::: {.notes}
+~20 min for this section including Exercise 1.
+:::
+
+## Where we are in the pipeline
+
+```{.r code-line-numbers="2-8"}
+sleep_summary <- survey |>
+  mutate(
+    sleep_group = case_when(
+      sleep_hours < 6    ~ "Short",
+      sleep_hours <= 7.5 ~ "Normal",
+      sleep_hours > 7.5  ~ "Long"
+    )
+  ) |>
+  filter(!is.na(sleep_group), !is.na(avg_grade)) |>
+  group_by(program, sleep_group) |>
+  summarize(
+    n = n(),
+    mean_grade = mean(avg_grade),
+    pct_passing = mean(avg_grade >= 60),
+    any_fail = any(avg_grade < 50),
+    .groups = "drop"
+  )
+```
+
+**Goal:** turn `sleep_hours` (a number) into `sleep_group` (a label).
+
+## Comparisons create logical vectors
+
+The comparison operators are:
+
+- `<`
+- `<=`
+- `>`
+- `>=`
+- `==`
+- `!=`
+
+Each one compares two values and returns `TRUE` or `FALSE`.
+
+## Who sleeps less than 6 hours?
+
+```{webr}
+survey |>
+  mutate(short_sleep = sleep_hours < 6, .keep = "used")
+```
+
+- `short_sleep` is a **logical column**
+- We can store it with `mutate()`, or use the same test directly inside `filter()`
+
+## `.keep`: choosing which columns survive
+
+`mutate()` has a `.keep` argument that controls which columns appear in the result.
+
+| `.keep =` | Columns returned |
+|-----------|------------------|
+| `"all"` (default) | All original columns plus the new ones |
+| `"used"` | Only the columns used to build the new ones, plus the new ones |
+| `"unused"` | Original columns you did not use, plus the new ones |
+| `"none"` | Only the new columns (plus any grouping variables) |
+
+::: {.callout-tip title="Why we use it today"}
+`.keep = "used"` shows each input column next to the logical column it produced, so you can check the result by eye. It does not change the logic.
+:::
+
+## How many `TRUE`, `FALSE`, and `NA`?
+
+```{webr}
+survey |>
+  mutate(short_sleep = sleep_hours < 6) |>
+  count(short_sleep)
+```
+
+::: {.callout-important title="A blank is not FALSE"}
+Students who left `sleep_hours` blank get `NA`, not `FALSE`. R does not know whether they slept less than 6 hours.
+
+We deal with these rows in Step 2.
+:::
+
+## Comparing text
+
+`has_early_class` is stored as text (`"Yes"` / `"No"`). Comparisons work on text too:
+
+```{webr}
+survey |>
+  mutate(early = has_early_class == "Yes", .keep = "used") |>
+  count(has_early_class, early)
+```
+
+::: {.callout-caution title="Spelling and capitals matter"}
+`"Yes"`, `"yes"`, and `"YES"` are three different values to R. Check how your data is spelled before you compare it.
+:::
+
+## From logical column to label: `if_else()`
+
+`if_else(condition, true, false)` picks one value when the condition is `TRUE` and another when it is `FALSE`.
+
+```{webr}
+survey |>
+  mutate(
+    sleep_label = if_else(sleep_hours < 6, "Short", "Not short"),
+    .keep = "used"
+  ) |>
+  count(sleep_label)
+```
+
+- Two groups: fine
+- A blank `sleep_hours` stays `NA`
+
+## What if we want three groups?
+
+We could nest one `if_else()` inside another:
+
+```{webr}
+survey |>
+  mutate(
+    sleep_group = if_else(
+      sleep_hours < 6, "Short",
+      if_else(sleep_hours <= 7.5, "Normal", "Long")
+    ),
+    .keep = "used"
+  ) |>
+  count(sleep_group)
+```
+
+- It works, but it is already hard to read
+- Every extra group adds another layer
+- Time for `case_when()`
+
+## `case_when()`
+
+- Inspired by SQL's `CASE` statement
+- Uses a special syntax unlike anything else in the tidyverse: pairs of `condition ~ output`
+- `condition` must be a logical vector; when it is `TRUE`, `output` is used
+
+```{webr}
+survey |>
+  mutate(
+    sleep_group = case_when(
+      sleep_hours < 6    ~ "Short",
+      sleep_hours <= 7.5 ~ "Normal",
+      sleep_hours > 7.5  ~ "Long"
+    ),
+    .keep = "used"
+  )
+```
+
+## Check your groups
+
+```{webr}
+survey |>
+  mutate(
+    sleep_group = case_when(
+      sleep_hours < 6    ~ "Short",
+      sleep_hours <= 7.5 ~ "Normal",
+      sleep_hours > 7.5  ~ "Long"
+    )
+  ) |>
+  count(sleep_group)
+```
+
+- Where did the `NA` row come from?
+- No condition matched the blank `sleep_hours`, so `case_when()` gave `NA`
+
+## Why "Normal" has no lower bound
+
+::: {.callout-important title="Only the first match is used"}
+If several conditions are `TRUE` for one student, `case_when()` uses the **first** one.
+:::
+
+- A student with `sleep_hours = 5` is `< 6` **and** `<= 7.5`
+- The `"Short"` line comes first, so it wins
+- That is why `"Normal"` does not need to say `sleep_hours >= 6`
+
+## What if we swap the order?
+
+```{webr}
+survey |>
+  mutate(
+    sleep_group = case_when(
+      sleep_hours <= 7.5 ~ "Normal",
+      sleep_hours < 6    ~ "Short",
+      sleep_hours > 7.5  ~ "Long"
+    )
+  ) |>
+  count(sleep_group)
+```
+
+::: {.callout-warning title="Overlapping conditions"}
+There is no `"Short"` row any more. Every short sleeper matched `<= 7.5` first. Be careful with complex `case_when()` statements, especially when you mix `<` and `>`.
+:::
+
+## `.default` is a catch-all, and a trap
+
+```{webr}
+survey |>
+  mutate(
+    sleep_group = case_when(
+      sleep_hours < 6    ~ "Short",
+      sleep_hours <= 7.5 ~ "Normal",
+      .default = "Long"
+    )
+  ) |>
+  count(sleep_group)
+```
+
+::: {.callout-caution title="Where did the NA row go?"}
+`.default` also catches the blank rows. They are now labelled `"Long"`, which is wrong. We wrote `sleep_hours > 7.5` explicitly so blank rows stay `NA`.
+:::
+
+## Exercise 1
+
+::: {.callout-tip title="Live exercise"}
+Use `case_when()` to create a `grade_band` column from `avg_grade`:
+
+- `"Fail"`: below 50
+- `"Pass"`: 50 to 69
+- `"Good"`: 70 to 84
+- `"Excellent"`: 85 and above
+
+Then use `count()` to see how many students are in each band. What happens to students with a blank `avg_grade`?
+:::
+
+```{webr}
+#| exercise: ex_bands
+survey |>
+  mutate(
+    grade_band = case_when(
+
+    )
+  ) |>
+  count(grade_band)
+```
+
+```{webr}
+#| exercise: ex_bands
+#| solution: true
+survey |>
+  mutate(
+    grade_band = case_when(
+      avg_grade < 50   ~ "Fail",
+      avg_grade < 70   ~ "Pass",
+      avg_grade < 85   ~ "Good",
+      avg_grade >= 85  ~ "Excellent"
+    )
+  ) |>
+  count(grade_band)
+
+# The blank avg_grade rows show up as NA: no condition matched them.
+```
+
+
+# Step 2: filter()
+
+::: {.notes}
+~20 min for this section including Exercise 2. The `== NA` failure and the `| 5` failure are the two "break it live" moments.
+:::
+
+## Where we are in the pipeline
+
+```{.r code-line-numbers="9"}
+sleep_summary <- survey |>
+  mutate(
+    sleep_group = case_when(
+      sleep_hours < 6    ~ "Short",
+      sleep_hours <= 7.5 ~ "Normal",
+      sleep_hours > 7.5  ~ "Long"
+    )
+  ) |>
+  filter(!is.na(sleep_group), !is.na(avg_grade)) |>
+  group_by(program, sleep_group) |>
+  summarize(
+    n = n(),
+    mean_grade = mean(avg_grade),
+    pct_passing = mean(avg_grade >= 60),
+    any_fail = any(avg_grade < 50),
+    .groups = "drop"
+  )
+```
+
+**Goal:** remove the students with blank answers. This one line needs the most Chapter 12 ideas.
+
+## `filter()` keeps `TRUE` rows
+
+::: {.callout-important title="Key idea"}
+`filter()` keeps rows where the condition is `TRUE`. It drops rows where the condition is `FALSE` **or `NA`**.
+:::
+
+```{webr}
+survey |>
+  filter(sleep_hours < 6)
+```
+
+- Students with a blank `sleep_hours` are silently gone
+- Is that what we wanted?
+
+## Missing values are "contagious"
+
+- `NA` stands for the *unknown*
+- Almost any operation involving an unknown value gives an unknown result
+
+```{webr}
+NA > 5
+10 == NA
+```
+
+## The most confusing case: `NA == NA`
+
+```{webr}
+NA == NA
+```
+
+Easier to see with some context:
+
+```{webr}
+# We don't know how old Mary is
+age_mary <- NA
+
+# We don't know how old John is
+age_john <- NA
+
+# Are Mary and John the same age?
+age_mary == age_john
+# We don't know!
+```
+
+## Let's find the blank rows
+
+The obvious attempt:
+
+```{webr}
+survey |>
+  filter(sleep_hours == NA)
+```
+
+::: {.callout-warning title="Zero rows. Why?"}
+- `sleep_hours == NA` returns `NA` for **every** row
+- `filter()` drops rows where the condition is `NA`
+- So nothing is left
+:::
+
+## The fix: `is.na()`
+
+::: {.callout-important title="Key idea"}
+Never test for missing values with `== NA`. Use `is.na()`.
+:::
+
+```{webr}
+survey |>
+  filter(is.na(sleep_hours))
+```
+
+`is.na(x)` works on any type of vector. It returns `TRUE` for missing values and `FALSE` for everything else.
+
+## Keeping the complete rows
+
+Put `!` in front to flip `TRUE` and `FALSE`:
+
+```{webr}
+survey |>
+  filter(!is.na(sleep_hours))
+```
+
+- `!is.na(x)` reads as "x is **not** missing"
+- This is the first half of our pipeline's `filter()` line
+
+## Combining logical vectors
+
+Once you have several logical vectors, combine them with Boolean algebra:
+
+| Operator | Meaning |
+|----------|---------|
+| `&` | and |
+| <code>&#124;</code> | or |
+| `!` | not |
+
+```{webr}
+survey |>
+  filter(program == "Arts" & sleep_hours < 6)
+```
+
+- In `filter()`, a comma means the same as `&`: `filter(a, b)` is `filter(a & b)`
+- That is why our pipeline has `filter(!is.na(sleep_group), !is.na(avg_grade))`
+
+## Venn diagrams
+
+![Common Boolean operations. `x` is the left circle, `y` is the right circle, and the shaded region shows what each operator selects. Figure from R for Data Science (2e), Fig. 12.1.](https://r4ds.hadley.nz/diagrams/transform.png){fig-alt="Seven Venn diagrams, one per logical operator: x & !y, x & y, !x & y, x, xor(x, y), y, and x | y." width="85%"}
+
+## Missing values in Boolean algebra
+
+The rules look inconsistent at first:
+
+```{webr}
+df <- tibble(x = c(TRUE, FALSE, NA))
+
+df |>
+  mutate(
+    and = x & NA,
+    or = x | NA
+  )
+```
+
+## Making sense of the `NA` rules {.smaller}
+
+Remember: an `NA` in a logical vector means "could be `TRUE` or `FALSE`".
+
+::: {.callout-note title="Or (`|`): only one side needs to be `TRUE`"}
+- `TRUE | TRUE` and `FALSE | TRUE` are both `TRUE`
+- So `NA | TRUE` must be `TRUE`: whichever way the `NA` resolves, the result is `TRUE`
+- But `NA | FALSE` is `NA`: it depends on what the `NA` really is
+:::
+
+::: {.callout-tip title="And (`&`): both sides must be `TRUE`"}
+- `NA & TRUE` is `NA`: it depends on the `NA`
+- `NA & FALSE` is `FALSE`: at least one side is `FALSE` no matter what
+:::
+
+## Try it yourself
+
+```{webr}
+NA | TRUE
+NA | FALSE
+NA & TRUE
+NA & FALSE
+```
+
+## R does not work like English
+
+::: {.callout-warning title="A tempting mistake"}
+Suppose we want the high-stress students: stress level 4 **or** 5. In English that is easy to say...
+:::
+
+```{webr}
+survey |>
+  filter(stress_level == 4 | 5)
+```
+
+It does not give an error, but it does not work either. Every row came back. Why?
+
+## What went wrong?
+
+1. R first evaluates `stress_level == 4`, producing a logical vector (call it `four`)
+2. Then it computes `four | 5`
+3. With a logical operator, any number other than 0 is converted to `TRUE`
+4. So this becomes `four | TRUE`, which is **always** `TRUE`
+5. Every row is selected
+
+```{webr}
+survey |>
+  mutate(
+    four = stress_level == 4,
+    final = four | 5,
+    .keep = "used"
+  )
+```
+
+## The same mistake with text
+
+```{webr}
+#| error: true
+survey |>
+  filter(program == "Arts" | "Business")
+```
+
+::: {.callout-caution title="Loud errors are the friendly ones"}
+With numbers, the mistake is **silent** and gives wrong results. With text, R stops and complains. Either way, R does not read English: write the full comparison on both sides.
+:::
+
+## The correct version
+
+```{webr}
+survey |>
+  filter(stress_level == 4 | stress_level == 5)
+```
+
+That gets long. There is a shortcut.
+
+## `%in%`
+
+`x %in% y` returns a logical vector the same length as `x`. It is `TRUE` whenever a value of `x` appears anywhere in `y`.
+
+```{webr}
+1:12 %in% c(1, 5, 11)
+```
+
+An easy way to dodge the `==` / `|` ordering problem:
+
+```{webr}
+survey |>
+  filter(program %in% c("Arts", "Business"))
+```
+
+## `%in%` and missing values
+
+::: {.callout-caution title="Different NA rules"}
+`%in%` follows different `NA` rules from `==`: `NA %in% NA` is `TRUE`.
+:::
+
+```{webr}
+c(1, 2, NA) == NA
+c(1, 2, NA) %in% NA
+```
+
+## Back to the pipeline
+
+```{webr}
+survey |>
+  mutate(
+    sleep_group = case_when(
+      sleep_hours < 6    ~ "Short",
+      sleep_hours <= 7.5 ~ "Normal",
+      sleep_hours > 7.5  ~ "Long"
+    )
+  ) |>
+  filter(!is.na(sleep_group), !is.na(avg_grade)) |>
+  count(sleep_group)
+```
+
+- The `NA` group is gone
+- Why do we also drop blank `avg_grade`? The next step averages it
+
+## Exercise 2
+
+::: {.callout-tip title="Live exercise"}
+1. How many students left `sleep_hours` blank? Then count the blanks in **every** column.
+2. Find students in Arts or Business who sleep less than 6 hours. Use `%in%`.
+3. Find the same students again, this time using `|`. Write it correctly.
+:::
+
+```{webr}
+#| exercise: ex_filter
+# Part 1: blanks in sleep_hours
+survey |>
+  summarize()
+
+# Part 1b: blanks in every column
+# Hint: across(everything(), ~ sum(is.na(.x))) applies the count to every column
+survey |>
+  summarize()
+
+# Part 2: Arts or Business, under 6 hours, with %in%
+survey |>
+  filter()
+
+# Part 3: same students, using |
+survey |>
+  filter()
+```
+
+```{webr}
+#| exercise: ex_filter
+#| solution: true
+# Part 1
+survey |>
+  summarize(n_missing = sum(is.na(sleep_hours)))
+
+# Part 1b
+survey |>
+  summarize(across(everything(), ~ sum(is.na(.x))))
+
+# Part 2
+survey |>
+  filter(program %in% c("Arts", "Business"), sleep_hours < 6)
+
+# Part 3
+survey |>
+  filter(program == "Arts" | program == "Business", sleep_hours < 6)
+```
+
+
+# Step 3: group_by() and summarize()
+
+::: {.notes}
+~15 min for this section including Exercise 3.
+:::
+
+## Where we are in the pipeline
+
+```{.r code-line-numbers="10-17"}
+sleep_summary <- survey |>
+  mutate(
+    sleep_group = case_when(
+      sleep_hours < 6    ~ "Short",
+      sleep_hours <= 7.5 ~ "Normal",
+      sleep_hours > 7.5  ~ "Long"
+    )
+  ) |>
+  filter(!is.na(sleep_group), !is.na(avg_grade)) |>
+  group_by(program, sleep_group) |>
+  summarize(
+    n = n(),
+    mean_grade = mean(avg_grade),
+    pct_passing = mean(avg_grade >= 60),
+    any_fail = any(avg_grade < 50),
+    .groups = "drop"
+  )
+```
+
+**Goal:** one row per program and sleep group, with a few summary numbers.
+
+## Summaries of logical vectors
+
+In a numeric context, `TRUE` becomes **1** and `FALSE` becomes **0**.
+
+::: {.callout-important title="Key idea"}
+- `sum(x)` gives the **number** of `TRUE`s
+- `mean(x)` gives the **proportion** of `TRUE`s (because `mean()` is just `sum()` divided by `length()`)
+:::
+
+```{webr}
+sum(c(TRUE, FALSE, TRUE, TRUE))
+mean(c(TRUE, FALSE, TRUE, TRUE))
+```
+
+## `sum()` and `mean()` by program
+
+How many students in each program sleep under 6 hours, and what proportion is that?
+
+```{webr}
+survey |>
+  group_by(program) |>
+  summarize(
+    n_short = sum(sleep_hours < 6, na.rm = TRUE),
+    prop_short = mean(sleep_hours < 6, na.rm = TRUE)
+  )
+```
+
+## Remember the `NA`s
+
+::: {.callout-warning title="Without na.rm"}
+Try deleting `na.rm = TRUE` from the code above. One `NA` in a group makes the whole `sum()` or `mean()` `NA`.
+:::
+
+::: {.callout-caution title="na.rm changes the denominator"}
+`mean(x < 6, na.rm = TRUE)` is the proportion **among students who answered**. It does not count blank rows as `FALSE`. In our pipeline, we avoid the problem by filtering the blank rows out first.
+:::
+
+## `any()` and `all()`
+
+- `any(x)` is the equivalent of `|`: `TRUE` if there is at least one `TRUE` in `x`
+- `all(x)` is the equivalent of `&`: `TRUE` only if **every** value of `x` is `TRUE`
+- Like most summary functions, add `na.rm = TRUE` to drop missing values
+
+```{webr}
+survey |>
+  group_by(program) |>
+  summarize(
+    any_fail = any(avg_grade < 50, na.rm = TRUE),
+    all_pass = all(avg_grade >= 50, na.rm = TRUE)
+  )
+```
+
+- Often `any()` and `all()` are a bit too crude
+- We usually want to know *how many*, which is why `sum()` and `mean()` come first
+
+## Putting it together
+
+```{webr}
+sleep_summary <- survey |>
+  mutate(
+    sleep_group = case_when(
+      sleep_hours < 6    ~ "Short",
+      sleep_hours <= 7.5 ~ "Normal",
+      sleep_hours > 7.5  ~ "Long"
+    )
+  ) |>
+  filter(!is.na(sleep_group), !is.na(avg_grade)) |>
+  group_by(program, sleep_group) |>
+  summarize(
+    n = n(),
+    mean_grade = mean(avg_grade),
+    pct_passing = mean(avg_grade >= 60),
+    any_fail = any(avg_grade < 50),
+    .groups = "drop"
+  )
+
+sleep_summary
+```
+
+::: {.callout-caution title="Watch the group sizes"}
+Look at the `n` column. Some groups have only 10 to 15 students, so their averages are less trustworthy than the large ones.
+:::
+
+## Exercise 3
+
+::: {.callout-tip title="Live exercise"}
+For each **program**, find:
+
+- `n_short`: how many students sleep under 6 hours
+- `prop_short`: the proportion of students who sleep under 6 hours
+- `prop_early`: the proportion who have an early class (`has_early_class == "Yes"`)
+- `any_high`: whether any student has `avg_grade` of 95 or above
+
+Watch out for blank answers.
+:::
+
+```{webr}
+#| exercise: ex_summarize
+survey |>
+  group_by(program) |>
+  summarize(
+
+  )
+```
+
+```{webr}
+#| exercise: ex_summarize
+#| solution: true
+survey |>
+  group_by(program) |>
+  summarize(
+    n_short = sum(sleep_hours < 6, na.rm = TRUE),
+    prop_short = mean(sleep_hours < 6, na.rm = TRUE),
+    prop_early = mean(has_early_class == "Yes", na.rm = TRUE),
+    any_high = any(avg_grade >= 95, na.rm = TRUE)
+  )
+```
+
+
+# Wrap-up
+
+::: {.notes}
+~10 min. Then ~10 min of buffer, which you will probably need.
+:::
+
+## Back to the question
+
+> Do students who sleep less get lower grades, and does it depend on their program?
+
+- **Overall:** students who sleep more have higher average grades
+- **Within each program:** the differences are small and not consistent
+- **Why:** programs differ in both sleep and grades, so mixing them together created the overall pattern
+
+::: {.callout-caution title="What we cannot say"}
+- This is survey data, so it shows **association**, not cause
+- Some groups are small, so differences of a point or two mean little
+- A good analyst checks the group sizes before telling a story
+:::
+
+## Chapter summary
+
+A logical vector is simple (each value is `TRUE`, `FALSE`, or `NA`), but it is very powerful.
+
+- **Create** them with `>`, `<`, `<=`, `>=`, `==`, `!=`, and `is.na()`
+- **Combine** them with `!`, `&`, and `|`
+- **Summarize** them with `any()`, `all()`, `sum()`, and `mean()`
+- **Transform** conditionally with `if_else()` and `case_when()`
+
+## What's next
+
+Logical vectors will keep coming back:
+
+- In Chapter 14 (Strings), `str_detect(x, pattern)` returns a logical vector that is `TRUE` where elements of `x` match the `pattern`
+- In Chapter 17 (Dates and times), you will build logical vectors by comparing dates and times
+
+Up next: **numbers and strings**. The survey has a `bedtime` column where students typed their bedtime in many different ways. We will clean it up.
+
+## Source
+
+::: {.callout-note title="Attribution"}
+Content adapted from *R for Data Science (2e)*, Chapter 12: Logical vectors, by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund.
+
+<https://r4ds.hadley.nz/logicals.html>
+:::
+
+
+# Appendix: read the text
+
+## Other comparison and Boolean tools {.smaller}
+
+We did not have time for these. Each is explained in the chapter.
+
+| Tool | What it does | Tiny example | Read the section on |
+|------|--------------|--------------|---------------------|
+| `near(x, y)` | Compares numbers, ignoring tiny floating-point errors. Use it instead of `==` for decimals you computed | `near(sqrt(2)^2, 2)` | Floating point comparison |
+| `xor(x, y)` | `TRUE` if **exactly one** of `x`, `y` is `TRUE` (not both) | `xor(TRUE, TRUE)` | Boolean algebra |
+| `arrange(desc(is.na(x)), x)` | Sort so missing values come **first** instead of last | `arrange(desc(is.na(sleep_hours)))` | `is.na()` |
+| `%in%` and `NA` | `NA %in% NA` is `TRUE`, unlike `NA == NA` | `c(1, NA) %in% NA` | `%in%` |
+
+::: {.callout-warning title="Why near() exists"}
+Computed decimals are rarely exactly equal: `sqrt(2)^2 == 2` is `FALSE`. Use `near()` when you compare computed numbers.
+:::
+
+## Other conditional and summary tools {.smaller}
+
+| Tool | What it does | Tiny example | Read the section on |
+|------|--------------|--------------|---------------------|
+| `if_else(..., missing)` | A fourth argument: the value to use when the condition is `NA` | `if_else(x > 0, "+ve", "-ve", "???")` | `if_else()` |
+| `case_when(..., .default)` | A catch-all value for rows that match nothing (it also catches `NA`) | `case_when(x < 0 ~ "-ve", .default = "other")` | `case_when()` |
+| Compatible types | In `if_else()` and `case_when()`, the outputs must be the same type | `if_else(x > 0, "pos", 1)` is an error | Compatible types |
+| Logical subsetting | Use a logical vector to pick elements inside `summarize()` | `mean(avg_grade[sleep_hours < 6], na.rm = TRUE)` | Logical subsetting |
+| `any()` / `all()` | `TRUE` if at least one / every value is `TRUE` | `any(x > 0)` | Logical summaries |
+
+::: {.callout-tip title="Dummy data with c()"}
+When there is no good real-world example, make up a small vector: `x <- c(-3:3, NA)`. Anything you do to a free-floating vector, you can do to a column with `mutate()`.
+:::

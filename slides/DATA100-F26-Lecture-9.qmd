@@ -1,0 +1,1114 @@
+---
+title: "DATA100 Introduction to Data Analytics"
+subtitle: "Lecture 9: Words and Numbers"
+author: "Agassi Iu"
+institute: "Wilfrid Laurier University"
+date: "October 22, 2026"
+format:
+  live-revealjs:
+    theme: sky
+    slide-number: true
+    transition: slide
+    incremental: true
+    embed-resources: true # Embeds figures and libraries into a single portable HTML file
+filters:
+  - live
+webr:
+  packages:
+    - ggplot2
+    - dplyr
+    - tidyr
+    - tibble
+    - readr
+    - stringr
+    - forcats
+    - purrr
+    - scales
+    - nycflights13  # added: flights data used in the Numbers chapter
+    - babynames     # added: baby names data used in the Strings chapter
+execute:
+  echo: true
+  warning: false   # Hides warnings and package loading messages
+  message: false
+  fig-width: 7
+  fig-height: 4
+  fig-align: center
+---
+
+
+# Lecture 9 roadmap
+
+## Today's plan
+
+Two of the most common kinds of data, and the tools for working with each:
+
+- **Part 1: Numbers** (Chapter 13)
+  - making numbers, counting, transforming, ranking, and summarizing
+- **Part 2: Strings** (Chapter 14)
+  - creating strings, combining them, pulling data out of them, and handling non-English text
+
+## Setup
+
+```{webr}
+#| autorun: true
+library(dplyr)
+library(tidyr)
+library(tibble)
+library(readr)
+library(ggplot2)
+library(stringr)
+library(nycflights13)
+library(babynames)
+```
+
+::: {.callout-note title="Where the data comes from"}
+- `nycflights13::flights` for the Numbers part
+- `babynames::babynames` for the Strings part
+- Small made-up vectors and tibbles, built with `c()` and `tribble()`, whenever a real example would be too messy
+:::
+
+# Part 1: Numbers
+
+## What this part covers
+
+Numeric vectors are the backbone of data science. 
+
+- **Making numbers** out of strings
+- **Counts**
+- **Numeric transformations**: arithmetic, min and max, modular arithmetic, logs, rounding, cutting, cumulative aggregates
+- **General transformations**: ranks, offsets, consecutive identifiers
+- **Numeric summaries**: center, quantiles, spread, distributions, positions
+
+::: {.callout-note title="Prerequisites"}
+Mostly base R, but we use it inside tidyverse verbs like `mutate()` and `filter()`.
+:::
+
+
+## Turning strings into numbers
+
+Numbers often arrive as text, typically when data is imported. readr has two parsers for this:
+
+- `parse_double()` for strings that are clean numbers
+- `parse_number()` for strings that have extra text around the number
+
+```{webr}
+x <- c("1.2", "5.6", "1e3")
+parse_double(x)
+```
+
+## `parse_number()`
+
+`parse_number()` ignores text before and after the number. That makes it handy for currency, percentages, and similar messy values.
+
+```{webr}
+x <- c("$1,234", "USD 3,513", "59%")
+parse_number(x)
+```
+
+::: {.callout-tip title="Grouping marks too"}
+Notice that the comma in `$1,234` is handled. The result is the number 1234.
+:::
+
+
+## Counting with `count()`
+
+Much of data science is counting and adding. dplyr's `count()` gives a quick tally of how many rows have each value.
+
+```{webr}
+flights |> count(dest)
+```
+
+## Sorting the counts
+
+Add `sort = TRUE` to see the biggest groups first:
+
+```{webr}
+flights |> count(dest, sort = TRUE)
+```
+
+## The long way
+
+`count()` is a shortcut. Building it by hand lets you compute extra summaries in the same step.
+
+```{webr}
+flights |>
+  group_by(dest) |>
+  summarize(
+    n = n(),
+    delay = mean(arr_delay, na.rm = TRUE)
+  )
+```
+
+::: {.callout-warning title="n() only works inside dplyr verbs"}
+`n()` takes no arguments and returns the size of the current group. Outside of `summarize()`, `mutate()`, or `filter()`, there is no "current group", so it fails.
+:::
+
+```{webr}
+#| error: true
+n()
+```
+
+## Useful count variants: `n_distinct()`
+
+`n_distinct(x)` counts the **unique** values of `x`. Which destinations are served by the most carriers?
+
+```{webr}
+# flights$carrier
+flights |>
+  group_by(dest) |>
+  summarize(carriers = n_distinct(carrier)) |>
+  arrange(desc(carriers))
+```
+
+## Weighted counts
+
+A weighted count is a sum. For example, the total distance each plane has flown:
+
+```{webr}
+flights |>
+  group_by(tailnum) |>
+  summarize(miles = sum(distance))
+```
+
+`count()` has a `wt` argument that does the same thing:
+
+```{webr}
+flights |> count(tailnum, wt = distance)
+```
+
+## Counting missing values
+
+Combine `sum()` with `is.na()` (recall `TRUE` counts as 1). How many flights per destination were cancelled, meaning `dep_time` is missing?
+
+```{webr}
+flights |>
+  group_by(dest) |>
+  summarize(n_cancelled = sum(is.na(dep_time)))
+```
+
+## Exercise
+
+::: {.callout-tip title="Live exercise"}
+How can you use `count()` to count the number of rows with a missing value for a given variable?
+:::
+
+```{webr}
+#| exercise: ex_count_1
+flights |>
+  count()
+```
+
+```{webr}
+#| exercise: ex_count_1
+#| solution: true
+# Count on a logical expression: TRUE rows are the missing ones
+flights |>
+  count(dep_delay_missing = is.na(dep_delay))
+```
+
+## Exercise
+
+::: {.callout-tip title="Live exercise"}
+Rewrite these two `count()` calls without `count()`, using `group_by()`, `summarize()`, and `arrange()`:
+
+1. `flights |> count(dest, sort = TRUE)`
+2. `flights |> count(tailnum, wt = distance)`
+:::
+
+```{webr}
+#| exercise: ex_count_2
+# 1.
+flights |>
+  group_by()
+
+# 2.
+flights |>
+  group_by()
+```
+
+```{webr}
+#| exercise: ex_count_2
+#| solution: true
+# 1.
+flights |>
+  group_by(dest) |>
+  summarize(n = n()) |>
+  arrange(desc(n))
+
+# 2.
+flights |>
+  group_by(tailnum) |>
+  summarize(n = sum(distance))
+```
+
+# Numeric transformations
+
+## What is a transformation?
+
+Transformation functions return a vector **the same length as the input**: a natural fit for `mutate()`.
+
+This section covers:
+
+- Arithmetic and recycling rules
+- Minimum and maximum
+- Modular arithmetic
+- Logarithms
+- Rounding
+- Cutting numbers into ranges
+- Cumulative and rolling aggregates
+
+## Arithmetic and recycling rules
+
+You can use `+`, `-`, `*`, `/`, and `^` on vectors. When the two vectors have different lengths, R **recycles** the shorter one by repeating it until it matches the longer one.
+
+```{webr}
+x <- c(1, 2, 10, 20)
+x / 5
+# is shorthand for
+x / c(5, 5, 5, 5)
+```
+
+## Recycling when the lengths don't divide evenly
+
+Recycling a longer vector works silently if the lengths divide evenly, and gives a **warning** if they don't.
+
+```{webr}
+#| warning: true
+x <- c(1, 2, 10, 20)
+x * c(1, 2)
+x * c(1, 2, 3)
+```
+
+::: {.callout-tip title="Tidyverse is stricter"}
+Base R is permissive about recycling. The tidyverse is stricter and generally only recycles single values.
+:::
+
+## A silent recycling bug in `filter()`
+
+Recycling also works with comparisons, which can quietly give wrong answers:
+
+```{webr}
+flights |>
+  filter(month == c(1, 2))
+```
+
+::: {.callout-warning title="No error, wrong answer"}
+This compares `month` with `1, 2, 1, 2, ...` row by row. It does **not** ask "is month 1 or 2?". It only keeps January flights in odd-numbered rows and February flights in even-numbered rows.
+
+The fix is `%in%`, which you met last lecture.
+:::
+
+```{webr}
+flights |>
+  filter(month %in% c(1, 2))
+```
+
+## Minimum and maximum: `pmin()` and `pmax()`
+
+Two kinds of min and max exist:
+
+- `pmin()` and `pmax()` work **row by row** across vectors (the "p" is for parallel)
+- `min()` and `max()` summarize **everything** into one value
+
+```{webr}
+df <- tribble(
+  ~x, ~y,
+  1,  3,
+  5,  2,
+  7, NA,
+)
+
+df |>
+  mutate(
+    min = pmin(x, y, na.rm = TRUE),
+    max = pmax(x, y, na.rm = TRUE)
+  )
+```
+
+## The summary versions
+
+Compare with `min()` and `max()`, which collapse all the values:
+
+```{webr}
+df <- tribble(
+  ~x, ~y,
+  1,  3,
+  5,  2,
+  7, NA,
+)
+
+df |>
+  mutate(
+    min = min(x, y, na.rm = TRUE),
+    max = max(x, y, na.rm = TRUE)
+  )
+```
+
+::: {.callout-important title="Key idea"}
+Every row gets the **same** answer from `min()` and `max()`: the smallest and largest value in both columns combined. Use `pmin()` and `pmax()` for a per-row answer.
+:::
+
+## Modular arithmetic
+
+Modular arithmetic is division with a quotient and a remainder:
+
+- `%/%` is **integer division** (how many whole times it fits)
+- `%%` is the **remainder**
+
+```{webr}
+1:10 %/% 3
+1:10 %% 3
+```
+
+## Unpacking times
+
+`sched_dep_time` stores a time as a number like 1530, meaning 15:30. We can split it into hour and minute:
+
+```{webr}
+flights |>
+  mutate(
+    hour = sched_dep_time %/% 100,
+    minute = sched_dep_time %% 100,
+    .keep = "used"
+  )
+```
+
+## Cancellations by hour of the day
+
+Using the `hour` trick, we can see how the proportion of cancelled flights changes through the day.
+
+```{webr}
+flights |>
+  group_by(hour = sched_dep_time %/% 100) |>
+  summarize(prop_cancelled = mean(is.na(dep_time)), n = n()) |>
+  filter(hour > 1) |>
+  ggplot(aes(x = hour, y = prop_cancelled)) +
+  geom_line(color = "grey50") +
+  geom_point(aes(size = n))
+```
+
+- Cancellations tend to climb through the day
+- Point size shows how many flights each hour contains
+
+## Logarithms
+
+Logarithms turn **multiplicative** relationships into **additive** ones, and they help with data that spans many orders of magnitude. R has three:
+
+- `log()`: natural log (base *e*)
+- `log2()`: base 2
+- `log10()`: base 10
+
+```{webr}
+log2(c(1, 2, 4, 8))
+log10(c(1, 10, 100, 1000))
+log(exp(1))
+```
+
+## Which log should I use?
+
+::: {.callout-tip title="Recommendation"}
+- Use **`log2()`**: it's easy to interpret. Each +1 on the log scale means the original value **doubled**; each -1 means it **halved**.
+- Use **`log10()`**: when you want to back-transform easily, since each +1 means ×10.
+:::
+
+The inverse of a log is exponentiation:
+
+```{webr}
+exp(log(5))
+2 ^ log2(8)
+10 ^ log10(1000)
+```
+
+## Rounding
+
+`round(x)` rounds to the nearest integer. The `digits` argument controls where to round, and it can be **negative**.
+
+```{webr}
+round(123.456)
+round(123.456, 2)   # two digits
+round(123.456, 1)   # one digit
+round(123.456, -1)  # round to the nearest ten
+round(123.456, -2)  # round to the nearest hundred
+```
+
+
+## `floor()` and `ceiling()`
+
+- `floor()` always rounds **down**
+- `ceiling()` always rounds **up**
+- Neither has a `digits` argument, so you scale first
+
+```{webr}
+x <- 123.456
+
+floor(x)
+ceiling(x)
+
+# Round down to the nearest two digits
+floor(x / 0.01) * 0.01
+# Round up to the nearest two digits
+ceiling(x / 0.01) * 0.01
+```
+
+
+## Cutting numbers into ranges
+
+`cut()` chops a numeric vector into **bins** and returns a factor. You supply the break points, and they don't need to be evenly spaced.
+
+```{webr}
+x <- c(1, 2, 5, 10, 15, 20)
+cut(x, breaks = c(0, 5, 10, 15, 20))
+```
+
+## Custom labels
+
+Give `labels` one **fewer** element than `breaks`, because there is one fewer bin than break points:
+
+```{webr}
+x <- c(1, 2, 5, 10, 15, 20)
+cut(x,
+  breaks = c(0, 5, 10, 15, 20),
+  labels = c("sm", "md", "lg", "xl")
+)
+```
+
+## Values outside the breaks
+
+Anything outside the breaks becomes `NA`:
+
+```{webr}
+y <- c(NA, -10, 5, 10, 30)
+cut(y, breaks = c(0, 5, 10, 15, 20))
+```
+
+::: {.callout-tip title="Open-ended bins"}
+Use `-Inf` and `Inf` as the outer breaks so nothing falls off the ends. Bins are right-closed by default, like `(5, 10]`; pass `right = FALSE` to make them left-closed, like `[5, 10)`.
+:::
+
+```{webr}
+x <- c(1, 2, 5, 10, 15, 20)
+cut(x, breaks = c(-Inf, 5, 10, Inf))
+cut(x, breaks = c(-Inf, 5, 10, Inf), right = FALSE)
+```
+
+::: {.callout-note title="More helpers"}
+ggplot2 also offers `cut_interval()`, `cut_number()`, and `cut_width()` for common binning patterns. They live there mainly because histograms need them.
+:::
+
+## Cumulative and rolling aggregates
+
+Cumulative functions keep a running total (or running min, max, mean) as they move down the vector:
+
+- `cumsum()`, `cumprod()`, `cummin()`, `cummax()` in base R
+- `cummean()` from dplyr
+
+```{webr}
+x <- 1:10
+cumsum(x)
+cumprod(x)
+cummin(x)
+cummax(x)
+cummean(x)
+```
+
+
+
+
+## Exercise 
+
+::: {.callout-tip title="Live exercise"}
+Round `dep_time` and `arr_time` to the nearest five minutes.
+:::
+
+```{webr}
+#| exercise: ex_numtrans_4
+# Rounding the HHMM number directly is wrong: 758 would become 760, not a valid time.
+# Convert to minutes, round, and convert back to HHMM.
+to_minutes <- function(t) (t %/% 100 * 60 + t %% 100) %% 1440
+to_hhmm <- function(m) (m %/% 60) * 100 + m %% 60
+
+flights |>
+  mutate(
+    dep_time_5 = to_hhmm(round(to_minutes(dep_time) / 5) * 5),
+    arr_time_5 = to_hhmm(round(to_minutes(arr_time) / 5) * 5),
+    .keep = "used"
+  )
+```
+
+
+
+
+
+# Strings (Words)
+
+## What this part covers
+
+Strings (text) are everywhere in real data. 
+
+- **Creating** strings, including quotes, escapes, and special characters
+- **Building many strings** from data: `str_c()`, `str_glue()`, `str_flatten()`
+- **Extracting data** from strings with the tidyr `separate_*()` functions
+- **Letters**: length and substrings
+- **Non-English text**: encoding, letter variations, and locales
+
+::: {.callout-note title="Coming next"}
+The most powerful string tool, **regular expressions**, is the topic of the next chapter.
+:::
+
+# Introduction
+
+## Prerequisites
+
+- This part uses **stringr**, part of the tidyverse
+- We also use the **babynames** package for example data (names of babies born in the US over many years)
+
+::: {.callout-tip title="Finding stringr functions"}
+Every stringr function starts with `str_`. In RStudio, type `str_` and the autocomplete list shows all of them, with a documentation panel for whichever one is highlighted.
+:::
+
+# Creating a string
+
+## Quotes
+
+You create a string with either single or double quotes. There is no difference in behaviour between them.
+
+```{webr}
+string1 <- "This is a string"
+string2 <- 'If I want to include a "quote" inside a string, I use single quotes'
+
+string1
+string2
+```
+
+::: {.callout-note title="Style"}
+The tidyverse style guide recommends **double quotes**, unless the string itself contains double quotes.
+:::
+
+## Forgot to close the quote?
+
+If you forget the closing quote, R shows the continuation prompt `+` and waits for more input:
+
+```r
+> "This is a string without a closing quote
++
++
++ HELP I'M STUCK IN A STRING
+```
+
+::: {.callout-tip title="Getting unstuck"}
+Press **Escape** (`esc`) to cancel the unfinished input and get your prompt back.
+:::
+
+## Escapes
+
+To put a quote character *inside* a string that uses the same quote, you **escape** it with a backslash. Because the backslash is itself special, you escape a literal backslash with another backslash.
+
+```{webr}
+double_quote <- "\"" # or '"'
+single_quote <- '\'' # or "'"
+backslash <- "\\"
+
+double_quote
+single_quote
+backslash
+```
+
+## Printing vs. viewing
+
+::: {.callout-warning title="The printed string is not the string"}
+When R prints a string, it shows the **escapes** (the backslashes). To see the raw contents, use `str_view()`.
+:::
+
+```{webr}
+double_quote <- "\"" # or '"'
+single_quote <- '\'' # or "'"
+backslash <- "\\"
+
+x <- c(single_quote, double_quote, backslash)
+x
+str_view(x)
+```
+
+- `x` shows `"\\"` for the backslash, but `str_view(x)` shows a single `\`
+- Base R's `writeLines()` also shows the raw string
+
+::: {.callout-note title="Display in the browser"}
+`str_view()` normally uses color to show spaces, tabs, and matches. In the browser console, that styling may look different or be missing, but the raw characters are still shown.
+:::
+
+
+## Exercise
+
+::: {.callout-tip title="Live exercise"}
+Create strings that contain each of these values:
+
+1. `He said "That's amazing!"`
+2. `\a\b\c\d`
+3. A run of backslashes, for example `\\\\\\`
+:::
+
+```{webr}
+#| exercise: ex_strcreate_1
+x1 <-
+x2 <-
+x3 <-
+
+str_view(c(x1, x2, x3))
+```
+
+```{webr}
+#| exercise: ex_strcreate_1
+#| solution: true
+x1 <- "He said \"That's amazing!\""
+x2 <- "\\a\\b\\c\\d"
+x3 <- "\\\\\\\\\\\\"
+
+str_view(c(x1, x2, x3))
+```
+
+
+# Creating many strings from data
+
+## Combining fixed text with data
+
+So far we've made one string at a time. A common job is to combine **fixed text** with **values from your data**. Three functions work well inside `mutate()` and `summarize()`:
+
+- `str_c()`
+- `str_glue()`
+- `str_flatten()`
+
+## `str_c()`
+
+`str_c()` takes any number of vectors and returns a character vector. It's similar to base R's `paste0()`, but it follows tidyverse recycling rules and handles missing values consistently.
+
+```{webr}
+str_c("x", "y")
+str_c("x", "y", "z")
+str_c("Hello ", c("John", "Susan"))
+```
+
+## `str_c()` in `mutate()`
+
+```{webr}
+df <- tibble(name = c("Flora", "David", "Terra", NA))
+df |> mutate(greeting = str_c("Hi ", name, "!"))
+```
+
+::: {.callout-important title="Missing values are contagious"}
+Just like in arithmetic, if any input is `NA`, the result is `NA`. The fourth greeting is missing.
+:::
+
+
+## `str_glue()`
+
+`str_c()` gets awkward with many pieces. `str_glue()` (from the glue package) lets you write the whole string in one go, with `{ }` marking code to evaluate.
+
+```{webr}
+df <- tibble(name = c("Flora", "David", "Terra", NA))
+df |> mutate(greeting = str_glue("Hi {name}!"))
+```
+
+::: {.callout-warning title="NA behaves differently"}
+Unlike `str_c()`, `str_glue()` converts a missing value to the **text** `"NA"`.
+:::
+
+## Literal braces in `str_glue()`
+
+To include an actual brace, **double** it:
+
+```{webr}
+df <- tibble(name = c("Flora", "David", "Terra", NA))
+df |> mutate(greeting = str_glue("{{Hi {name}!}}"))
+```
+
+
+## `str_flatten()`
+
+`str_c()` and `str_glue()` return **one result per input**. `str_flatten()` goes the other way: it collapses a vector into a **single** string. That makes it a summary function, so it fits in `summarize()`.
+
+```{webr}
+str_flatten(c("x", "y", "z"))
+str_flatten(c("x", "y", "z"), ", ")
+str_flatten(c("x", "y", "z"), ", ", last = ", and ")
+```
+
+- The second argument is the separator
+- `last` sets a different separator just before the final item (for an "Oxford comma" style list)
+
+## `str_flatten()` by group
+
+```{webr}
+df <- tribble(
+  ~ name, ~ fruit,
+  "Carmen", "banana",
+  "Carmen", "apple",
+  "Marvin", "nectarine",
+  "Terence", "cantaloupe",
+  "Terence", "papaya",
+  "Terence", "mandarin"
+)
+
+df |>
+  group_by(name) |>
+  summarize(fruits = str_flatten(fruit, ", "))
+```
+
+::: {.callout-note title="Base R"}
+The base R equivalent is `paste()` with the `collapse` argument.
+:::
+
+
+# Extracting data from strings
+
+## Several variables in one string {.smaller}
+
+Messy data often packs more than one variable into a single string, like `"a10.1.2022"`. tidyr has four functions to pull them apart. Their names follow a pattern:
+
+`separate_` + (`longer` or `wider`) + (`delim` or `position`)
+
+| Function | Makes | Splits by |
+|----------|-------|-----------|
+| `separate_longer_delim()` | more rows | a delimiter |
+| `separate_longer_position()` | more rows | fixed positions |
+| `separate_wider_delim()` | more columns | a delimiter |
+| `separate_wider_position()` | more columns | fixed positions |
+
+::: {.callout-note title="Regular expressions"}
+There is also `separate_wider_regex()`, the most flexible of the family. It's covered in the regular expressions chapter.
+:::
+
+## Separating into rows: `separate_longer_delim()`
+
+Split on a delimiter, one new row per piece:
+
+```{webr}
+df1 <- tibble(x = c("a,b,c", "d,e", "f"))
+
+df1 |>
+  separate_longer_delim(x, delim = ",")
+```
+
+## Separating into rows: `separate_longer_position()`
+
+Less common: when each value is packed in with a fixed width, say one character each:
+
+```{webr}
+df2 <- tibble(x = c("1211", "131", "21"))
+
+df2 |>
+  separate_longer_position(x, width = 1)
+```
+
+## Separating into columns: `separate_wider_delim()`
+
+Split on a delimiter, with a new column per piece. You must supply **names** for the new columns.
+
+```{webr}
+df3 <- tibble(x = c("a10.1.2022", "b10.2.2011", "e15.1.2015"))
+
+df3 |>
+  separate_wider_delim(
+    x,
+    delim = ".",
+    names = c("code", "edition", "year")
+  )
+```
+
+## Dropping a piece
+
+Use `NA` as a name to **skip** that piece:
+
+```{webr}
+df3 <- tibble(x = c("a10.1.2022", "b10.2.2011", "e15.1.2015"))
+
+df3 |>
+  separate_wider_delim(
+    x,
+    delim = ".",
+    names = c("code", NA, "year")
+  )
+```
+
+## Separating into columns: `separate_wider_position()`
+
+For fixed-width data, give a **named integer vector** of widths:
+
+```{webr}
+df4 <- tibble(x = c("202215TX", "202122LA", "202325CA"))
+
+df4 |>
+  separate_wider_position(
+    x,
+    widths = c(year = 4, age = 2, state = 2)
+  )
+```
+
+- **Unnamed** widths are left out of the result, just like `NA` names above:
+
+```{webr}
+df4 <- tibble(x = c("202215TX", "202122LA", "202325CA"))
+
+df4 |>
+  separate_wider_position(
+    x,
+    widths = c(year = 4, 2, state = 2)
+  )
+```
+
+## Diagnosing widening problems
+
+`separate_wider_delim()` expects every string to split into the **same number** of pieces. Real data often doesn't.
+
+- **Too few** pieces in some rows
+- **Too many** pieces in some rows
+
+```{webr}
+#| error: true
+df <- tibble(x = c("1-1-1", "1-1-2", "1-3", "1-3-2", "1"))
+
+df |>
+  separate_wider_delim(
+    x,
+    delim = "-",
+    names = c("x", "y", "z")
+  )
+```
+
+- The function **errors** rather than guessing, and the message tells you what to try
+
+## Too few: debug mode
+
+`too_few = "debug"` keeps the result but adds diagnostic columns, named after the input column:
+
+- `x_ok`: did this row split cleanly?
+- `x_pieces`: how many pieces it had
+- `x_remainder`: any leftover text
+
+```{webr}
+df <- tibble(x = c("1-1-1", "1-1-2", "1-3", "1-3-2", "1"))
+
+debug <- df |>
+  separate_wider_delim(
+    x,
+    delim = "-",
+    names = c("x", "y", "z"),
+    too_few = "debug"
+  )
+debug
+```
+
+Filter on the problem rows:
+
+```{webr}
+df <- tibble(x = c("1-1-1", "1-1-2", "1-3", "1-3-2", "1"))
+
+debug <- df |>
+  separate_wider_delim(
+    x,
+    delim = "-",
+    names = c("x", "y", "z"),
+    too_few = "debug"
+  )
+debug |> filter(!x_ok)
+```
+
+## Too few: fixing it
+
+Once you understand the problem, tell the function what to do. `"align_start"` fills the missing pieces with `NA` at the **end**; `"align_end"` fills them at the **start**.
+
+```{webr}
+df <- tibble(x = c("1-1-1", "1-1-2", "1-3", "1-3-2", "1"))
+
+df |>
+  separate_wider_delim(
+    x,
+    delim = "-",
+    names = c("x", "y", "z"),
+    too_few = "align_start"
+  )
+```
+
+## Too many pieces
+
+The same idea works in the other direction, using `too_many`:
+
+```{webr}
+#| error: true
+df <- tibble(x = c("1-1-1", "1-1-2", "1-3-5-6", "1-3-2", "1-3-5-7-9"))
+
+df |>
+  separate_wider_delim(
+    x,
+    delim = "-",
+    names = c("x", "y", "z")
+  )
+```
+
+```{webr}
+df <- tibble(x = c("1-1-1", "1-1-2", "1-3-5-6", "1-3-2", "1-3-5-7-9"))
+
+debug <- df |>
+  separate_wider_delim(
+    x,
+    delim = "-",
+    names = c("x", "y", "z"),
+    too_many = "debug"
+  )
+debug |> filter(!x_ok)
+```
+
+- Here `x_remainder` holds the extra text
+
+## Too many: fixing it
+
+Two choices for the extra pieces:
+
+- `too_many = "drop"` discards them
+- `too_many = "merge"` glues them onto the **last** column
+
+```{webr}
+df <- tibble(x = c("1-1-1", "1-1-2", "1-3-5-6", "1-3-2", "1-3-5-7-9"))
+
+df |>
+  separate_wider_delim(
+    x, delim = "-", names = c("x", "y", "z"),
+    too_many = "drop"
+  )
+
+df |>
+  separate_wider_delim(
+    x, delim = "-", names = c("x", "y", "z"),
+    too_many = "merge"
+  )
+```
+
+::: {.callout-note title="Same principles elsewhere"}
+`separate_wider_position()` and `separate_wider_regex()` have the same `too_few` and `too_many` ideas.
+:::
+
+# Letters
+
+
+## Length: `str_length()`
+
+`str_length()` counts the characters in each string. A missing value gives `NA`.
+
+```{webr}
+str_length(c("a", "R for data science", NA))
+```
+
+## Length of baby names
+
+Use it on the `babynames` data to see how long names are. Each row is a name, year, and sex, with `n` babies given that name, so we **weight** by `n`:
+
+```{webr}
+babynames |>
+  count(length = str_length(name), wt = n)
+```
+
+## The longest names
+
+```{webr}
+babynames |>
+  filter(str_length(name) == 15) |>
+  count(name, wt = n, sort = TRUE)
+```
+
+::: {.callout-note title="A data quirk"}
+The data seems to have had spaces and hyphens removed, and names cut off after 15 letters.
+:::
+
+## Subsetting: `str_sub()`
+
+`str_sub(string, start, end)` extracts a part of each string. Both `start` and `end` are **inclusive**.
+
+```{webr}
+x <- c("Apple", "Banana", "Pear")
+str_sub(x, 1, 3)
+```
+
+Negative positions count from the **end** (`-1` is the last character):
+
+```{webr}
+x <- c("Apple", "Banana", "Pear")
+str_sub(x, -3, -1)
+```
+
+## Strings that are too short
+
+`str_sub()` doesn't fail if the string is too short. It returns as much as it can:
+
+```{webr}
+str_sub("a", 1, 5)
+```
+
+## First and last letters of baby names
+
+```{webr}
+babynames |>
+  mutate(
+    first = str_sub(name, 1, 1),
+    last = str_sub(name, -1, -1)
+  )
+```
+
+
+
+## Exercise 14.5.3 (3)
+
+::: {.callout-tip title="Live exercise"}
+Are there any major trends in the length of baby names over time? What about the popularity of the first letter?
+:::
+
+```{webr}
+#| exercise: ex_letters_3
+babynames |>
+  mutate(len = str_length(name)) |>
+  group_by(year) |>
+  summarize()
+```
+
+```{webr}
+#| exercise: ex_letters_3
+#| solution: true
+# Average name length per year, weighted by how many babies got each name
+babynames |>
+  mutate(len = str_length(name)) |>
+  group_by(year) |>
+  summarize(avg_len = weighted.mean(len, n)) |>
+  ggplot(aes(x = year, y = avg_len)) +
+  geom_line()
+
+# Popularity of each first letter over time
+babynames |>
+  mutate(first = str_sub(name, 1, 1)) |>
+  count(year, last, wt = n) |>
+  group_by(year) |>
+  mutate(prop = n / sum(n)) |>
+  ggplot(aes(x = year, y = prop)) +
+  geom_line() +
+  facet_wrap(~ first)
+```
+
+
+# Lecture 9 wrap-up
+
+:::{.callout-tip title="What we learned"}
+- **Numbers**: parse, count, transform, rank, and summarize them
+- **Strings**: create, combine, extract from, and take apart text
+- Both rely on the same habits: check your data, name your steps, and look at the distribution
+:::
+
+:::{.callout-caution title="What's next?"}
+- Fancy words and numbers
+:::
+
+
+## Source
+
+::: {.callout-note title="Attribution"}
+Content adapted from *R for Data Science (2e)* by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund:
+
+- Chapter 13: Numbers, <https://r4ds.hadley.nz/numbers.html>
+- Chapter 14: Strings, <https://r4ds.hadley.nz/strings.html>
+:::

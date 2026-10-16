@@ -1,0 +1,731 @@
+---
+title: "DATA100 Introduction to Data Analytics"
+subtitle: "Lecture 10: Fancy Words and Numbers"
+author: "Agassi Iu"
+institute: "Wilfrid Laurier University"
+date: "October 27, 2026"
+format:
+  live-revealjs:
+    theme: sky
+    slide-number: true
+    transition: slide
+    incremental: true
+    embed-resources: true # Embeds figures and libraries into a single portable HTML file
+filters:
+  - live
+webr:
+  packages:
+    - ggplot2
+    - dplyr
+    - tidyr
+    - tibble
+    - readr
+    - stringr
+    - forcats
+    - purrr
+    - scales
+    - nycflights13  # added: flights data for the dates and times part
+    - babynames     # added: baby names for the regex part
+    - lubridate     # added: dates and times
+    - hms           # added: time-of-day values
+execute:
+  echo: true
+  warning: false   # Hides warnings and package loading messages
+  message: false
+  fig-width: 7
+  fig-height: 4
+  fig-align: center
+---
+
+
+## Today's plan
+
+Two powerful (and tricky) toolkits:
+
+- **Part 1: Regular expressions** (Chapter 15)
+  - a compact language for describing patterns in text
+- **Part 2: Dates and times** (Chapter 17)
+  - creating, extracting, and computing with dates and times using **lubridate**
+
+
+## Setup
+
+```{webr}
+#| autorun: true
+library(dplyr)
+library(tidyr)
+library(tibble)
+library(readr)
+library(ggplot2)
+library(stringr)
+library(purrr)
+library(lubridate)
+library(nycflights13)
+library(babynames)
+```
+
+::: {.callout-caution title="Heavy data ahead"}
+`babynames` has about 1.9 million rows and the browser version of R has limited memory. If a cell crashes with a **"table index is out of bounds"** message, refresh the page and run only that cell.
+:::
+
+# Part 1: Regular expressions
+
+## What is a regular expression?
+
+A **regular expression** (regex or regexp) is a concise language for describing patterns in strings.
+
+- The name sounds odd, but it's easy to see why they're useful: they pack a lot of meaning into a few characters
+- They look like a cat walked across the keyboard at first
+- They get easier with practice, and soon they start to make sense
+
+
+## Where we're going
+
+- **Pattern basics**: literals, metacharacters, quantifiers, classes, alternation
+- **Key functions**: detect, count, replace, extract
+- **Pattern details**: escaping, anchors, classes, quantifiers, precedence, grouping
+- **Pattern control**: flags and fixed matches
+- **Practice**: check your work, Boolean logic, patterns built by code
+
+## Practice vectors
+
+stringr ships with three handy character vectors:
+
+- `fruit`: 80 fruit names
+- `words`: 980 common English words
+- `sentences`: 720 short sentences
+
+```{webr}
+head(fruit)
+head(words)
+head(sentences)
+```
+
+# Pattern basics
+
+## `str_view()`
+
+`str_view()` shows only the elements that match, with each match highlighted (wrapped in `<>`).
+
+The simplest patterns are **literal characters**: they match themselves.
+
+```{webr}
+str_view(fruit, "berry")
+```
+
+## Metacharacters
+
+Some characters have **special meaning** instead of matching themselves. Examples: `.`, `+`, `*`, `[`, `]`, `?`.
+
+- `.` matches **any** character (except a newline)
+
+```{webr}
+str_view(c("a", "ab", "ae", "bd", "ea", "eab"), "a.")
+```
+
+```{webr}
+str_view(fruit, "a...e")
+```
+
+## Quantifiers
+
+Quantifiers control **how many times** a pattern can match:
+
+- `?` makes the previous item optional (0 or 1 times)
+- `+` repeats it 1 or more times
+- `*` repeats it 0 or more times
+
+```{webr}
+# ab? matches an "a", optionally followed by a "b"
+str_view(c("a", "ab", "abb"), "ab?")
+# ab+ matches an "a", followed by at least one "b"
+str_view(c("a", "ab", "abb"), "ab+")
+# ab* matches an "a", followed by any number of "b"s
+str_view(c("a", "ab", "abb"), "ab*")
+```
+
+## Character classes
+
+Square brackets define a **character class**: match any one of the listed characters.
+
+- `[abcd]` matches "a", "b", "c", or "d"
+- `[^abcd]` matches **anything except** those (the `^` inverts it)
+
+```{webr}
+str_view(words, "[aeiou]x[aeiou]")
+str_view(words, "[^aeiou]y[^aeiou]")
+```
+
+## Alternation
+
+`|` means **or**: pick between one or more alternative patterns.
+
+```{webr}
+str_view(fruit, "apple|melon|nut")
+```
+
+```{webr}
+# Repeated vowels
+str_view(fruit, "aa|ee|ii|oo|uu")
+```
+
+::: {.callout-warning title="Regexes are case sensitive"}
+`"apple"` will not match "Apple". We'll see how to ignore case in the pattern control section.
+:::
+
+## Pattern basics: summary
+
+| Pattern | Matches |
+|---------|---------|
+| `.` | any one character |
+| `?` `+` `*` | 0 or 1, 1 or more, 0 or more |
+| `[abc]` | any of a, b, c |
+| `[^abc]` | anything except a, b, c |
+| `a|b` | a or b |
+
+# Key functions
+
+## Four jobs for regexes
+
+stringr has functions for the most common regex jobs:
+
+- **Detect** matches: `str_detect()`
+- **Count** matches: `str_count()`
+- **Replace** matches: `str_replace()` and friends
+- **Extract** pieces into columns: `separate_wider_regex()`
+
+## `str_detect()`
+
+`str_detect()` returns a **logical vector**: `TRUE` where the pattern matches. That means it works great inside `filter()` (and everything you learned about logical vectors applies).
+
+```{webr}
+str_detect(c("a", "b", "c"), "[aeiou]")
+```
+
+## Names containing an "x"
+
+To avoid memory trouble, first collapse `babynames` to one row per name:
+
+```{webr}
+babynames |>
+  count(name, wt = n, name = "total") |>
+  filter(str_detect(name, "x")) |>
+  arrange(desc(total))
+```
+
+## The proportion of names with an "x" over time
+
+`mean()` of a logical vector gives a proportion (recall the logical vectors lecture):
+
+```{webr}
+babynames |>
+  filter(year %% 5 == 0) |> 
+  group_by(year) |>
+  summarize(prop_x = mean(str_detect(name, "x"))) |>
+  ggplot(aes(x = year, y = prop_x)) +
+  geom_line()
+```
+
+
+## Related: `str_subset()` and `str_which()`
+
+- `str_subset()` returns the matching **strings**
+- `str_which()` returns the **positions** of matches
+
+```{webr}
+str_subset(fruit, "berry")
+str_which(fruit, "berry")
+```
+
+## `str_count()`
+
+`str_count()` counts how many **times** the pattern matches in each string.
+
+```{webr}
+x <- c("apple", "banana", "pear")
+str_count(x, "p")
+```
+
+::: {.callout-warning title="Matches never overlap"}
+Once a part of the string is matched, it is consumed. So `"aba"` matches only **twice** in `"abababa"`, not three times.
+:::
+
+```{webr}
+str_count("abababa", "aba")
+str_view("abababa", "aba")
+```
+
+## Counting vowels and consonants in names
+
+```{webr}
+babynames |>
+  count(name) |>
+  mutate(
+    vowels = str_count(name, "[aeiou]"),
+    consonants = str_count(name, "[^aeiou]")
+  )
+```
+
+::: {.callout-warning title="Look closely: Aaron has 1 vowel?"}
+Regexes are case sensitive, so the capital "A" isn't in `[aeiou]`, and it counts as a **consonant**. Worse, it counts under `[^aeiou]`!
+:::
+
+## Three ways to fix the case problem
+
+```{webr}
+# 1. Add the uppercase vowels
+babynames |>
+  count(name) |>
+  mutate(
+    vowels = str_count(name, "[aeiouAEIOU]"),
+    consonants = str_count(name, "[^aeiouAEIOU]")
+  )
+```
+
+```{webr}
+# 2. Tell the regex to ignore case
+babynames |>
+  count(name) |>
+  mutate(
+    vowels = str_count(name, regex("[aeiou]", ignore_case = TRUE)),
+    consonants = str_count(name, regex("[^aeiou]", ignore_case = TRUE))
+  )
+```
+
+```{webr}
+# 3. Lowercase the names first
+babynames |>
+  count(name) |>
+  mutate(
+    name = str_to_lower(name),
+    vowels = str_count(name, "[aeiou]"),
+    consonants = str_count(name, "[^aeiou]")
+  )
+```
+
+## Replacing values
+
+- `str_replace()` replaces the **first** match
+- `str_replace_all()` replaces **every** match
+
+```{webr}
+x <- c("apple", "pear", "banana")
+# Replace first
+str_replace(x, "[aeiou]", "-")
+# Replace all
+str_replace_all(x, "[aeiou]", "-")
+```
+
+## Removing values
+
+`str_remove()` and `str_remove_all()` are shortcuts for replacing with an empty string:
+
+```{webr}
+x <- c("apple", "pear", "banana")
+# Remove first
+str_remove(x, "[aeiou]")
+# Remove all
+str_remove_all(x, "[aeiou]")
+```
+
+## Extracting variables
+
+`separate_wider_regex()` (from tidyr) splits one column into several, using a **sequence of patterns**. Named patterns become columns; unnamed patterns are matched but dropped.
+
+```{webr}
+df <- tribble(
+  ~str,
+  "<Sheryl>-F_34",
+  "<Kisha>-F_45",
+  "<Brandon>-N_33",
+  "<Sharon>-F_38",
+  "<Penny>-F_58",
+  "<Justin>-M_41",
+)
+
+df |>
+  separate_wider_regex(
+    str,
+    patterns = c(
+      "<",
+      name = "[A-Za-z]+",
+      ">-",
+      gender = ".",
+      "_",
+      age = "[0-9]+"
+    )
+  )
+```
+
+
+## Exercise
+
+::: {.callout-tip title="Live exercise"}
+What baby name has the most vowels? What name has the highest proportion of vowels? (Hint: what is the denominator?)
+:::
+
+```{webr}
+#| exercise: ex_rx_1
+babynames |>
+  distinct(name) |>
+  mutate(vowels = , length = , prop = )
+```
+
+```{webr}
+#| exercise: ex_rx_1
+#| solution: true
+names_vowels <- babynames |>
+  distinct(name) |>
+  mutate(
+    vowels = str_count(name, regex("[aeiou]", ignore_case = TRUE)),
+    length = str_length(name),
+    prop = vowels / length
+  )
+
+names_vowels |> arrange(desc(vowels))   # most vowels
+names_vowels |> arrange(desc(prop))     # highest proportion (denominator: name length)
+```
+
+## Exercise
+
+::: {.callout-tip title="Live exercise"}
+Replace all forward slashes in `"a/b/c/d/e"` with backslashes. What happens if you then try to replace all backslashes with forward slashes? 
+:::
+
+```{webr}
+#| exercise: ex_rx_2
+x <- "a/b/c/d/e"
+
+```
+
+```{webr}
+#| exercise: ex_rx_2
+#| solution: true
+x <- "a/b/c/d/e"
+
+# "\\\\" is one literal backslash in the REPLACEMENT string...
+y <- str_replace_all(x, "/", "\\\\")
+str_view(y)
+
+# ...and in the PATTERN a literal backslash needs "\\\\" as well
+str_replace_all(y, "\\\\", "/")
+```
+
+## Exercise
+
+::: {.callout-tip title="Live exercise"}
+Implement a simple version of `str_to_lower()` using `str_replace_all()`.
+:::
+
+```{webr}
+#| exercise: ex_rx_3
+x <- "Hello WORLD"
+
+```
+
+```{webr}
+#| exercise: ex_rx_3
+#| solution: true
+x <- "Hello WORLD"
+# A named vector: names are patterns, values are replacements
+lookup <- setNames(letters, LETTERS)   # "A" -> "a", "B" -> "b", ...
+str_replace_all(x, lookup)
+```
+
+# Pattern details
+
+
+## Escaping
+
+If `.` means "any character", how do you match a **literal dot**? You **escape** it with a backslash: `\.`
+
+::: {.callout-warning title="Two levels of escaping"}
+The regex needs `\.`, but a backslash is also special in R strings. So you write **`"\\."`** in R code: the string `\\.` becomes the regex `\.`.
+:::
+
+```{webr}
+dot <- "\\."
+str_view(dot)   # the regex is \.
+
+str_view(c("abc", "a.c", "bef"), "a\\.c")
+```
+
+## Matching a literal backslash
+
+To match a literal `\`, the regex is `\\`, which as an R string is `"\\\\"`.
+
+```{webr}
+x <- "a\\b"
+str_view(x)
+str_view(x, "\\\\")
+```
+
+Raw strings make this much easier to read:
+
+```{webr}
+x <- "a\\b"
+str_view(x, r"{\\}")
+```
+
+::: {.callout-tip title="Escape alternative"}
+Instead of escaping, you can put a metacharacter inside a character class: `[.]`, `[$]`, `[|]`. These match the literal character. (The exceptions are `]`, `\`, `^`, and `-`.)
+:::
+
+```{webr}
+str_view(c("abc", "a.c", "a*c", "a c"), "a[.]c")
+str_view(c("abc", "a.c", "a*c", "a c"), ".[*]c")
+```
+
+## Which characters are special?
+
+::: {.callout-important title="Metacharacters to remember"}
+The full set is: `. ^ $ \ | * + ? { } [ ] ( )`
+
+When in doubt, escape it. Escaping a character that isn't special is harmless.
+:::
+
+## Anchors
+
+By default, a regex matches **anywhere** in the string. Anchors pin it to a position:
+
+- `^` matches the **start** of the string
+- `$` matches the **end** of the string
+
+```{webr}
+str_view(fruit, "^a")
+str_view(fruit, "a$")
+```
+
+## Anchors: matching the whole string
+
+```{webr}
+str_view(fruit, "apple")
+str_view(fruit, "^apple$")
+```
+
+::: {.callout-caution title="Remember the order"}
+To remember which is which, try this mnemonic: if you **begin** with power (`^`), you will **end** up with money (`$`).
+:::
+
+
+
+# Fancy Numbers: Dates and times
+
+## Why dates and times are hard
+
+Dates and times look simple, but two facts make them tricky:
+
+- Does every **year** have 365 days?
+- Does every **day** have 24 hours?
+
+::: {.callout-warning title="Calendar quirks"}
+- **Leap years**: a year is a leap year if it is divisible by 4, **except** centuries, unless the century is divisible by 400
+- **Daylight saving time (DST)**: some days have **23** hours and some have **25**
+- **Time zones**: the same moment has different clock times in different places
+:::
+
+
+# Creating date/times {.smaller}
+
+## Three types
+
+| Type | Tibble label | Meaning |
+|------|--------------|---------|
+| date | `<date>` | a day |
+| time | `<time>` | a time within a day (uses the hms package) |
+| date-time | `<dttm>` | a date plus a time: a specific instant (called **POSIXct** in base R) |
+
+::: {.callout-important title="Use the simplest type that works"}
+If you don't need the time of day, use a date. Date-times add complexity, mainly because of time zones.
+:::
+
+## Right now
+
+```{webr}
+today()
+now()
+```
+
+## Creating date-times: three ways
+
+You'll usually create them from one of these:
+
+1. **During import**, from a file
+2. **From a string**
+3. **From individual components** (like year, month, day)
+4. (Also) **From another date-time type**
+
+## During import
+
+readr automatically recognizes ISO8601 dates and date-times:
+
+::: {.callout-note title="ISO8601"}
+ISO8601 is the international standard: `YYYY-MM-DD`, largest unit first. It sorts correctly and is unambiguous.
+:::
+
+::: {.callout-warning title="Ambiguous dates"}
+`01/02/15` can be **January 2, 2015**, **February 1, 2015**, or **February 15, 2001**, depending on the order assumed. The same text, three different dates. Always check which convention your data uses.
+:::
+
+## Format codes {.smaller}
+
+| Code | Meaning | Example |
+|------|---------|---------|
+| `%Y` | 4-digit year | 2021 |
+| `%y` | 2-digit year | 21 |
+| `%m` | month number | 01 |
+| `%B` | full month name | January |
+| `%b` | abbreviated month | Jan |
+| `%d` | day of month | 02 |
+| `%H` | hour, 24-hour clock | 13 |
+| `%I` | hour, 12-hour clock | 1 |
+| `%p` | AM/PM | pm |
+| `%M` | minutes | 35 |
+| `%S` | seconds | 45 |
+| `%Z` | time zone name | America/Chicago |
+| `%z` | offset from UTC | +0800 |
+
+
+## From strings: lubridate helpers
+
+Pick the function whose letters match the **order** of the date: `y`, `m`, `d`.
+
+```{webr}
+ymd("2017-01-31")
+mdy("January 31st, 2017")
+dmy("31-Jan-2017")
+```
+
+- They work whatever the separators are
+- They also accept unquoted numbers
+
+```{webr}
+ymd(20170131)
+```
+
+## From strings: date-times
+
+Add `_h`, `_hm`, or `_hms` to get a date-time:
+
+```{webr}
+ymd_hms("2017-01-31 20:11:59")
+mdy_hm("01/31/2017 08:01")
+```
+
+Force a time zone with `tz`:
+
+```{webr}
+ymd(20170131, tz = "UTC")
+```
+
+## From individual components
+
+Sometimes the pieces are in separate columns, as in `flights`. Use `make_date()` or `make_datetime()`:
+
+```{webr}
+flights |>
+  select(year, month, day, hour, minute) |>
+  mutate(departure = make_datetime(year, month, day, hour, minute))
+```
+
+## `dep_time` stores times as HHMM
+
+`dep_time` and friends store times as numbers like `1530`. Use `%/%` and `%%` (from last week's **Numbers** lecture!) to unpack them:
+
+```{webr}
+make_datetime_100 <- function(year, month, day, time) {
+  make_datetime(year, month, day, time %/% 100, time %% 100)
+}
+
+flights_dt <- flights |>
+  filter(!is.na(dep_time), !is.na(arr_time)) |>
+  mutate(
+    dep_time = make_datetime_100(year, month, day, dep_time),
+    arr_time = make_datetime_100(year, month, day, arr_time),
+    sched_dep_time = make_datetime_100(year, month, day, sched_dep_time),
+    sched_arr_time = make_datetime_100(year, month, day, sched_arr_time)
+  ) |>
+  select(origin, dest, ends_with("delay"), ends_with("time"))
+
+flights_dt
+```
+
+
+
+
+## Exercise
+
+::: {.callout-tip title="Live exercise"}
+What happens if you parse a string that contains invalid dates?
+
+`ymd(c("2010-10-10", "bananas"))`
+:::
+
+```{webr}
+#| exercise: ex_dt_1
+ymd(c("2010-10-10", "bananas"))
+```
+
+```{webr}
+#| exercise: ex_dt_1
+#| solution: true
+# The invalid string becomes NA, with a warning: "1 failed to parse"
+out <- ymd(c("2010-10-10", "bananas"))
+out
+is.na(out)
+```
+
+
+## Exercise 
+
+::: {.callout-tip title="Live exercise"}
+Use the appropriate lubridate function (or a readr format) to parse each of these:
+
+```
+d1 <- "January 1, 2010"
+d2 <- "2015-Mar-07"
+d3 <- "06-Jun-2017"
+d4 <- "12/30/14" # Dec 30, 2014
+```
+:::
+
+```{webr}
+#| exercise: ex_dt_3
+d1 <- "January 1, 2010"
+d2 <- "2015-Mar-07"
+d3 <- "06-Jun-2017"
+d4 <- "12/30/14"
+```
+
+```{webr}
+#| exercise: ex_dt_3
+#| solution: true
+d1 <- "January 1, 2010"
+d2 <- "2015-Mar-07"
+d3 <- "06-Jun-2017"
+d4 <- "12/30/14"
+
+mdy(d1)
+ymd(d2)
+dmy(d3)
+mdy(d4)
+```
+
+
+# Lecture 10 wrap-up
+
+## What we learned
+
+- **Regular expressions**: describe patterns, then detect, count, replace, and extract
+- **Dates and times**: parse, break apart, compute with, and convert across time zones
+- Both reward the same habits: **test with tricky examples**, and **be explicit** about what you mean
+
+
+## Source
+
+::: {.callout-note title="Attribution"}
+Content adapted from *R for Data Science (2e)* by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund:
+
+- Chapter 15: Regular expressions, <https://r4ds.hadley.nz/regexps.html>
+- Chapter 17: Dates and times, <https://r4ds.hadley.nz/datetimes.html>
+:::

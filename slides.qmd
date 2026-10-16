@@ -32,6 +32,19 @@ title: "Lecture Slides"
 - [Lecture 7 Slides](slides/DATA100-F26-Lecture-7.html)
 
 
-## Lecture 8: Group Project Guidance 1
-- [Lecture 8 Slides](slides/DATA100-F26-Group-Project-Guidance-1.html)
+## Lecture 8: Logical Vectors
+- [Lecture 8 Slides](slides/DATA100-F26-Lecture-8.html)
+
+
+## Lecture 9: ???
+- [Lecture 9 Slides](slides/DATA100-F26-Lecture-9.html)
+
+
+## Lecture 10: ???
+- [Lecture 10 Slides](slides/DATA100-F26-Lecture-10.html)
+
+
+## Lecture 11: ???
+- [Lecture 11 Slides](slides/DATA100-F26-Lecture-11.html)
+
 
