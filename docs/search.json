@@ -42,452 +42,368 @@
     "text": "First-Year Success Tips\n\nStart early — avoid last-minute coding stress.\nPractice daily — even 30 minutes a day beats cramming.\nAsk questions early — reach out after 15 minutes of being stuck. Use office hours. I have an open door policy ;)\nForm study groups — teach among yourselves! This is the best way to learn."
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#todays-plan",
-    "href": "slides/DATA100-F26-Lecture-9.html#todays-plan",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#my-sleep-report",
+    "href": "slides/DATA100-F26-Lecture-9.html#my-sleep-report",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Today’s plan",
-    "text": "Today’s plan\nTwo of the most common kinds of data, and the tools for working with each:\n\nPart 1: Numbers (Chapter 13)\n\nmaking numbers, counting, transforming, ranking, and summarizing\n\nPart 2: Strings (Chapter 14)\n\ncreating strings, combining them, pulling data out of them, and handling non-English text"
+    "section": "My sleep report",
+    "text": "My sleep report\nI want a summary of the sleep survey on:\n\nHow much do students in each program sleep? (Numbers, Chapter 13)\nWhen do they go to bed? (Strings, Chapter 14)\nCan we make the chart readable? (Factors, Chapter 16)"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#setup",
-    "href": "slides/DATA100-F26-Lecture-9.html#setup",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#foreshadowing-the-final-output-of-today",
+    "href": "slides/DATA100-F26-Lecture-9.html#foreshadowing-the-final-output-of-today",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Setup",
-    "text": "Setup\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhere the data comes from\n\n\n\nnycflights13::flights for the Numbers part\nbabynames::babynames for the Strings part\nSmall made-up vectors and tibbles, built with c() and tribble(), whenever a real example would be too messy"
+    "section": "Foreshadowing the final output of today",
+    "text": "Foreshadowing the final output of today"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#what-this-part-covers",
-    "href": "slides/DATA100-F26-Lecture-9.html#what-this-part-covers",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#setup-and-data",
+    "href": "slides/DATA100-F26-Lecture-9.html#setup-and-data",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "What this part covers",
-    "text": "What this part covers\nNumeric vectors are the backbone of data science.\n\nMaking numbers out of strings\nCounts\nNumeric transformations: arithmetic, min and max, modular arithmetic, logs, rounding, cutting, cumulative aggregates\nGeneral transformations: ranks, offsets, consecutive identifiers\nNumeric summaries: center, quantiles, spread, distributions, positions\n\n\n\n\n\n\n\n\nPrerequisites\n\n\nMostly base R, but we use it inside tidyverse verbs like mutate() and filter()."
+    "section": "Setup and data",
+    "text": "Setup and data\nThe data is the same sleep survey from Lecture 8. It is loaded once at the start:\nlibrary(dplyr); library(tidyr); library(tibble); library(readr)\nlibrary(ggplot2); library(stringr); library(forcats)\n\nsurvey &lt;- read_csv(\"data/sleep_survey_v2.csv\", show_col_types = FALSE)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNot everything fits in this 80-minute lecture\n\n\nI may leave some of the undiscussed functions or tools in an appendix table at the end of the slide deck. Each row will say what the tool does and which section of the chapter to read. You should definitely take a look at the text for more details."
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#turning-strings-into-numbers",
-    "href": "slides/DATA100-F26-Lecture-9.html#turning-strings-into-numbers",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#learning-objectives",
+    "href": "slides/DATA100-F26-Lecture-9.html#learning-objectives",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Turning strings into numbers",
-    "text": "Turning strings into numbers\nNumbers often arrive as text, typically when data is imported. readr has two parsers for this:\n\nparse_double() for strings that are clean numbers\nparse_number() for strings that have extra text around the number"
+    "section": "Learning Objectives",
+    "text": "Learning Objectives\n\n\n\n\n\n\n\nStep\nTool (Chapter 13)\n\n\n\n\nFix numbers typed as text\nparse_number()\n\n\nCount students\ncount(), n(), n_distinct()\n\n\nTransform columns\npmin(), pmax(), %/%, %%, round(), cut()\n\n\nRank programs\nmin_rank()\n\n\nSummarize\nmean(), median()"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#parse_number",
-    "href": "slides/DATA100-F26-Lecture-9.html#parse_number",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#making-numbers",
+    "href": "slides/DATA100-F26-Lecture-9.html#making-numbers",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "parse_number()",
-    "text": "parse_number()\nparse_number() ignores text before and after the number. That makes it handy for currency, percentages, and similar messy values.\n\n\n\n\n\n\n\n\n\n\n\n\n\nGrouping marks too\n\n\nNotice that the comma in $1,234 is handled. The result is the number 1234."
+    "section": "Making numbers:",
+    "text": "Making numbers:\n:::[.callout-note title=“parse_number()”] Numbers sometimes arrive as text, typically when data is imported. readr has two parsers: - parse_double() for strings that are clean numbers - parse_number() for strings with extra text around the number :::\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCheckpoint\n\n\nDo you see what these functions are trying to do?"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#counting-with-count",
-    "href": "slides/DATA100-F26-Lecture-9.html#counting-with-count",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#counting",
+    "href": "slides/DATA100-F26-Lecture-9.html#counting",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Counting with count()",
-    "text": "Counting with count()\nMuch of data science is counting and adding. dplyr’s count() gives a quick tally of how many rows have each value."
+    "section": "Counting",
+    "text": "Counting\n\n\n\n\n\n\n\ncount()\n\n\nThis function gives a quick tally of how many rows have each value. Add sort = TRUE to see the biggest groups first.\n\n\n\n\n\n\n\n\n\n\n\n\ncount() is a shortcut. The long way lets you compute extra summaries in the same step:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nn() only works inside dplyr verbs\n\n\nn() returns the size of the current group. Outside of summarize(), mutate(), or filter(), there is no “current group”, so it fails. - i.e. survey |&gt; n(program) doesn’t mean anything."
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#sorting-the-counts",
-    "href": "slides/DATA100-F26-Lecture-9.html#sorting-the-counts",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#unique-values",
+    "href": "slides/DATA100-F26-Lecture-9.html#unique-values",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Sorting the counts",
-    "text": "Sorting the counts\nAdd sort = TRUE to see the biggest groups first:"
+    "section": "Unique values",
+    "text": "Unique values\n\n\n\n\n\n\n\nn_distinct()\n\n\nThis function counts the unique values of x. A quick check: does every student appear only once?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNA counts as a value\n\n\nBy default n_distinct() counts NA as one more distinct value. Add na.rm = TRUE if you do not want that."
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#the-long-way",
-    "href": "slides/DATA100-F26-Lecture-9.html#the-long-way",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#recycling-vectors",
+    "href": "slides/DATA100-F26-Lecture-9.html#recycling-vectors",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "The long way",
-    "text": "The long way\ncount() is a shortcut. Building it by hand lets you compute extra summaries in the same step.\n\n\n\n\n\n\n\n\n\n\n\n\n\nn() only works inside dplyr verbs\n\n\nn() takes no arguments and returns the size of the current group. Outside of summarize(), mutate(), or filter(), there is no “current group”, so it fails."
+    "section": "Recycling Vectors",
+    "text": "Recycling Vectors\nWhen two vectors have different lengths, R recycles the shorter one by repeating it. That can quietly give wrong answers. Are the students in Arts or Business?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDoesn’t give you an error, just the wrong answer\n\n\nR compares program with \"Arts\", \"Business\", \"Arts\", \"Business\", ... row by row. It does not ask “is the program Arts or Business?”. You only get about half of the students.\n\n\n\n\nThe fix is %in%, which you’ve seen in last lecture:"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#useful-count-variants-n_distinct",
-    "href": "slides/DATA100-F26-Lecture-9.html#useful-count-variants-n_distinct",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#a-simpler-example",
+    "href": "slides/DATA100-F26-Lecture-9.html#a-simpler-example",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Useful count variants: n_distinct()",
-    "text": "Useful count variants: n_distinct()\nn_distinct(x) counts the unique values of x. Which destinations are served by the most carriers?"
+    "section": "A simpler example",
+    "text": "A simpler example\n\n\n\n\n\n\n\nLive Exercise\n\n\nRun the following code to test how R recycles vectors of values"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#weighted-counts",
-    "href": "slides/DATA100-F26-Lecture-9.html#weighted-counts",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#maximum-and-minimum",
+    "href": "slides/DATA100-F26-Lecture-9.html#maximum-and-minimum",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Weighted counts",
-    "text": "Weighted counts\nA weighted count is a sum. For example, the total distance each plane has flown:\n\n\n\n\n\n\ncount() has a wt argument that does the same thing:"
+    "section": "Maximum and Minimum",
+    "text": "Maximum and Minimum\n\npmin() and pmax() work row by row across vectors (the “p” is for parallel)\nmin() and max() summarize everything into one value\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nKey idea\n\n\nEvery row gets the same answer from min() and max(): the smallest and largest value in both columns combined. Use pmin() and pmax() for a per-row answer."
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#counting-missing-values",
-    "href": "slides/DATA100-F26-Lecture-9.html#counting-missing-values",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#time-hours-and-minutes",
+    "href": "slides/DATA100-F26-Lecture-9.html#time-hours-and-minutes",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Counting missing values",
-    "text": "Counting missing values\nCombine sum() with is.na() (recall TRUE counts as 1). How many flights per destination were cancelled, meaning dep_time is missing?"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#exercise",
-    "href": "slides/DATA100-F26-Lecture-9.html#exercise",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Exercise",
-    "text": "Exercise\n\n\n\n\n\n\n\nLive exercise\n\n\nHow can you use count() to count the number of rows with a missing value for a given variable?\n\n\n\n\n\n\n\n\n\n\n\n# Count on a logical expression: TRUE rows are the missing ones\nflights |&gt;\n  count(dep_delay_missing = is.na(dep_delay))\n# Count on a logical expression: TRUE rows are the missing ones\nflights |&gt;\n  count(dep_delay_missing = is.na(dep_delay))"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#exercise-1",
-    "href": "slides/DATA100-F26-Lecture-9.html#exercise-1",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Exercise",
-    "text": "Exercise\n\n\n\n\n\n\n\nLive exercise\n\n\nRewrite these two count() calls without count(), using group_by(), summarize(), and arrange():\n\nflights |&gt; count(dest, sort = TRUE)\nflights |&gt; count(tailnum, wt = distance)\n\n\n\n\n\n\n\n\n\n\n\n\n# 1.\nflights |&gt;\n  group_by(dest) |&gt;\n  summarize(n = n()) |&gt;\n  arrange(desc(n))\n\n# 2.\nflights |&gt;\n  group_by(tailnum) |&gt;\n  summarize(n = sum(distance))\n# 1.\nflights |&gt;\n  group_by(dest) |&gt;\n  summarize(n = n()) |&gt;\n  arrange(desc(n))\n\n# 2.\nflights |&gt;\n  group_by(tailnum) |&gt;\n  summarize(n = sum(distance))"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#what-is-a-transformation",
-    "href": "slides/DATA100-F26-Lecture-9.html#what-is-a-transformation",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "What is a transformation?",
-    "text": "What is a transformation?\nTransformation functions return a vector the same length as the input: a natural fit for mutate().\nThis section covers:\n\nArithmetic and recycling rules\nMinimum and maximum\nModular arithmetic\nLogarithms\nRounding\nCutting numbers into ranges\nCumulative and rolling aggregates"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#arithmetic-and-recycling-rules",
-    "href": "slides/DATA100-F26-Lecture-9.html#arithmetic-and-recycling-rules",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Arithmetic and recycling rules",
-    "text": "Arithmetic and recycling rules\nYou can use +, -, *, /, and ^ on vectors. When the two vectors have different lengths, R recycles the shorter one by repeating it until it matches the longer one."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#recycling-when-the-lengths-dont-divide-evenly",
-    "href": "slides/DATA100-F26-Lecture-9.html#recycling-when-the-lengths-dont-divide-evenly",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Recycling when the lengths don’t divide evenly",
-    "text": "Recycling when the lengths don’t divide evenly\nRecycling a longer vector works silently if the lengths divide evenly, and gives a warning if they don’t.\n\n\n\n\n\n\n\n\n\n\n\n\n\nTidyverse is stricter\n\n\nBase R is permissive about recycling. The tidyverse is stricter and generally only recycles single values."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#a-silent-recycling-bug-in-filter",
-    "href": "slides/DATA100-F26-Lecture-9.html#a-silent-recycling-bug-in-filter",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "A silent recycling bug in filter()",
-    "text": "A silent recycling bug in filter()\nRecycling also works with comparisons, which can quietly give wrong answers:\n\n\n\n\n\n\n\n\n\n\n\n\n\nNo error, wrong answer\n\n\nThis compares month with 1, 2, 1, 2, ... row by row. It does not ask “is month 1 or 2?”. It only keeps January flights in odd-numbered rows and February flights in even-numbered rows.\nThe fix is %in%, which you met last lecture."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#minimum-and-maximum-pmin-and-pmax",
-    "href": "slides/DATA100-F26-Lecture-9.html#minimum-and-maximum-pmin-and-pmax",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Minimum and maximum: pmin() and pmax()",
-    "text": "Minimum and maximum: pmin() and pmax()\nTwo kinds of min and max exist:\n\npmin() and pmax() work row by row across vectors (the “p” is for parallel)\nmin() and max() summarize everything into one value"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#the-summary-versions",
-    "href": "slides/DATA100-F26-Lecture-9.html#the-summary-versions",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "The summary versions",
-    "text": "The summary versions\nCompare with min() and max(), which collapse all the values:\n\n\n\n\n\n\n\n\n\n\n\n\n\nKey idea\n\n\nEvery row gets the same answer from min() and max(): the smallest and largest value in both columns combined. Use pmin() and pmax() for a per-row answer."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#modular-arithmetic",
-    "href": "slides/DATA100-F26-Lecture-9.html#modular-arithmetic",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Modular arithmetic",
-    "text": "Modular arithmetic\nModular arithmetic is division with a quotient and a remainder:\n\n%/% is integer division (how many whole times it fits)\n%% is the remainder"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#unpacking-times",
-    "href": "slides/DATA100-F26-Lecture-9.html#unpacking-times",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Unpacking times",
-    "text": "Unpacking times\nsched_dep_time stores a time as a number like 1530, meaning 15:30. We can split it into hour and minute:"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#cancellations-by-hour-of-the-day",
-    "href": "slides/DATA100-F26-Lecture-9.html#cancellations-by-hour-of-the-day",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Cancellations by hour of the day",
-    "text": "Cancellations by hour of the day\nUsing the hour trick, we can see how the proportion of cancelled flights changes through the day.\n\n\n\n\n\n\n\nCancellations tend to climb through the day\nPoint size shows how many flights each hour contains"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#logarithms",
-    "href": "slides/DATA100-F26-Lecture-9.html#logarithms",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Logarithms",
-    "text": "Logarithms\nLogarithms turn multiplicative relationships into additive ones, and they help with data that spans many orders of magnitude. R has three:\n\nlog(): natural log (base e)\nlog2(): base 2\nlog10(): base 10"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#which-log-should-i-use",
-    "href": "slides/DATA100-F26-Lecture-9.html#which-log-should-i-use",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Which log should I use?",
-    "text": "Which log should I use?\n\n\n\n\n\n\n\nRecommendation\n\n\n\nUse log2(): it’s easy to interpret. Each +1 on the log scale means the original value doubled; each -1 means it halved.\nUse log10(): when you want to back-transform easily, since each +1 means ×10.\n\n\n\n\n\nThe inverse of a log is exponentiation:"
+    "section": "Time: Hours and minutes",
+    "text": "Time: Hours and minutes\n\n\n\n\n\n\n\nModular Arithmetic\n\n\nDivision with a quotient and a remainder: - %/% is integer division - %% is the remainder - E.g. 7%/%3=2 and 7%%3=1.\n\n\n\n\n\n\n\n\n\n\n\n\nsleep_hours = 6.7 means 6 hours and 42 minutes. Modular arithmetic splits it:"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-9.html#rounding",
     "href": "slides/DATA100-F26-Lecture-9.html#rounding",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Rounding",
-    "text": "Rounding\nround(x) rounds to the nearest integer. The digits argument controls where to round, and it can be negative."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#floor-and-ceiling",
-    "href": "slides/DATA100-F26-Lecture-9.html#floor-and-ceiling",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "floor() and ceiling()",
-    "text": "floor() and ceiling()\n\nfloor() always rounds down\nceiling() always rounds up\nNeither has a digits argument, so you scale first"
+    "text": "Rounding\n\n\n\n\n\n\n\nround(x)\n\n\nThis function rounds to the nearest integer. You can even add a digits argument that controls where to round, and this value digits can be negative!\n\n\n\n\n\n\n\n\n\n\n\n\nGrades rounded to the nearest ten:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAlways round down or up?\n\n\nfloor() always rounds down and ceiling() always rounds up. See the appendix."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-9.html#cutting-numbers-into-ranges",
     "href": "slides/DATA100-F26-Lecture-9.html#cutting-numbers-into-ranges",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Cutting numbers into ranges",
-    "text": "Cutting numbers into ranges\ncut() chops a numeric vector into bins and returns a factor. You supply the break points, and they don’t need to be evenly spaced."
+    "text": "Cutting numbers into ranges\n\n\n\n\n\n\n\ncut()\n\n\nThis function chops a numeric vector into bins and returns a factor. You supply the break points. Give labels one fewer element than breaks.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOpen-ended bins\n\n\n\nValues outside the breaks become NA. Use -Inf and Inf as the outer breaks so nothing falls off the ends.\nBins are right-closed by default, like (5, 10]. Pass right = FALSE to make them left-closed, like [5, 10)."
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#custom-labels",
-    "href": "slides/DATA100-F26-Lecture-9.html#custom-labels",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#using-cut-to-get-labels",
+    "href": "slides/DATA100-F26-Lecture-9.html#using-cut-to-get-labels",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Custom labels",
-    "text": "Custom labels\nGive labels one fewer element than breaks, because there is one fewer bin than break points:"
+    "section": "Using cut() to get labels",
+    "text": "Using cut() to get labels\nIn last class, we made sleep groups with case_when(). cut() does the same job in one line:"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#values-outside-the-breaks",
-    "href": "slides/DATA100-F26-Lecture-9.html#values-outside-the-breaks",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#ranking",
+    "href": "slides/DATA100-F26-Lecture-9.html#ranking",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Values outside the breaks",
-    "text": "Values outside the breaks\nAnything outside the breaks becomes NA:\n\n\n\n\n\n\n\n\n\n\n\n\n\nOpen-ended bins\n\n\nUse -Inf and Inf as the outer breaks so nothing falls off the ends. Bins are right-closed by default, like (5, 10]; pass right = FALSE to make them left-closed, like [5, 10).\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMore helpers\n\n\nggplot2 also offers cut_interval(), cut_number(), and cut_width() for common binning patterns. They live there mainly because histograms need them."
+    "section": "Ranking",
+    "text": "Ranking\n\n\n\n\n\n\n\nmin_rank()\n\n\nThis function gives the rank of each value. 1 is the smallest, unless you flip it with desc().\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhich program sleeps the least?"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#cumulative-and-rolling-aggregates",
-    "href": "slides/DATA100-F26-Lecture-9.html#cumulative-and-rolling-aggregates",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#summaries-mean-or-median",
+    "href": "slides/DATA100-F26-Lecture-9.html#summaries-mean-or-median",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Cumulative and rolling aggregates",
-    "text": "Cumulative and rolling aggregates\nCumulative functions keep a running total (or running min, max, mean) as they move down the vector:\n\ncumsum(), cumprod(), cummin(), cummax() in base R\ncummean() from dplyr"
+    "section": "Summaries: mean or median?",
+    "text": "Summaries: mean or median?\n\n\n\n\n\n\n\n\nWhy are they so different? Look at the distribution:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPerhaps an explanation\n\n\nMany students do not work at all, which drags the median down while a few heavy workers pull the mean up. When a distribution is skewed, maybe it’s worth it to report both mean and median."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-9.html#back-to-answering-the-question",
+    "href": "slides/DATA100-F26-Lecture-9.html#back-to-answering-the-question",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Back to answering the question",
+    "text": "Back to answering the question"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-9.html#exercise-1",
+    "href": "slides/DATA100-F26-Lecture-9.html#exercise-1",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Exercise 1",
+    "text": "Exercise 1\n\n\n\n\n\n\n\nLive exercise\n\n\n\nUse cut() to make a study_band column from study_hours_week: under 10, 10 to 19, 20 to 29, and 30 or more. Count the students in each band.\nFor each program, compute the mean and median of study_hours_week, rounded to 1 decimal place. Which program has the biggest gap between them?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n# Part 1\nsurvey |&gt;\n  mutate(\n    study_band = cut(\n      study_hours_week,\n      breaks = c(-Inf, 10, 20, 30, Inf),\n      labels = c(\"Under 10\", \"10 to 19\", \"20 to 29\", \"30 or more\"),\n      right = FALSE\n    )\n  ) |&gt;\n  count(study_band)\n\n# Part 2\nsurvey |&gt;\n  group_by(program) |&gt;\n  summarize(\n    mean_study = round(mean(study_hours_week), 1),\n    median_study = round(median(study_hours_week), 1)\n  )\n# Part 1\nsurvey |&gt;\n  mutate(\n    study_band = cut(\n      study_hours_week,\n      breaks = c(-Inf, 10, 20, 30, Inf),\n      labels = c(\"Under 10\", \"10 to 19\", \"20 to 29\", \"30 or more\"),\n      right = FALSE\n    )\n  ) |&gt;\n  count(study_band)\n\n# Part 2\nsurvey |&gt;\n  group_by(program) |&gt;\n  summarize(\n    mean_study = round(mean(study_hours_week), 1),\n    median_study = round(median(study_hours_week), 1)\n  )"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-9.html#learning-objectives-1",
+    "href": "slides/DATA100-F26-Lecture-9.html#learning-objectives-1",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Learning Objectives",
+    "text": "Learning Objectives\n\n\n\nStep\nTool (Chapter 14)\n\n\n\n\nBuild text from data\nstr_c(), str_glue()\n\n\nMeasure text\nstr_length()\n\n\nSplit one column into several\nseparate_wider_delim()\n\n\nTidy up capitals\nstr_to_lower(), str_to_upper()"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-9.html#combining-text",
+    "href": "slides/DATA100-F26-Lecture-9.html#combining-text",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Combining text:",
+    "text": "Combining text:\n\n\n\n\n\n\n\nstr_c()\n\n\nThis function takes any number of vectors and returns a character vector. It is similar to base R’s paste0(), but it follows tidyverse recycling rules.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMissing values are contagious\n\n\nJust like in arithmetic, if any input is NA, the result is NA. The fourth greeting is missing."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-9.html#make-it-simpler",
+    "href": "slides/DATA100-F26-Lecture-9.html#make-it-simpler",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Make it simpler!",
+    "text": "Make it simpler!\n\n\n\n\n\n\n\nstr_glue()\n\n\nstr_c() gets awkward with many pieces. str_glue() lets you write the whole string in one go, with { } marking code to evaluate.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNA behaves differently\n\n\nUnlike str_c(), str_glue() converts a missing value to the text \"NA\"."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-9.html#piecing-everything-together",
+    "href": "slides/DATA100-F26-Lecture-9.html#piecing-everything-together",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Piecing everything together",
+    "text": "Piecing everything together\nUsing the program_summary from Part 1, this builds the labels for our chart:"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-9.html#oh-wait-whats-the-problem",
+    "href": "slides/DATA100-F26-Lecture-9.html#oh-wait-whats-the-problem",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Oh wait! What’s the problem?",
+    "text": "Oh wait! What’s the problem?\n\n\n\n\n\n\n\nCheckpoint with bedtime\n\n\nClick Run Code and view the bedtime variable from the first 15 responses. And then look at the counts of different types of responses collected from the students. Can I get any meaningful results from this table?\n\n\n\n\n\n\n\n\n\n\n\n\n\n11:30 PM, 11:30 pm, 11.30 pm, 23:30, 2330…\nSome entries are not even times at all\nWe need to clean this column before we can use it"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-9.html#length-of-a-string",
+    "href": "slides/DATA100-F26-Lecture-9.html#length-of-a-string",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Length of a string",
+    "text": "Length of a string\n\n\n\n\n\n\n\nstr_length()\n\n\nThis function counts the characters in each string. A missing value gives NA.\n\n\n\n\n\n\n\n\n\n\n\n\nThe long entries in bedtime:\n\n\n\n\n\n\n\n\n\nLong entries are usually hedged answers (around ...) or words instead of times"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-9.html#splitting-into-columns",
+    "href": "slides/DATA100-F26-Lecture-9.html#splitting-into-columns",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Splitting into columns",
+    "text": "Splitting into columns\n\n\n\n\n\n\n\nseparate_wider_delim()\n\n\nA time like \"11:30 pm\" has two pieces separated by a space. This function splits a column on a delimiter, with a new column per piece. You supply names for the new columns.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nIt refuses to guess\n\n\nseparate_wider_delim() expects every string to split into the same number of pieces. Real data does not. The function errors rather than guessing, and the message tells you what to try."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-9.html#debug-mode",
+    "href": "slides/DATA100-F26-Lecture-9.html#debug-mode",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Debug mode",
+    "text": "Debug mode\ntoo_few = \"debug\" and too_many = \"debug\" keep the result but add diagnostic columns, named after the input column:\n\nbedtime_ok: did this row split cleanly?\nbedtime_pieces: how many pieces it had\nbedtime_remainder: any leftover text\n\n\n\n\n\n\n\n\n\n\nToo few pieces: 11:30PM, 2330, midnight\nToo many pieces: around 11 pm, no set time, and entries with a stray space at the start"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-9.html#fixing-it",
+    "href": "slides/DATA100-F26-Lecture-9.html#fixing-it",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Fixing it",
+    "text": "Fixing it\nTidy first, then tell the function what to do:\n\nstr_trim() removes stray spaces at the start and end\nstr_to_lower() makes PM, Pm and pm the same\ntoo_few = \"align_start\" fills missing pieces with NA at the end\ntoo_many = \"merge\" glues the extra pieces onto the last column"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-9.html#putting-the-pieces-together",
+    "href": "slides/DATA100-F26-Lecture-9.html#putting-the-pieces-together",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Putting the pieces together",
+    "text": "Putting the pieces together\nUse str_c() to rebuild one standard bedtime. We only do it when ampm is really am or pm:\n\n\n\n\n\n\n\n\n\nRows we cannot trust remain as NA"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-9.html#str_c-or-str_glue-for-unclear-rows",
+    "href": "slides/DATA100-F26-Lecture-9.html#str_c-or-str_glue-for-unclear-rows",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "str_c() or str_glue() for unclear rows?",
+    "text": "str_c() or str_glue() for unclear rows?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNA is honest\n\n\nstr_c() keeps the NA: we do not know the bedtime. str_glue() turns it into text like \"23:30 NA\", which looks like data but is not. Choose str_c() when a missing piece should make the whole result missing."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-9.html#how-far-did-we-get",
+    "href": "slides/DATA100-F26-Lecture-9.html#how-far-did-we-get",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "How far did we get?",
+    "text": "How far did we get?\n\n\n\n\n\n\n\nProblem\nSolved today?\n\n\n\n\nCapital letters (PM, Pm, pm)\nYes: str_to_lower()\n\n\nStray spaces\nYes: str_trim()\n\n\n11:30 pm becomes 11:30 PM\nYes: separate_wider_delim() and str_c()\n\n\nGlued times (11:30pm, 12:00AM)\nNo\n\n\nDifferent separators and missing minutes (11.30 pm, 11 pm)\nPartly: they split, but are not in one format\n\n\nHedged answers (around 11, ~11:30 pm)\nNo\n\n\n24-hour (23:30, 2330) and no AM/PM (11:30)\nNo\n\n\nmidnight, idk, blank\nNo"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-9.html#foreshadowing",
+    "href": "slides/DATA100-F26-Lecture-9.html#foreshadowing",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Foreshadowing",
+    "text": "Foreshadowing\n\n\n\n\n\n\n\nNext week\n\n\nWe need a way to describe a pattern instead of an exact string. That is what regular expressions do (Chapter 15). Roughly 4 in 10 bedtimes are still unreadable after today."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-9.html#exercise-2",
     "href": "slides/DATA100-F26-Lecture-9.html#exercise-2",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Exercise",
-    "text": "Exercise\n\n\n\n\n\n\n\nLive exercise\n\n\nRound dep_time and arr_time to the nearest five minutes."
+    "section": "Exercise 2",
+    "text": "Exercise 2\n\n\n\n\n\n\n\nLive exercise\n\n\n\nHow many students typed a bedtime longer than 10 characters? What do those entries look like?\nUse str_c() to make a label for each student, like S499733 (Arts): 11:30 PM. What happens to students with a blank bedtime?\nRepeat Part 2 with str_glue(). How do the blank bedtimes look now?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n# Part 1\nsurvey |&gt;\n  filter(str_length(bedtime) &gt; 10) |&gt;\n  count(bedtime, sort = TRUE) |&gt;\n  head(5)\n\n# Part 2: blank bedtimes give NA for the whole label\nsurvey |&gt;\n  mutate(label = str_c(student_id, \" (\", program, \"): \", bedtime)) |&gt;\n  select(label) |&gt;\n  head(5)\n\n# Part 3: blank bedtimes become the text \"NA\" inside the label\nsurvey |&gt;\n  mutate(label = str_glue(\"{student_id} ({program}): {bedtime}\")) |&gt;\n  select(label) |&gt;\n  head(5)\n# Part 1\nsurvey |&gt;\n  filter(str_length(bedtime) &gt; 10) |&gt;\n  count(bedtime, sort = TRUE) |&gt;\n  head(5)\n\n# Part 2: blank bedtimes give NA for the whole label\nsurvey |&gt;\n  mutate(label = str_c(student_id, \" (\", program, \"): \", bedtime)) |&gt;\n  select(label) |&gt;\n  head(5)\n\n# Part 3: blank bedtimes become the text \"NA\" inside the label\nsurvey |&gt;\n  mutate(label = str_glue(\"{student_id} ({program}): {bedtime}\")) |&gt;\n  select(label) |&gt;\n  head(5)"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#what-this-part-covers-1",
-    "href": "slides/DATA100-F26-Lecture-9.html#what-this-part-covers-1",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#can-we-make-the-chart-readable",
+    "href": "slides/DATA100-F26-Lecture-9.html#can-we-make-the-chart-readable",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "What this part covers",
-    "text": "What this part covers\nStrings (text) are everywhere in real data.\n\nCreating strings, including quotes, escapes, and special characters\nBuilding many strings from data: str_c(), str_glue(), str_flatten()\nExtracting data from strings with the tidyr separate_*() functions\nLetters: length and substrings\nNon-English text: encoding, letter variations, and locales\n\n\n\n\n\n\n\n\nComing next\n\n\nThe most powerful string tool, regular expressions, is the topic of the next chapter."
+    "section": "Can we make the chart readable?",
+    "text": "Can we make the chart readable?\nHere is what the pipeline gives us without any work:\n\n\n\n\n\n\n\n\n\nPrograms are in alphabetical order, which tells me nothing\n\n\n\n\n\n\n\n\nDefinition\n\n\nA factor is how R stores a categorical variable that has a fixed set of possible values, which is called levels. Factors let you choose the order."
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#prerequisites",
-    "href": "slides/DATA100-F26-Lecture-9.html#prerequisites",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#creating-a-factor",
+    "href": "slides/DATA100-F26-Lecture-9.html#creating-a-factor",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Prerequisites",
-    "text": "Prerequisites\n\nThis part uses stringr, part of the tidyverse\nWe also use the babynames package for example data (names of babies born in the US over many years)\n\n\n\n\n\n\n\n\nFinding stringr functions\n\n\nEvery stringr function starts with str_. In RStudio, type str_ and the autocomplete list shows all of them, with a documentation panel for whichever one is highlighted."
+    "section": "Creating a factor",
+    "text": "Creating a factor\n\n\n\n\n\n\n\nfactor()\n\n\nStrings sort alphabetically (in default), which is rarely what you want. Start with a list of valid levels, then pass it to factor():\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSilent NA\n\n\nAny value that is not in levels silently becomes NA. There is no warning. Always check the result."
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#quotes",
-    "href": "slides/DATA100-F26-Lecture-9.html#quotes",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#reordering-levels",
+    "href": "slides/DATA100-F26-Lecture-9.html#reordering-levels",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Quotes",
-    "text": "Quotes\nYou create a string with either single or double quotes. There is no difference in behaviour between them.\n\n\n\n\n\n\n\n\n\n\n\n\n\nStyle\n\n\nThe tidyverse style guide recommends double quotes, unless the string itself contains double quotes."
+    "section": "Reordering levels",
+    "text": "Reordering levels\n\n\n\n\n\n\n\nfct_reorder()\n\n\nThis function fct_reorder(f, x) orders the levels of f by the values in x. It is perfect for plots.\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe program that sleeps the least is at the bottom, the most at the top"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#forgot-to-close-the-quote",
-    "href": "slides/DATA100-F26-Lecture-9.html#forgot-to-close-the-quote",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#reordering-by-hand",
+    "href": "slides/DATA100-F26-Lecture-9.html#reordering-by-hand",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Forgot to close the quote?",
-    "text": "Forgot to close the quote?\nIf you forget the closing quote, R shows the continuation prompt + and waits for more input:\n&gt; \"This is a string without a closing quote\n+\n+\n+ HELP I'M STUCK IN A STRING\n\n\n\n\n\n\n\nGetting unstuck\n\n\nPress Escape (esc) to cancel the unfinished input and get your prompt back."
+    "section": "Reordering by hand",
+    "text": "Reordering by hand\n\n\n\n\n\n\n\nfct_relevel()\n\n\nThe “sleep groups” from Lecture 8 are text, so a plot puts them in alphabetical order. fct_relevel() lets you list the levels in the order you want."
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#escapes",
-    "href": "slides/DATA100-F26-Lecture-9.html#escapes",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#renaming-levels",
+    "href": "slides/DATA100-F26-Lecture-9.html#renaming-levels",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Escapes",
-    "text": "Escapes\nTo put a quote character inside a string that uses the same quote, you escape it with a backslash. Because the backslash is itself special, you escape a literal backslash with another backslash."
+    "section": "Renaming levels",
+    "text": "Renaming levels\n\n\n\n\n\n\n\nfct_recode()\n\n\nThis function can be used to rename a level. The syntax is new name = \"old name\". Also, levels you do not mention stay the same."
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#printing-vs.-viewing",
-    "href": "slides/DATA100-F26-Lecture-9.html#printing-vs.-viewing",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#merging-levels",
+    "href": "slides/DATA100-F26-Lecture-9.html#merging-levels",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Printing vs. viewing",
-    "text": "Printing vs. viewing\n\n\n\n\n\n\n\nThe printed string is not the string\n\n\nWhen R prints a string, it shows the escapes (the backslashes). To see the raw contents, use str_view().\n\n\n\n\n\n\n\n\n\n\n\nx shows \"\\\\\" for the backslash, but str_view(x) shows a single \\\nBase R’s writeLines() also shows the raw string\n\n\n\n\n\n\n\n\nDisplay in the browser\n\n\nstr_view() normally uses color to show spaces, tabs, and matches. In the browser console, that styling may look different or be missing, but the raw characters are still shown."
+    "section": "Merging levels",
+    "text": "Merging levels\n\n\n\n\n\n\n\nfct_collapse()\n\n\nThis function can combine levels and put them into groups. In this case, we want to group the drinks by how much caffeine they usually contain:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nA lookup table is better\n\n\nTyping groupings by hand is fine for five drinks. With many levels, you would use a lookup table with the caffeine amounts instead. That is a join, in Lecture 11."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-9.html#the-finished-chart",
+    "href": "slides/DATA100-F26-Lecture-9.html#the-finished-chart",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "The finished chart",
+    "text": "The finished chart\n\n\n\n\n\n\n\n\n\nNumbers gave us the averages, the hours and minutes\nStrings gave us the label\nFactors gave us the order"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-9.html#exercise-3",
     "href": "slides/DATA100-F26-Lecture-9.html#exercise-3",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Exercise",
-    "text": "Exercise\n\n\n\n\n\n\n\nLive exercise\n\n\nCreate strings that contain each of these values:\n\nHe said \"That's amazing!\"\n\\a\\b\\c\\d\nA run of backslashes, for example \\\\\\\\\\\\\n\n\n\n\n\n\n\n\n\n\n\n\nx1 &lt;- \"He said \\\"That's amazing!\\\"\"\nx2 &lt;- \"\\\\a\\\\b\\\\c\\\\d\"\nx3 &lt;- \"\\\\\\\\\\\\\\\\\\\\\\\\\"\n\nstr_view(c(x1, x2, x3))\nx1 &lt;- \"He said \\\"That's amazing!\\\"\"\nx2 &lt;- \"\\\\a\\\\b\\\\c\\\\d\"\nx3 &lt;- \"\\\\\\\\\\\\\\\\\\\\\\\\\"\n\nstr_view(c(x1, x2, x3))"
+    "section": "Exercise 3",
+    "text": "Exercise 3\n\n\n\n\n\n\n\nLive exercise\n\n\nMake a bar chart of favourite_drink for students who answered the question:\n\nOrder the bars from the most common drink to the least common with fct_infreq(factor)\nKeep the top 3 drinks and lump the rest into \"Other\" with fct_lump_n(factor, n = 3)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nsurvey |&gt;\n  filter(!is.na(favourite_drink)) |&gt;\n  mutate(\n    favourite_drink = fct_infreq(favourite_drink),\n    favourite_drink = fct_lump_n(favourite_drink, n = 3)\n  ) |&gt;\n  ggplot(aes(x = favourite_drink)) +\n  geom_bar()\nsurvey |&gt;\n  filter(!is.na(favourite_drink)) |&gt;\n  mutate(\n    favourite_drink = fct_infreq(favourite_drink),\n    favourite_drink = fct_lump_n(favourite_drink, n = 3)\n  ) |&gt;\n  ggplot(aes(x = favourite_drink)) +\n  geom_bar()"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#combining-fixed-text-with-data",
-    "href": "slides/DATA100-F26-Lecture-9.html#combining-fixed-text-with-data",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#back-to-the-report",
+    "href": "slides/DATA100-F26-Lecture-9.html#back-to-the-report",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Combining fixed text with data",
-    "text": "Combining fixed text with data\nSo far we’ve made one string at a time. A common job is to combine fixed text with values from your data. Three functions work well inside mutate() and summarize():\n\nstr_c()\nstr_glue()\nstr_flatten()"
+    "section": "Back to the report",
+    "text": "Back to the report\n\n\n\n\n\n\n\n\nQuestion\nChapter\nTools we used\n\n\n\n\nHow much do they sleep?\nNumbers\ncount(), %/%, %%, round(), cut(), min_rank(), median()\n\n\nWhen do they go to bed?\nStrings\nstr_c(), str_glue(), str_length(), separate_wider_delim(), str_to_lower()\n\n\nIs the chart readable?\nFactors\nfct_reorder(), fct_relevel(), fct_recode(), fct_collapse()"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#str_c",
-    "href": "slides/DATA100-F26-Lecture-9.html#str_c",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#whats-next-and-sources",
+    "href": "slides/DATA100-F26-Lecture-9.html#whats-next-and-sources",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "str_c()",
-    "text": "str_c()\nstr_c() takes any number of vectors and returns a character vector. It’s similar to base R’s paste0(), but it follows tidyverse recycling rules and handles missing values consistently."
+    "section": "What’s next, and sources",
+    "text": "What’s next, and sources\n\n\n\n\n\n\n\nLecture 10: Fancy words and numbers\n\n\n\nRegular expressions: finish cleaning bedtime\nDates and times: turn those clean times into real date-times\n\n\n\n\n\n\n\n\n\n\n\n\nAttribution\n\n\nContent adapted from R for Data Science (2e) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund:\n\nChapter 13: Numbers, https://r4ds.hadley.nz/numbers.html\nChapter 14: Strings, https://r4ds.hadley.nz/strings.html\nChapter 16: Factors, https://r4ds.hadley.nz/factors.html"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#str_c-in-mutate",
-    "href": "slides/DATA100-F26-Lecture-9.html#str_c-in-mutate",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#numbers-other-tools-i",
+    "href": "slides/DATA100-F26-Lecture-9.html#numbers-other-tools-i",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "str_c() in mutate()",
-    "text": "str_c() in mutate()\n\n\n\n\n\n\n\n\n\n\n\n\n\nMissing values are contagious\n\n\nJust like in arithmetic, if any input is NA, the result is NA. The fourth greeting is missing."
+    "section": "Numbers: other tools (i)",
+    "text": "Numbers: other tools (i)\n\n\n\n\n\n\n\n\n\nTool\nWhat it does\nTiny example\nRead the section on\n\n\n\n\ncount(..., wt = )\nA weighted count: a sum of another column\ncount(program, wt = study_hours_week)\nCounts\n\n\nsum(is.na(x))\nCounts the missing values\nsum(is.na(sleep_hours))\nCounts\n\n\nfloor(), ceiling()\nRound down / up. No digits argument, so scale first\nfloor(123.456)\nRounding"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#str_glue",
-    "href": "slides/DATA100-F26-Lecture-9.html#str_glue",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#numbers-other-tools-ii",
+    "href": "slides/DATA100-F26-Lecture-9.html#numbers-other-tools-ii",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "str_glue()",
-    "text": "str_glue()\nstr_c() gets awkward with many pieces. str_glue() (from the glue package) lets you write the whole string in one go, with { } marking code to evaluate.\n\n\n\n\n\n\n\n\n\n\n\n\n\nNA behaves differently\n\n\nUnlike str_c(), str_glue() converts a missing value to the text \"NA\"."
+    "section": "Numbers: other tools (ii)",
+    "text": "Numbers: other tools (ii)\n\n\n\n\n\n\n\n\n\nTool\nWhat it does\nTiny example\nRead the section on\n\n\n\n\nsd(), IQR()\nSpread: standard deviation, and the width of the middle half\nsd(sleep_hours, na.rm = TRUE)\nSpread\n\n\nquantile()\nAny percentile of a vector\nquantile(x, 0.9)\nMinimum, maximum, and quantiles\n\n\nlog(), log2(), log10()\nLogarithms. Each +1 on log2() means the value doubled\nlog2(c(1, 2, 4, 8))\nLogarithms"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#literal-braces-in-str_glue",
-    "href": "slides/DATA100-F26-Lecture-9.html#literal-braces-in-str_glue",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#numbers-other-tools-iii",
+    "href": "slides/DATA100-F26-Lecture-9.html#numbers-other-tools-iii",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Literal braces in str_glue()",
-    "text": "Literal braces in str_glue()\nTo include an actual brace, double it:"
+    "section": "Numbers: other tools (iii)",
+    "text": "Numbers: other tools (iii)\n\n\n\n\n\n\n\n\n\nTool\nWhat it does\nTiny example\nRead the section on\n\n\n\n\ncumsum(), cummean(), …\nRunning totals, means, minimums, maximums\ncumsum(1:10)\nCumulative aggregates\n\n\nlag(), lead()\nThe previous / next value, for comparing neighbours\nx - lag(x)\nOffsets\n\n\nconsecutive_id()\nStarts a new id every time a value changes\nconsecutive_id(c(1, 1, 2, 2, 1))\nConsecutive identifiers"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#str_flatten",
-    "href": "slides/DATA100-F26-Lecture-9.html#str_flatten",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#numbers-other-tools-iv",
+    "href": "slides/DATA100-F26-Lecture-9.html#numbers-other-tools-iv",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "str_flatten()",
-    "text": "str_flatten()\nstr_c() and str_glue() return one result per input. str_flatten() goes the other way: it collapses a vector into a single string. That makes it a summary function, so it fits in summarize().\n\n\n\n\n\n\n\nThe second argument is the separator\nlast sets a different separator just before the final item (for an “Oxford comma” style list)"
+    "section": "Numbers: other tools (iv)",
+    "text": "Numbers: other tools (iv)\n\n\n\n\n\n\n\n\n\nTool\nWhat it does\nTiny example\nRead the section on\n\n\n\n\ndense_rank(), row_number(), percent_rank()\nOther ways to rank, with different tie handling\nrow_number(x)\nRanks\n\n\nfirst(), last(), nth()\nPick a value by position\nfirst(x)\nPositions\n\n\ncut_interval(), cut_number(), cut_width()\nggplot2 helpers for common binning patterns\ncut_width(x, 10)\nCutting numbers into ranges"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#str_flatten-by-group",
-    "href": "slides/DATA100-F26-Lecture-9.html#str_flatten-by-group",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#strings-other-tools-i",
+    "href": "slides/DATA100-F26-Lecture-9.html#strings-other-tools-i",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "str_flatten() by group",
-    "text": "str_flatten() by group\n\n\n\n\n\n\n\n\n\n\n\n\n\nBase R\n\n\nThe base R equivalent is paste() with the collapse argument."
+    "section": "Strings: other tools (i)",
+    "text": "Strings: other tools (i)\n\n\n\n\n\n\n\n\n\nTool\nWhat it does\nTiny example\nRead the section on\n\n\n\n\nstr_flatten()\nCollapses a vector into one string, so it works in summarize()\nstr_flatten(c(\"x\", \"y\"), \", \", last = \", and \")\nstr_flatten()\n\n\nstr_sub()\nExtracts part of a string. Negative positions count from the end\nstr_sub(\"Apple\", -3, -1)\nSubsetting strings\n\n\nEscapes: \\\", \\\\\nPut a quote or backslash inside a string\n\"He said \\\"hi\\\"\"\nEscapes"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#several-variables-in-one-string",
-    "href": "slides/DATA100-F26-Lecture-9.html#several-variables-in-one-string",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#strings-other-tools-ii",
+    "href": "slides/DATA100-F26-Lecture-9.html#strings-other-tools-ii",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Several variables in one string",
-    "text": "Several variables in one string\nMessy data often packs more than one variable into a single string, like \"a10.1.2022\". tidyr has four functions to pull them apart. Their names follow a pattern:\nseparate_ + (longer or wider) + (delim or position)\n\n\n\nFunction\nMakes\nSplits by\n\n\n\n\nseparate_longer_delim()\nmore rows\na delimiter\n\n\nseparate_longer_position()\nmore rows\nfixed positions\n\n\nseparate_wider_delim()\nmore columns\na delimiter\n\n\nseparate_wider_position()\nmore columns\nfixed positions\n\n\n\n\n\n\n\n\n\n\nRegular expressions\n\n\nThere is also separate_wider_regex(), the most flexible of the family. It’s covered in the regular expressions chapter."
+    "section": "Strings: other tools (ii)",
+    "text": "Strings: other tools (ii)\n\n\n\n\n\n\n\n\n\nTool\nWhat it does\nTiny example\nRead the section on\n\n\n\n\nRaw strings: r\"(...)\"\nWrite a string without escaping anything\nr\"(C:\\data)\"\nRaw strings\n\n\n\\n, \\t, \\u00b5\nNew line, tab, and other special characters\n\"a\\tb\"\nOther special characters\n\n\nstr_view()\nShows the raw contents of a string, without the escapes\nstr_view(\"a\\\\b\")\nEscapes\n\n\n{{ and }} in str_glue()\nWrites a literal brace\nstr_glue(\"{{x}}\")\nstr_glue()"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#separating-into-rows-separate_longer_delim",
-    "href": "slides/DATA100-F26-Lecture-9.html#separating-into-rows-separate_longer_delim",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#strings-other-tools-iii",
+    "href": "slides/DATA100-F26-Lecture-9.html#strings-other-tools-iii",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Separating into rows: separate_longer_delim()",
-    "text": "Separating into rows: separate_longer_delim()\nSplit on a delimiter, one new row per piece:"
+    "section": "Strings: other tools (iii)",
+    "text": "Strings: other tools (iii)\n\n\n\n\n\n\n\n\n\nTool\nWhat it does\nTiny example\nRead the section on\n\n\n\n\nseparate_wider_delim() with NA names\nSkips a piece\nnames = c(\"code\", NA, \"year\")\nSeparating into columns\n\n\nseparate_longer_delim(), separate_longer_position()\nSplit into rows instead of columns\nseparate_longer_delim(x, \",\")\nSeparating into rows\n\n\nseparate_wider_position()\nSplit fixed-width text into columns\nwidths = c(year = 4, age = 2)\nSeparating into columns"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#separating-into-rows-separate_longer_position",
-    "href": "slides/DATA100-F26-Lecture-9.html#separating-into-rows-separate_longer_position",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#strings-other-tools-iv",
+    "href": "slides/DATA100-F26-Lecture-9.html#strings-other-tools-iv",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Separating into rows: separate_longer_position()",
-    "text": "Separating into rows: separate_longer_position()\nLess common: when each value is packed in with a fixed width, say one character each:"
+    "section": "Strings: other tools (iv)",
+    "text": "Strings: other tools (iv)\n\n\n\n\n\n\n\n\n\nTool\nWhat it does\nTiny example\nRead the section on\n\n\n\n\ntoo_few / too_many options\n\"drop\", \"merge\", \"align_start\", \"align_end\"\ntoo_many = \"drop\"\nDiagnosing widening problems\n\n\nstr_to_title()\nChanges capitals\nstr_to_title(\"jane doe\")\nNon-English text\n\n\nEncodings and locales\nNon-English letters; sorting depends on the language\nstr_sort(x, locale = \"es\")\nNon-English text\n\n\n\n\n\n\n\n\n\n\nstr_sub() and bedtime\n\n\nstr_sub(bedtime, -2, -1) pulls out the last two characters, which is am or pm for many entries."
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#separating-into-columns-separate_wider_delim",
-    "href": "slides/DATA100-F26-Lecture-9.html#separating-into-columns-separate_wider_delim",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#factors-other-tools-i",
+    "href": "slides/DATA100-F26-Lecture-9.html#factors-other-tools-i",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Separating into columns: separate_wider_delim()",
-    "text": "Separating into columns: separate_wider_delim()\nSplit on a delimiter, with a new column per piece. You must supply names for the new columns."
+    "section": "Factors: other tools (i)",
+    "text": "Factors: other tools (i)\n\n\n\n\n\n\n\n\n\nTool\nWhat it does\nTiny example\nRead the section on\n\n\n\n\nlevels()\nLists the levels of a factor\nlevels(y1)\nFactor basics\n\n\nfct_infreq()\nOrders levels by how common they are\nfct_infreq(favourite_drink)\nModifying factor order\n\n\nfct_rev()\nReverses the order of the levels\nfct_rev(f)\nModifying factor order\n\n\nfct_reorder2()\nOrders levels so a line plot’s legend matches the line ends\nfct_reorder2(f, x, y)\nModifying factor order"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#dropping-a-piece",
-    "href": "slides/DATA100-F26-Lecture-9.html#dropping-a-piece",
+    "objectID": "slides/DATA100-F26-Lecture-9.html#factors-other-tools-ii",
+    "href": "slides/DATA100-F26-Lecture-9.html#factors-other-tools-ii",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Dropping a piece",
-    "text": "Dropping a piece\nUse NA as a name to skip that piece:"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#separating-into-columns-separate_wider_position",
-    "href": "slides/DATA100-F26-Lecture-9.html#separating-into-columns-separate_wider_position",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Separating into columns: separate_wider_position()",
-    "text": "Separating into columns: separate_wider_position()\nFor fixed-width data, give a named integer vector of widths:\n\n\n\n\n\n\n\nUnnamed widths are left out of the result, just like NA names above:"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#diagnosing-widening-problems",
-    "href": "slides/DATA100-F26-Lecture-9.html#diagnosing-widening-problems",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Diagnosing widening problems",
-    "text": "Diagnosing widening problems\nseparate_wider_delim() expects every string to split into the same number of pieces. Real data often doesn’t.\n\nToo few pieces in some rows\nToo many pieces in some rows\n\n\n\n\n\n\n\n\nThe function errors rather than guessing, and the message tells you what to try"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#too-few-debug-mode",
-    "href": "slides/DATA100-F26-Lecture-9.html#too-few-debug-mode",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Too few: debug mode",
-    "text": "Too few: debug mode\ntoo_few = \"debug\" keeps the result but adds diagnostic columns, named after the input column:\n\nx_ok: did this row split cleanly?\nx_pieces: how many pieces it had\nx_remainder: any leftover text\n\n\n\n\n\n\n\nFilter on the problem rows:"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#too-few-fixing-it",
-    "href": "slides/DATA100-F26-Lecture-9.html#too-few-fixing-it",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Too few: fixing it",
-    "text": "Too few: fixing it\nOnce you understand the problem, tell the function what to do. \"align_start\" fills the missing pieces with NA at the end; \"align_end\" fills them at the start."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#too-many-pieces",
-    "href": "slides/DATA100-F26-Lecture-9.html#too-many-pieces",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Too many pieces",
-    "text": "Too many pieces\nThe same idea works in the other direction, using too_many:\n\n\n\n\n\n\n\n\n\n\n\n\n\nHere x_remainder holds the extra text"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#too-many-fixing-it",
-    "href": "slides/DATA100-F26-Lecture-9.html#too-many-fixing-it",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Too many: fixing it",
-    "text": "Too many: fixing it\nTwo choices for the extra pieces:\n\ntoo_many = \"drop\" discards them\ntoo_many = \"merge\" glues them onto the last column\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSame principles elsewhere\n\n\nseparate_wider_position() and separate_wider_regex() have the same too_few and too_many ideas."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#length-str_length",
-    "href": "slides/DATA100-F26-Lecture-9.html#length-str_length",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Length: str_length()",
-    "text": "Length: str_length()\nstr_length() counts the characters in each string. A missing value gives NA."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#length-of-baby-names",
-    "href": "slides/DATA100-F26-Lecture-9.html#length-of-baby-names",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Length of baby names",
-    "text": "Length of baby names\nUse it on the babynames data to see how long names are. Each row is a name, year, and sex, with n babies given that name, so we weight by n:"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#the-longest-names",
-    "href": "slides/DATA100-F26-Lecture-9.html#the-longest-names",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "The longest names",
-    "text": "The longest names\n\n\n\n\n\n\n\n\n\n\n\n\n\nA data quirk\n\n\nThe data seems to have had spaces and hyphens removed, and names cut off after 15 letters."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#subsetting-str_sub",
-    "href": "slides/DATA100-F26-Lecture-9.html#subsetting-str_sub",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Subsetting: str_sub()",
-    "text": "Subsetting: str_sub()\nstr_sub(string, start, end) extracts a part of each string. Both start and end are inclusive.\n\n\n\n\n\n\nNegative positions count from the end (-1 is the last character):"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#strings-that-are-too-short",
-    "href": "slides/DATA100-F26-Lecture-9.html#strings-that-are-too-short",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Strings that are too short",
-    "text": "Strings that are too short\nstr_sub() doesn’t fail if the string is too short. It returns as much as it can:"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#first-and-last-letters-of-baby-names",
-    "href": "slides/DATA100-F26-Lecture-9.html#first-and-last-letters-of-baby-names",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "First and last letters of baby names",
-    "text": "First and last letters of baby names"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#exercise-14.5.3-3",
-    "href": "slides/DATA100-F26-Lecture-9.html#exercise-14.5.3-3",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Exercise 14.5.3 (3)",
-    "text": "Exercise 14.5.3 (3)\n\n\n\n\n\n\n\nLive exercise\n\n\nAre there any major trends in the length of baby names over time? What about the popularity of the first letter?\n\n\n\n\n\n\n\n\n\n\n\n# Average name length per year, weighted by how many babies got each name\nbabynames |&gt;\n  mutate(len = str_length(name)) |&gt;\n  group_by(year) |&gt;\n  summarize(avg_len = weighted.mean(len, n)) |&gt;\n  ggplot(aes(x = year, y = avg_len)) +\n  geom_line()\n\n# Popularity of each first letter over time\nbabynames |&gt;\n  mutate(first = str_sub(name, 1, 1)) |&gt;\n  count(year, last, wt = n) |&gt;\n  group_by(year) |&gt;\n  mutate(prop = n / sum(n)) |&gt;\n  ggplot(aes(x = year, y = prop)) +\n  geom_line() +\n  facet_wrap(~ first)\n# Average name length per year, weighted by how many babies got each name\nbabynames |&gt;\n  mutate(len = str_length(name)) |&gt;\n  group_by(year) |&gt;\n  summarize(avg_len = weighted.mean(len, n)) |&gt;\n  ggplot(aes(x = year, y = avg_len)) +\n  geom_line()\n\n# Popularity of each first letter over time\nbabynames |&gt;\n  mutate(first = str_sub(name, 1, 1)) |&gt;\n  count(year, last, wt = n) |&gt;\n  group_by(year) |&gt;\n  mutate(prop = n / sum(n)) |&gt;\n  ggplot(aes(x = year, y = prop)) +\n  geom_line() +\n  facet_wrap(~ first)"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#source",
-    "href": "slides/DATA100-F26-Lecture-9.html#source",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Source",
-    "text": "Source\n\n\n\n\n\n\n\nAttribution\n\n\nContent adapted from R for Data Science (2e) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund:\n\nChapter 13: Numbers, https://r4ds.hadley.nz/numbers.html\nChapter 14: Strings, https://r4ds.hadley.nz/strings.html"
+    "section": "Factors: other tools (ii)",
+    "text": "Factors: other tools (ii)\n\n\n\n\n\n\n\n\n\nTool\nWhat it does\nTiny example\nRead the section on\n\n\n\n\nfct_lump_n(), fct_lump_min(), fct_lump_prop()\nCombine the rare levels into \"Other\"\nfct_lump_n(f, n = 3)\nModifying factor levels\n\n\nordered()\nA factor whose levels have a natural order (low &lt; medium &lt; high)\nordered(x, levels = ...)\nOrdered factors\n\n\ngss_cat\nThe book’s example data: the General Social Survey\nforcats::gss_cat\nIntroduction to factors\n\n\n\n\n\n\n\n\n\n\nTry the book’s data\n\n\nChapter 16 uses gss_cat throughout. It is a good place to practise fct_reorder() on a bigger data set."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-7.html#what-weve-covered",
@@ -1057,319 +973,354 @@
     "text": "Fun Exercises"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#setup",
-    "href": "slides/DATA100-F26-Lecture-11.html#setup",
+    "objectID": "slides/DATA100-F26-Lecture-11.html#can-we-trust-our-survey",
+    "href": "slides/DATA100-F26-Lecture-11.html#can-we-trust-our-survey",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Setup",
-    "text": "Setup"
+    "section": "Can we trust our survey?",
+    "text": "Can we trust our survey?\n\n\n\n\n\n\n\nTwo Questions\n\n\nOur sleep survey is not perfect. Some students skipped questions, and the caffeine facts live in a different table.\n\nCan we trust our averages when people skip questions? (Missing values, Chapter 18)\nDo students who drink more caffeine sleep less? (Joins, Chapter 19)"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#missing-values-come-in-three-kinds",
-    "href": "slides/DATA100-F26-Lecture-11.html#missing-values-come-in-three-kinds",
+    "objectID": "slides/DATA100-F26-Lecture-11.html#goal-for-today",
+    "href": "slides/DATA100-F26-Lecture-11.html#goal-for-today",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Missing values come in three kinds",
-    "text": "Missing values come in three kinds\nWe’ve met NA before (in plot warnings, summaries, and the logical vectors lecture). Now we go deeper:\n\nExplicit missing values: an NA you can see\nImplicit missing values: a row that isn’t there at all\nEmpty groups: a category with no observations (usually from factors)\n\n\n\n\n\n\n\n\nWhere the tools live\n\n\nMost of the tools here come from dplyr and tidyr."
+    "section": "Goal for today",
+    "text": "Goal for today"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#what-to-expect",
-    "href": "slides/DATA100-F26-Lecture-11.html#what-to-expect",
+    "objectID": "slides/DATA100-F26-Lecture-11.html#setup-and-data",
+    "href": "slides/DATA100-F26-Lecture-11.html#setup-and-data",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "What to expect",
-    "text": "What to expect\nExplicit missings are NAs in the data. This section covers tools for creating and removing them:\n\nLast observation carried forward: fill()\nFixed values: coalesce() and na_if()\nNaN"
+    "section": "Setup and data",
+    "text": "Setup and data\nWe are bringing in another table: drinks, which includes information about beverages.\nlibrary(dplyr); library(tidyr); library(tibble); library(readr)\nlibrary(ggplot2); library(stringr); library(forcats); library(lubridate)\n\nsurvey &lt;- read.csv(\"data/sleep_survey_v2.csv\", na.strings = c(\"\", \"NA\"),\n                   fileEncoding = \"WINDOWS-1252\") |&gt;\n  as_tibble() |&gt;\n  mutate(survey_date = ymd_hms(survey_date))\n\ndrinks &lt;- read.csv(\"data/drinks.csv\", fileEncoding = \"WINDOWS-1252\") |&gt;\n  as_tibble()"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#last-observation-carried-forward",
-    "href": "slides/DATA100-F26-Lecture-11.html#last-observation-carried-forward",
+    "objectID": "slides/DATA100-F26-Lecture-11.html#what-is-the-drinks-data",
+    "href": "slides/DATA100-F26-Lecture-11.html#what-is-the-drinks-data",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Last observation carried forward",
-    "text": "Last observation carried forward\nSome data entry (often by hand) uses a blank to mean “same as the row above”. This is called last observation carried forward."
+    "section": "What is the drinks data?",
+    "text": "What is the drinks data?\n\ndrinks\n\n# A tibble: 7 × 4\n  drink        serving_ml caffeine_mg sugary\n  &lt;chr&gt;             &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt; \n1 Coffee              240          95 No    \n2 Energy drink        473         160 Yes   \n3 Tea                 240          47 No    \n4 Pop                 355          34 Yes   \n5 Water               500           0 No    \n6 Matcha              240          70 No    \n7 Bubble tea          500          50 Yes   \n\n\n\n\n\n\n\n\n\nNot everything fits in this 80-minute lecture\n\n\nI may leave some of the undiscussed functions or tools in an appendix table at the end of the slide deck. Each row will say what the tool does and which section of the chapter to read. You should definitely take a look at the text for more details."
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#fill",
-    "href": "slides/DATA100-F26-Lecture-11.html#fill",
+    "objectID": "slides/DATA100-F26-Lecture-11.html#what-are-missing-values",
+    "href": "slides/DATA100-F26-Lecture-11.html#what-are-missing-values",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "fill()",
-    "text": "fill()\nfill() replaces each NA with the most recent non-missing value above it:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLook at what got filled\n\n\neverything() filled every column, including response. Here that would wrongly copy a response value into a missing one. Fill only the columns where a blank really means “same as above”:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nUnusual patterns\n\n\nfill() has a .direction argument for other cases, such as filling upward (\"up\") or both ways."
+    "section": "What are missing values?",
+    "text": "What are missing values?\n\n\n\n\n\n\n\n\n\nExplicit missing\nImplicit missing\n\n\n\n\nIdea\nThe data has a cell and it says NA\nThe data has no row at all\n\n\nExample from survey\nA student left sleep_hours blank\nNobody answered between 3 and 4 AM, so that hour is not in the data\n\n\nAnother example\nstress_level left blank\nMatcha and Bubble tea: nobody chose them, so they never appear\n\n\nHow to see it\nis.na(), count()\nCompare with what should be there: complete(), anti_join()\n\n\nHow to fix it\ndrop_na(), na.rm, coalesce(), replace_na()\ncomplete() adds the rows"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#fixed-values-coalesce",
-    "href": "slides/DATA100-F26-Lecture-11.html#fixed-values-coalesce",
+    "objectID": "slides/DATA100-F26-Lecture-11.html#a-simple-example",
+    "href": "slides/DATA100-F26-Lecture-11.html#a-simple-example",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Fixed values: coalesce()",
-    "text": "Fixed values: coalesce()\nSometimes a missing value stands for a known fixed value, usually zero. coalesce() replaces NAs with a value you choose:"
+    "section": "A simple example",
+    "text": "A simple example\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCheckpoint\n\n\nWhat is the missing data here?"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#fixed-values-na_if",
-    "href": "slides/DATA100-F26-Lecture-11.html#fixed-values-na_if",
+    "objectID": "slides/DATA100-F26-Lecture-11.html#example-continued",
+    "href": "slides/DATA100-F26-Lecture-11.html#example-continued",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Fixed values: na_if()",
-    "text": "Fixed values: na_if()\nThe reverse problem: older software uses a sentinel value like 99 or -999 to mean “missing”. na_if() turns it into a real NA:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSentinel values corrupt your statistics\n\n\nIf -99 stays in the data, it is treated as a real number: mean(c(1, 4, 5, 7, -99)) is dragged far below reality.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFix it at import time\n\n\nIf you know about the sentinel when reading the file, declare it up front with the na argument: read_csv(path, na = \"99\"). Use na_if() when you discover the problem later."
+    "section": "Example Continued",
+    "text": "Example Continued\n\nTuesday is explicit: the row exists and n is NA\nWednesday is implicit: there is no row at all\n\n\n\n\n\n\n\n\nPlots hide implicit gaps\n\n\nA chart of this table draws Mon, Tue, Thu. Nothing on the plot says that Wednesday is missing."
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#nan",
-    "href": "slides/DATA100-F26-Lecture-11.html#nan",
+    "objectID": "slides/DATA100-F26-Lecture-11.html#brief-review-of-na",
+    "href": "slides/DATA100-F26-Lecture-11.html#brief-review-of-na",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "NaN",
-    "text": "NaN\nNaN (“not a number”) is a close cousin of NA. It appears from impossible math:"
+    "section": "Brief Review of NA",
+    "text": "Brief Review of NA\n\n\n\n\n\n\n\nNA is contagious\n\n\nAn unknown value makes almost every answer unknown. - E.g. arithemtic like addition/subtraction - E.g. statistics like mean/median)"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#nan-behaves-like-na",
-    "href": "slides/DATA100-F26-Lecture-11.html#nan-behaves-like-na",
+    "objectID": "slides/DATA100-F26-Lecture-11.html#testing-for-na",
+    "href": "slides/DATA100-F26-Lecture-11.html#testing-for-na",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "NaN behaves like NA",
-    "text": "NaN behaves like NA\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nis.na() catches both\n\n\nis.na() returns TRUE for both NA and NaN. Usually you don’t need to tell them apart. If you do, use is.nan():"
+    "section": "Testing for NA",
+    "text": "Testing for NA\n\n\n\n\n\n\n\nWhat do we do?\n\n\nNA == NA is NA, so we can use is.na() to test for it"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#what-is-missing",
-    "href": "slides/DATA100-F26-Lecture-11.html#what-is-missing",
+    "objectID": "slides/DATA100-F26-Lecture-11.html#filtering",
+    "href": "slides/DATA100-F26-Lecture-11.html#filtering",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "What is missing?",
-    "text": "What is missing?\n\n\n\n\n\n\n\nExplicit vs. implicit\n\n\n\nAn explicit missing value is the presence of an absence\nAn implicit missing value is the absence of a presence\n\n\n\n\n\nExplicit missings are NAs you can see. Implicit missings are rows that were never recorded."
+    "section": "Filtering",
+    "text": "Filtering\n\n\n\n\n\n\n\nTry running the following code\n\n\nSuppose that I collected these sleep survey response from 1000 students. I want to filter and count the number of students that sleep less than 6 hours on average, and then count the number of students that sleep for greater or equal to 6 hours per night. What are the results showing me?"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#example-data-stocks",
-    "href": "slides/DATA100-F26-Lecture-11.html#example-data-stocks",
+    "objectID": "slides/DATA100-F26-Lecture-11.html#the-filter-trap",
+    "href": "slides/DATA100-F26-Lecture-11.html#the-filter-trap",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Example data: stocks",
-    "text": "Example data: stocks\n\nstocks &lt;- tibble(\n  year  = c(2020, 2020, 2020, 2020, 2021, 2021, 2021),\n  qtr   = c(   1,    2,    3,    4,    2,    3,    4),\n  price = c(1.88, 0.59, 0.35,   NA, 0.92, 0.17, 2.66)\n)\n\n\nThe price for 2020 Q4 is explicitly missing (NA)\nThe price for 2021 Q1 is implicitly missing: there is no row at all\n\n\n\n\n\n\n\n\nImplicit missings hide from summaries\n\n\nmean(price, na.rm = TRUE) and count() silently skip rows that don’t exist. You won’t get a warning, so you have to go looking for them."
+    "section": "The filter() trap",
+    "text": "The filter() trap\n\n\n\n\n\n\nCaution\n\n\nThe two counts do not add up to 1000! filter() drops rows where the condition is NA. Missing students vanish from both sides. So how many students did not had NA in the survey response?"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#making-implicit-missing-explicit",
-    "href": "slides/DATA100-F26-Lecture-11.html#making-implicit-missing-explicit",
+    "objectID": "slides/DATA100-F26-Lecture-11.html#how-much-is-missing",
+    "href": "slides/DATA100-F26-Lecture-11.html#how-much-is-missing",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Making implicit “missing” explicit",
-    "text": "Making implicit “missing” explicit\npivot_wider() needs a cell for every combination, so the gaps become visible NAs:\n\n\n\n\n\n\n\n\n\nNow both missing values are explicit NAs"
+    "section": "How much is missing?",
+    "text": "How much is missing?\nCount the NAs in every column at once with across():\n\n\n\n\n\n\n\n\n\n.x stands for “the current column”\nbedtime shows 23: the truly blank answers"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#pivoting-back",
-    "href": "slides/DATA100-F26-Lecture-11.html#pivoting-back",
+    "objectID": "slides/DATA100-F26-Lecture-11.html#blank-vs-na",
+    "href": "slides/DATA100-F26-Lecture-11.html#blank-vs-na",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Pivoting back",
-    "text": "Pivoting back\npivot_longer() keeps those NAs by default. If they are only there because of the table’s shape (structurally missing), drop them with values_drop_na = TRUE:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThink before dropping\n\n\nvalues_drop_na = TRUE also drops the real explicit NA (2020 Q4). Only use it when every NA is just a gap in the table’s shape."
+    "section": "Blank vs NA",
+    "text": "Blank vs NA\nAn empty cell is not always NA. It depends on how the file is read:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNo error, no warning\n\n\nWith na.strings = character(), the 23 blanks become empty text, and is.na() finds none of them. The na.strings argument tells read.csv() which strings mean “missing”. We used na.strings = c(\"\", \"NA\")."
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#complete",
-    "href": "slides/DATA100-F26-Lecture-11.html#complete",
+    "objectID": "slides/DATA100-F26-Lecture-11.html#missing-in-disguise",
+    "href": "slides/DATA100-F26-Lecture-11.html#missing-in-disguise",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "complete()",
-    "text": "complete()\ncomplete() generates every combination of the variables you name, adding explicit NA rows where they were missing:"
+    "section": "Missing in disguise",
+    "text": "Missing in disguise\nWhat about idk, varies and n/a? They are not blank, but they carry no information:\n\n\n\n\n\n\n\n\n\nWe can use regex (regular expressions) from Lecture 10 to find them: i.e. no digit, and not midnight.\nDecide what counts as missing, and write it down"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#complete-with-a-known-range",
-    "href": "slides/DATA100-F26-Lecture-11.html#complete-with-a-known-range",
+    "objectID": "slides/DATA100-F26-Lecture-11.html#turn-them-into-na",
+    "href": "slides/DATA100-F26-Lecture-11.html#turn-them-into-na",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "complete() with a known range",
-    "text": "complete() with a known range\ncomplete() only knows the values that appear. If the full range is bigger, supply it:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nfull_seq()\n\n\nfull_seq(x, 1) generates every value from min(x) to max(x) in steps of 1, which is handy for filling in a range of years or days.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhen complete() isn’t enough\n\n\nBuild the full set of rows by hand, then combine it with dplyr::full_join(). You’ll meet joins later in these slides."
+    "section": "Turn them into NA",
+    "text": "Turn them into NA\n\n\n\n\n\n\n\n\n\nFrom 23 blanks to 57 unusable answers: now they are explicit missing values"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#missing-values-found-by-joins",
-    "href": "slides/DATA100-F26-Lecture-11.html#missing-values-found-by-joins",
+    "objectID": "slides/DATA100-F26-Lecture-11.html#a-representation-for-na",
+    "href": "slides/DATA100-F26-Lecture-11.html#a-representation-for-na",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Missing values found by joins",
-    "text": "Missing values found by joins\nSome missing observations only show up when you compare one table to another. anti_join(x, y) keeps the rows of x with no match in y.\nDestination airports in flights that are missing from the airports table:\n\n\n\n\n\n\n\n\nPlane tail numbers in flights that are missing from planes:\n\n\n\n\n\n\n\n\n\nFour airports and hundreds of planes have no record: implicit missing data"
+    "section": "A representation for NA?",
+    "text": "A representation for NA?\n\n\n\n\n\n\n\nna_if()\n\n\nThis function allows you to transform a single value that implies missing (e.g an extreme value like -99), and turn it into NA."
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#exercise",
-    "href": "slides/DATA100-F26-Lecture-11.html#exercise",
+    "objectID": "slides/DATA100-F26-Lecture-11.html#where-is-the-missing",
+    "href": "slides/DATA100-F26-Lecture-11.html#where-is-the-missing",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Exercise",
-    "text": "Exercise\n\n\n\n\n\n\n\nLive exercise\n\n\nCan you find any relationship between the carrier and the rows that appear to be missing from planes?"
+    "section": "Where is the missing?",
+    "text": "Where is the missing?\nsurvey |&gt;\n  mutate(\n    bedtime = if_else(\n      str_detect(bedtime, regex(\"\\\\d|midnight\", ignore_case = TRUE)),\n      bedtime, NA_character_\n    )\n  ) |&gt;\n  select(program, sleep_hours, stress_level, favourite_drink,\n         has_early_class, avg_grade, bedtime) |&gt;\n  mutate(across(-program, is.na)) |&gt;\n  group_by(program) |&gt;\n  summarize(across(everything(), mean)) |&gt;\n  pivot_longer(-program, names_to = \"question\", values_to = \"share\") |&gt;\n  ggplot(aes(x = question, y = program, fill = share)) +\n  geom_tile(colour = \"white\", linewidth = 0.8) +\n  scale_x_discrete(guide = guide_axis(n.dodge = 2)) +\n  scale_fill_gradient(\n    low = \"white\", high = \"firebrick\",\n    limits = c(0, NA),\n    labels = scales::percent,\n    name = \"Proportion\"\n  ) +\n  labs(title = \"Which students missed responses the most?\", x = NULL, y = NULL) +\n  theme_minimal(base_size = 14)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-11.html#a-heat-map",
+    "href": "slides/DATA100-F26-Lecture-11.html#a-heat-map",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "A heat map",
+    "text": "A heat map"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-11.html#does-the-missing-matter",
+    "href": "slides/DATA100-F26-Lecture-11.html#does-the-missing-matter",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Does the missing matter?",
+    "text": "Does the missing matter?\n\n\n\n\n\n\n\nTip\n\n\nSuppose that you want to compare students who answered with students who did not. Did the missing data affect your results?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-11.html#observations",
+    "href": "slides/DATA100-F26-Lecture-11.html#observations",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Observations",
+    "text": "Observations\n\n\n\n\n\n\n\nmissing looks random\n\n\nThe averages are close, and the missing groups are small (a few dozen students)\n\n\n\n\n\n\n\n\n\n\n\nRandom is not guaranteed\n\n\nIf stressed students skip the stress question, dropping them makes everyone look calmer. Always ask who is missing, not just how many."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-11.html#handling-missing-values",
+    "href": "slides/DATA100-F26-Lecture-11.html#handling-missing-values",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Handling missing values",
+    "text": "Handling missing values\n\n\n\nTool\nWhat it does\n\n\n\n\nna.rm = TRUE\nIgnore the NAs inside one calculation\n\n\ndrop_na()\nRemove the rows that have NA\n\n\nreplace_na()\nReplace NA with a value you choose\n\n\ncoalesce()\nTake the first value that is not NA"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-11.html#different-ways-to-find-the-mean",
+    "href": "slides/DATA100-F26-Lecture-11.html#different-ways-to-find-the-mean",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Different ways to find the mean",
+    "text": "Different ways to find the mean"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-11.html#imputation",
+    "href": "slides/DATA100-F26-Lecture-11.html#imputation",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Imputation",
+    "text": "Imputation\n\n\n\n\n\n\n\nDefinition\n\n\nImputation means filling in a missing value with an estimate.\n\nFixed value: a number you choose, such as 0\nMean: the average of the answers we have (mean imputation)\nLast value: the last known value above it\n\n\n\n\n\n\n\n\n\n\n\n\nIt comes with a cost\n\n\nFilling with the mean keeps the average but shrinks the spread (sd), and it makes 35 students look more typical than they are. Dropping rows loses students. There is no free option, so choose, and say which."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-11.html#exercise-1",
+    "href": "slides/DATA100-F26-Lecture-11.html#exercise-1",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Exercise 1",
+    "text": "Exercise 1\n\n\n\n\n\n\n\nLive exercise\n\n\nWork with the five questions sleep_hours, stress_level, favourite_drink, has_early_class and avg_grade.\n\nHow many students are missing at least one of the five?\nWhich program has the most missing avg_grades?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n# Part 1: if_any() is TRUE when the condition holds in any of the columns\nsurvey |&gt;\n  count(any_missing = if_any(\n    c(sleep_hours, stress_level, favourite_drink, has_early_class, avg_grade),\n    is.na\n  ))\n\n# Part 2\nsurvey |&gt;\n  group_by(program) |&gt;\n  summarize(missing_grades = sum(is.na(avg_grade))) |&gt;\n  arrange(desc(missing_grades))\n# Part 1: if_any() is TRUE when the condition holds in any of the columns\nsurvey |&gt;\n  count(any_missing = if_any(\n    c(sleep_hours, stress_level, favourite_drink, has_early_class, avg_grade),\n    is.na\n  ))\n\n# Part 2\nsurvey |&gt;\n  group_by(program) |&gt;\n  summarize(missing_grades = sum(is.na(avg_grade))) |&gt;\n  arrange(desc(missing_grades))"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-11.html#when-did-the-students-respond-to-the-survey",
+    "href": "slides/DATA100-F26-Lecture-11.html#when-did-the-students-respond-to-the-survey",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "When did the students respond to the survey?",
+    "text": "When did the students respond to the survey?\n\n\n\n\n\n\n\nImplicit missing\n\n\nWhen we show a (line) plot, the lines connect the hours before and after each gap. So in fact, it hides the hours (timeslot) when nobody answered in the survey."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-11.html#filling-in-the-missing-rows",
+    "href": "slides/DATA100-F26-Lecture-11.html#filling-in-the-missing-rows",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Filling in the missing rows",
+    "text": "Filling in the missing rows\n\n\n\n\n\n\n\ncomplete()\n\n\nThis function adds the rows that are missing from a table. You tell it which values should exist, and it creates a row for every one that’s absent, and fill the other columns with NA or a value that you choose."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-11.html#now-the-gaps-are-filled-in",
+    "href": "slides/DATA100-F26-Lecture-11.html#now-the-gaps-are-filled-in",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Now the gaps are filled in",
+    "text": "Now the gaps are filled in\n\n\n\n\n\n\n\n\n\nThe red points are the nights when nobody was answering the survey\nThe line now dips to zero, which is what really happened"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-11.html#empty-groups",
     "href": "slides/DATA100-F26-Lecture-11.html#empty-groups",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Empty groups",
-    "text": "Empty groups\nA final kind of missing is an empty group: a category that exists but has no observations. This is most common with factors.\nHere every person is a non-smoker, but the factor knows about both levels:"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#counting-drops-empty-groups",
-    "href": "slides/DATA100-F26-Lecture-11.html#counting-drops-empty-groups",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Counting drops empty groups",
-    "text": "Counting drops empty groups\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe ‘yes’ group vanished\n\n\nBy default, count() shows only the levels that occur. Anyone reading this table wouldn’t know “yes” was even possible.\n\n\n\n\nKeep empty groups with .drop = FALSE:"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#the-same-issue-in-ggplot2",
-    "href": "slides/DATA100-F26-Lecture-11.html#the-same-issue-in-ggplot2",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "The same issue in ggplot2",
-    "text": "The same issue in ggplot2\nggplot2 also drops unused levels of a discrete variable:\n\n\n\n\n\n\n\n\nForce them to show with drop = FALSE:"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#empty-groups-in-summarize",
-    "href": "slides/DATA100-F26-Lecture-11.html#empty-groups-in-summarize",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Empty groups in summarize()",
-    "text": "Empty groups in summarize()\nWith .drop = FALSE in group_by(), the empty group stays, and the summary functions run on a zero-length vector:"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#reading-the-empty-group-row",
-    "href": "slides/DATA100-F26-Lecture-11.html#reading-the-empty-group-row",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Reading the empty-group row",
-    "text": "Reading the empty-group row\nFor the “yes” group (no data):\n\nn = 0: correct, there are no rows\nmean_age = NaN: the mean of nothing is 0 / 0\nmin_age = Inf and max_age = -Inf: the minimum of nothing is “infinitely large”\nsd_age = NA\n\n\n\n\n\n\n\n\nInf and -Inf are not data\n\n\nThese values are not wrong, but they are not meaningful ages either. They come from summary functions running on a vector of length 0, which is different from NA (length 1).\n\n\n\n\n\n\n\n\n\n\n\nWhy Inf?\n\n\nIt makes combining results work: min(c(x, y)) is always equal to min(min(x), min(y)), even when x is empty."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#a-simpler-alternative-complete",
-    "href": "slides/DATA100-F26-Lecture-11.html#a-simpler-alternative-complete",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "A simpler alternative: complete()",
-    "text": "A simpler alternative: complete()\nSummarize first, then add the missing group with complete():\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe count is now NA instead of 0\n\n\nThe upside is explicit NAs instead of NaN and Inf. The downside is that n also becomes NA, when the true count is 0. Choose the approach that fits your question."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#missing-data-summary",
-    "href": "slides/DATA100-F26-Lecture-11.html#missing-data-summary",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Missing Data summary",
-    "text": "Missing Data summary\n\nExplicit missings: fill(), coalesce(), na_if(), and NaN\nImplicit missings: pivot, complete(), and joins (anti_join())\nEmpty groups: .drop = FALSE and complete()\n\n\n\n\n\n\n\n\nThe habit to keep\n\n\nBefore analysing, ask: what could be missing here, and in what form? An NA, a missing row, or an empty group each need different tools."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#the-idea-in-one-picture",
-    "href": "slides/DATA100-F26-Lecture-11.html#the-idea-in-one-picture",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "The idea in one picture",
-    "text": "The idea in one picture\nTwo lists, and neither one answers the question alone:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nA join glues two tables together using something they share\n\n\nHere the shared column is animal. It’s called the key."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#joining-the-lists",
-    "href": "slides/DATA100-F26-Lecture-11.html#joining-the-lists",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Joining the lists",
-    "text": "Joining the lists\n\n\n\n\n\n\n\n\n\nMia and Sam get a sound\nLeo’s unicorn isn’t in the sound list, so his sound is NA: a missing value"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#what-if-something-doesnt-match",
-    "href": "slides/DATA100-F26-Lecture-11.html#what-if-something-doesnt-match",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "What if something doesn’t match?",
-    "text": "What if something doesn’t match?"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#types-of-joins",
-    "href": "slides/DATA100-F26-Lecture-11.html#types-of-joins",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Types of Joins",
-    "text": "Types of Joins\n\n\n\n\n\n\n\nTwo families of joins\n\n\n\nMutating joins (left_join(), inner_join(), …) add columns from another table\nFiltering joins (semi_join(), anti_join()) keep or drop rows based on a match\n\n\n\n\n\n\n\n\n\n\n\n\nWhy joins matter\n\n\nReal questions almost always need several tables (flights, airlines, weather, planes). Joins combine them, and unmatched rows are where missing data and bugs sneak in."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#primary-and-foreign-keys",
-    "href": "slides/DATA100-F26-Lecture-11.html#primary-and-foreign-keys",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Primary and foreign keys",
-    "text": "Primary and foreign keys\n\nA primary key uniquely identifies each row in a table\nA foreign key is a column that matches the primary key of another table\n\n\n\n\n\n\n\n\n\nTable\nPrimary key\nMatched by in flights\n\n\n\n\nairlines\ncarrier\ncarrier\n\n\nairports\nfaa\norigin, dest\n\n\nplanes\ntailnum\ntailnum\n\n\nweather\norigin and time_hour (a compound key)\norigin and time_hour\n\n\n\n\n\n\n\n\n\n\nSame name, different meaning\n\n\nyear in flights is the departure year. year in planes is the year the plane was built. Don’t assume a shared name means a shared key."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#check-that-a-key-is-really-a-key",
-    "href": "slides/DATA100-F26-Lecture-11.html#check-that-a-key-is-really-a-key",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Check that a key is really a key",
-    "text": "Check that a key is really a key\nCount by the key and look for rows where n &gt; 1. An empty result means no duplicates:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAlso check for missing keys\n\n\nA key with an NA can’t identify anything: planes |&gt; filter(is.na(tailnum))\n\n\n\n\n\n\n\n\n\n\n\nUnique today is not the same as a valid key\n\n\nIn airports, alt and lat happen to be unique for all rows but one pair. A key should be something that should identify a row, not something that happens to be unique. If there’s no good key, add a surrogate key with mutate(id = row_number())."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#left_join-add-columns",
-    "href": "slides/DATA100-F26-Lecture-11.html#left_join-add-columns",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "left_join(): add columns",
-    "text": "left_join(): add columns\nleft_join(x, y) keeps every row of x and adds columns from y.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nA left join keeps all of x\n\n\nThe result should have the same number of rows as x. If it doesn’t, investigate."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#when-theres-no-match",
-    "href": "slides/DATA100-F26-Lecture-11.html#when-theres-no-match",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "When there’s no match",
-    "text": "When there’s no match\nNo match in y? The row of x stays, and the new columns are NA:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nUnmatched rows become NA, silently\n\n\nleft_join() never warns you. Check afterward with anti_join() or sum(is.na(...))."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#the-natural-join-trap",
-    "href": "slides/DATA100-F26-Lecture-11.html#the-natural-join-trap",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "The natural join trap",
-    "text": "The natural join trap\nBy default, left_join() matches on every column the two tables share:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAlmost everything is NA!\n\n\nIt matched on tailnum and year, but the two years mean different things, so almost nothing matched."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#fix-it-with-join_by",
-    "href": "slides/DATA100-F26-Lecture-11.html#fix-it-with-join_by",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Fix it with join_by()",
-    "text": "Fix it with join_by()\nSay which key you mean:\n\n\n\n\n\n\n\n\n\nThe two year columns are kept apart as year.x and year.y\n\nWhen the key columns have different names, name both sides:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAlways specify the key\n\n\nEven when a natural join happens to work, join_by() protects you if a column is later added to either table."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#semi_join-and-anti_join",
-    "href": "slides/DATA100-F26-Lecture-11.html#semi_join-and-anti_join",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "semi_join() and anti_join()",
-    "text": "semi_join() and anti_join()\nFiltering joins don’t add columns and never duplicate rows.\n\nsemi_join(x, y) keeps rows of x that have a match in y\nanti_join(x, y) keeps rows of x that have no match in y\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCheck every join\n\n\nBefore trusting a left_join(), run anti_join() on the same keys. It shows exactly which rows will get NAs."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#the-four-mutating-joins",
-    "href": "slides/DATA100-F26-Lecture-11.html#the-four-mutating-joins",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "The four mutating joins",
-    "text": "The four mutating joins\n\n\n\n\n\n\n\n\n\n\n\nJoin\nKeeps rows from\nUnmatched rows get NA in\n\n\n\n\ninner_join()\nonly matches\nnone (they’re dropped)\n\n\nleft_join()\nall of x\ny columns\n\n\nright_join()\nall of y\nx columns\n\n\nfull_join()\nall of x and y\nboth\n\n\n\n\n\n\n\n\n\n\nInner joins drop rows silently\n\n\nDon’t use inner_join() for a plain “add columns” task unless you want to lose unmatched rows. Prefer left_join() and check for NAs."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#matching-more-than-one-row",
-    "href": "slides/DATA100-F26-Lecture-11.html#matching-more-than-one-row",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Matching more than one row",
-    "text": "Matching more than one row\n\nNo match: row dropped (inner) or filled with NA (outer)\nOne match: row kept as-is\nMultiple matches: row duplicated, once per match\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMany-to-many: usually a mistake\n\n\nKey 2 appears twice in both tables, so every x row matches every y row and rows multiply. dplyr warns you. It often means a “key” isn’t unique. If you really want it, add relationship = \"many-to-many\".\n\n\n\n\n\n\n\n\n\n\n\nCompare row counts after every join\n\n\nAn unexpected change in nrow() is the earliest sign that a key isn’t what you thought."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#beyond",
-    "href": "slides/DATA100-F26-Lecture-11.html#beyond",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Beyond ==",
-    "text": "Beyond ==\nSo far every join matched equal keys (equi joins). Non-equi joins match on other conditions.\n\n\n\n\n\n\n\nType\nWhat it does\n\n\n\n\nCross join\nevery row of x with every row of y\n\n\nInequality join\nmatches with &lt;, &lt;=, &gt;, &gt;=\n\n\nRolling join\ninequality join keeping only the closest match\n\n\nOverlap join\nmatches ranges that overlap or contain a value\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRow counts multiply\n\n\nA cross join of n rows with m rows gives n × m rows. Easy to blow up on big tables."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#rolling-join-the-closest-match",
-    "href": "slides/DATA100-F26-Lecture-11.html#rolling-join-the-closest-match",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Rolling join: the closest match",
-    "text": "Rolling join: the closest match\nGive each employee the most recent party on or before their birthday:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nEdge cases fall through\n\n\nAva was born before the first party, so she gets NA. Use anti_join() to find rows like her."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#overlap-join-ranges",
-    "href": "slides/DATA100-F26-Lecture-11.html#overlap-join-ranges",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Overlap join: ranges",
-    "text": "Overlap join: ranges\nbetween(x, lower, upper) matches a value inside a range:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nunmatched = “error”\n\n\nMakes the join fail loudly if any employee has no party, instead of silently dropping them."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#exercise-1",
-    "href": "slides/DATA100-F26-Lecture-11.html#exercise-1",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Exercise",
-    "text": "Exercise\n\n\n\n\n\n\n\nLive exercise\n\n\nDoes every departing flight have a matching weather record for its origin and hour?"
+    "text": "Empty groups\nA group with no rows is also implicit missing. group_by(.drop = FALSE) keeps every level of a factor:\n\n\n\n\n\n\n\n\n\nWithout .drop = FALSE, Matcha and Bubble tea would not appear at all\nWhen we learned about “Factors” from last week, we know that we should keep track of the levels that should be there"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-11.html#exercise-2",
     "href": "slides/DATA100-F26-Lecture-11.html#exercise-2",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Exercise",
-    "text": "Exercise\n\n\n\n\n\n\n\nLive exercise\n\n\nWhat do the tail numbers with no matching record in planes have in common? (Hint: one variable explains most of the problems.)"
+    "section": "Exercise 2",
+    "text": "Exercise 2\n\n\n\n\n\n\n\nLive exercise\n\n\nResponses per weekday. Wednesday is missing from the table.\n\nAdd the missing row, with 0 responses.\nReplace the NA in n with 0.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ncounts &lt;- tibble(\n  weekday = c(\"Mon\", \"Tue\", \"Thu\", \"Fri\"),\n  n = c(257, NA, 149, 144)\n)\n\ncounts |&gt;\n  complete(\n    weekday = c(\"Mon\", \"Tue\", \"Wed\", \"Thu\", \"Fri\"),\n    fill = list(n = 0)\n  ) |&gt;\n  mutate(n = replace_na(n, 0))\ncounts &lt;- tibble(\n  weekday = c(\"Mon\", \"Tue\", \"Thu\", \"Fri\"),\n  n = c(257, NA, 149, 144)\n)\n\ncounts |&gt;\n  complete(\n    weekday = c(\"Mon\", \"Tue\", \"Wed\", \"Thu\", \"Fri\"),\n    fill = list(n = 0)\n  ) |&gt;\n  mutate(n = replace_na(n, 0))"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-11.html#does-caffeine-cost-us-sleep",
+    "href": "slides/DATA100-F26-Lecture-11.html#does-caffeine-cost-us-sleep",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Does caffeine cost us sleep?",
+    "text": "Does caffeine cost us sleep?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-11.html#answering-one-question-using-two-tables",
+    "href": "slides/DATA100-F26-Lecture-11.html#answering-one-question-using-two-tables",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Answering one question using two tables",
+    "text": "Answering one question using two tables\n\n\n\nStep\nTool (Chapter 19)\n\n\n\n\nFind the matching column\nKeys: favourite_drink and drink\n\n\nAdd columns from another table\nleft_join(), join_by()\n\n\nOther ways to combine\ninner_join(), full_join()\n\n\nCheck what did not match\nanti_join(), semi_join()"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-11.html#the-two-tables",
+    "href": "slides/DATA100-F26-Lecture-11.html#the-two-tables",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "The two tables",
+    "text": "The two tables\n\n\n\n\n\n\n\n\n\nThe survey has the drink name, and the drinks table has the facts\nThe shared information is the drink name: that is the key"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-11.html#keys",
+    "href": "slides/DATA100-F26-Lecture-11.html#keys",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Keys",
+    "text": "Keys\n\n\n\n\n\n\n\nPrimary Key\n\n\nA primary key is a column whose values are unique: no two rows share one, so each value picks out exactly one row. E.g.\n\nstudent_id in survey: each ID is one student\nThe drink column in the drinks table: “Coffee” appears in one row only\n\n\n\n\n\n\n\n\n\n\n\n\nForeign Key\n\n\nA foreign key is a column in another table that holds those same values. - favourite_drink in survey holds drink names like “Coffee” - Many students can share the same favourite drink like coffee"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-11.html#combining-tables",
+    "href": "slides/DATA100-F26-Lecture-11.html#combining-tables",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Combining tables",
+    "text": "Combining tables\n\n\n\n\n\n\n\nleft_join()\n\n\nThe function left_join(x, y) keeps every row of x and adds the matching columns of y. In the end, you will get the same number of rows but more columns (more information you learn about each observation). - You can also use join_by(a == b) to say which column in x matches with which column in y"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-11.html#what-about-students-with-no-drink",
+    "href": "slides/DATA100-F26-Lecture-11.html#what-about-students-with-no-drink",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "What about students with no drink?",
+    "text": "What about students with no drink?\n\n\n\n\n\n\n\n\n\nNo drink means no match, so caffeine_mg is NA\nThis is Part 1 again: explicit missing, created by the join"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-11.html#sleep-and-caffeine",
+    "href": "slides/DATA100-F26-Lecture-11.html#sleep-and-caffeine",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Sleep and caffeine",
+    "text": "Sleep and caffeine\nsurvey_drinks |&gt;\n  filter(!is.na(favourite_drink)) |&gt;\n  group_by(favourite_drink, caffeine_mg) |&gt;\n  summarize(mean_sleep = mean(sleep_hours, na.rm = TRUE), .groups = \"drop\") |&gt;\n  mutate(favourite_drink = fct_reorder(favourite_drink, mean_sleep)) |&gt;\n  ggplot(aes(x = mean_sleep, y = favourite_drink)) +\n  geom_col() +\n  geom_text(\n    aes(label = paste0(round(mean_sleep, 1), \" h  (\", caffeine_mg, \" mg)\")),\n    hjust = -0.1\n  ) +\n  scale_x_continuous(expand = expansion(mult = c(0, 0.3))) +\n  labs(\n    title = \"Average sleep by favourite drink, with its caffeine\",\n    x = \"Average hours of sleep\", y = NULL\n  ) +\n  theme_minimal(base_size = 14)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-11.html#is-this-what-you-expected",
+    "href": "slides/DATA100-F26-Lecture-11.html#is-this-what-you-expected",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Is this what you expected?",
+    "text": "Is this what you expected?\n\n\n\n\n\n\n\n\nAssociation, not cause\n\n\nStudents who drink energy drinks also differ in workload and program. The chart shows a pattern, not what causes it."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-11.html#different-types-of-joins",
+    "href": "slides/DATA100-F26-Lecture-11.html#different-types-of-joins",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Different types of “joins”",
+    "text": "Different types of “joins”\n\n\n\n\n\n\n\n\n\n\n\nJoin\nWhat The Table Keeps\n\n\n\n\ninner_join()\nOnly rows with a match in both\n\n\nleft_join()\nAll rows of x, plus matches from y\n\n\nfull_join()\nAll rows of both"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-11.html#filtering-joins",
+    "href": "slides/DATA100-F26-Lecture-11.html#filtering-joins",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Filtering joins",
+    "text": "Filtering joins\n\n\n\n\n\n\n\nWho did not match?\n\n\nanti_join() keeps the rows of x with no match in y.\nsemi_join() keeps the rows with a match."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-11.html#what-changed",
+    "href": "slides/DATA100-F26-Lecture-11.html#what-changed",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "What changed?",
+    "text": "What changed?\n\n\n\n\n\n\n\nUsing Joins to find implicit missing\n\n\nMatcha and Bubble tea were never in the survey: implicit missing. Filtering joins did not add any columns. They only filter rows."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-11.html#caffeine-by-early-class",
+    "href": "slides/DATA100-F26-Lecture-11.html#caffeine-by-early-class",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Caffeine by early class",
+    "text": "Caffeine by early class\nsurvey_drinks |&gt;\n  filter(!is.na(has_early_class), !is.na(caffeine_mg)) |&gt;\n  mutate(group = if_else(has_early_class == \"Yes\", \"Early class\", \"No early class\")) |&gt;\n  group_by(group) |&gt;\n  summarize(mean_caffeine = mean(caffeine_mg)) |&gt;\n  ggplot(aes(x = mean_caffeine, y = group)) +\n  geom_col() +\n  geom_text(aes(label = paste(round(mean_caffeine), \"mg\")), hjust = -0.1) +\n  scale_x_continuous(expand = expansion(mult = c(0, 0.2))) +\n  labs(\n    title = \"Early-class students pick stronger drinks\",\n    x = \"Average caffeine (mg)\", y = NULL\n  ) +\n  theme_minimal(base_size = 14)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-11.html#students-with-early-classes-need-caffeine",
+    "href": "slides/DATA100-F26-Lecture-11.html#students-with-early-classes-need-caffeine",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Students with early classes need caffeine?",
+    "text": "Students with early classes need caffeine?"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-11.html#exercise-3",
     "href": "slides/DATA100-F26-Lecture-11.html#exercise-3",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Exercise",
-    "text": "Exercise\n\n\n\n\n\n\n\nLive exercise\n\n\nAdd the latitude and longitude of the origin and destination airports to flights. Is it easier to rename the columns before or after joining?"
+    "section": "Exercise 3",
+    "text": "Exercise 3\n\n\n\n\n\n\n\nLive exercise\n\n\n\nJoin drinks to the survey and compute the proportion of students who chose a sugary drink, for each program. Ignore students with no drink.\nHow many students chose a drink that has more than 100 mg of caffeine?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n# Part 1: the mean of a logical vector is a proportion\nsurvey |&gt;\n  left_join(drinks, by = join_by(favourite_drink == drink)) |&gt;\n  filter(!is.na(sugary)) |&gt;\n  group_by(program) |&gt;\n  summarize(share_sugary = mean(sugary == \"Yes\"))\n\n# Part 2: only the energy drink has more than 100 mg\nsurvey |&gt;\n  left_join(drinks, by = join_by(favourite_drink == drink)) |&gt;\n  filter(caffeine_mg &gt; 100) |&gt;\n  nrow()\n# Part 1: the mean of a logical vector is a proportion\nsurvey |&gt;\n  left_join(drinks, by = join_by(favourite_drink == drink)) |&gt;\n  filter(!is.na(sugary)) |&gt;\n  group_by(program) |&gt;\n  summarize(share_sugary = mean(sugary == \"Yes\"))\n\n# Part 2: only the energy drink has more than 100 mg\nsurvey |&gt;\n  left_join(drinks, by = join_by(favourite_drink == drink)) |&gt;\n  filter(caffeine_mg &gt; 100) |&gt;\n  nrow()"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#joins-summary",
-    "href": "slides/DATA100-F26-Lecture-11.html#joins-summary",
+    "objectID": "slides/DATA100-F26-Lecture-11.html#back-to-the-story",
+    "href": "slides/DATA100-F26-Lecture-11.html#back-to-the-story",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Joins summary",
-    "text": "Joins summary\n\nKeys: primary keys identify rows, foreign keys point to other tables\nMutating joins add columns: left_join(), inner_join(), right_join(), full_join()\nFiltering joins keep or drop rows: semi_join(), anti_join()\nNon-equi joins: cross, inequality, rolling, overlap\n\n\n\n\n\n\n\n\nJoin checklist\n\n\n\nName the key explicitly with join_by()\nCheck the key is unique where you expect it to be\nCompare row counts before and after\nRun anti_join() to see what didn’t match"
+    "section": "Back to the story",
+    "text": "Back to the story\n\n\n\n\n\n\n\n\nQuestion\nChapter\nTools we used\n\n\n\n\nCan we trust our averages?\nMissing values\nis.na(), na.rm, drop_na(), replace_na(), na_if(), complete()\n\n\nDo students who drink more caffeine sleep less?\nJoins\nleft_join(), join_by(), anti_join(), semi_join()"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-11.html#source",
-    "href": "slides/DATA100-F26-Lecture-11.html#source",
+    "objectID": "slides/DATA100-F26-Lecture-11.html#sources",
+    "href": "slides/DATA100-F26-Lecture-11.html#sources",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Source",
-    "text": "Source\n\n\n\n\n\n\n\nAttribution\n\n\nContent adapted from R for Data Science (2e) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund:\n\nChapter 18: Missing values, https://r4ds.hadley.nz/missing-values.html\nChapter 19: Joins, https://r4ds.hadley.nz/joins.html"
+    "section": "Sources",
+    "text": "Sources\n\n\n\n\n\n\n\nAttribution\n\n\nContent adapted from R for Data Science (2e) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund:\n\nChapter 18: Missing values, https://r4ds.hadley.nz/missing-values.html\nChapter 19: Joins, https://r4ds.hadley.nz/joins.html"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-11.html#missing-values-other-tools-i",
+    "href": "slides/DATA100-F26-Lecture-11.html#missing-values-other-tools-i",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Missing values: other tools (i)",
+    "text": "Missing values: other tools (i)\n\n\n\n\n\n\n\n\n\nTool\nWhat it does\nTiny example\nRead the section on\n\n\n\n\nfill()\nFills NAs with the last value above (or below)\nfill(df, n, .direction = \"down\")\nLast observation carried forward\n\n\ncoalesce()\nFirst value that is not NA\ncoalesce(x, 0)\nFixed values\n\n\nNaN, is.nan()\n“Not a number”, for example 0 / 0\nis.nan(0 / 0)\nNaN\n\n\ndrop_na() with columns\nDrops only rows missing those columns\ndrop_na(df, avg_grade)\nExplicit missing values"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-11.html#missing-values-other-tools-ii",
+    "href": "slides/DATA100-F26-Lecture-11.html#missing-values-other-tools-ii",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Missing values: other tools (ii)",
+    "text": "Missing values: other tools (ii)\n\n\n\n\n\n\n\n\n\nTool\nWhat it does\nTiny example\nRead the section on\n\n\n\n\nif_any(), if_all()\nTests a condition across several columns\nfilter(if_any(a:c, is.na))\nExplicit missing values\n\n\ncomplete() with nesting()\nAdds only the combinations that make sense\ncomplete(df, nesting(a, b))\nImplicit missing values\n\n\nanti_join()\nFinds implicit gaps by comparing with a full list\nanti_join(all_days, df)\nImplicit missing values"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-11.html#missing-values-other-tools-iii",
+    "href": "slides/DATA100-F26-Lecture-11.html#missing-values-other-tools-iii",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Missing values: other tools (iii)",
+    "text": "Missing values: other tools (iii)\n\n\n\n\n\n\n\n\n\nTool\nWhat it does\nTiny example\nRead the section on\n\n\n\n\n.drop = FALSE\nKeeps empty groups in group_by()\ngroup_by(f, .drop = FALSE)\nFactors and empty groups\n\n\nscale_x_discrete(drop = FALSE)\nKeeps empty levels on a plot axis\nscale_x_discrete(drop = FALSE)\nFactors and empty groups"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-11.html#joins-other-tools-i",
+    "href": "slides/DATA100-F26-Lecture-11.html#joins-other-tools-i",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Joins: other tools (i)",
+    "text": "Joins: other tools (i)\n\n\n\n\n\n\n\n\n\nTool\nWhat it does\nTiny example\nRead the section on\n\n\n\n\nright_join()\nKeeps all rows of y\nright_join(x, y, by = \"key\")\nMutating joins\n\n\nby = join_by(a == b)\nMatches columns with different names\njoin_by(drink == favourite_drink)\nSpecifying join keys\n\n\nsuffix\nRenames columns with the same name\nleft_join(x, y, suffix = c(\"_x\", \"_y\"))\nSpecifying join keys\n\n\nrelationship, multiple\nChecks and controls many-to-many matches\nleft_join(x, y, relationship = \"many-to-one\")\nHow do joins work?\n\n\nunmatched = \"error\"\nStops if a row has no match\ninner_join(x, y, unmatched = \"error\")\nSpecifying join keys"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-11.html#joins-other-tools-ii",
+    "href": "slides/DATA100-F26-Lecture-11.html#joins-other-tools-ii",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Joins: other tools (ii)",
+    "text": "Joins: other tools (ii)\n\n\n\n\n\n\n\n\n\nTool\nWhat it does\nTiny example\nRead the section on\n\n\n\n\ncross_join()\nEvery row of x with every row of y\ncross_join(x, y)\nCross joins\n\n\nInequality joins\nMatch with &lt;, &lt;=, &gt;, &gt;=\njoin_by(date &gt;= start)\nFiltering joins\n\n\nRolling joins\nMatch with the closest value\njoin_by(closest(date &gt;= start))\nRolling joins\n\n\nOverlap joins\nMatch ranges that overlap\njoin_by(overlaps(a, b, c, d))\nOverlap joins\n\n\nSurrogate keys\nA made-up key, such as row_number()\nmutate(id = row_number())\nPrimary and foreign keys"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-1.html#outline",
@@ -1827,312 +1778,305 @@
     "text": "Wrap-up and submit\n\nKnit your Rmd to PDF\nUpload the PDF to Gradescope (one per group, add all members)\nUnfinished is okay. Submit what you have.\n\n\n\n\n\n\n\n\nNext Project Guidance\n\n\nTuesday, November 10. More details will come!\n\n\n\n\n\n\n\n\n\n\n\nHomework for Reading Week\n\n\nMake a group of 4-5 students among yourselves. Think about the type of data that you want to work with for your final project."
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#todays-plan",
-    "href": "slides/DATA100-F26-Lecture-10.html#todays-plan",
+    "objectID": "slides/DATA100-F26-Lecture-10.html#a-night-in-the-life-of-a-student",
+    "href": "slides/DATA100-F26-Lecture-10.html#a-night-in-the-life-of-a-student",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Today’s plan",
-    "text": "Today’s plan\nTwo powerful (and tricky) toolkits:\n\nPart 1: Regular expressions (Chapter 15)\n\na compact language for describing patterns in text\n\nPart 2: Dates and times (Chapter 17)\n\ncreating, extracting, and computing with dates and times using lubridate"
+    "section": "A night in the life of a student",
+    "text": "A night in the life of a student\nLast lecture, about 4 in 10 bedtime answers were still unreadable. Today we will finish the job, then ask what the clean times tell us:\n\nWhen do students go to bed? (Regular expressions, Chapter 15)\nWhen do they wake up, and who is still awake at 1 AM? (Dates and times, Chapter 17)"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#setup",
-    "href": "slides/DATA100-F26-Lecture-10.html#setup",
+    "objectID": "slides/DATA100-F26-Lecture-10.html#setup-and-data",
+    "href": "slides/DATA100-F26-Lecture-10.html#setup-and-data",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Setup",
-    "text": "Setup\n\n\n\n\n\n\n\n\n\n\n\n\n\nHeavy data ahead\n\n\nbabynames has about 1.9 million rows and the browser version of R has limited memory. If a cell crashes with a “table index is out of bounds” message, refresh the page and run only that cell."
+    "section": "Setup and data",
+    "text": "Setup and data\nThe data is the same sleep survey from Lectures 8 and 9.\nlibrary(dplyr); library(tidyr); library(tibble); library(readr)\nlibrary(ggplot2); library(stringr); library(forcats); library(lubridate)\n\nsurvey &lt;- read_csv(\"data/sleep_survey_v2.csv\", show_col_types = FALSE)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNot everything fits in this 80-minute lecture\n\n\nI may leave some of the undiscussed functions or tools in an appendix table at the end of the slide deck. Each row will say what the tool does and which section of the chapter to read. You should definitely take a look at the text for more details."
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#what-is-a-regular-expression",
-    "href": "slides/DATA100-F26-Lecture-10.html#what-is-a-regular-expression",
+    "objectID": "slides/DATA100-F26-Lecture-10.html#when-do-students-go-to-bed",
+    "href": "slides/DATA100-F26-Lecture-10.html#when-do-students-go-to-bed",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "What is a regular expression?",
-    "text": "What is a regular expression?\nA regular expression (regex or regexp) is a concise language for describing patterns in strings.\n\nThe name sounds odd, but it’s easy to see why they’re useful: they pack a lot of meaning into a few characters\nThey look like a cat walked across the keyboard at first\nThey get easier with practice, and soon they start to make sense"
+    "section": "When do students go to bed?",
+    "text": "When do students go to bed?\nOur goal: turn every typed bedtime into an hour and a minute on a 24-hour clock.\n\n\n\n\n\n\n\nStep\nTool (Chapter 15)\n\n\n\n\nTest for a pattern\nstr_detect(), regex(ignore_case = TRUE)\n\n\nDescribe a pattern\n\\\\d, [:.], ?, {1,2}, ^, $, (am\\|pm)\n\n\nTidy the text\nstr_replace(), str_remove()\n\n\nPull the pieces out\nseparate_wider_regex()\n\n\nDecide the rules\ncase_when() (Lecture 8)"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#where-were-going",
-    "href": "slides/DATA100-F26-Lecture-10.html#where-were-going",
+    "objectID": "slides/DATA100-F26-Lecture-10.html#does-it-match",
+    "href": "slides/DATA100-F26-Lecture-10.html#does-it-match",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Where we’re going",
-    "text": "Where we’re going\n\nPattern basics: literals, metacharacters, quantifiers, classes, alternation\nKey functions: detect, count, replace, extract\nPattern details: escaping, anchors, classes, quantifiers, precedence, grouping\nPattern control: flags and fixed matches\nPractice: check your work, Boolean logic, patterns built by code"
+    "section": "Does it match?",
+    "text": "Does it match?\n\n\n\n\n\n\n\nstr_detect(x, pattern)\n\n\nThis function returns a logical vector. It takes a look at x and asks for the pattern. It returns a TRUE where the pattern is found.\n\n\n\n\n\n\n\n\n\n\n\n\nOn the survey:"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#practice-vectors",
-    "href": "slides/DATA100-F26-Lecture-10.html#practice-vectors",
+    "objectID": "slides/DATA100-F26-Lecture-10.html#capital-letters-matter",
+    "href": "slides/DATA100-F26-Lecture-10.html#capital-letters-matter",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Practice vectors",
-    "text": "Practice vectors\nstringr ships with three handy character vectors:\n\nfruit: 80 fruit names\nwords: 980 common English words\nsentences: 720 short sentences"
+    "section": "Capital letters matter",
+    "text": "Capital letters matter\n\"PM\" and \"pm\" are different to a regular expression. Wrap the pattern in regex() to ignore the case:\n\n\n\n\n\n\n\n\n\nThe second count finds more TRUEs: it also catches PM and Pm"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#str_view",
-    "href": "slides/DATA100-F26-Lecture-10.html#str_view",
+    "objectID": "slides/DATA100-F26-Lecture-10.html#building-blocks-of-a-pattern",
+    "href": "slides/DATA100-F26-Lecture-10.html#building-blocks-of-a-pattern",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "str_view()",
-    "text": "str_view()\nstr_view() shows only the elements that match, with each match highlighted (wrapped in &lt;&gt;).\nThe simplest patterns are literal characters: they match themselves."
+    "section": "Building blocks of a pattern",
+    "text": "Building blocks of a pattern\n\n\n\nPattern\nMatches\n\n\n\n\n.\nany one character\n\n\n\\\\.\na real dot\n\n\n\\\\d\none digit\n\n\n[:.]\na colon or a dot\n\n\n?\nthe piece before it is optional (0 or 1 times)\n\n\n{1,2}\nthe piece before it appears 1 or 2 times\n\n\n^ and $\nthe start and the end of the string\n\n\n(am|pm)\nam or pm\n\n\n\n\n\n\n\n\n\n\nTwo backslashes in R\n\n\nIn an R string, a backslash must be escaped. To get the regex \\d, you type \"\\\\d\". To match a real dot, you type \"\\\\.\", because a plain . matches anything."
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#metacharacters",
-    "href": "slides/DATA100-F26-Lecture-10.html#metacharacters",
+    "objectID": "slides/DATA100-F26-Lecture-10.html#a-pattern-for-the-standard-format",
+    "href": "slides/DATA100-F26-Lecture-10.html#a-pattern-for-the-standard-format",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Metacharacters",
-    "text": "Metacharacters\nSome characters have special meaning instead of matching themselves. Examples: ., +, *, [, ], ?.\n\n. matches any character (except a newline)"
+    "section": "A pattern for the standard format",
+    "text": "A pattern for the standard format\n\"11:30 pm\" is: one or two digits, a colon, two digits, an optional space, then am or pm.\n\n\n\n\n\n\n\n\n\n^ and $ force the pattern to match the whole string\nWithout them, \"around 11:30 pm\" would also match"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#quantifiers",
-    "href": "slides/DATA100-F26-Lecture-10.html#quantifiers",
+    "objectID": "slides/DATA100-F26-Lecture-10.html#how-many-bedtimes-match",
+    "href": "slides/DATA100-F26-Lecture-10.html#how-many-bedtimes-match",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Quantifiers",
-    "text": "Quantifiers\nQuantifiers control how many times a pattern can match:\n\n? makes the previous item optional (0 or 1 times)\n+ repeats it 1 or more times\n* repeats it 0 or more times"
+    "section": "How many bedtimes match?",
+    "text": "How many bedtimes match?"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#character-classes",
-    "href": "slides/DATA100-F26-Lecture-10.html#character-classes",
+    "objectID": "slides/DATA100-F26-Lecture-10.html#what-is-left",
+    "href": "slides/DATA100-F26-Lecture-10.html#what-is-left",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Character classes",
-    "text": "Character classes\nSquare brackets define a character class: match any one of the listed characters.\n\n[abcd] matches “a”, “b”, “c”, or “d”\n[^abcd] matches anything except those (the ^ inverts it)"
+    "section": "What is left?",
+    "text": "What is left?\nThe trick with regular expressions: look at what does not match, and improve the pattern."
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#alternation",
-    "href": "slides/DATA100-F26-Lecture-10.html#alternation",
+    "objectID": "slides/DATA100-F26-Lecture-10.html#cleaning",
+    "href": "slides/DATA100-F26-Lecture-10.html#cleaning",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Alternation",
-    "text": "Alternation\n| means or: pick between one or more alternative patterns.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRegexes are case sensitive\n\n\n\"apple\" will not match “Apple”. We’ll see how to ignore case in the pattern control section."
+    "section": "Cleaning",
+    "text": "Cleaning\n\nstr_replace(x, pattern, replacement) replaces the first match\nstr_remove(x, pattern) deletes it\nstr_replace_all() replaces every match (see the appendix)"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#pattern-basics-summary",
-    "href": "slides/DATA100-F26-Lecture-10.html#pattern-basics-summary",
+    "objectID": "slides/DATA100-F26-Lecture-10.html#apply-the-rules-to-the-survey",
+    "href": "slides/DATA100-F26-Lecture-10.html#apply-the-rules-to-the-survey",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Pattern basics: summary",
-    "text": "Pattern basics: summary\n\n\n\nPattern\nMatches\n\n\n\n\n.\nany one character\n\n\n? + *\n0 or 1, 1 or more, 0 or more\n\n\n[abc]\nany of a, b, c\n\n\n[^abc]\nanything except a, b, c\n\n\na|b\na or b"
+    "section": "Apply the rules to the survey",
+    "text": "Apply the rules to the survey\n\n\n\n\n\n\n\n\n\nMany more rows match, and we did not touch the data by hand\nThe rest are 24-hour times, times with no am or pm, and answers like idk"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#four-jobs-for-regexes",
-    "href": "slides/DATA100-F26-Lecture-10.html#four-jobs-for-regexes",
+    "objectID": "slides/DATA100-F26-Lecture-10.html#pulling-the-pieces-out",
+    "href": "slides/DATA100-F26-Lecture-10.html#pulling-the-pieces-out",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Four jobs for regexes",
-    "text": "Four jobs for regexes\nstringr has functions for the most common regex jobs:\n\nDetect matches: str_detect()\nCount matches: str_count()\nReplace matches: str_replace() and friends\nExtract pieces into columns: separate_wider_regex()"
+    "section": "Pulling the pieces out",
+    "text": "Pulling the pieces out\n\n\n\n\n\n\n\nseparate_wider_regex()\n\n\nLast lecture we split on a space. A regular expression can split on a pattern. Each named piece becomes a column; unnamed pieces are matched and dropped.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOptional pieces\n\n\n\\\\d{0,2} allows no minutes, and the empty option at the end of am|pm| allows no am or pm. Strings that do not fit at all, like idk, become NA."
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#str_detect",
-    "href": "slides/DATA100-F26-Lecture-10.html#str_detect",
+    "objectID": "slides/DATA100-F26-Lecture-10.html#deciding-the-rules",
+    "href": "slides/DATA100-F26-Lecture-10.html#deciding-the-rules",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "str_detect()",
-    "text": "str_detect()\nstr_detect() returns a logical vector: TRUE where the pattern matches. That means it works great inside filter() (and everything you learned about logical vectors applies)."
+    "section": "Deciding the rules",
+    "text": "Deciding the rules\n\n\n\n\n\n\n\nWe need rules!\n\n\nSome answers have no am or pm: 23:30, 0100, or just 11:30. If it is\n\nAlready 24-hour (13 to 23, or 0): keep the hour\n6 to 11 with no am or pm: assume evening (add 12)\n12 or 1 to 5 with no am or pm: assume after midnight\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOrder matters\n\n\ncase_when() uses the first match, as we talked about this with Logical Vectors. The 24-hour rule comes before the “6 to 11” rule for a reason."
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#names-containing-an-x",
-    "href": "slides/DATA100-F26-Lecture-10.html#names-containing-an-x",
+    "objectID": "slides/DATA100-F26-Lecture-10.html#putting-part-1-together",
+    "href": "slides/DATA100-F26-Lecture-10.html#putting-part-1-together",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Names containing an “x”",
-    "text": "Names containing an “x”\nTo avoid memory trouble, first collapse babynames to one row per name:"
+    "section": "Putting Part 1 together",
+    "text": "Putting Part 1 together"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#the-proportion-of-names-with-an-x-over-time",
-    "href": "slides/DATA100-F26-Lecture-10.html#the-proportion-of-names-with-an-x-over-time",
+    "objectID": "slides/DATA100-F26-Lecture-10.html#the-answer-so-far",
+    "href": "slides/DATA100-F26-Lecture-10.html#the-answer-so-far",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "The proportion of names with an “x” over time",
-    "text": "The proportion of names with an “x” over time\nmean() of a logical vector gives a proportion (recall the logical vectors lecture):"
+    "section": "The answer so far",
+    "text": "The answer so far\n\n\n\n\n\n\n\n\n\nThis is last lecture’s plot, with half-hour bins and many more students\nEngineering goes to bed later than Arts\n\n\n\n\n\n\n\n\nWhat is still missing?\n\n\nBlank answers and answers like idk are still NA. We cannot recover what students did not tell us."
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#related-str_subset-and-str_which",
-    "href": "slides/DATA100-F26-Lecture-10.html#related-str_subset-and-str_which",
+    "objectID": "slides/DATA100-F26-Lecture-10.html#aside-what-happens-to-the-rest-of-the-unused-responses",
+    "href": "slides/DATA100-F26-Lecture-10.html#aside-what-happens-to-the-rest-of-the-unused-responses",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Related: str_subset() and str_which()",
-    "text": "Related: str_subset() and str_which()\n\nstr_subset() returns the matching strings\nstr_which() returns the positions of matches"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#str_count",
-    "href": "slides/DATA100-F26-Lecture-10.html#str_count",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "str_count()",
-    "text": "str_count()\nstr_count() counts how many times the pattern matches in each string.\n\n\n\n\n\n\n\n\n\n\n\n\n\nMatches never overlap\n\n\nOnce a part of the string is matched, it is consumed. So \"aba\" matches only twice in \"abababa\", not three times."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#counting-vowels-and-consonants-in-names",
-    "href": "slides/DATA100-F26-Lecture-10.html#counting-vowels-and-consonants-in-names",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Counting vowels and consonants in names",
-    "text": "Counting vowels and consonants in names\n\n\n\n\n\n\n\n\n\n\n\n\n\nLook closely: Aaron has 1 vowel?\n\n\nRegexes are case sensitive, so the capital “A” isn’t in [aeiou], and it counts as a consonant. Worse, it counts under [^aeiou]!"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#three-ways-to-fix-the-case-problem",
-    "href": "slides/DATA100-F26-Lecture-10.html#three-ways-to-fix-the-case-problem",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Three ways to fix the case problem",
-    "text": "Three ways to fix the case problem"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#replacing-values",
-    "href": "slides/DATA100-F26-Lecture-10.html#replacing-values",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Replacing values",
-    "text": "Replacing values\n\nstr_replace() replaces the first match\nstr_replace_all() replaces every match"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#removing-values",
-    "href": "slides/DATA100-F26-Lecture-10.html#removing-values",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Removing values",
-    "text": "Removing values\nstr_remove() and str_remove_all() are shortcuts for replacing with an empty string:"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#extracting-variables",
-    "href": "slides/DATA100-F26-Lecture-10.html#extracting-variables",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Extracting variables",
-    "text": "Extracting variables\nseparate_wider_regex() (from tidyr) splits one column into several, using a sequence of patterns. Named patterns become columns; unnamed patterns are matched but dropped."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#exercise",
-    "href": "slides/DATA100-F26-Lecture-10.html#exercise",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Exercise",
-    "text": "Exercise\n\n\n\n\n\n\n\nLive exercise\n\n\nWhat baby name has the most vowels? What name has the highest proportion of vowels? (Hint: what is the denominator?)\n\n\n\n\n\n\n\n\n\n\n\nnames_vowels &lt;- babynames |&gt;\n  distinct(name) |&gt;\n  mutate(\n    vowels = str_count(name, regex(\"[aeiou]\", ignore_case = TRUE)),\n    length = str_length(name),\n    prop = vowels / length\n  )\n\nnames_vowels |&gt; arrange(desc(vowels))   # most vowels\nnames_vowels |&gt; arrange(desc(prop))     # highest proportion (denominator: name length)\nnames_vowels &lt;- babynames |&gt;\n  distinct(name) |&gt;\n  mutate(\n    vowels = str_count(name, regex(\"[aeiou]\", ignore_case = TRUE)),\n    length = str_length(name),\n    prop = vowels / length\n  )\n\nnames_vowels |&gt; arrange(desc(vowels))   # most vowels\nnames_vowels |&gt; arrange(desc(prop))     # highest proportion (denominator: name length)"
+    "section": "Aside: What happens to the rest of the unused responses?",
+    "text": "Aside: What happens to the rest of the unused responses?\n\nsurvey_clean |&gt;\n  filter(is.na(hour24)) |&gt;\n  count(bedtime, sort = TRUE)\n\n# A tibble: 7 × 2\n  bedtime         n\n  &lt;chr&gt;       &lt;int&gt;\n1 &lt;NA&gt;           23\n2 it changes      8\n3 no set time     7\n4 varies          6\n5 n/a             5\n6 depends         4\n7 idk             4"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-10.html#exercise-1",
     "href": "slides/DATA100-F26-Lecture-10.html#exercise-1",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Exercise",
-    "text": "Exercise\n\n\n\n\n\n\n\nLive exercise\n\n\nReplace all forward slashes in \"a/b/c/d/e\" with backslashes. What happens if you then try to replace all backslashes with forward slashes?\n\n\n\n\n\n\n\n\n\n\n\nx &lt;- \"a/b/c/d/e\"\n\n# \"\\\\\\\\\" is one literal backslash in the REPLACEMENT string...\ny &lt;- str_replace_all(x, \"/\", \"\\\\\\\\\")\nstr_view(y)\n\n# ...and in the PATTERN a literal backslash needs \"\\\\\\\\\" as well\nstr_replace_all(y, \"\\\\\\\\\", \"/\")\nx &lt;- \"a/b/c/d/e\"\n\n# \"\\\\\\\\\" is one literal backslash in the REPLACEMENT string...\ny &lt;- str_replace_all(x, \"/\", \"\\\\\\\\\")\nstr_view(y)\n\n# ...and in the PATTERN a literal backslash needs \"\\\\\\\\\" as well\nstr_replace_all(y, \"\\\\\\\\\", \"/\")"
+    "section": "Exercise 1",
+    "text": "Exercise 1\n\n\n\n\n\n\n\nLive exercise\n\n\n\nCount the bedtimes written as four digits with an optional colon, like 23:30 or 2330.\nFind every bedtime that contains the word midnight in any capitalisation, and count each spelling.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n# Part 1: this also matches an unmarked time like 11:30\nsurvey |&gt;\n  count(four_digits = str_detect(str_trim(bedtime), \"^\\\\d{2}:?\\\\d{2}$\"))\n\n# Part 2\nsurvey |&gt;\n  filter(str_detect(bedtime, regex(\"midnight\", ignore_case = TRUE))) |&gt;\n  count(bedtime)\n# Part 1: this also matches an unmarked time like 11:30\nsurvey |&gt;\n  count(four_digits = str_detect(str_trim(bedtime), \"^\\\\d{2}:?\\\\d{2}$\"))\n\n# Part 2\nsurvey |&gt;\n  filter(str_detect(bedtime, regex(\"midnight\", ignore_case = TRUE))) |&gt;\n  count(bedtime)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-10.html#when-do-they-wake-up",
+    "href": "slides/DATA100-F26-Lecture-10.html#when-do-they-wake-up",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "When do they wake up?",
+    "text": "When do they wake up?\nWake-up time is bedtime plus sleep. To add them we need real date-times, just not text!\n\n\n\nStep\nTool (Chapter 17)\n\n\n\n\nCreate date-times\nymd(), ymd_hms(), make_datetime()\n\n\nGet the pieces\nhour(), minute(), wday()\n\n\nAdd time\nhours(), dhours()\n\n\nTest for overlap\ninterval(), %within%\n\n\nFix the time zone\nforce_tz(), with_tz()"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-10.html#creating-date-times-from-text",
+    "href": "slides/DATA100-F26-Lecture-10.html#creating-date-times-from-text",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Creating date-times from text",
+    "text": "Creating date-times from text\nThe function name spells the order of the pieces:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAny separator works\n\n\nymd() ignores dashes, slashes, and spaces. Only the order of year, month and day matters."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-10.html#creating-date-times-from-parts",
+    "href": "slides/DATA100-F26-Lecture-10.html#creating-date-times-from-parts",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Creating date-times from parts",
+    "text": "Creating date-times from parts\n\n\n\n\n\n\n\nmake_datetime()\n\n\nThis function builds a date-time from separate numbers. Adding periods such as hours() moves the clock forward.\n\n\n\n\n\n\n\n\n\n\n\n\n\nThis is how we handle bedtimes after midnight: add 24 hours, and the date rolls over"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-10.html#bedtime-as-a-date-time",
+    "href": "slides/DATA100-F26-Lecture-10.html#bedtime-as-a-date-time",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Bedtime as a date-time",
+    "text": "Bedtime as a date-time\nWe pick one reference night (e.g. October 27, 2026), and add the hour and minute:\n\n\n\n\n\n\n\n\n\nUse if_else() to add 24 to the after-midnight hours\ntz = \"America/Toronto\" is the time zone. More on that soon"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-10.html#getting-the-pieces-back",
+    "href": "slides/DATA100-F26-Lecture-10.html#getting-the-pieces-back",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Getting the pieces back",
+    "text": "Getting the pieces back\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCheckpoint\n\n\nWhat is the difference between wday(t) and day(t)?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-10.html#time-spans",
+    "href": "slides/DATA100-F26-Lecture-10.html#time-spans",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Time spans",
+    "text": "Time spans\n\n\n\n\n\n\n\nTwo way to add time\n\n\n\nDurations (dhours(), ddays()) are an exact number of seconds\nPeriods (hours(), days()) move the clock by a calendar amount\n\n\n\n\n\n\n\n\n\n\n\n\nWhen to use it?\n\n\n\nUse durations for how long something lasts, like sleep.\nUse periods for calendar time."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-10.html#daylight-savings",
+    "href": "slides/DATA100-F26-Lecture-10.html#daylight-savings",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Daylight Savings",
+    "text": "Daylight Savings\nToronto switches to daylight saving time on November 1, 2026 starting at midnight.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhich one should I use?\n\n\ndays(1) gives midnight on November 2 where the clock moved one day. ddays(1) gives 11 PM: exactly 24 hours later, but the clocks jumped back in 1 hour."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-10.html#duration",
+    "href": "slides/DATA100-F26-Lecture-10.html#duration",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Duration",
+    "text": "Duration\n\n\n\n\n\n\n\nQuick Maths\n\n\nWake-up time = bedtime + sleep. Sleep is a duration, so we use dhours()."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-10.html#do-students-with-an-early-class-wake-up-earlier",
+    "href": "slides/DATA100-F26-Lecture-10.html#do-students-with-an-early-class-wake-up-earlier",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Do students with an early class wake up earlier?",
+    "text": "Do students with an early class wake up earlier?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-10.html#average-wake-up-time",
+    "href": "slides/DATA100-F26-Lecture-10.html#average-wake-up-time",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Average wake-up time",
+    "text": "Average wake-up time"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-10.html#who-is-asleep-at-1-am",
+    "href": "slides/DATA100-F26-Lecture-10.html#who-is-asleep-at-1-am",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Who is asleep at 1 AM?",
+    "text": "Who is asleep at 1 AM?\n\n\n\n\n\n\n\nInterval\n\n\nThe stretch of time between two date-times. x %within% interval is TRUE when x falls inside the interval."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-10.html#who-is-asleep-at-1-am-1",
+    "href": "slides/DATA100-F26-Lecture-10.html#who-is-asleep-at-1-am-1",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Who is asleep at 1 AM?",
+    "text": "Who is asleep at 1 AM?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-10.html#code",
+    "href": "slides/DATA100-F26-Lecture-10.html#code",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Code",
+    "text": "Code"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-10.html#better-sleep-better-grades",
+    "href": "slides/DATA100-F26-Lecture-10.html#better-sleep-better-grades",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Better sleep = better grades?",
+    "text": "Better sleep = better grades?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-10.html#code-1",
+    "href": "slides/DATA100-F26-Lecture-10.html#code-1",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Code",
+    "text": "Code\n\nsleep_times |&gt;\n  mutate(\n    after_midnight = bedtime_dt &gt; make_datetime(2026, 10, 6, tz = \"America/Toronto\")\n  ) |&gt;\n  filter(!is.na(avg_grade)) |&gt;\n  ggplot(aes(x = sleep_hours, y = avg_grade, colour = after_midnight)) +\n  geom_point(alpha = 0.5) +\n  scale_colour_manual(\n    values = c(\"FALSE\" = \"grey60\", \"TRUE\" = \"firebrick\"),\n    labels = c(\"Bed before midnight\", \"Awake after midnight\"),\n    name = NULL\n  ) +\n  labs(\n    title = \"Sleep and grades, by bedtime\",\n    x = \"Hours of sleep\", y = \"Average grade\"\n  ) +\n  theme_minimal(base_size = 14)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-10.html#what-does-the-scatter-plot-say",
+    "href": "slides/DATA100-F26-Lecture-10.html#what-does-the-scatter-plot-say",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "What does the scatter plot say?",
+    "text": "What does the scatter plot say?\n\n\n\n\n\n\n\nWhat is after midnight?\n\n\nWe used &gt;, so a student at exactly 12:00 AM counts as before midnight. Change it to &gt;= and see what happens. Boundaries matter, as with cut() last lecture.\n\n\n\n\n\n\n\n\n\n\n\nObservations\n\n\nThe red points sit to the left: students who go to bed after midnight sleep less. They also have slightly lower grades, but the two clouds overlap a lot."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-10.html#exercise-2",
     "href": "slides/DATA100-F26-Lecture-10.html#exercise-2",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Exercise",
-    "text": "Exercise\n\n\n\n\n\n\n\nLive exercise\n\n\nImplement a simple version of str_to_lower() using str_replace_all().\n\n\n\n\n\n\n\n\n\n\n\nx &lt;- \"Hello WORLD\"\n# A named vector: names are patterns, values are replacements\nlookup &lt;- setNames(letters, LETTERS)   # \"A\" -&gt; \"a\", \"B\" -&gt; \"b\", ...\nstr_replace_all(x, lookup)\nx &lt;- \"Hello WORLD\"\n# A named vector: names are patterns, values are replacements\nlookup &lt;- setNames(letters, LETTERS)   # \"A\" -&gt; \"a\", \"B\" -&gt; \"b\", ...\nstr_replace_all(x, lookup)"
+    "section": "Exercise 2",
+    "text": "Exercise 2\n\n\n\n\n\n\n\nLive exercise\n\n\nSuppose that I have given you a tiny data set of three students. Their bedtime is a date-time, and sleep is in hours.\n\nCompute each student’s wake-up time.\nIs each student asleep at 3:00 AM on October 28?\nWhat share of the three students is asleep at 3:00 AM?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ndf &lt;- tibble(\n  student = c(\"A\", \"B\", \"C\"),\n  bedtime = ymd_hms(\n    c(\"2026-10-27 23:30:00\", \"2026-10-28 00:45:00\", \"2026-10-28 03:15:00\"),\n    tz = \"America/Toronto\"\n  ),\n  sleep_hours = c(7.5, 6, 4.25)\n)\n\ndf2 &lt;- df |&gt;\n  mutate(\n    wake = bedtime + dhours(sleep_hours),\n    asleep_3am = make_datetime(2026, 10, 28, 3, tz = \"America/Toronto\") %within%\n      interval(bedtime, wake)\n  )\n\ndf2\n\n# Student C goes to bed at 3:15, after 3:00, so only 2 of 3 are asleep\ndf2 |&gt;\n  summarize(share_asleep = mean(asleep_3am))\ndf &lt;- tibble(\n  student = c(\"A\", \"B\", \"C\"),\n  bedtime = ymd_hms(\n    c(\"2026-10-27 23:30:00\", \"2026-10-28 00:45:00\", \"2026-10-28 03:15:00\"),\n    tz = \"America/Toronto\"\n  ),\n  sleep_hours = c(7.5, 6, 4.25)\n)\n\ndf2 &lt;- df |&gt;\n  mutate(\n    wake = bedtime + dhours(sleep_hours),\n    asleep_3am = make_datetime(2026, 10, 28, 3, tz = \"America/Toronto\") %within%\n      interval(bedtime, wake)\n  )\n\ndf2\n\n# Student C goes to bed at 3:15, after 3:00, so only 2 of 3 are asleep\ndf2 |&gt;\n  summarize(share_asleep = mean(asleep_3am))"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#escaping",
-    "href": "slides/DATA100-F26-Lecture-10.html#escaping",
+    "objectID": "slides/DATA100-F26-Lecture-10.html#summary",
+    "href": "slides/DATA100-F26-Lecture-10.html#summary",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Escaping",
-    "text": "Escaping\nIf . means “any character”, how do you match a literal dot? You escape it with a backslash: \\.\n\n\n\n\n\n\n\nTwo levels of escaping\n\n\nThe regex needs \\., but a backslash is also special in R strings. So you write \"\\\\.\" in R code: the string \\\\. becomes the regex \\.."
+    "section": "Summary",
+    "text": "Summary\n\n\n\n\n\n\n\n\nQuestion\nChapter\nTools we used\n\n\n\n\nWhen do they go to bed?\nRegular expressions\nstr_detect(), str_replace(), str_remove(), separate_wider_regex()\n\n\nWhen do they wake up, and who is awake at 1 AM?\nDates and times\nmake_datetime(), hours(), dhours(), interval(), %within%"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#matching-a-literal-backslash",
-    "href": "slides/DATA100-F26-Lecture-10.html#matching-a-literal-backslash",
+    "objectID": "slides/DATA100-F26-Lecture-10.html#whats-next-and-sources",
+    "href": "slides/DATA100-F26-Lecture-10.html#whats-next-and-sources",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Matching a literal backslash",
-    "text": "Matching a literal backslash\nTo match a literal \\, the regex is \\\\, which as an R string is \"\\\\\\\\\".\n\n\n\n\n\n\nRaw strings make this much easier to read:\n\n\n\n\n\n\n\n\n\n\n\n\n\nEscape alternative\n\n\nInstead of escaping, you can put a metacharacter inside a character class: [.], [$], [|]. These match the literal character. (The exceptions are ], \\, ^, and -.)"
+    "section": "What’s next, and sources",
+    "text": "What’s next, and sources\n\n\n\n\n\n\n\nLecture 11: Missing values and joins\n\n\n\nMissing values: filling gaps, like the hours with no responses\nJoins: bringing the drinks table into the survey\n\n\n\n\n\n\n\n\n\n\n\n\nAttribution\n\n\nContent adapted from R for Data Science (2e) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund:\n\nChapter 15: Regular expressions, https://r4ds.hadley.nz/regexps.html\nChapter 17: Dates and times, https://r4ds.hadley.nz/datetimes.html"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#which-characters-are-special",
-    "href": "slides/DATA100-F26-Lecture-10.html#which-characters-are-special",
+    "objectID": "slides/DATA100-F26-Lecture-10.html#regular-expressions-other-tools-i",
+    "href": "slides/DATA100-F26-Lecture-10.html#regular-expressions-other-tools-i",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Which characters are special?",
-    "text": "Which characters are special?\n\n\n\n\n\n\n\nMetacharacters to remember\n\n\nThe full set is: . ^ $ \\ | * + ? { } [ ] ( )\nWhen in doubt, escape it. Escaping a character that isn’t special is harmless."
+    "section": "Regular expressions: other tools (i)",
+    "text": "Regular expressions: other tools (i)\n\n\n\n\n\n\n\n\n\nTool\nWhat it does\nTiny example\nRead the section on\n\n\n\n\nstr_count()\nCounts how many times a pattern appears in each string\nstr_count(\"banana\", \"a\")\nCounting matches\n\n\nstr_extract()\nPulls out the matching text itself\nstr_extract(\"11:30 pm\", \"\\\\d+\")\nExtracting\n\n\nstr_replace_all()\nReplaces every match, not just the first\nstr_replace_all(\"a.b.c\", \"\\\\.\", \"-\")\nReplacing values"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#anchors",
-    "href": "slides/DATA100-F26-Lecture-10.html#anchors",
+    "objectID": "slides/DATA100-F26-Lecture-10.html#regular-expressions-other-tools-ii",
+    "href": "slides/DATA100-F26-Lecture-10.html#regular-expressions-other-tools-ii",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Anchors",
-    "text": "Anchors\nBy default, a regex matches anywhere in the string. Anchors pin it to a position:\n\n^ matches the start of the string\n$ matches the end of the string"
+    "section": "Regular expressions: other tools (ii)",
+    "text": "Regular expressions: other tools (ii)\n\n\n\n\n\n\n\n\n\nTool\nWhat it does\nTiny example\nRead the section on\n\n\n\n\nstr_view()\nShows where a pattern matches, highlighted\nstr_view(x, \"pm\")\nPattern basics\n\n\nBack references: \\\\1\nReuses the text a group captured\nstr_replace(x, \"(\\\\d+)h\", \"\\\\1 hours\")\nGrouping and capturing\n\n\nfixed()\nMatches the exact text, with no special characters\nstr_detect(x, fixed(\".\"))\nFixed matches"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#anchors-matching-the-whole-string",
-    "href": "slides/DATA100-F26-Lecture-10.html#anchors-matching-the-whole-string",
+    "objectID": "slides/DATA100-F26-Lecture-10.html#regular-expressions-other-tools-iii",
+    "href": "slides/DATA100-F26-Lecture-10.html#regular-expressions-other-tools-iii",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Anchors: matching the whole string",
-    "text": "Anchors: matching the whole string\n\n\n\n\n\n\n\n\n\n\n\n\n\nRemember the order\n\n\nTo remember which is which, try this mnemonic: if you begin with power (^), you will end up with money ($)."
+    "section": "Regular expressions: other tools (iii)",
+    "text": "Regular expressions: other tools (iii)\n\n\n\n\n\n\n\n\n\nTool\nWhat it does\nTiny example\nRead the section on\n\n\n\n\nregex() flags\nmultiline, comments, and more\nregex(\"pm\", ignore_case = TRUE)\nPattern control\n\n\n+, *\nOne or more, zero or more\n\"\\\\d+\"\nQuantifiers\n\n\n[^...]\nAnything except these characters\n\"[^0-9]\"\nCharacter classes"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#why-dates-and-times-are-hard",
-    "href": "slides/DATA100-F26-Lecture-10.html#why-dates-and-times-are-hard",
+    "objectID": "slides/DATA100-F26-Lecture-10.html#regular-expressions-other-tools-iv",
+    "href": "slides/DATA100-F26-Lecture-10.html#regular-expressions-other-tools-iv",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Why dates and times are hard",
-    "text": "Why dates and times are hard\nDates and times look simple, but two facts make them tricky:\n\nDoes every year have 365 days?\nDoes every day have 24 hours?\n\n\n\n\n\n\n\n\nCalendar quirks\n\n\n\nLeap years: a year is a leap year if it is divisible by 4, except centuries, unless the century is divisible by 400\nDaylight saving time (DST): some days have 23 hours and some have 25\nTime zones: the same moment has different clock times in different places"
+    "section": "Regular expressions: other tools (iv)",
+    "text": "Regular expressions: other tools (iv)\n\n\n\n\n\n\n\n\n\nTool\nWhat it does\nTiny example\nRead the section on\n\n\n\n\n\\\\s, \\\\w\nA space; a letter, digit or underscore\n\"\\\\s+\"\nCharacter classes\n\n\nParentheses\nControl the order of \\| and quantifiers\n\"(am&#124;pm)$\"\nOperator precedence"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#three-types",
-    "href": "slides/DATA100-F26-Lecture-10.html#three-types",
+    "objectID": "slides/DATA100-F26-Lecture-10.html#dates-and-times-other-tools-i",
+    "href": "slides/DATA100-F26-Lecture-10.html#dates-and-times-other-tools-i",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Three types",
-    "text": "Three types\n\n\n\n\n\n\n\n\nType\nTibble label\nMeaning\n\n\n\n\ndate\n&lt;date&gt;\na day\n\n\ntime\n&lt;time&gt;\na time within a day (uses the hms package)\n\n\ndate-time\n&lt;dttm&gt;\na date plus a time: a specific instant (called POSIXct in base R)\n\n\n\n\n\n\n\n\n\n\nUse the simplest type that works\n\n\nIf you don’t need the time of day, use a date. Date-times add complexity, mainly because of time zones."
+    "section": "Dates and times: other tools (i)",
+    "text": "Dates and times: other tools (i)\n\n\n\n\n\n\n\n\n\nTool\nWhat it does\nTiny example\nRead the section on\n\n\n\n\nmake_date()\nBuilds a date from year, month and day\nmake_date(2026, 10, 6)\nCreating date-times\n\n\nas_datetime(), as_date()\nConverts between a date and a date-time\nas_date(now())\nCreating date-times\n\n\nyday(), mday()\nDay of the year, day of the month\nyday(ymd(\"2026-10-06\"))\nGetting components\n\n\nround_date(), ceiling_date()\nRound to the nearest unit, or up\nceiling_date(x, \"hour\")\nRounding"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#right-now",
-    "href": "slides/DATA100-F26-Lecture-10.html#right-now",
+    "objectID": "slides/DATA100-F26-Lecture-10.html#dates-and-times-other-tools-ii",
+    "href": "slides/DATA100-F26-Lecture-10.html#dates-and-times-other-tools-ii",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Right now",
-    "text": "Right now"
+    "section": "Dates and times: other tools (ii)",
+    "text": "Dates and times: other tools (ii)\n\n\n\n\n\n\n\n\n\nTool\nWhat it does\nTiny example\nRead the section on\n\n\n\n\nupdate()\nChanges one component of a date-time\nupdate(x, hour = 6)\nModifying components\n\n\nas.duration()\nTurns a time difference into a duration\nas.duration(end - start)\nDurations\n\n\n%--%\nA shortcut for interval()\nstart %--% end\nIntervals"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#creating-date-times-three-ways",
-    "href": "slides/DATA100-F26-Lecture-10.html#creating-date-times-three-ways",
+    "objectID": "slides/DATA100-F26-Lecture-10.html#dates-and-times-other-tools-iii",
+    "href": "slides/DATA100-F26-Lecture-10.html#dates-and-times-other-tools-iii",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Creating date-times: three ways",
-    "text": "Creating date-times: three ways\nYou’ll usually create them from one of these:\n\nDuring import, from a file\nFrom a string\nFrom individual components (like year, month, day)\n(Also) From another date-time type"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#during-import",
-    "href": "slides/DATA100-F26-Lecture-10.html#during-import",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "During import",
-    "text": "During import\nreadr automatically recognizes ISO8601 dates and date-times:\n\n\n\n\n\n\n\nISO8601\n\n\nISO8601 is the international standard: YYYY-MM-DD, largest unit first. It sorts correctly and is unambiguous.\n\n\n\n\n\n\n\n\n\n\n\nAmbiguous dates\n\n\n01/02/15 can be January 2, 2015, February 1, 2015, or February 15, 2001, depending on the order assumed. The same text, three different dates. Always check which convention your data uses."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#format-codes",
-    "href": "slides/DATA100-F26-Lecture-10.html#format-codes",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Format codes",
-    "text": "Format codes\n\n\n\nCode\nMeaning\nExample\n\n\n\n\n%Y\n4-digit year\n2021\n\n\n%y\n2-digit year\n21\n\n\n%m\nmonth number\n01\n\n\n%B\nfull month name\nJanuary\n\n\n%b\nabbreviated month\nJan\n\n\n%d\nday of month\n02\n\n\n%H\nhour, 24-hour clock\n13\n\n\n%I\nhour, 12-hour clock\n1\n\n\n%p\nAM/PM\npm\n\n\n%M\nminutes\n35\n\n\n%S\nseconds\n45\n\n\n%Z\ntime zone name\nAmerica/Chicago\n\n\n%z\noffset from UTC\n+0800"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#from-strings-lubridate-helpers",
-    "href": "slides/DATA100-F26-Lecture-10.html#from-strings-lubridate-helpers",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "From strings: lubridate helpers",
-    "text": "From strings: lubridate helpers\nPick the function whose letters match the order of the date: y, m, d.\n\n\n\n\n\n\n\nThey work whatever the separators are\nThey also accept unquoted numbers"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#from-strings-date-times",
-    "href": "slides/DATA100-F26-Lecture-10.html#from-strings-date-times",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "From strings: date-times",
-    "text": "From strings: date-times\nAdd _h, _hm, or _hms to get a date-time:\n\n\n\n\n\n\nForce a time zone with tz:"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#from-individual-components",
-    "href": "slides/DATA100-F26-Lecture-10.html#from-individual-components",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "From individual components",
-    "text": "From individual components\nSometimes the pieces are in separate columns, as in flights. Use make_date() or make_datetime():"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#dep_time-stores-times-as-hhmm",
-    "href": "slides/DATA100-F26-Lecture-10.html#dep_time-stores-times-as-hhmm",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "dep_time stores times as HHMM",
-    "text": "dep_time stores times as HHMM\ndep_time and friends store times as numbers like 1530. Use %/% and %% (from last week’s Numbers lecture!) to unpack them:"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#exercise-3",
-    "href": "slides/DATA100-F26-Lecture-10.html#exercise-3",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Exercise",
-    "text": "Exercise\n\n\n\n\n\n\n\nLive exercise\n\n\nWhat happens if you parse a string that contains invalid dates?\nymd(c(\"2010-10-10\", \"bananas\"))\n\n\n\n\n\n\n\n\n\n\n\n# The invalid string becomes NA, with a warning: \"1 failed to parse\"\nout &lt;- ymd(c(\"2010-10-10\", \"bananas\"))\nout\nis.na(out)\n# The invalid string becomes NA, with a warning: \"1 failed to parse\"\nout &lt;- ymd(c(\"2010-10-10\", \"bananas\"))\nout\nis.na(out)"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#exercise-4",
-    "href": "slides/DATA100-F26-Lecture-10.html#exercise-4",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Exercise",
-    "text": "Exercise\n\n\n\n\n\n\n\nLive exercise\n\n\nUse the appropriate lubridate function (or a readr format) to parse each of these:\nd1 &lt;- \"January 1, 2010\"\nd2 &lt;- \"2015-Mar-07\"\nd3 &lt;- \"06-Jun-2017\"\nd4 &lt;- \"12/30/14\" # Dec 30, 2014\n\n\n\n\n\n\n\n\n\n\n\nd1 &lt;- \"January 1, 2010\"\nd2 &lt;- \"2015-Mar-07\"\nd3 &lt;- \"06-Jun-2017\"\nd4 &lt;- \"12/30/14\"\n\nmdy(d1)\nymd(d2)\ndmy(d3)\nmdy(d4)\nd1 &lt;- \"January 1, 2010\"\nd2 &lt;- \"2015-Mar-07\"\nd3 &lt;- \"06-Jun-2017\"\nd4 &lt;- \"12/30/14\"\n\nmdy(d1)\nymd(d2)\ndmy(d3)\nmdy(d4)"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#what-we-learned",
-    "href": "slides/DATA100-F26-Lecture-10.html#what-we-learned",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "What we learned",
-    "text": "What we learned\n\nRegular expressions: describe patterns, then detect, count, replace, and extract\nDates and times: parse, break apart, compute with, and convert across time zones\nBoth reward the same habits: test with tricky examples, and be explicit about what you mean"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-10.html#source",
-    "href": "slides/DATA100-F26-Lecture-10.html#source",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Source",
-    "text": "Source\n\n\n\n\n\n\n\nAttribution\n\n\nContent adapted from R for Data Science (2e) by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund:\n\nChapter 15: Regular expressions, https://r4ds.hadley.nz/regexps.html\nChapter 17: Dates and times, https://r4ds.hadley.nz/datetimes.html"
+    "section": "Dates and times: other tools (iii)",
+    "text": "Dates and times: other tools (iii)\n\n\n\n\n\n\n\n\n\nTool\nWhat it does\nTiny example\nRead the section on\n\n\n\n\nint_length()\nThe length of an interval in seconds\nint_length(sleeping)\nIntervals\n\n\nSys.timezone()\nYour computer’s time zone\nSys.timezone()\nTime zones\n\n\n\n\n\n\n\n\n\n\nEverything has a time zone\n\n\nDate-times without an explicit time zone are treated as UTC. Always check with tz() before you compute hours."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-2.html#the-whole-game",
@@ -2881,7 +2825,7 @@
     "href": "slides/DATA100-F26-Lecture-8.html#do-students-who-sleep-less-get-lower-grades-and-does-it-depend-on-their-program",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Do students who sleep less get lower grades, and does it depend on their program?",
-    "text": "Do students who sleep less get lower grades, and does it depend on their program?\n\nWe have a survey of 1,000 students\nToday we answer this question, and learn Chapter 12 (logical vectors) along the way\n\n\n~5 min for this whole opening block. Resist explaining any code yet: the point is to show the answer first."
+    "text": "Do students who sleep less get lower grades, and does it depend on their program?\n\nWe have a survey of 1,000 students\nToday we answer this question, and learn Chapter 12 (logical vectors) along the way"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-8.html#answer",
@@ -2909,7 +2853,7 @@
     "href": "slides/DATA100-F26-Lecture-8.html#the-plan-for-today",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "The plan for today",
-    "text": "The plan for today\nWe rebuild the pipeline one action at a time.\nEach action needs a different part of Chapter 12:\n\n\n\n\n\n\n\n\nStep\nAction\nChapter 12 tools we need\n\n\n\n\n1\nmutate()\ncomparisons (&lt;, ==), if_else(), case_when()\n\n\n2\nfilter()\nmissing values, is.na(), &, |, !, %in%\n\n\n3\ngroup_by() + summarize()\nsum(), mean(), any(), all()\n\n\n\n\n\n\n\n\n\n\nNot everything fits in this 80-minute lecture\n\n\nIn future, I will leave some of the undiscussed functions or tools in an appendix table at the end of the slide deck. Each row will say what the tool does and which section of the chapter to read. You should definitely take a look at the text for more details."
+    "text": "The plan for today\nWe rebuild the pipeline one action at a time.\nEach action needs a different part of Chapter 12:\n\n\n\n\n\n\n\n\nStep\nAction\nChapter 12 tools we need\n\n\n\n\n1\nmutate()\ncomparisons (&lt;, ==), if_else(), case_when()\n\n\n2\nfilter()\nmissing values, is.na(), &, |, !, %in%\n\n\n3\ngroup_by() + summarize()\nsum(), mean(), any(), all()\n\n\n\n\n\n\n\n\n\n\nNot everything fits in this 80-minute lecture\n\n\nI may leave some of the undiscussed functions or tools in an appendix table at the end of the slide deck. Each row will say what the tool does and which section of the chapter to read. You should definitely take a look at the text for more details."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-8.html#meet-the-data",
@@ -3255,39 +3199,39 @@
     "text": "Lecture 1 Slides"
   },
   {
-    "objectID": "slides.html#lecture-2-day-1-of-the-whole-game",
-    "href": "slides.html#lecture-2-day-1-of-the-whole-game",
+    "objectID": "slides.html#lecture-2-the-whole-game-i",
+    "href": "slides.html#lecture-2-the-whole-game-i",
     "title": "Lecture Slides",
-    "section": "Lecture 2: Day 1 of the Whole Game",
-    "text": "Lecture 2: Day 1 of the Whole Game\n\nLecture 2 Slides"
+    "section": "Lecture 2: The Whole Game (i)",
+    "text": "Lecture 2: The Whole Game (i)\n\nLecture 2 Slides"
   },
   {
-    "objectID": "slides.html#lecture-3-day-2-of-the-whole-game",
-    "href": "slides.html#lecture-3-day-2-of-the-whole-game",
+    "objectID": "slides.html#lecture-3-the-whole-game-ii",
+    "href": "slides.html#lecture-3-the-whole-game-ii",
     "title": "Lecture Slides",
-    "section": "Lecture 3: Day 2 of the Whole Game",
-    "text": "Lecture 3: Day 2 of the Whole Game\n\nLecture 3 Slides"
+    "section": "Lecture 3: The Whole Game (ii)",
+    "text": "Lecture 3: The Whole Game (ii)\n\nLecture 3 Slides"
   },
   {
-    "objectID": "slides.html#lecture-4-day-1-of-visualization",
-    "href": "slides.html#lecture-4-day-1-of-visualization",
+    "objectID": "slides.html#lecture-4-visualization---ggplot",
+    "href": "slides.html#lecture-4-visualization---ggplot",
     "title": "Lecture Slides",
-    "section": "Lecture 4: Day 1 of Visualization",
-    "text": "Lecture 4: Day 1 of Visualization\n\nLecture 4 Slides"
+    "section": "Lecture 4: Visualization - ggplot",
+    "text": "Lecture 4: Visualization - ggplot\n\nLecture 4 Slides"
   },
   {
-    "objectID": "slides.html#lecture-5-day-2-of-visualization",
-    "href": "slides.html#lecture-5-day-2-of-visualization",
+    "objectID": "slides.html#lecture-5-visualization---exploratory-data-analysis",
+    "href": "slides.html#lecture-5-visualization---exploratory-data-analysis",
     "title": "Lecture Slides",
-    "section": "Lecture 5: Day 2 of Visualization",
-    "text": "Lecture 5: Day 2 of Visualization\n\nLecture 5 Slides"
+    "section": "Lecture 5: Visualization - Exploratory Data Analysis",
+    "text": "Lecture 5: Visualization - Exploratory Data Analysis\n\nLecture 5 Slides"
   },
   {
-    "objectID": "slides.html#lecture-6-day-3-of-visualization",
-    "href": "slides.html#lecture-6-day-3-of-visualization",
+    "objectID": "slides.html#lecture-6-visualization---communications",
+    "href": "slides.html#lecture-6-visualization---communications",
     "title": "Lecture Slides",
-    "section": "Lecture 6: Day 3 of Visualization",
-    "text": "Lecture 6: Day 3 of Visualization\n\nLecture 6 Slides"
+    "section": "Lecture 6: Visualization - Communications",
+    "text": "Lecture 6: Visualization - Communications\n\nLecture 6 Slides"
   },
   {
     "objectID": "slides.html#lecture-7-visualization-and-midterm-review",
@@ -3297,31 +3241,31 @@
     "text": "Lecture 7: Visualization and Midterm Review\n\nLecture 7 Slides"
   },
   {
-    "objectID": "slides.html#lecture-8-logical-vectors",
-    "href": "slides.html#lecture-8-logical-vectors",
+    "objectID": "slides.html#lecture-8-data-tidying---logical-vectors",
+    "href": "slides.html#lecture-8-data-tidying---logical-vectors",
     "title": "Lecture Slides",
-    "section": "Lecture 8: Logical Vectors",
-    "text": "Lecture 8: Logical Vectors\n\nLecture 8 Slides"
+    "section": "Lecture 8: Data Tidying - Logical Vectors",
+    "text": "Lecture 8: Data Tidying - Logical Vectors\n\nLecture 8 Slides"
   },
   {
-    "objectID": "slides.html#lecture-9",
-    "href": "slides.html#lecture-9",
+    "objectID": "slides.html#lecture-9-data-tidying---words-and-numbers",
+    "href": "slides.html#lecture-9-data-tidying---words-and-numbers",
     "title": "Lecture Slides",
-    "section": "Lecture 9: ???",
-    "text": "Lecture 9: ???\n\nLecture 9 Slides"
+    "section": "Lecture 9: Data Tidying - Words and Numbers",
+    "text": "Lecture 9: Data Tidying - Words and Numbers\n\nLecture 9 Slides"
   },
   {
-    "objectID": "slides.html#lecture-10",
-    "href": "slides.html#lecture-10",
+    "objectID": "slides.html#lecture-10-data-tidying---regular-expressions-and-dates-time",
+    "href": "slides.html#lecture-10-data-tidying---regular-expressions-and-dates-time",
     "title": "Lecture Slides",
-    "section": "Lecture 10: ???",
-    "text": "Lecture 10: ???\n\nLecture 10 Slides"
+    "section": "Lecture 10: Data Tidying - Regular Expressions and Dates & Time",
+    "text": "Lecture 10: Data Tidying - Regular Expressions and Dates & Time\n\nLecture 10 Slides"
   },
   {
-    "objectID": "slides.html#lecture-11",
-    "href": "slides.html#lecture-11",
+    "objectID": "slides.html#lecture-11-data-tidying---missing-values-and-joins",
+    "href": "slides.html#lecture-11-data-tidying---missing-values-and-joins",
     "title": "Lecture Slides",
-    "section": "Lecture 11: ???",
-    "text": "Lecture 11: ???\n\nLecture 11 Slides"
+    "section": "Lecture 11: Data Tidying - Missing Values and Joins",
+    "text": "Lecture 11: Data Tidying - Missing Values and Joins\n\nLecture 11 Slides"
   }
 ]

@@ -44,9 +44,6 @@ execute:
 - We have a survey of **1,000 students**
 - Today we answer this question, and learn Chapter 12 (logical vectors) *along the way*
 
-::: {.notes}
-~5 min for this whole opening block. Resist explaining any code yet: the point is to show the answer first.
-:::
 
 
 <!-- r setup -->
@@ -72,7 +69,6 @@ library(tidyverse)
 library(readr)
 
 survey <- read.csv("data/sleep_survey_v2.csv", fileEncoding = "WINDOWS-1252")
-
 ```
 
 ## Answer
@@ -161,7 +157,7 @@ Each action needs a different part of Chapter 12:
 | 3 | `group_by()` + `summarize()` | `sum()`, `mean()`, `any()`, `all()` |
 
 ::: {.callout-tip title="Not everything fits in this 80-minute lecture"}
-In future, I will leave some of the undiscussed functions or tools in an *appendix table* at the end of the slide deck. Each row will say what the tool does and which section of the chapter to read. You should definitely take a look at the text for more details.
+I may leave some of the undiscussed functions or tools in an *appendix table* at the end of the slide deck. Each row will say what the tool does and which section of the chapter to read. You should definitely take a look at the text for more details.
 :::
 
 ## Meet the data
@@ -462,9 +458,6 @@ survey |>
 
 # Step 2: filter()
 
-::: {.notes}
-~20 min for this section including Exercise 2. The `== NA` failure and the `| 5` failure are the two "break it live" moments.
-:::
 
 ## Where we are in the pipeline
 
@@ -777,10 +770,6 @@ survey |>
 
 # Step 3: group_by( ) and summarize( )
 
-::: {.notes}
-~15 min for this section including Exercise 3.
-:::
-
 ## Where we are in the pipeline
 
 ```{.r code-line-numbers="10-17"}
@@ -948,9 +937,6 @@ survey |>
 
 # Wrap-up
 
-::: {.notes}
-~10 min. Then ~10 min of buffer, which you will probably need.
-:::
 
 ## Back to the question {.smaller}
 

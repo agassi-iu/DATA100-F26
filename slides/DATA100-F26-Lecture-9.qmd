@@ -6,6 +6,8 @@ institute: "Wilfrid Laurier University"
 date: "October 22, 2026"
 format:
   live-revealjs:
+    resources:
+      - data/sleep_survey_v2.csv
     theme: sky
     slide-number: true
     transition: slide
@@ -24,8 +26,6 @@ webr:
     - forcats
     - purrr
     - scales
-    - nycflights13  # added: flights data used in the Numbers chapter
-    - babynames     # added: baby names data used in the Strings chapter
 execute:
   echo: true
   warning: false   # Hides warnings and package loading messages
@@ -35,277 +35,205 @@ execute:
   fig-align: center
 ---
 
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
 
-# Lecture 9 roadmap
+# The problem for today
 
-## Today's plan
+## My sleep report {.center}
 
-Two of the most common kinds of data, and the tools for working with each:
+I want a summary of the sleep survey on:
 
-- **Part 1: Numbers** (Chapter 13)
-  - making numbers, counting, transforming, ranking, and summarizing
-- **Part 2: Strings** (Chapter 14)
-  - creating strings, combining them, pulling data out of them, and handling non-English text
+1. How much do students in each program sleep? (*Numbers*, Chapter 13)
+2. When do they go to bed? (*Strings*, Chapter 14)
+3. Can we make the chart readable? (*Factors*, Chapter 16)
 
-## Setup
 
-```{webr}
-#| autorun: true
+<!-- r setup -->
+```{r echo=FALSE}
+#| context: setup
 library(dplyr)
-library(tidyr)
 library(tibble)
-library(readr)
 library(ggplot2)
-library(stringr)
-library(nycflights13)
-library(babynames)
+library(tidyverse)
+library(readr)
+
+survey <- read_csv("data/sleep_survey_v2.csv", show_col_types = FALSE)
 ```
 
-::: {.callout-note title="Where the data comes from"}
-- `nycflights13::flights` for the Numbers part
-- `babynames::babynames` for the Strings part
-- Small made-up vectors and tibbles, built with `c()` and `tribble()`, whenever a real example would be too messy
+<!-- webr setup -->
+```{webr}
+#| include: false
+#| autorun: true
+library(dplyr)
+library(tibble)
+library(ggplot2)
+library(tidyverse)
+library(readr)
+
+survey <- read.csv("data/sleep_survey_v2.csv", fileEncoding = "WINDOWS-1252")
+```
+
+## Foreshadowing the final output of today
+
+```{r echo=FALSE}
+survey |>
+  filter(!is.na(sleep_hours)) |>
+  group_by(program) |>
+  summarize(mean_sleep = mean(sleep_hours)) |>
+  mutate(
+    hours = mean_sleep %/% 1,
+    minutes = round((mean_sleep %% 1) * 60),
+    program = fct_reorder(program, mean_sleep),
+    label = str_glue("{hours} h {minutes} min")
+  ) |>
+  ggplot(aes(x = mean_sleep, y = program, fill = program)) +
+  geom_col(show.legend = FALSE) +
+  geom_text(aes(label = label), hjust = -0.1) +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.25))) +
+  labs(
+    title = "Average sleep by program",
+    x = "Hours per night", y = NULL
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+
+## Setup and data
+
+The data is the same sleep survey from Lecture 8. It is loaded once at the start:
+
+```r
+library(dplyr); library(tidyr); library(tibble); library(readr)
+library(ggplot2); library(stringr); library(forcats)
+
+survey <- read_csv("data/sleep_survey_v2.csv", show_col_types = FALSE)
+```
+
+```{webr}
+glimpse(survey)
+```
+
+::: {.callout-tip title="Not everything fits in this 80-minute lecture"}
+I may leave some of the undiscussed functions or tools in an *appendix table* at the end of the slide deck. Each row will say what the tool does and which section of the chapter to read. You should definitely take a look at the text for more details.
 :::
+
 
 # Part 1: Numbers
 
-## What this part covers
+## Learning Objectives
 
-Numeric vectors are the backbone of data science. 
+| Step | Tool (Chapter 13) |
+|--------|-----------------|
+| Fix numbers typed as text | `parse_number()` |
+| Count students | `count()`, `n()`, `n_distinct()` |
+| Transform columns | `pmin()`, `pmax()`, `%/%`, `%%`, `round()`, `cut()` |
+| Rank programs | `min_rank()` |
+| Summarize | `mean()`, `median()` |
 
-- **Making numbers** out of strings
-- **Counts**
-- **Numeric transformations**: arithmetic, min and max, modular arithmetic, logs, rounding, cutting, cumulative aggregates
-- **General transformations**: ranks, offsets, consecutive identifiers
-- **Numeric summaries**: center, quantiles, spread, distributions, positions
+## Making numbers: 
 
-::: {.callout-note title="Prerequisites"}
-Mostly base R, but we use it inside tidyverse verbs like `mutate()` and `filter()`.
-:::
-
-
-## Turning strings into numbers
-
-Numbers often arrive as text, typically when data is imported. readr has two parsers for this:
-
+:::[.callout-note title="`parse_number()`"]
+Numbers sometimes arrive as text, typically when data is imported. *readr* has two parsers:
 - `parse_double()` for strings that are clean numbers
-- `parse_number()` for strings that have extra text around the number
-
-```{webr}
-x <- c("1.2", "5.6", "1e3")
-parse_double(x)
-```
-
-## `parse_number()`
-
-`parse_number()` ignores text before and after the number. That makes it handy for currency, percentages, and similar messy values.
-
-```{webr}
-x <- c("$1,234", "USD 3,513", "59%")
-parse_number(x)
-```
-
-::: {.callout-tip title="Grouping marks too"}
-Notice that the comma in `$1,234` is handled. The result is the number 1234.
+- `parse_number()` for strings with extra text around the number
 :::
 
-
-## Counting with `count()`
-
-Much of data science is counting and adding. dplyr's `count()` gives a quick tally of how many rows have each value.
-
 ```{webr}
-flights |> count(dest)
+parse_double(c("1.2", "5.6", "1e3"))
+parse_number(c("$1,234", "USD 3,513", "59%"))
+
+# Imagine students typed their weekly work hours as text
+parse_number(c("10 hours", "12h", "about 8"))
 ```
 
-## Sorting the counts
+::: {.callout-important title="Checkpoint"}
+Do you see what these functions are trying to do?
+:::
 
-Add `sort = TRUE` to see the biggest groups first:
+## Counting 
+
+::: {.callout-note title="`count()`"}
+This function gives a quick tally of how many rows have each value. Add `sort = TRUE` to see the biggest groups first.
+:::
 
 ```{webr}
-flights |> count(dest, sort = TRUE)
+survey |> count(program)
+survey |> count(favourite_drink, sort = TRUE)
 ```
 
-## The long way
-
-`count()` is a shortcut. Building it by hand lets you compute extra summaries in the same step.
+`count()` is a shortcut. The long way lets you compute extra summaries in the same step:
 
 ```{webr}
-flights |>
-  group_by(dest) |>
+survey |>
+  group_by(program) |>
   summarize(
     n = n(),
-    delay = mean(arr_delay, na.rm = TRUE)
+    mean_sleep = mean(sleep_hours, na.rm = TRUE)
   )
 ```
 
 ::: {.callout-warning title="n() only works inside dplyr verbs"}
-`n()` takes no arguments and returns the size of the current group. Outside of `summarize()`, `mutate()`, or `filter()`, there is no "current group", so it fails.
+`n()` returns the size of the current group. Outside of `summarize()`, `mutate()`, or `filter()`, there is no "current group", so it fails.
+- i.e. `survey |> n(program)` doesn't mean anything.
+:::
+
+## Unique values
+
+::: {.callout-note title="`n_distinct()`"}
+This function counts the unique values of `x`. A quick check: does every student appear only once?
 :::
 
 ```{webr}
-#| error: true
-n()
+survey |>
+  summarize(
+    students = n(),
+    unique_ids = n_distinct(student_id)
+  )
 ```
 
-## Useful count variants: `n_distinct()`
+::: {.callout-caution title="NA counts as a value"}
+By default `n_distinct()` counts `NA` as one more distinct value. Add `na.rm = TRUE` if you do not want that.
+:::
 
-`n_distinct(x)` counts the **unique** values of `x`. Which destinations are served by the most carriers?
+## Recycling Vectors
+
+When two vectors have different lengths, *R* recycles the shorter one by repeating it. That can quietly give wrong answers. Are the students in Arts or Business?
 
 ```{webr}
-# flights$carrier
-flights |>
-  group_by(dest) |>
-  summarize(carriers = n_distinct(carrier)) |>
-  arrange(desc(carriers))
+survey |>
+  filter(program == c("Arts", "Business")) |>
+  count(program)
 ```
 
-## Weighted counts
+::: {.callout-warning title="Doesn't give you an error, just the wrong answer"}
+*R* compares `program` with `"Arts", "Business", "Arts", "Business", ...` row by row. It does **not** ask "is the program Arts or Business?". You only get about half of the students.
+:::
 
-A weighted count is a sum. For example, the total distance each plane has flown:
+The fix is `%in%`, which you've seen in last lecture:
 
 ```{webr}
-flights |>
-  group_by(tailnum) |>
-  summarize(miles = sum(distance))
+survey |>
+  filter(program %in% c("Arts", "Business")) |>
+  count(program)
 ```
 
-`count()` has a `wt` argument that does the same thing:
+## A simpler example
 
-```{webr}
-flights |> count(tailnum, wt = distance)
-```
-
-## Counting missing values
-
-Combine `sum()` with `is.na()` (recall `TRUE` counts as 1). How many flights per destination were cancelled, meaning `dep_time` is missing?
-
-```{webr}
-flights |>
-  group_by(dest) |>
-  summarize(n_cancelled = sum(is.na(dep_time)))
-```
-
-## Exercise
-
-::: {.callout-tip title="Live exercise"}
-How can you use `count()` to count the number of rows with a missing value for a given variable?
+:::{.callout-tip title="Live Exercise"}
+Run the following code to test how *R* recycles vectors of values
 :::
 
 ```{webr}
-#| exercise: ex_count_1
-flights |>
-  count()
+x <- c(1,2,3,4,5,6)
+y <- c(1,2)
+z <- c(1,2,3,4)
+
+x*y
+x*z
 ```
 
-```{webr}
-#| exercise: ex_count_1
-#| solution: true
-# Count on a logical expression: TRUE rows are the missing ones
-flights |>
-  count(dep_delay_missing = is.na(dep_delay))
-```
 
-## Exercise
-
-::: {.callout-tip title="Live exercise"}
-Rewrite these two `count()` calls without `count()`, using `group_by()`, `summarize()`, and `arrange()`:
-
-1. `flights |> count(dest, sort = TRUE)`
-2. `flights |> count(tailnum, wt = distance)`
-:::
-
-```{webr}
-#| exercise: ex_count_2
-# 1.
-flights |>
-  group_by()
-
-# 2.
-flights |>
-  group_by()
-```
-
-```{webr}
-#| exercise: ex_count_2
-#| solution: true
-# 1.
-flights |>
-  group_by(dest) |>
-  summarize(n = n()) |>
-  arrange(desc(n))
-
-# 2.
-flights |>
-  group_by(tailnum) |>
-  summarize(n = sum(distance))
-```
-
-# Numeric transformations
-
-## What is a transformation?
-
-Transformation functions return a vector **the same length as the input**: a natural fit for `mutate()`.
-
-This section covers:
-
-- Arithmetic and recycling rules
-- Minimum and maximum
-- Modular arithmetic
-- Logarithms
-- Rounding
-- Cutting numbers into ranges
-- Cumulative and rolling aggregates
-
-## Arithmetic and recycling rules
-
-You can use `+`, `-`, `*`, `/`, and `^` on vectors. When the two vectors have different lengths, R **recycles** the shorter one by repeating it until it matches the longer one.
-
-```{webr}
-x <- c(1, 2, 10, 20)
-x / 5
-# is shorthand for
-x / c(5, 5, 5, 5)
-```
-
-## Recycling when the lengths don't divide evenly
-
-Recycling a longer vector works silently if the lengths divide evenly, and gives a **warning** if they don't.
-
-```{webr}
-#| warning: true
-x <- c(1, 2, 10, 20)
-x * c(1, 2)
-x * c(1, 2, 3)
-```
-
-::: {.callout-tip title="Tidyverse is stricter"}
-Base R is permissive about recycling. The tidyverse is stricter and generally only recycles single values.
-:::
-
-## A silent recycling bug in `filter()`
-
-Recycling also works with comparisons, which can quietly give wrong answers:
-
-```{webr}
-flights |>
-  filter(month == c(1, 2))
-```
-
-::: {.callout-warning title="No error, wrong answer"}
-This compares `month` with `1, 2, 1, 2, ...` row by row. It does **not** ask "is month 1 or 2?". It only keeps January flights in odd-numbered rows and February flights in even-numbered rows.
-
-The fix is `%in%`, which you met last lecture.
-:::
-
-```{webr}
-flights |>
-  filter(month %in% c(1, 2))
-```
-
-## Minimum and maximum: `pmin()` and `pmax()`
-
-Two kinds of min and max exist:
+## Maximum and Minimum
 
 - `pmin()` and `pmax()` work **row by row** across vectors (the "p" is for parallel)
 - `min()` and `max()` summarize **everything** into one value
@@ -320,25 +248,8 @@ df <- tribble(
 
 df |>
   mutate(
-    min = pmin(x, y, na.rm = TRUE),
-    max = pmax(x, y, na.rm = TRUE)
-  )
-```
-
-## The summary versions
-
-Compare with `min()` and `max()`, which collapse all the values:
-
-```{webr}
-df <- tribble(
-  ~x, ~y,
-  1,  3,
-  5,  2,
-  7, NA,
-)
-
-df |>
-  mutate(
+    pmin = pmin(x, y, na.rm = TRUE),
+    pmax = pmax(x, y, na.rm = TRUE),
     min = min(x, y, na.rm = TRUE),
     max = max(x, y, na.rm = TRUE)
   )
@@ -348,348 +259,223 @@ df |>
 Every row gets the **same** answer from `min()` and `max()`: the smallest and largest value in both columns combined. Use `pmin()` and `pmax()` for a per-row answer.
 :::
 
-## Modular arithmetic
+## Time: Hours and minutes
 
-Modular arithmetic is division with a quotient and a remainder:
+:::{.callout-note title="Modular Arithmetic"}
+Division with a quotient and a remainder:
+- `%/%` is integer division
+- `%%` is the remainder
+- E.g. `7%/%3=2` and `7%%3=1`.
+:::
 
-- `%/%` is **integer division** (how many whole times it fits)
-- `%%` is the **remainder**
 
 ```{webr}
 1:10 %/% 3
 1:10 %% 3
 ```
 
-## Unpacking times
-
-`sched_dep_time` stores a time as a number like 1530, meaning 15:30. We can split it into hour and minute:
+`sleep_hours = 6.7` means 6 hours and 42 minutes. Modular arithmetic splits it:
 
 ```{webr}
-flights |>
+survey |>
   mutate(
-    hour = sched_dep_time %/% 100,
-    minute = sched_dep_time %% 100,
+    hours = sleep_hours %/% 1,
+    minutes = round((sleep_hours %% 1) * 60),
     .keep = "used"
   )
-```
-
-## Cancellations by hour of the day
-
-Using the `hour` trick, we can see how the proportion of cancelled flights changes through the day.
-
-```{webr}
-flights |>
-  group_by(hour = sched_dep_time %/% 100) |>
-  summarize(prop_cancelled = mean(is.na(dep_time)), n = n()) |>
-  filter(hour > 1) |>
-  ggplot(aes(x = hour, y = prop_cancelled)) +
-  geom_line(color = "grey50") +
-  geom_point(aes(size = n))
-```
-
-- Cancellations tend to climb through the day
-- Point size shows how many flights each hour contains
-
-## Logarithms
-
-Logarithms turn **multiplicative** relationships into **additive** ones, and they help with data that spans many orders of magnitude. R has three:
-
-- `log()`: natural log (base *e*)
-- `log2()`: base 2
-- `log10()`: base 10
-
-```{webr}
-log2(c(1, 2, 4, 8))
-log10(c(1, 10, 100, 1000))
-log(exp(1))
-```
-
-## Which log should I use?
-
-::: {.callout-tip title="Recommendation"}
-- Use **`log2()`**: it's easy to interpret. Each +1 on the log scale means the original value **doubled**; each -1 means it **halved**.
-- Use **`log10()`**: when you want to back-transform easily, since each +1 means ×10.
-:::
-
-The inverse of a log is exponentiation:
-
-```{webr}
-exp(log(5))
-2 ^ log2(8)
-10 ^ log10(1000)
 ```
 
 ## Rounding
 
-`round(x)` rounds to the nearest integer. The `digits` argument controls where to round, and it can be **negative**.
+:::{.callout-note title="`round(x)`"}
+This function rounds to the nearest integer. You can even add a `digits` argument that controls where to round, and this value `digits` can be negative!
+:::
 
 ```{webr}
 round(123.456)
-round(123.456, 2)   # two digits
 round(123.456, 1)   # one digit
 round(123.456, -1)  # round to the nearest ten
-round(123.456, -2)  # round to the nearest hundred
 ```
 
-
-## `floor()` and `ceiling()`
-
-- `floor()` always rounds **down**
-- `ceiling()` always rounds **up**
-- Neither has a `digits` argument, so you scale first
+Grades rounded to the nearest ten:
 
 ```{webr}
-x <- 123.456
-
-floor(x)
-ceiling(x)
-
-# Round down to the nearest two digits
-floor(x / 0.01) * 0.01
-# Round up to the nearest two digits
-ceiling(x / 0.01) * 0.01
+survey |>
+  count(grade_tens = round(avg_grade, -1))
 ```
 
+::: {.callout-caution title="Always round down or up?"}
+`floor()` always rounds down and `ceiling()` always rounds up. See the appendix.
+:::
 
 ## Cutting numbers into ranges
 
-`cut()` chops a numeric vector into **bins** and returns a factor. You supply the break points, and they don't need to be evenly spaced.
+:::{.callout-note title="`cut()`"}
+This function chops a numeric vector into *bins* and returns a factor. You supply the break points. Give `labels` one *fewer* element than `breaks`.
+:::
 
 ```{webr}
 x <- c(1, 2, 5, 10, 15, 20)
-cut(x, breaks = c(0, 5, 10, 15, 20))
-```
-
-## Custom labels
-
-Give `labels` one **fewer** element than `breaks`, because there is one fewer bin than break points:
-
-```{webr}
-x <- c(1, 2, 5, 10, 15, 20)
-cut(x,
-  breaks = c(0, 5, 10, 15, 20),
-  labels = c("sm", "md", "lg", "xl")
-)
-```
-
-## Values outside the breaks
-
-Anything outside the breaks becomes `NA`:
-
-```{webr}
-y <- c(NA, -10, 5, 10, 30)
-cut(y, breaks = c(0, 5, 10, 15, 20))
+cut(x, breaks = c(0, 5, 10, 15, 20), labels = c("sm", "md", "lg", "xl"))
 ```
 
 ::: {.callout-tip title="Open-ended bins"}
-Use `-Inf` and `Inf` as the outer breaks so nothing falls off the ends. Bins are right-closed by default, like `(5, 10]`; pass `right = FALSE` to make them left-closed, like `[5, 10)`.
+- Values **outside** the breaks become `NA`. Use `-Inf` and `Inf` as the outer breaks so nothing falls off the ends.
+- Bins are right-closed by default, like `(5, 10]`. Pass `right = FALSE` to make them left-closed, like `[5, 10)`.
 :::
 
-```{webr}
-x <- c(1, 2, 5, 10, 15, 20)
-cut(x, breaks = c(-Inf, 5, 10, Inf))
-cut(x, breaks = c(-Inf, 5, 10, Inf), right = FALSE)
-```
+## Using `cut()` to get labels
 
-::: {.callout-note title="More helpers"}
-ggplot2 also offers `cut_interval()`, `cut_number()`, and `cut_width()` for common binning patterns. They live there mainly because histograms need them.
-:::
-
-## Cumulative and rolling aggregates
-
-Cumulative functions keep a running total (or running min, max, mean) as they move down the vector:
-
-- `cumsum()`, `cumprod()`, `cummin()`, `cummax()` in base R
-- `cummean()` from dplyr
+In last class, we made sleep groups with `case_when()`. `cut()` does the same job in one line:
 
 ```{webr}
-x <- 1:10
-cumsum(x)
-cumprod(x)
-cummin(x)
-cummax(x)
-cummean(x)
+survey |>
+  mutate(
+    sleep_group = cut(
+      sleep_hours,
+      breaks = c(-Inf, 6, 7.5, Inf),
+      labels = c("Short", "Typical", "Long"),
+      right = FALSE
+    ),
+    .keep = "used"
+  ) |>
+  count(sleep_group)
 ```
 
 
+## Ranking
+
+:::{.callout-note title="`min_rank()`"}
+This function gives the rank of each value. `1` is the smallest, unless you flip it with `desc()`.
+:::
+
+```{webr}
+survey |>
+  group_by(program) |>
+  summarize(mean_sleep = mean(sleep_hours, na.rm = TRUE)) |>
+  mutate(
+    rank_least = min_rank(mean_sleep),
+    rank_most = min_rank(desc(mean_sleep))
+  )
+```
+
+- Which program sleeps the least?
+
+## Summaries: mean or median?
+
+```{webr}
+survey |>
+  summarize(
+    mean_work = mean(work_hours_week),
+    median_work = median(work_hours_week)
+  )
+```
+
+Why are they so different? Look at the distribution:
+
+```{webr}
+ggplot(survey, aes(x = work_hours_week)) +
+  geom_histogram(binwidth = 2)
+```
+
+::: {.callout-important title="Perhaps an explanation"}
+Many students do not work at all, which drags the median down while a few heavy workers pull the mean up. When a distribution is **skewed**, maybe it's worth it to report both mean and median.
+:::
+
+## Back to answering the question
+
+```{webr}
+program_summary <- survey |>
+  filter(!is.na(sleep_hours)) |>
+  group_by(program) |>
+  summarize(
+    n = n(),
+    mean_sleep = mean(sleep_hours)
+  ) |>
+  mutate(
+    hours = mean_sleep %/% 1,
+    minutes = round((mean_sleep %% 1) * 60),
+    rank_least = min_rank(mean_sleep)
+  )
+
+program_summary
+```
 
 
-## Exercise 
+## Exercise 1
 
 ::: {.callout-tip title="Live exercise"}
-Round `dep_time` and `arr_time` to the nearest five minutes.
+1. Use `cut()` to make a `study_band` column from `study_hours_week`: under 10, 10 to 19, 20 to 29, and 30 or more. Count the students in each band.
+2. For each program, compute the mean **and** median of `study_hours_week`, rounded to 1 decimal place. Which program has the biggest gap between them?
 :::
 
 ```{webr}
-#| exercise: ex_numtrans_4
-# Rounding the HHMM number directly is wrong: 758 would become 760, not a valid time.
-# Convert to minutes, round, and convert back to HHMM.
-to_minutes <- function(t) (t %/% 100 * 60 + t %% 100) %% 1440
-to_hhmm <- function(m) (m %/% 60) * 100 + m %% 60
-
-flights |>
+#| exercise: ex_numbers
+# Part 1
+survey |>
   mutate(
-    dep_time_5 = to_hhmm(round(to_minutes(dep_time) / 5) * 5),
-    arr_time_5 = to_hhmm(round(to_minutes(arr_time) / 5) * 5),
-    .keep = "used"
+    study_band = cut(
+
+    )
+  ) |>
+  count(study_band)
+
+# Part 2
+survey |>
+  group_by(program) |>
+  summarize(
+
+  )
+```
+
+```{webr}
+#| exercise: ex_numbers
+#| solution: true
+# Part 1
+survey |>
+  mutate(
+    study_band = cut(
+      study_hours_week,
+      breaks = c(-Inf, 10, 20, 30, Inf),
+      labels = c("Under 10", "10 to 19", "20 to 29", "30 or more"),
+      right = FALSE
+    )
+  ) |>
+  count(study_band)
+
+# Part 2
+survey |>
+  group_by(program) |>
+  summarize(
+    mean_study = round(mean(study_hours_week), 1),
+    median_study = round(median(study_hours_week), 1)
   )
 ```
 
 
+# Part 2: Strings (Words)
 
 
+## Learning Objectives
 
-# Strings (Words)
+| Step | Tool (Chapter 14) |
+|------|-------------------|
+| Build text from data | `str_c()`, `str_glue()` |
+| Measure text | `str_length()` |
+| Split one column into several | `separate_wider_delim()` |
+| Tidy up capitals | `str_to_lower()`, `str_to_upper()` |
 
-## What this part covers
 
-Strings (text) are everywhere in real data. 
+## Combining text: 
 
-- **Creating** strings, including quotes, escapes, and special characters
-- **Building many strings** from data: `str_c()`, `str_glue()`, `str_flatten()`
-- **Extracting data** from strings with the tidyr `separate_*()` functions
-- **Letters**: length and substrings
-- **Non-English text**: encoding, letter variations, and locales
-
-::: {.callout-note title="Coming next"}
-The most powerful string tool, **regular expressions**, is the topic of the next chapter.
-:::
-
-# Introduction
-
-## Prerequisites
-
-- This part uses **stringr**, part of the tidyverse
-- We also use the **babynames** package for example data (names of babies born in the US over many years)
-
-::: {.callout-tip title="Finding stringr functions"}
-Every stringr function starts with `str_`. In RStudio, type `str_` and the autocomplete list shows all of them, with a documentation panel for whichever one is highlighted.
-:::
-
-# Creating a string
-
-## Quotes
-
-You create a string with either single or double quotes. There is no difference in behaviour between them.
-
-```{webr}
-string1 <- "This is a string"
-string2 <- 'If I want to include a "quote" inside a string, I use single quotes'
-
-string1
-string2
-```
-
-::: {.callout-note title="Style"}
-The tidyverse style guide recommends **double quotes**, unless the string itself contains double quotes.
-:::
-
-## Forgot to close the quote?
-
-If you forget the closing quote, R shows the continuation prompt `+` and waits for more input:
-
-```r
-> "This is a string without a closing quote
-+
-+
-+ HELP I'M STUCK IN A STRING
-```
-
-::: {.callout-tip title="Getting unstuck"}
-Press **Escape** (`esc`) to cancel the unfinished input and get your prompt back.
-:::
-
-## Escapes
-
-To put a quote character *inside* a string that uses the same quote, you **escape** it with a backslash. Because the backslash is itself special, you escape a literal backslash with another backslash.
-
-```{webr}
-double_quote <- "\"" # or '"'
-single_quote <- '\'' # or "'"
-backslash <- "\\"
-
-double_quote
-single_quote
-backslash
-```
-
-## Printing vs. viewing
-
-::: {.callout-warning title="The printed string is not the string"}
-When R prints a string, it shows the **escapes** (the backslashes). To see the raw contents, use `str_view()`.
+:::{.callout-note title="`str_c()`"}
+This function takes any number of vectors and returns a character vector. It is similar to base *R*'s `paste0()`, but it follows tidyverse recycling rules.
 :::
 
 ```{webr}
-double_quote <- "\"" # or '"'
-single_quote <- '\'' # or "'"
-backslash <- "\\"
-
-x <- c(single_quote, double_quote, backslash)
-x
-str_view(x)
-```
-
-- `x` shows `"\\"` for the backslash, but `str_view(x)` shows a single `\`
-- Base R's `writeLines()` also shows the raw string
-
-::: {.callout-note title="Display in the browser"}
-`str_view()` normally uses color to show spaces, tabs, and matches. In the browser console, that styling may look different or be missing, but the raw characters are still shown.
-:::
-
-
-## Exercise
-
-::: {.callout-tip title="Live exercise"}
-Create strings that contain each of these values:
-
-1. `He said "That's amazing!"`
-2. `\a\b\c\d`
-3. A run of backslashes, for example `\\\\\\`
-:::
-
-```{webr}
-#| exercise: ex_strcreate_1
-x1 <-
-x2 <-
-x3 <-
-
-str_view(c(x1, x2, x3))
-```
-
-```{webr}
-#| exercise: ex_strcreate_1
-#| solution: true
-x1 <- "He said \"That's amazing!\""
-x2 <- "\\a\\b\\c\\d"
-x3 <- "\\\\\\\\\\\\"
-
-str_view(c(x1, x2, x3))
-```
-
-
-# Creating many strings from data
-
-## Combining fixed text with data
-
-So far we've made one string at a time. A common job is to combine **fixed text** with **values from your data**. Three functions work well inside `mutate()` and `summarize()`:
-
-- `str_c()`
-- `str_glue()`
-- `str_flatten()`
-
-## `str_c()`
-
-`str_c()` takes any number of vectors and returns a character vector. It's similar to base R's `paste0()`, but it follows tidyverse recycling rules and handles missing values consistently.
-
-```{webr}
-str_c("x", "y")
 str_c("x", "y", "z")
-str_c("Hello ", c("John", "Susan"))
-```
+str_c("Hello ", c("John", "Susan")) # notice how I have a space after 'Hello'?
 
-## `str_c()` in `mutate()`
-
-```{webr}
 df <- tibble(name = c("Flora", "David", "Terra", NA))
 df |> mutate(greeting = str_c("Hi ", name, "!"))
 ```
@@ -698,10 +484,12 @@ df |> mutate(greeting = str_c("Hi ", name, "!"))
 Just like in arithmetic, if any input is `NA`, the result is `NA`. The fourth greeting is missing.
 :::
 
+## Make it simpler!
 
-## `str_glue()`
+:::{.callout-note title="`str_glue()`"}
+`str_c()` gets awkward with many pieces. `str_glue()` lets you write the whole string in one go, with `{ }` marking code to evaluate.
+:::
 
-`str_c()` gets awkward with many pieces. `str_glue()` (from the glue package) lets you write the whole string in one go, with `{ }` marking code to evaluate.
 
 ```{webr}
 df <- tibble(name = c("Flora", "David", "Terra", NA))
@@ -709,406 +497,590 @@ df |> mutate(greeting = str_glue("Hi {name}!"))
 ```
 
 ::: {.callout-warning title="NA behaves differently"}
-Unlike `str_c()`, `str_glue()` converts a missing value to the **text** `"NA"`.
-:::
-
-## Literal braces in `str_glue()`
-
-To include an actual brace, **double** it:
-
-```{webr}
-df <- tibble(name = c("Flora", "David", "Terra", NA))
-df |> mutate(greeting = str_glue("{{Hi {name}!}}"))
-```
-
-
-## `str_flatten()`
-
-`str_c()` and `str_glue()` return **one result per input**. `str_flatten()` goes the other way: it collapses a vector into a **single** string. That makes it a summary function, so it fits in `summarize()`.
-
-```{webr}
-str_flatten(c("x", "y", "z"))
-str_flatten(c("x", "y", "z"), ", ")
-str_flatten(c("x", "y", "z"), ", ", last = ", and ")
-```
-
-- The second argument is the separator
-- `last` sets a different separator just before the final item (for an "Oxford comma" style list)
-
-## `str_flatten()` by group
-
-```{webr}
-df <- tribble(
-  ~ name, ~ fruit,
-  "Carmen", "banana",
-  "Carmen", "apple",
-  "Marvin", "nectarine",
-  "Terence", "cantaloupe",
-  "Terence", "papaya",
-  "Terence", "mandarin"
-)
-
-df |>
-  group_by(name) |>
-  summarize(fruits = str_flatten(fruit, ", "))
-```
-
-::: {.callout-note title="Base R"}
-The base R equivalent is `paste()` with the `collapse` argument.
+Unlike `str_c()`, `str_glue()` converts a missing value to the text `"NA"`.
 :::
 
 
-# Extracting data from strings
+## Piecing everything together
 
-## Several variables in one string {.smaller}
+Using the `program_summary` from Part 1, this builds the labels for our chart:
 
-Messy data often packs more than one variable into a single string, like `"a10.1.2022"`. tidyr has four functions to pull them apart. Their names follow a pattern:
+```{webr}
+program_summary |>
+  mutate(label = str_glue("{program}: {hours} h {minutes} min"))
+```
 
-`separate_` + (`longer` or `wider`) + (`delim` or `position`)
+## Oh wait! What's the problem?
 
-| Function | Makes | Splits by |
-|----------|-------|-----------|
-| `separate_longer_delim()` | more rows | a delimiter |
-| `separate_longer_position()` | more rows | fixed positions |
-| `separate_wider_delim()` | more columns | a delimiter |
-| `separate_wider_position()` | more columns | fixed positions |
-
-::: {.callout-note title="Regular expressions"}
-There is also `separate_wider_regex()`, the most flexible of the family. It's covered in the regular expressions chapter.
+:::{.callout-warning title="Checkpoint with `bedtime`"}
+Click `Run Code` and view the `bedtime` variable from the first 15 responses. And then look at the counts of different types of responses collected from the students. Can I get any meaningful results from this table?
 :::
 
-## Separating into rows: `separate_longer_delim()`
-
-Split on a delimiter, one new row per piece:
-
 ```{webr}
-df1 <- tibble(x = c("a,b,c", "d,e", "f"))
+survey |>
+  select(student_id, bedtime) |>
+  head(15)
 
-df1 |>
-  separate_longer_delim(x, delim = ",")
+survey |>
+  count(bedtime, sort = TRUE)
 ```
 
-## Separating into rows: `separate_longer_position()`
+- `11:30 PM`, `11:30 pm`, `11.30 pm`, `23:30`, `2330`...
+- Some entries are not even times at all
+- We need to clean this column before we can use it
 
-Less common: when each value is packed in with a fixed width, say one character each:
+## Length of a string
 
-```{webr}
-df2 <- tibble(x = c("1211", "131", "21"))
-
-df2 |>
-  separate_longer_position(x, width = 1)
-```
-
-## Separating into columns: `separate_wider_delim()`
-
-Split on a delimiter, with a new column per piece. You must supply **names** for the new columns.
-
-```{webr}
-df3 <- tibble(x = c("a10.1.2022", "b10.2.2011", "e15.1.2015"))
-
-df3 |>
-  separate_wider_delim(
-    x,
-    delim = ".",
-    names = c("code", "edition", "year")
-  )
-```
-
-## Dropping a piece
-
-Use `NA` as a name to **skip** that piece:
-
-```{webr}
-df3 <- tibble(x = c("a10.1.2022", "b10.2.2011", "e15.1.2015"))
-
-df3 |>
-  separate_wider_delim(
-    x,
-    delim = ".",
-    names = c("code", NA, "year")
-  )
-```
-
-## Separating into columns: `separate_wider_position()`
-
-For fixed-width data, give a **named integer vector** of widths:
-
-```{webr}
-df4 <- tibble(x = c("202215TX", "202122LA", "202325CA"))
-
-df4 |>
-  separate_wider_position(
-    x,
-    widths = c(year = 4, age = 2, state = 2)
-  )
-```
-
-- **Unnamed** widths are left out of the result, just like `NA` names above:
-
-```{webr}
-df4 <- tibble(x = c("202215TX", "202122LA", "202325CA"))
-
-df4 |>
-  separate_wider_position(
-    x,
-    widths = c(year = 4, 2, state = 2)
-  )
-```
-
-## Diagnosing widening problems
-
-`separate_wider_delim()` expects every string to split into the **same number** of pieces. Real data often doesn't.
-
-- **Too few** pieces in some rows
-- **Too many** pieces in some rows
-
-```{webr}
-#| error: true
-df <- tibble(x = c("1-1-1", "1-1-2", "1-3", "1-3-2", "1"))
-
-df |>
-  separate_wider_delim(
-    x,
-    delim = "-",
-    names = c("x", "y", "z")
-  )
-```
-
-- The function **errors** rather than guessing, and the message tells you what to try
-
-## Too few: debug mode
-
-`too_few = "debug"` keeps the result but adds diagnostic columns, named after the input column:
-
-- `x_ok`: did this row split cleanly?
-- `x_pieces`: how many pieces it had
-- `x_remainder`: any leftover text
-
-```{webr}
-df <- tibble(x = c("1-1-1", "1-1-2", "1-3", "1-3-2", "1"))
-
-debug <- df |>
-  separate_wider_delim(
-    x,
-    delim = "-",
-    names = c("x", "y", "z"),
-    too_few = "debug"
-  )
-debug
-```
-
-Filter on the problem rows:
-
-```{webr}
-df <- tibble(x = c("1-1-1", "1-1-2", "1-3", "1-3-2", "1"))
-
-debug <- df |>
-  separate_wider_delim(
-    x,
-    delim = "-",
-    names = c("x", "y", "z"),
-    too_few = "debug"
-  )
-debug |> filter(!x_ok)
-```
-
-## Too few: fixing it
-
-Once you understand the problem, tell the function what to do. `"align_start"` fills the missing pieces with `NA` at the **end**; `"align_end"` fills them at the **start**.
-
-```{webr}
-df <- tibble(x = c("1-1-1", "1-1-2", "1-3", "1-3-2", "1"))
-
-df |>
-  separate_wider_delim(
-    x,
-    delim = "-",
-    names = c("x", "y", "z"),
-    too_few = "align_start"
-  )
-```
-
-## Too many pieces
-
-The same idea works in the other direction, using `too_many`:
-
-```{webr}
-#| error: true
-df <- tibble(x = c("1-1-1", "1-1-2", "1-3-5-6", "1-3-2", "1-3-5-7-9"))
-
-df |>
-  separate_wider_delim(
-    x,
-    delim = "-",
-    names = c("x", "y", "z")
-  )
-```
-
-```{webr}
-df <- tibble(x = c("1-1-1", "1-1-2", "1-3-5-6", "1-3-2", "1-3-5-7-9"))
-
-debug <- df |>
-  separate_wider_delim(
-    x,
-    delim = "-",
-    names = c("x", "y", "z"),
-    too_many = "debug"
-  )
-debug |> filter(!x_ok)
-```
-
-- Here `x_remainder` holds the extra text
-
-## Too many: fixing it
-
-Two choices for the extra pieces:
-
-- `too_many = "drop"` discards them
-- `too_many = "merge"` glues them onto the **last** column
-
-```{webr}
-df <- tibble(x = c("1-1-1", "1-1-2", "1-3-5-6", "1-3-2", "1-3-5-7-9"))
-
-df |>
-  separate_wider_delim(
-    x, delim = "-", names = c("x", "y", "z"),
-    too_many = "drop"
-  )
-
-df |>
-  separate_wider_delim(
-    x, delim = "-", names = c("x", "y", "z"),
-    too_many = "merge"
-  )
-```
-
-::: {.callout-note title="Same principles elsewhere"}
-`separate_wider_position()` and `separate_wider_regex()` have the same `too_few` and `too_many` ideas.
+:::{.callout-note title="`str_length()`"}
+This function counts the characters in each string. A missing value gives `NA`.
 :::
-
-# Letters
-
-
-## Length: `str_length()`
-
-`str_length()` counts the characters in each string. A missing value gives `NA`.
 
 ```{webr}
 str_length(c("a", "R for data science", NA))
 ```
 
-## Length of baby names
-
-Use it on the `babynames` data to see how long names are. Each row is a name, year, and sex, with `n` babies given that name, so we **weight** by `n`:
+The long entries in `bedtime`:
 
 ```{webr}
-babynames |>
-  count(length = str_length(name), wt = n)
+survey |>
+  filter(str_length(bedtime) > 10) |>
+  count(bedtime, sort = TRUE)
 ```
 
-## The longest names
+- Long entries are usually hedged answers (`around ...`) or words instead of times
 
-```{webr}
-babynames |>
-  filter(str_length(name) == 15) |>
-  count(name, wt = n, sort = TRUE)
-```
+## Splitting into columns
 
-::: {.callout-note title="A data quirk"}
-The data seems to have had spaces and hyphens removed, and names cut off after 15 letters.
+:::{.callout-note title="`separate_wider_delim()`"}
+A time like `"11:30 pm"` has two pieces separated by a space. This function splits a column on a delimiter, with a new column per piece. You supply *names* for the new columns.
 :::
 
-## Subsetting: `str_sub()`
-
-`str_sub(string, start, end)` extracts a part of each string. Both `start` and `end` are **inclusive**.
-
 ```{webr}
-x <- c("Apple", "Banana", "Pear")
-str_sub(x, 1, 3)
-```
-
-Negative positions count from the **end** (`-1` is the last character):
-
-```{webr}
-x <- c("Apple", "Banana", "Pear")
-str_sub(x, -3, -1)
-```
-
-## Strings that are too short
-
-`str_sub()` doesn't fail if the string is too short. It returns as much as it can:
-
-```{webr}
-str_sub("a", 1, 5)
-```
-
-## First and last letters of baby names
-
-```{webr}
-babynames |>
-  mutate(
-    first = str_sub(name, 1, 1),
-    last = str_sub(name, -1, -1)
+#| error: true
+survey |>
+  select(student_id, bedtime) |>
+  separate_wider_delim(
+    bedtime,
+    delim = " ",
+    names = c("time", "ampm")
   )
 ```
 
+::: {.callout-warning title="It refuses to guess"}
+`separate_wider_delim()` expects every string to split into the **same number** of pieces. Real data does not. The function **errors** rather than guessing, and the message tells you what to try.
+:::
 
+## Debug mode
 
-## Exercise 14.5.3 (3)
+`too_few = "debug"` and `too_many = "debug"` keep the result but add diagnostic columns, named after the input column:
+
+- `bedtime_ok`: did this row split cleanly?
+- `bedtime_pieces`: how many pieces it had
+- `bedtime_remainder`: any leftover text
+
+```{webr}
+bed_debug <- survey |>
+  select(student_id, bedtime) |>
+  separate_wider_delim(
+    bedtime,
+    delim = " ",
+    names = c("time", "ampm"),
+    too_few = "debug",
+    too_many = "debug"
+  )
+
+bed_debug |>
+  count(bedtime_ok, bedtime_pieces)
+
+bed_debug |>
+  filter(!bedtime_ok) |>
+  count(bedtime, bedtime_pieces, sort = TRUE)
+```
+
+- **Too few** pieces: `11:30PM`, `2330`, `midnight`
+- **Too many** pieces: `around 11 pm`, `no set time`, and entries with a stray space at the start
+
+## Fixing it
+
+Tidy first, then tell the function what to do:
+
+- `str_trim()` removes stray spaces at the start and end
+- `str_to_lower()` makes `PM`, `Pm` and `pm` the same
+- `too_few = "align_start"` fills missing pieces with `NA` at the end
+- `too_many = "merge"` glues the extra pieces onto the last column
+
+```{webr}
+bed_clean <- survey |>
+  select(student_id, bedtime) |>
+  mutate(bedtime_clean = str_to_lower(str_trim(bedtime))) |>
+  separate_wider_delim(
+    bedtime_clean,
+    delim = " ",
+    names = c("time", "ampm"),
+    too_few = "align_start",
+    too_many = "merge"
+  )
+
+bed_clean |>
+  count(ampm, sort = TRUE)
+```
+
+## Putting the pieces together
+
+Use `str_c()` to rebuild one standard bedtime. We only do it when `ampm` is really `am` or `pm`:
+
+```{webr}
+bed_std <- bed_clean |>
+  mutate(
+    bedtime_std = case_when(
+      ampm %in% c("am", "pm") ~ str_c(time, " ", str_to_upper(ampm))
+    )
+  )
+
+bed_std |>
+  head(10)
+
+bed_std |>
+  count(bedtime_std, sort = TRUE)
+```
+
+- Rows we cannot trust remain as `NA`
+
+## `str_c()` or `str_glue()` for unclear rows?
+
+```{webr}
+bed_clean |>
+  filter(is.na(ampm)) |>
+  mutate(
+    with_str_c = str_c(time, " ", ampm),
+    with_str_glue = str_glue("{time} {ampm}")
+  ) |>
+  select(bedtime, with_str_c, with_str_glue)
+```
+
+::: {.callout-important title="NA is honest"}
+`str_c()` keeps the `NA`: we do not know the bedtime. `str_glue()` turns it into text like `"23:30 NA"`, which **looks like data but is not**. Choose `str_c()` when a missing piece should make the whole result missing.
+:::
+
+## How far did we get? {.smaller}
+
+| Problem | Solved today? |
+|---------|---------------|
+| Capital letters (`PM`, `Pm`, `pm`) | Yes: `str_to_lower()` |
+| Stray spaces | Yes: `str_trim()` |
+| `11:30 pm` becomes `11:30 PM` | Yes: `separate_wider_delim()` and `str_c()` |
+| Glued times (`11:30pm`, `12:00AM`) | **No** |
+| Different separators and missing minutes (`11.30 pm`, `11 pm`) | **Partly**: they split, but are not in one format |
+| Hedged answers (`around 11`, `~11:30 pm`) | **No** |
+| 24-hour (`23:30`, `2330`) and no AM/PM (`11:30`) | **No** |
+| `midnight`, `idk`, blank | **No** |
+
+## Foreshadowing
+
+::: {.callout-note title="Next week"}
+We need a way to describe a **pattern** instead of an exact string. That is what regular expressions do (Chapter 15). Roughly 4 in 10 bedtimes are still unreadable after today.
+:::
+
+```{r echo=FALSE}
+survey |>
+  select(program, bedtime) |>
+  mutate(bedtime_clean = str_to_lower(str_trim(bedtime))) |>
+  separate_wider_delim(
+    bedtime_clean, delim = " ", names = c("time", "ampm"),
+    too_few = "align_start", too_many = "merge"
+  ) |>
+  filter(ampm %in% c("am", "pm")) |>
+  mutate(
+    hour = (parse_number(time) %/% 1) %% 12,
+    hour = if_else(ampm == "pm", hour + 12, hour),
+    hour = if_else(hour < 12, hour + 24, hour)   # after midnight counts as later
+  ) |>
+  ggplot(aes(x = hour)) +
+  geom_histogram(binwidth = 1, boundary = 0, closed = "left") +
+  facet_wrap(~ program) +
+  scale_x_continuous(
+    breaks = c(21, 24, 27),
+    labels = c("9 PM", "12 AM", "3 AM")
+  ) +
+  labs(
+    title = "Bedtimes by program (readable answers only)",
+    x = "Bedtime", y = "Students"
+  ) +
+  theme_minimal(base_size = 14)
+```
+## Exercise 2
 
 ::: {.callout-tip title="Live exercise"}
-Are there any major trends in the length of baby names over time? What about the popularity of the first letter?
+1. How many students typed a `bedtime` longer than 10 characters? What do those entries look like?
+2. Use `str_c()` to make a label for each student, like `S499733 (Arts): 11:30 PM`. What happens to students with a blank bedtime?
+3. Repeat Part 2 with `str_glue()`. How do the blank bedtimes look now?
 :::
 
 ```{webr}
-#| exercise: ex_letters_3
-babynames |>
-  mutate(len = str_length(name)) |>
-  group_by(year) |>
-  summarize()
+#| exercise: ex_strings
+# Part 1
+survey |>
+  filter() |>
+  count(bedtime, sort = TRUE) |>
+  head(5)
+
+# Part 2
+survey |>
+  mutate(label = ) |>
+  select(label) |>
+  head(5)
+
+# Part 3
+survey |>
+  mutate(label = ) |>
+  select(label) |>
+  head(5)
 ```
 
 ```{webr}
-#| exercise: ex_letters_3
+#| exercise: ex_strings
 #| solution: true
-# Average name length per year, weighted by how many babies got each name
-babynames |>
-  mutate(len = str_length(name)) |>
-  group_by(year) |>
-  summarize(avg_len = weighted.mean(len, n)) |>
-  ggplot(aes(x = year, y = avg_len)) +
-  geom_line()
+# Part 1
+survey |>
+  filter(str_length(bedtime) > 10) |>
+  count(bedtime, sort = TRUE) |>
+  head(5)
 
-# Popularity of each first letter over time
-babynames |>
-  mutate(first = str_sub(name, 1, 1)) |>
-  count(year, last, wt = n) |>
-  group_by(year) |>
-  mutate(prop = n / sum(n)) |>
-  ggplot(aes(x = year, y = prop)) +
-  geom_line() +
-  facet_wrap(~ first)
+# Part 2: blank bedtimes give NA for the whole label
+survey |>
+  mutate(label = str_c(student_id, " (", program, "): ", bedtime)) |>
+  select(label) |>
+  head(5)
+
+# Part 3: blank bedtimes become the text "NA" inside the label
+survey |>
+  mutate(label = str_glue("{student_id} ({program}): {bedtime}")) |>
+  select(label) |>
+  head(5)
 ```
 
 
-# Lecture 9 wrap-up
+# Part 3: Factors
 
-:::{.callout-tip title="What we learned"}
-- **Numbers**: parse, count, transform, rank, and summarize them
-- **Strings**: create, combine, extract from, and take apart text
-- Both rely on the same habits: check your data, name your steps, and look at the distribution
+
+## Can we make the chart readable?
+
+Here is what the pipeline gives us without any work:
+
+```{webr}
+program_summary |>
+  ggplot(aes(x = mean_sleep, y = program, fill = program)) +
+  geom_col(show.legend = FALSE) +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.25))) +
+  labs(
+    title = "Average sleep by program",
+    x = "Hours per night", y = NULL
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+- Programs are in **alphabetical** order, which tells me nothing
+
+::: {.callout-note title="Definition"}
+A *factor* is how R stores a categorical variable that has a fixed set of possible values, which is called *levels*. *Factors* let you choose the order.
 :::
 
-:::{.callout-caution title="What's next?"}
-- Fancy words and numbers
+## Creating a factor
+
+:::{.callout-note title="`factor()`"}
+Strings sort alphabetically (in default), which is rarely what you want. Start with a list of valid levels, then pass it to `factor()`:
+:::
+
+```{webr}
+month_levels <- c(
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+)
+
+x1 <- c("Dec", "Apr", "Jan", "Mar")
+sort(x1)
+sort(factor(x1, levels = month_levels))
+
+# A typo
+x2 <- c("Dec", "Apr", "Jam", "Mar")
+factor(x2, levels = month_levels)
+```
+
+::: {.callout-warning title="Silent NA"}
+Any value that is **not** in `levels` silently becomes `NA`. There is no warning. Always check the result.
+:::
+
+## Reordering levels
+
+:::{.callout-note title="`fct_reorder()`"}
+This function `fct_reorder(f, x)` orders the levels of `f` by the values in `x`. It is perfect for plots.
 :::
 
 
-## Source
+```{webr}
+program_summary |>
+  mutate(program = fct_reorder(program, mean_sleep)) |>
+  ggplot(aes(x = mean_sleep, y = program, fill = program)) +
+  geom_col(show.legend = FALSE) +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.25))) +
+  labs(
+    title = "Average sleep by program",
+    x = "Hours per night", y = NULL
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+- The program that sleeps the least is at the bottom, the most at the top
+
+## Reordering by hand
+
+:::{.callout-note title="`fct_relevel()`"}
+The "sleep groups" from Lecture 8 are *text*, so a plot puts them in alphabetical order. `fct_relevel()` lets you list the levels in the order you want.
+:::
+
+```{webr}
+sleep_groups <- survey |>
+  filter(!is.na(sleep_hours)) |>
+  mutate(
+    sleep_group = case_when(
+      sleep_hours < 6    ~ "Short",
+      sleep_hours <= 7.5 ~ "Typical",
+      sleep_hours > 7.5  ~ "Long"
+    )
+  )
+
+# Alphabetical
+sleep_groups |>
+  ggplot(aes(x = sleep_group)) +
+  geom_bar()
+
+# In the order we choose
+sleep_groups |>
+  mutate(sleep_group = fct_relevel(sleep_group, "Short", "Typical", "Long")) |>
+  ggplot(aes(x = sleep_group)) +
+  geom_bar()
+```
+
+
+## Renaming levels
+
+:::{.callout-note title="`fct_recode()`"}
+This function can be used to rename a *level*. The syntax is `new name = "old name"`. Also, *levels* you do not mention stay the same.
+:::
+
+
+```{webr}
+survey |>
+  filter(!is.na(favourite_drink)) |>
+  mutate(drink = fct_recode(favourite_drink, "Soda" = "Pop")) |>
+  count(drink)
+```
+
+
+## Merging levels
+
+:::{.callout-note title="`fct_collapse()`"}
+This function can combine levels and put them into groups. In this case, we want to group the drinks by how much caffeine they usually contain:
+:::
+
+```{webr}
+survey |>
+  filter(!is.na(favourite_drink)) |>
+  mutate(
+    caffeine = fct_collapse(
+      favourite_drink,
+      Strong = c("Coffee", "Energy drink"),
+      Mild = c("Tea", "Pop"),
+      None = "Water"
+    )
+  ) |>
+  count(caffeine)
+```
+
+::: {.callout-tip title="A lookup table is better"}
+Typing groupings by hand is fine for five drinks. With many levels, you would use a lookup table with the caffeine amounts instead. That is a **join**, in Lecture 11.
+:::
+
+## The finished chart
+
+```{webr}
+program_summary |>
+  mutate(
+    program = fct_reorder(program, mean_sleep),
+    label = str_glue("{hours} h {minutes} min")
+  ) |>
+  ggplot(aes(x = mean_sleep, y = program, fill = program)) +
+  geom_col(show.legend = FALSE) +
+  geom_text(aes(label = label), hjust = -0.1) +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.25))) +
+  labs(
+    title = "Average sleep by program",
+    x = "Hours per night", y = NULL
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+- **Numbers** gave us the averages, the hours and minutes
+- **Strings** gave us the label
+- **Factors** gave us the order
+
+## Exercise 3
+
+::: {.callout-tip title="Live exercise"}
+Make a bar chart of `favourite_drink` for students who answered the question:
+
+1. Order the bars from the most common drink to the least common with `fct_infreq(factor)`
+2. Keep the top 3 drinks and lump the rest into `"Other"` with `fct_lump_n(factor, n = 3)`
+:::
+
+```{webr}
+#| exercise: ex_factors
+survey |>
+  filter(!is.na(favourite_drink)) |>
+  mutate(
+    favourite_drink =
+  ) |>
+  ggplot(aes(x = favourite_drink)) +
+  geom_bar()
+```
+
+```{webr}
+#| exercise: ex_factors
+#| solution: true
+survey |>
+  filter(!is.na(favourite_drink)) |>
+  mutate(
+    favourite_drink = fct_infreq(favourite_drink),
+    favourite_drink = fct_lump_n(favourite_drink, n = 3)
+  ) |>
+  ggplot(aes(x = favourite_drink)) +
+  geom_bar()
+```
+
+
+# Wrap-up
+
+## Back to the report {.smaller}
+
+| Question | Chapter | Tools we used |
+|----------|---------|---------------|
+| How much do they sleep? | **Numbers** | `count()`, `%/%`, `%%`, `round()`, `cut()`, `min_rank()`, `median()` |
+| When do they go to bed? | **Strings** | `str_c()`, `str_glue()`, `str_length()`, `separate_wider_delim()`, `str_to_lower()` |
+| Is the chart readable? | **Factors** | `fct_reorder()`, `fct_relevel()`, `fct_recode()`, `fct_collapse()` |
+
+## What's next, and sources
+
+::: {.callout-caution title="Lecture 10: Fancy words and numbers"}
+- **Regular expressions**: finish cleaning `bedtime`
+- **Dates and times**: turn those clean times into real date-times
+:::
 
 ::: {.callout-note title="Attribution"}
 Content adapted from *R for Data Science (2e)* by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund:
 
 - Chapter 13: Numbers, <https://r4ds.hadley.nz/numbers.html>
 - Chapter 14: Strings, <https://r4ds.hadley.nz/strings.html>
+- Chapter 16: Factors, <https://r4ds.hadley.nz/factors.html>
+:::
+
+
+# Appendix: read the text
+
+## Numbers: other tools (i) {.smaller}
+
+| Tool | What it does | Tiny example | Read the section on |
+|------|--------------|--------------|---------------------|
+| `count(..., wt = )` | A weighted count: a sum of another column | `count(program, wt = study_hours_week)` | Counts |
+| `sum(is.na(x))` | Counts the missing values | `sum(is.na(sleep_hours))` | Counts |
+| `floor()`, `ceiling()` | Round down / up. No `digits` argument, so scale first | `floor(123.456)` | Rounding |
+
+
+## Numbers: other tools (ii) {.smaller}
+
+| Tool | What it does | Tiny example | Read the section on |
+|------|--------------|--------------|---------------------|
+| `sd()`, `IQR()` | Spread: standard deviation, and the width of the middle half | `sd(sleep_hours, na.rm = TRUE)` | Spread |
+| `quantile()` | Any percentile of a vector | `quantile(x, 0.9)` | Minimum, maximum, and quantiles |
+| `log()`, `log2()`, `log10()` | Logarithms. Each +1 on `log2()` means the value **doubled** | `log2(c(1, 2, 4, 8))` | Logarithms |
+
+
+## Numbers: other tools (iii) {.smaller}
+
+| Tool | What it does | Tiny example | Read the section on |
+|------|--------------|--------------|---------------------|
+| `cumsum()`, `cummean()`, ... | Running totals, means, minimums, maximums | `cumsum(1:10)` | Cumulative aggregates |
+| `lag()`, `lead()` | The previous / next value, for comparing neighbours | `x - lag(x)` | Offsets |
+| `consecutive_id()` | Starts a new id every time a value changes | `consecutive_id(c(1, 1, 2, 2, 1))` | Consecutive identifiers |
+
+
+## Numbers: other tools (iv) {.smaller}
+
+| Tool | What it does | Tiny example | Read the section on |
+|------|--------------|--------------|---------------------|
+| `dense_rank()`, `row_number()`, `percent_rank()` | Other ways to rank, with different tie handling | `row_number(x)` | Ranks |
+| `first()`, `last()`, `nth()` | Pick a value by position | `first(x)` | Positions |
+| `cut_interval()`, `cut_number()`, `cut_width()` | ggplot2 helpers for common binning patterns | `cut_width(x, 10)` | Cutting numbers into ranges |
+
+
+## Strings: other tools (i) {.smaller}
+
+| Tool | What it does | Tiny example | Read the section on |
+|------|--------------|--------------|---------------------|
+| `str_flatten()` | Collapses a vector into **one** string, so it works in `summarize()` | `str_flatten(c("x", "y"), ", ", last = ", and ")` | `str_flatten()` |
+| `str_sub()` | Extracts part of a string. Negative positions count from the end | `str_sub("Apple", -3, -1)` | Subsetting strings |
+| Escapes: `\"`, `\\` | Put a quote or backslash **inside** a string | `"He said \"hi\""` | Escapes |
+
+## Strings: other tools (ii) {.smaller}
+
+| Tool | What it does | Tiny example | Read the section on |
+|------|--------------|--------------|---------------------|
+| Raw strings: `r"(...)"` | Write a string without escaping anything | `r"(C:\data)"` | Raw strings |
+| `\n`, `\t`, `\u00b5` | New line, tab, and other special characters | `"a\tb"` | Other special characters |
+| `str_view()` | Shows the **raw** contents of a string, without the escapes | `str_view("a\\b")` | Escapes |
+| `{{` and `}}` in `str_glue()` | Writes a literal brace | `str_glue("{{x}}")` | `str_glue()` |
+
+
+## Strings: other tools (iii) {.smaller}
+
+| Tool | What it does | Tiny example | Read the section on |
+|------|--------------|--------------|---------------------|
+| `separate_wider_delim()` with `NA` names | Skips a piece | `names = c("code", NA, "year")` | Separating into columns |
+| `separate_longer_delim()`, `separate_longer_position()` | Split into **rows** instead of columns | `separate_longer_delim(x, ",")` | Separating into rows |
+| `separate_wider_position()` | Split fixed-width text into columns | `widths = c(year = 4, age = 2)` | Separating into columns |
+
+
+
+## Strings: other tools (iv) {.smaller}
+
+| Tool | What it does | Tiny example | Read the section on |
+|------|--------------|--------------|---------------------|
+| `too_few` / `too_many` options | `"drop"`, `"merge"`, `"align_start"`, `"align_end"` | `too_many = "drop"` | Diagnosing widening problems |
+| `str_to_title()` | Changes capitals | `str_to_title("jane doe")` | Non-English text |
+| Encodings and locales | Non-English letters; sorting depends on the language | `str_sort(x, locale = "es")` | Non-English text |
+
+::: {.callout-tip title="str_sub() and bedtime"}
+`str_sub(bedtime, -2, -1)` pulls out the last two characters, which is `am` or `pm` for many entries.
+:::
+
+
+## Factors: other tools (i) {.smaller}
+
+| Tool | What it does | Tiny example | Read the section on |
+|------|--------------|--------------|---------------------|
+| `levels()` | Lists the levels of a factor | `levels(y1)` | Factor basics |
+| `fct_infreq()` | Orders levels by how common they are | `fct_infreq(favourite_drink)` | Modifying factor order |
+| `fct_rev()` | Reverses the order of the levels | `fct_rev(f)` | Modifying factor order |
+| `fct_reorder2()` | Orders levels so a line plot's legend matches the line ends | `fct_reorder2(f, x, y)` | Modifying factor order |
+
+
+## Factors: other tools (ii) {.smaller}
+
+| Tool | What it does | Tiny example | Read the section on |
+|------|--------------|--------------|---------------------|
+| `fct_lump_n()`, `fct_lump_min()`, `fct_lump_prop()` | Combine the rare levels into `"Other"` | `fct_lump_n(f, n = 3)` | Modifying factor levels |
+| `ordered()` | A factor whose levels have a natural order (low < medium < high) | `ordered(x, levels = ...)` | Ordered factors |
+| `gss_cat` | The book's example data: the General Social Survey | `forcats::gss_cat` | Introduction to factors |
+
+::: {.callout-tip title="Try the book's data"}
+Chapter 16 uses `gss_cat` throughout. It is a good place to practise `fct_reorder()` on a bigger data set.
 :::

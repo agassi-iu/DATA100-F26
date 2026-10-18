@@ -3,9 +3,12 @@ title: "DATA100 Introduction to Data Analytics"
 subtitle: "Lecture 11: Missing Values and Joins"
 author: "Agassi Iu"
 institute: "Wilfrid Laurier University"
-date: "October 22, 2026"
+date: "November 3, 2026"
 format:
   live-revealjs:
+    resources:
+      - data/sleep_survey_v2.csv
+      - data/drinks.csv
     theme: sky
     slide-number: true
     transition: slide
@@ -24,8 +27,7 @@ webr:
     - forcats
     - purrr
     - scales
-    - nycflights13  # added: flights, airlines, airports, planes, weather
-    - lubridate     # added: dates for the rolling and overlap join examples
+    - lubridate
 execute:
   echo: true
   warning: false   # Hides warnings and package loading messages
@@ -36,9 +38,41 @@ execute:
 ---
 
 
-## Setup
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
 
+# The story so far
+
+## Can we trust our survey?
+
+:::{.callout-tip title="Two Questions"}
+Our sleep survey is not perfect. Some students skipped questions, and the caffeine facts live in a different table. 
+
+1. Can we trust our averages when people skip questions? (*Missing values*, Chapter 18)
+2. Do students who drink more caffeine sleep less? (*Joins*, Chapter 19)
+:::
+
+
+
+<!-- r setup -->
+```{r echo=FALSE}
+#| context: setup
+library(dplyr)
+library(tidyr)
+library(tibble)
+library(readr)
+library(ggplot2)
+library(stringr)
+library(forcats)
+library(lubridate)
+
+survey <- read_csv("data/sleep_survey_v2.csv", show_col_types = FALSE)
+drinks  <- read_csv("data/drinks.csv", show_col_types = FALSE)
+survey_drinks <- survey |> left_join(drinks, by = join_by(favourite_drink == drink))
+```
+
+<!-- webr setup -->
 ```{webr}
+#| include: false
 #| autorun: true
 library(dplyr)
 library(tidyr)
@@ -46,880 +80,835 @@ library(tibble)
 library(readr)
 library(ggplot2)
 library(stringr)
+library(forcats)
 library(lubridate)
-library(nycflights13)
+
+survey <- read.csv("data/sleep_survey_v2.csv", na.strings = c("", "NA"),
+                   fileEncoding = "WINDOWS-1252")
+
+drinks <- read.csv("data/drinks.csv", fileEncoding = "WINDOWS-1252") 
 ```
 
-# Missing values
 
-## Missing values come in three kinds
+## Goal for today
 
-We've met `NA` before (in plot warnings, summaries, and the logical vectors lecture). Now we go deeper:
+```{r echo=FALSE}
+survey |>
+  mutate(
+    bedtime = if_else(
+      str_detect(bedtime, regex("\\d|midnight", ignore_case = TRUE)),
+      bedtime, NA_character_
+    )
+  ) |>
+  select(program, sleep_hours, stress_level, favourite_drink,
+         has_early_class, avg_grade, bedtime) |>
+  mutate(across(-program, is.na)) |>
+  group_by(program) |>
+  summarize(across(everything(), mean)) |>
+  pivot_longer(-program, names_to = "question", values_to = "share") |>
+  ggplot(aes(x = question, y = program, fill = share)) +
+  geom_tile(colour = "white", linewidth = 0.8) +
+  scale_x_discrete(guide = guide_axis(n.dodge = 2)) +
+  scale_fill_gradient(
+    low = "white", high = "firebrick",
+    limits = c(0, NA),
+    labels = scales::percent,
+    name = "Proportion"
+  ) +
+  labs(title = "Which students missed responses the most?", x = NULL, y = NULL) +
+  theme_minimal(base_size = 14)
+```
 
-- **Explicit** missing values: an `NA` you can see
-- **Implicit** missing values: a row that **isn't there** at all
-- **Empty groups**: a category with **no observations** (usually from factors)
+## Setup and data
 
-::: {.callout-note title="Where the tools live"}
-Most of the tools here come from **dplyr** and **tidyr**.
+We are bringing in another table: `drinks`, which includes information about beverages.
+
+```r
+library(dplyr); library(tidyr); library(tibble); library(readr)
+library(ggplot2); library(stringr); library(forcats); library(lubridate)
+
+survey <- read.csv("data/sleep_survey_v2.csv", na.strings = c("", "NA"),
+                   fileEncoding = "WINDOWS-1252") |>
+  as_tibble() |>
+  mutate(survey_date = ymd_hms(survey_date))
+
+drinks <- read.csv("data/drinks.csv", fileEncoding = "WINDOWS-1252") |>
+  as_tibble()
+```
+
+## What is the `drinks` data?
+
+```{r}
+drinks
+```
+
+::: {.callout-tip title="Not everything fits in this 80-minute lecture"}
+I may leave some of the undiscussed functions or tools in an *appendix table* at the end of the slide deck. Each row will say what the tool does and which section of the chapter to read. You should definitely take a look at the text for more details.
 :::
 
-# Explicit missing values
+# Part 1: Missing values
 
-## What to expect
 
-Explicit missings are `NA`s in the data. This section covers tools for **creating** and **removing** them:
+## What are missing values? {.smaller}
 
-- Last observation carried forward: `fill()`
-- Fixed values: `coalesce()` and `na_if()`
-- `NaN`
+| | **Explicit** missing | **Implicit** missing |
+|--|---|---|
+| Idea | The data has a cell and it says `NA` | The data has no row at all |
+| Example from survey | A student left `sleep_hours` blank | Nobody answered between 3 and 4 AM, so that hour is not in the data |
+| Another example | `stress_level` left blank | Matcha and Bubble tea: nobody chose them, so they never appear |
+| How to see it | `is.na()`, `count()` | Compare with what should be there: `complete()`, `anti_join()` |
+| How to fix it | `drop_na()`, `na.rm`, `coalesce()`, `replace_na()` | `complete()` adds the rows |
 
-## Last observation carried forward
-
-Some data entry (often by hand) uses a **blank** to mean "same as the row above". This is called **last observation carried forward**.
+## A simple example
 
 ```{webr}
-treatment <- tribble(
-  ~person,           ~treatment, ~response,
-  "Derrick Whitmore", 1,         7,
-  NA,                 2,         10,
-  NA,                 3,         NA,
-  "Katherine Burke",  1,         4
+responses <- tibble(
+  day = c("Mon", "Tue", "Thu"),
+  n = c(10, NA, 7)
 )
-treatment
+responses
 ```
 
-## `fill()`
+::: {.callout-caution title="Checkpoint"}
+What is the missing data here?
+:::
 
-`fill()` replaces each `NA` with the most recent non-missing value above it:
+## Example Continued
 
-```{webr}
-treatment <- tribble(
-  ~person,           ~treatment, ~response,
-  "Derrick Whitmore", 1,         7,
-  NA,                 2,         10,
-  NA,                 3,         NA,
-  "Katherine Burke",  1,         4
-)
+- **Tuesday** is explicit: the row exists and `n` is `NA`
+- **Wednesday** is implicit: there is no row at all
 
-treatment |>
-  fill(everything())
-```
+::: {.callout-important title="Plots hide implicit gaps"}
+A chart of this table draws Mon, Tue, Thu. Nothing on the plot says that Wednesday is missing.
+:::
 
-::: {.callout-warning title="Look at what got filled"}
-`everything()` filled **every** column, including `response`. Here that would wrongly copy a response value into a missing one. Fill only the columns where a blank really means "same as above":
+## Brief Review of `NA`
+
+:::{.callout-note title="`NA` is contagious"}
+An unknown value makes almost every answer unknown.
+- E.g. arithemtic like addition/subtraction
+- E.g. statistics like mean/median)
 :::
 
 ```{webr}
-treatment <- tribble(
-  ~person,           ~treatment, ~response,
-  "Derrick Whitmore", 1,         7,
-  NA,                 2,         10,
-  NA,                 3,         NA,
-  "Katherine Burke",  1,         4
-)
-
-treatment |>
-  fill(person)
+NA > 5
+NA == NA
+NA + 10
+mean(c(4, NA, 6))
+mean(c(4, NA, 6), na.rm = TRUE)
 ```
 
-::: {.callout-tip title="Unusual patterns"}
-`fill()` has a `.direction` argument for other cases, such as filling **upward** (`"up"`) or both ways.
-:::
+## Testing for `NA`
 
-## Fixed values: `coalesce()`
-
-Sometimes a missing value stands for a known fixed value, usually **zero**. `coalesce()` replaces `NA`s with a value you choose:
-
-```{webr}
-x <- c(1, 4, 5, 7, NA)
-coalesce(x, 0)
-```
-
-## Fixed values: `na_if()`
-
-The reverse problem: older software uses a **sentinel** value like `99` or `-999` to mean "missing". `na_if()` turns it into a real `NA`:
-
-```{webr}
-x <- c(1, 4, 5, 7, -99)
-na_if(x, -99)
-```
-
-::: {.callout-warning title="Sentinel values corrupt your statistics"}
-If `-99` stays in the data, it is treated as a real number: `mean(c(1, 4, 5, 7, -99))` is dragged far below reality.
+:::{.callout-warning title="What do we do?"}
+`NA == NA` is `NA`, so we can use `is.na()` to test for it
 :::
 
 ```{webr}
-x <- c(1, 4, 5, 7, -99)
-mean(x)
-mean(na_if(x, -99), na.rm = TRUE)
-```
-
-::: {.callout-tip title="Fix it at import time"}
-If you know about the sentinel when reading the file, declare it up front with the `na` argument: `read_csv(path, na = "99")`. Use `na_if()` when you discover the problem later.
-:::
-
-## `NaN`
-
-`NaN` ("not a number") is a close cousin of `NA`. It appears from impossible math:
-
-```{webr}
-0 / 0
-0 * Inf
-Inf - Inf
-sqrt(-1)
-```
-
-## `NaN` behaves like `NA`
-
-```{webr}
-x <- c(NA, NaN)
-
-x * 10
-x == 1
+x <- c(4, NA, 6)
 is.na(x)
 ```
 
-::: {.callout-caution title="is.na() catches both"}
-`is.na()` returns `TRUE` for both `NA` and `NaN`. Usually you don't need to tell them apart. If you do, use `is.nan()`:
+## Filtering
+
+:::{.callout-tip title="Try running the following code"}
+Suppose that I collected these sleep survey response from 1000 students. I want to filter and count the number of students that sleep less than 6 hours on average, and then count the number of students that sleep for greater or equal to 6 hours per night. What are the results showing me?
 :::
 
 ```{webr}
-x <- c(NA, NaN)
-is.nan(x)
+survey |>
+  filter(sleep_hours < 6) |>
+  nrow()
+
+survey |>
+  filter(sleep_hours >= 6) |>
+  nrow()
 ```
 
-# Implicit missing values
 
-## What is missing?
+---
 
-::: {.callout-note title="Explicit vs. implicit"}
-- An **explicit** missing value is **the presence of an absence**
-- An **implicit** missing value is **the absence of a presence**
+![](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQD6zBaE0CPck8lDLhzu74scDYkOFoPZ11cfjF4WXF5ww&s=10){.r-stretch fig-align="center"}
+
+---
+
+## The `filter()` trap
+
+::: {.callout-caution}
+The two counts do **not** add up to 1000! `filter()` drops rows where the condition is `NA`. Missing students vanish from **both** sides. So how many students did not had `NA` in the survey response?
 :::
-
-Explicit missings are `NA`s you can see. Implicit missings are rows that were never recorded.
-
-## Example data: stocks
-
-```{r eval=FALSE}
-stocks <- tibble(
-  year  = c(2020, 2020, 2020, 2020, 2021, 2021, 2021),
-  qtr   = c(   1,    2,    3,    4,    2,    3,    4),
-  price = c(1.88, 0.59, 0.35,   NA, 0.92, 0.17, 2.66)
-)
-```
-
-- The price for **2020 Q4** is **explicitly** missing (`NA`)
-- The price for **2021 Q1** is **implicitly** missing: there is no row at all
-
-::: {.callout-warning title="Implicit missings hide from summaries"}
-`mean(price, na.rm = TRUE)` and `count()` silently skip rows that don't exist. You won't get a warning, so you have to go looking for them.
-:::
-
-## Making implicit "missing" explicit
-
-`pivot_wider()` needs a cell for every combination, so the gaps become visible `NA`s:
 
 ```{webr}
-stocks <- tibble(
-  year  = c(2020, 2020, 2020, 2020, 2021, 2021, 2021),
-  qtr   = c(   1,    2,    3,    4,    2,    3,    4),
-  price = c(1.88, 0.59, 0.35,   NA, 0.92, 0.17, 2.66)
-)
+survey |>
+  filter(is.na(sleep_hours)) |>
+  nrow()
+```
 
-stocks |>
-  pivot_wider(
-    names_from = qtr,
-    values_from = price
+## How much is missing?
+
+Count the `NA`s in every column at once with `across()`:
+
+```{webr}
+survey |>
+  summarize(across(everything(), ~ sum(is.na(.x)))) |>
+  pivot_longer(everything(), names_to = "question", values_to = "missing") |>
+  filter(missing > 0)
+```
+
+- `.x` stands for "the current column"
+- `bedtime` shows 23: the truly blank answers
+
+## Blank vs `NA`
+
+An empty cell is not always `NA`. It depends on how the file is read:
+
+```{webr}
+raw <- read.csv("data/sleep_survey_v2.csv", na.strings = character(),
+                fileEncoding = "WINDOWS-1252")
+raw |>
+  summarize(
+    blank_text = sum(bedtime == ""),
+    real_na = sum(is.na(bedtime))
   )
 ```
 
-- Now **both** missing values are explicit `NA`s
+::: {.callout-warning title="No error, no warning"}
+With `na.strings = character()`, the 23 blanks become **empty text**, and `is.na()` finds none of them. The `na.strings` argument tells `read.csv()` which strings mean "missing". We used `na.strings = c("", "NA")`.
+:::
 
-## Pivoting back
+## Missing in disguise
 
-`pivot_longer()` keeps those `NA`s by default. If they are only there because of the table's **shape** (structurally missing), drop them with `values_drop_na = TRUE`:
+What about `idk`, `varies` and `n/a`? They are not blank, but they carry **no information**:
 
 ```{webr}
-stocks <- tibble(
-  year  = c(2020, 2020, 2020, 2020, 2021, 2021, 2021),
-  qtr   = c(   1,    2,    3,    4,    2,    3,    4),
-  price = c(1.88, 0.59, 0.35,   NA, 0.92, 0.17, 2.66)
-)
+survey |>
+  filter(!str_detect(bedtime, regex("\\d|midnight", ignore_case = TRUE))) |>
+  count(bedtime, sort = TRUE)
+```
 
-wide <- stocks |> pivot_wider(names_from = qtr, values_from = price)
+- We can use `regex` (regular expressions) from Lecture 10 to find them: i.e. no digit, and not `midnight`.
+- Decide what counts as missing, and write it down
 
-wide |>
-  pivot_longer(
-    cols = -year,
-    names_to = "qtr",
-    values_to = "price",
-    values_drop_na = TRUE
+## Turn them into `NA`
+
+```{webr}
+#| autorun: TRUE
+survey <- survey |>
+  mutate(
+    bedtime = if_else(
+      str_detect(bedtime, regex("\\d|midnight", ignore_case = TRUE)),
+      bedtime, NA_character_
+    )
   )
+
+survey |>
+  summarize(missing_bedtimes = sum(is.na(bedtime)))
 ```
 
-::: {.callout-caution title="Think before dropping"}
-`values_drop_na = TRUE` also drops the **real** explicit `NA` (2020 Q4). Only use it when every `NA` is just a gap in the table's shape.
+- From 23 blanks to **57** unusable answers: now they are explicit missing values
+
+## A representation for `NA`?
+
+:::{.callout-note title="`na_if()`"}
+This function allows you to transform a *single* value that implies *missing* (e.g an extreme value like `-99`), and turn it into `NA`.
 :::
 
-## `complete()`
+```{webr}
+scores <- c(72, -99, 85, -99, 90)
+scores_new <- na_if(scores, -99)
 
-`complete()` generates **every combination** of the variables you name, adding explicit `NA` rows where they were missing:
+mean(scores, na.rm = TRUE)
+mean(scores_new, na.rm = TRUE)
+```
+
+
+## Where is the missing?
+
+```r
+survey |>
+  mutate(
+    bedtime = if_else(
+      str_detect(bedtime, regex("\\d|midnight", ignore_case = TRUE)),
+      bedtime, NA_character_
+    )
+  ) |>
+  select(program, sleep_hours, stress_level, favourite_drink,
+         has_early_class, avg_grade, bedtime) |>
+  mutate(across(-program, is.na)) |>
+  group_by(program) |>
+  summarize(across(everything(), mean)) |>
+  pivot_longer(-program, names_to = "question", values_to = "share") |>
+  ggplot(aes(x = question, y = program, fill = share)) +
+  geom_tile(colour = "white", linewidth = 0.8) +
+  scale_x_discrete(guide = guide_axis(n.dodge = 2)) +
+  scale_fill_gradient(
+    low = "white", high = "firebrick",
+    limits = c(0, NA),
+    labels = scales::percent,
+    name = "Proportion"
+  ) +
+  labs(title = "Which students missed responses the most?", x = NULL, y = NULL) +
+  theme_minimal(base_size = 14)
+```
+
+## A heat map
+
+
+```{r echo=FALSE}
+survey |>
+  mutate(
+    bedtime = if_else(
+      str_detect(bedtime, regex("\\d|midnight", ignore_case = TRUE)),
+      bedtime, NA_character_
+    )
+  ) |>
+  select(program, sleep_hours, stress_level, favourite_drink,
+         has_early_class, avg_grade, bedtime) |>
+  mutate(across(-program, is.na)) |>
+  group_by(program) |>
+  summarize(across(everything(), mean)) |>
+  pivot_longer(-program, names_to = "question", values_to = "share") |>
+  ggplot(aes(x = question, y = program, fill = share)) +
+  geom_tile(colour = "white", linewidth = 0.8) +
+  scale_x_discrete(guide = guide_axis(n.dodge = 2)) +
+  scale_fill_gradient(
+    low = "white", high = "firebrick",
+    limits = c(0, NA),
+    labels = scales::percent,
+    name = "Proportion"
+  ) +
+  labs(title = "Which students missed responses the most?", x = NULL, y = NULL) +
+  theme_minimal(base_size = 14)
+```
+
+
+## Does the missing matter?
+
+::: {.callout-tip title=""}
+Suppose that you want to compare students who answered with students who did not. Did the *missing data* affect your results?
+:::
 
 ```{webr}
-stocks <- tibble(
-  year  = c(2020, 2020, 2020, 2020, 2021, 2021, 2021),
-  qtr   = c(   1,    2,    3,    4,    2,    3,    4),
-  price = c(1.88, 0.59, 0.35,   NA, 0.92, 0.17, 2.66)
+survey |>
+  group_by(stress_missing = is.na(stress_level)) |>
+  summarize(students = n(), mean_sleep = mean(sleep_hours, na.rm = TRUE))
+
+survey |>
+  group_by(grade_missing = is.na(avg_grade)) |>
+  summarize(students = n(), mean_sleep = mean(sleep_hours, na.rm = TRUE))
+```
+
+
+## Observations
+
+:::{.callout-tip title="missing looks *random*"}
+The averages are close, and the missing groups are small (a few dozen students)
+:::
+
+::: {.callout-warning title="Random is not guaranteed"}
+If stressed students skip the stress question, dropping them makes everyone look calmer. Always ask **who** is missing, not just **how many**.
+:::
+
+## Handling missing values
+
+| Tool | What it does |
+|------|--------------|
+| `na.rm = TRUE` | Ignore the `NA`s inside one calculation |
+| `drop_na()` | Remove the **rows** that have `NA` |
+| `replace_na()` | Replace `NA` with a value you choose |
+| `coalesce()` | Take the first value that is not `NA` |
+
+```{webr}
+survey |>
+  mutate(drink = replace_na(favourite_drink, "No answer")) |>
+  count(drink, sort = TRUE)
+```
+
+## Different ways to find the mean
+
+```{webr}
+bind_rows(
+  # 1) Ignore those that did not answer sleep_hours.
+  survey |>
+    summarize(method = "na.rm = TRUE", students = sum(!is.na(sleep_hours)),
+              mean = mean(sleep_hours, na.rm = TRUE), sd = sd(sleep_hours, na.rm = TRUE)),
+  # 2) Drop all NA's in three variables.
+  survey |>
+    drop_na(sleep_hours, stress_level, avg_grade) |>
+    summarize(method = "drop_na() on 3 columns", students = n(),
+              mean = mean(sleep_hours), sd = sd(sleep_hours)),
+  # 3) Imputation: give these missing values a "mean-value"
+  survey |>
+    mutate(sleep_hours = replace_na(sleep_hours, mean(sleep_hours, na.rm = TRUE))) |>
+    summarize(method = "fill with the mean", students = n(),
+              mean = mean(sleep_hours), sd = sd(sleep_hours))
 )
-
-stocks |>
-  complete(year, qtr)
 ```
 
-## `complete()` with a known range
+## Imputation
 
-`complete()` only knows the values that **appear**. If the full range is bigger, supply it:
+::: {.callout-note title="Definition"}
+Imputation means filling in a missing value with an estimate. 
 
-```{webr}
-stocks <- tibble(
-  year  = c(2020, 2020, 2020, 2020, 2021, 2021, 2021),
-  qtr   = c(   1,    2,    3,    4,    2,    3,    4),
-  price = c(1.88, 0.59, 0.35,   NA, 0.92, 0.17, 2.66)
-)
-
-stocks |>
-  complete(year = 2019:2021, qtr)
-```
-
-::: {.callout-tip title="full_seq()"}
-`full_seq(x, 1)` generates **every** value from `min(x)` to `max(x)` in steps of 1, which is handy for filling in a range of years or days.
+- **Fixed value**: a number you choose, such as `0`
+- **Mean**: the average of the answers we have (**mean imputation**)
+- **Last value**: the last known value above it
 :::
 
-```{webr}
-full_seq(c(2019, 2021), 1)
-```
-
-::: {.callout-note title="When complete() isn't enough"}
-Build the full set of rows by hand, then combine it with `dplyr::full_join()`. You'll meet joins later in these slides.
+::: {.callout-important title="It comes with a cost"}
+Filling with the mean keeps the average but shrinks the spread (`sd`), and it makes 35 students look more typical than they are. Dropping rows loses students. There is no free option, so choose, and say which.
 :::
 
-## Missing values found by joins
 
-Some missing observations only show up when you **compare one table to another**. `anti_join(x, y)` keeps the rows of `x` with **no match** in `y`.
-
-Destination airports in `flights` that are **missing** from the `airports` table:
-
-```{webr}
-flights |>
-  distinct(faa = dest) |>
-  anti_join(airports)
-```
-
-Plane tail numbers in `flights` that are **missing** from `planes`:
-
-```{webr}
-flights |>
-  distinct(tailnum) |>
-  anti_join(planes)
-```
-
-- Four airports and hundreds of planes have no record: implicit missing data
-
-## Exercise
+## Exercise 1
 
 ::: {.callout-tip title="Live exercise"}
-Can you find any relationship between the carrier and the rows that appear to be missing from `planes`?
+Work with the five questions `sleep_hours`, `stress_level`, `favourite_drink`, `has_early_class` and `avg_grade`.
+
+1. How many students are missing at least one of the five?
+2. Which program has the most missing `avg_grade`s?
 :::
 
 ```{webr}
-#| exercise: ex_mv_1
-flights |>
-  filter()
+#| exercise: ex_missing
+# Part 1
+survey |>
+  count(any_missing = if_any(c(), is.na))
+
+# Part 2
+survey |>
+  group_by(program) |>
+  summarize(missing_grades = ) |>
+  arrange(desc(missing_grades))
 ```
 
 ```{webr}
-#| exercise: ex_mv_1
+#| exercise: ex_missing
 #| solution: true
-# Flights whose tailnum has no match in planes, counted by carrier
-flights |>
-  anti_join(planes, join_by(tailnum)) |>
-  count(carrier, sort = TRUE)
-# A small number of carriers account for almost all of the missing planes.
-# Compare with the total number of flights per carrier to see how lopsided it is.
+# Part 1: if_any() is TRUE when the condition holds in any of the columns
+survey |>
+  count(any_missing = if_any(
+    c(sleep_hours, stress_level, favourite_drink, has_early_class, avg_grade),
+    is.na
+  ))
 
-flights |> count(carrier, sort = TRUE)
+# Part 2
+survey |>
+  group_by(program) |>
+  summarize(missing_grades = sum(is.na(avg_grade))) |>
+  arrange(desc(missing_grades))
 ```
 
-# Factors and empty groups
+
+## When did the students respond to the survey?
+
+:::{.callout-tip title="Implicit missing"}
+When we show a (line) plot, the lines connect the hours before and after each gap. So in fact, it hides the hours (timeslot) when nobody answered in the survey.
+:::
+
+```{webr}
+per_hour <- survey |>
+  mutate(survey_date = parse_date_time(
+    survey_date,
+    orders = c("ymd HMS", "ymd HM", "mdy HMS", "mdy HM"),
+    tz = "America/Toronto"
+  )) |>
+  mutate(hour_bin = floor_date(survey_date, "hour")) |>
+  count(hour_bin)
+
+per_hour |>
+  ggplot(aes(x = hour_bin, y = n)) +
+  geom_line(colour = "grey60") +
+  geom_point() +
+  labs(title = "Responses per hour", x = NULL, y = "Responses") +
+  theme_minimal(base_size = 14)
+```
+
+
+## Filling in the missing rows
+
+:::{.callout-note title="`complete()`"}
+This function adds the rows that are missing from a table. You tell it which values should exist, and it creates a row for every one that’s absent, and `fill` the other columns with `NA` or a value that you choose.
+:::
+
+```{webr}
+#| autorun: TRUE
+per_hour_full <- per_hour |>
+  complete(
+    hour_bin = seq(min(hour_bin), max(hour_bin), by = "hour"),
+    fill = list(n = 0)
+  )
+
+per_hour_full |>
+  count(empty_hour = n == 0)
+```
+
+
+## Now the gaps are filled in
+
+```{webr}
+per_hour_full |>
+  ggplot(aes(x = hour_bin, y = n)) +
+  geom_line(colour = "grey60") +
+  geom_point(aes(colour = n == 0), show.legend = FALSE) +
+  scale_colour_manual(values = c("FALSE" = "black", "TRUE" = "firebrick")) +
+  labs(
+    title = "Responses per hour, with the empty hours in red",
+    x = NULL, y = "Responses"
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+- The red points are the nights when nobody was answering the survey
+- The line now dips to zero, which is what really happened
 
 ## Empty groups
 
-A final kind of missing is an **empty group**: a category that exists but has **no observations**. This is most common with **factors**.
-
-Here every person is a non-smoker, but the factor knows about both levels:
+A group with **no rows** is also implicit missing. `group_by(.drop = FALSE)` keeps every level of a factor:
 
 ```{webr}
-health <- tibble(
-  name   = c("Ikaia", "Oliver", "Lylah", "Susan", "Sage"),
-  smoker = factor(c("no", "no", "no", "no", "no"), levels = c("yes", "no")),
-  age    = c(34, 88, 75, 47, 56),
-)
-health
+survey |>
+  filter(!is.na(favourite_drink)) |>
+  mutate(favourite_drink = factor(favourite_drink, levels = drinks$drink)) |>
+  group_by(favourite_drink, .drop = FALSE) |>
+  summarize(students = n())
 ```
 
-## Counting drops empty groups
+- Without `.drop = FALSE`, Matcha and Bubble tea would not appear at all
+- When we learned about "Factors" from last week, we know that we should keep track of the levels that **should** be there
 
-```{webr}
-health <- tibble(
-  name   = c("Ikaia", "Oliver", "Lylah", "Susan", "Sage"),
-  smoker = factor(c("no", "no", "no", "no", "no"), levels = c("yes", "no")),
-  age    = c(34, 88, 75, 47, 56),
-)
+## Exercise 2
 
-health |> count(smoker)
-```
+::: {.callout-tip title="Live exercise"}
+Responses per weekday. Wednesday is missing from the table.
 
-::: {.callout-warning title="The 'yes' group vanished"}
-By default, `count()` shows only the levels that **occur**. Anyone reading this table wouldn't know "yes" was even possible.
+1. Add the missing row, with `0` responses.
+2. Replace the `NA` in `n` with `0`.
 :::
 
-Keep empty groups with `.drop = FALSE`:
-
 ```{webr}
-health <- tibble(
-  name   = c("Ikaia", "Oliver", "Lylah", "Susan", "Sage"),
-  smoker = factor(c("no", "no", "no", "no", "no"), levels = c("yes", "no")),
-  age    = c(34, 88, 75, 47, 56),
+#| exercise: ex_implicit
+counts <- tibble(
+  weekday = c("Mon", "Tue", "Thu", "Fri"),
+  n = c(257, NA, 149, 144)
 )
 
-health |> count(smoker, .drop = FALSE)
+counts |>
+  complete()
 ```
 
-## The same issue in ggplot2
-
-ggplot2 also drops unused levels of a discrete variable:
-
 ```{webr}
-health <- tibble(
-  name   = c("Ikaia", "Oliver", "Lylah", "Susan", "Sage"),
-  smoker = factor(c("no", "no", "no", "no", "no"), levels = c("yes", "no")),
-  age    = c(34, 88, 75, 47, 56),
+#| exercise: ex_implicit
+#| solution: true
+counts <- tibble(
+  weekday = c("Mon", "Tue", "Thu", "Fri"),
+  n = c(257, NA, 149, 144)
 )
 
-ggplot(health, aes(x = smoker)) +
-  geom_bar() +
-  scale_x_discrete()
-```
-
-Force them to show with `drop = FALSE`:
-
-```{webr}
-health <- tibble(
-  name   = c("Ikaia", "Oliver", "Lylah", "Susan", "Sage"),
-  smoker = factor(c("no", "no", "no", "no", "no"), levels = c("yes", "no")),
-  age    = c(34, 88, 75, 47, 56),
-)
-
-ggplot(health, aes(x = smoker)) +
-  geom_bar() +
-  scale_x_discrete(drop = FALSE)
-```
-
-## Empty groups in `summarize()`
-
-With `.drop = FALSE` in `group_by()`, the empty group stays, and the summary functions run on a **zero-length** vector:
-
-```{webr}
-health <- tibble(
-  name   = c("Ikaia", "Oliver", "Lylah", "Susan", "Sage"),
-  smoker = factor(c("no", "no", "no", "no", "no"), levels = c("yes", "no")),
-  age    = c(34, 88, 75, 47, 56),
-)
-
-health |>
-  group_by(smoker, .drop = FALSE) |>
-  summarize(
-    n = n(),
-    mean_age = mean(age),
-    min_age = min(age),
-    max_age = max(age),
-    sd_age = sd(age)
-  )
-```
-
-## Reading the empty-group row
-
-For the "yes" group (no data):
-
-- `n = 0`: correct, there are no rows
-- `mean_age = NaN`: the mean of nothing is 0 / 0
-- `min_age = Inf` and `max_age = -Inf`: the minimum of nothing is "infinitely large"
-- `sd_age = NA`
-
-::: {.callout-warning title="Inf and -Inf are not data"}
-These values are **not** wrong, but they are not meaningful ages either. They come from summary functions running on a vector of length **0**, which is different from `NA` (length **1**).
-:::
-
-::: {.callout-note title="Why Inf?"}
-It makes combining results work: `min(c(x, y))` is always equal to `min(min(x), min(y))`, even when `x` is empty.
-:::
-
-## A simpler alternative: `complete()`
-
-Summarize first, then add the missing group with `complete()`:
-
-```{webr}
-health <- tibble(
-  name   = c("Ikaia", "Oliver", "Lylah", "Susan", "Sage"),
-  smoker = factor(c("no", "no", "no", "no", "no"), levels = c("yes", "no")),
-  age    = c(34, 88, 75, 47, 56),
-)
-
-health |>
-  group_by(smoker) |>
-  summarize(
-    n = n(),
-    mean_age = mean(age),
-    min_age = min(age),
-    max_age = max(age),
-    sd_age = sd(age)
+counts |>
+  complete(
+    weekday = c("Mon", "Tue", "Wed", "Thu", "Fri"),
+    fill = list(n = 0)
   ) |>
-  complete(smoker)
+  mutate(n = replace_na(n, 0))
 ```
 
-::: {.callout-caution title="The count is now NA instead of 0"}
-The upside is explicit `NA`s instead of `NaN` and `Inf`. The **downside** is that `n` also becomes `NA`, when the true count is **0**. Choose the approach that fits your question.
-:::
 
-## Missing Data summary
+# Part 2: Joins
 
-- **Explicit** missings: `fill()`, `coalesce()`, `na_if()`, and `NaN`
-- **Implicit** missings: pivot, `complete()`, and joins (`anti_join()`)
-- **Empty groups**: `.drop = FALSE` and `complete()`
+## Does caffeine cost us sleep?
 
-::: {.callout-important title="The habit to keep"}
-Before analysing, ask: **what could be missing here, and in what form?** An `NA`, a missing row, or an empty group each need different tools.
-:::
+```{r echo=FALSE}
+#| context: output
+#| autorun: true
+survey |>
+  left_join(drinks, by = join_by(favourite_drink == drink)) |>
+  filter(!is.na(caffeine_mg)) |>
+  group_by(program) |>
+  summarize(mean_caffeine = mean(caffeine_mg)) |>
+  mutate(program = fct_reorder(program, mean_caffeine)) |>
+  ggplot(aes(x = mean_caffeine, y = program)) +
+  geom_col() +
+  geom_text(aes(label = paste(round(mean_caffeine), "mg")), hjust = -0.1) +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.2))) +
+  labs(
+    title = "Average caffeine in a student's favourite drink",
+    x = "Caffeine (mg)", y = NULL
+  ) +
+  theme_minimal(base_size = 14)
+```
 
-# Joins
 
-## The idea in one picture
+## Answering one question using two tables
 
-Two lists, and neither one answers the question alone:
+| Step | Tool (Chapter 19) |
+|------|-------------------|
+| Find the matching column | *Keys*: `favourite_drink` and `drink` |
+| Add columns from another table | `left_join()`, `join_by()` |
+| Other ways to combine | `inner_join()`, `full_join()` |
+| Check what did not match | `anti_join()`, `semi_join()` |
+
+## The two tables
 
 ```{webr}
-friends <- tibble(
-  friend = c("Mia", "Sam", "Leo"),
-  animal = c("dog", "cat", "unicorn")
-)
-sounds <- tibble(
-  animal = c("dog", "cat", "fish"),
-  sound  = c("woof", "meow", "blub")
-)
-friends
-sounds
+survey |>
+  select(student_id, favourite_drink) |>
+  head(5)
+
+drinks
 ```
 
-::: {.callout-note title="A join glues two tables together using something they share"}
-Here the shared column is `animal`. It's called the **key**.
+- The survey has the drink name, and the drinks table has the facts
+- The shared information is the drink name: that is the **key**
+
+
+
+## Keys
+
+:::{.callout-note title="Primary Key"}
+A primary key is a column whose values are unique: no two rows share one, so each value picks out exactly one row. E.g.
+
+  - `student_id` in `survey`: each ID is one student
+  - The `drink` column in the `drinks` table: "Coffee" appears in one row only
+
 :::
 
-## Joining the lists
+
+:::{.callout-tip title="Foreign Key"}
+ A foreign key is a column in another table that holds those same values.
+  - `favourite_drink` in `survey` holds drink names like "Coffee"
+  - Many students can share the same favourite drink like coffee
+
+:::
+
+
+## Combining tables
+
+:::{.callout-note title="`left_join()`"}
+The function `left_join(x, y)` keeps every row of `x` and adds the matching columns of `y`. In the end, you will get the same number of rows but more columns (more information you learn about each observation). 
+- You can also use `join_by(a == b)` to say which column in `x` matches with which column in `y`
+:::
 
 ```{webr}
-friends <- tibble(
-  friend = c("Mia", "Sam", "Leo"),
-  animal = c("dog", "cat", "unicorn")
-)
-sounds <- tibble(
-  animal = c("dog", "cat", "fish"),
-  sound  = c("woof", "meow", "blub")
-)
-
-friends |> left_join(sounds, join_by(animal))
+#| autorun: TRUE
+# Combine the tables
+survey_drinks <- survey |>
+  left_join(drinks, by = join_by(favourite_drink == drink))
+# Showing first 8 rows
+survey_drinks |>
+  select(student_id, favourite_drink, serving_ml, caffeine_mg, sugary) |>
+  head(8)
 ```
 
-- Mia and Sam get a sound
-- Leo's **unicorn** isn't in the sound list, so his sound is `NA`: a **missing value**
 
-## What if something doesn't match?
+## What about students with no drink?
 
 ```{webr}
-friends <- tibble(
-  friend = c("Mia", "Sam", "Leo"),
-  animal = c("dog", "cat", "unicorn")
-)
-sounds <- tibble(
-  animal = c("dog", "cat", "fish"),
-  sound  = c("woof", "meow", "blub")
-)
+survey_drinks |>
+  filter(is.na(favourite_drink)) |>
+  select(student_id, favourite_drink, caffeine_mg) |>
+  head(5)
 
-friends |> left_join(sounds, join_by(animal))   # keep Leo, sound is NA
-friends |> inner_join(sounds, join_by(animal))  # drop Leo
-friends |> anti_join(sounds, join_by(animal))   # show ONLY Leo (no match)
+survey_drinks |>
+  summarize(missing_caffeine = sum(is.na(caffeine_mg)))
 ```
 
+- No drink means no match, so `caffeine_mg` is `NA`
+- This is Part 1 again: explicit missing, created by the join
 
-## Types of Joins
+## Sleep and caffeine
 
-::: {.callout-tip title="Two families of joins"}
-- **Mutating joins** (`left_join()`, `inner_join()`, ...) **add columns** from another table
-- **Filtering joins** (`semi_join()`, `anti_join()`) **keep or drop rows** based on a match
+```r
+survey_drinks |>
+  filter(!is.na(favourite_drink)) |>
+  group_by(favourite_drink, caffeine_mg) |>
+  summarize(mean_sleep = mean(sleep_hours, na.rm = TRUE), .groups = "drop") |>
+  mutate(favourite_drink = fct_reorder(favourite_drink, mean_sleep)) |>
+  ggplot(aes(x = mean_sleep, y = favourite_drink)) +
+  geom_col() +
+  geom_text(
+    aes(label = paste0(round(mean_sleep, 1), " h  (", caffeine_mg, " mg)")),
+    hjust = -0.1
+  ) +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.3))) +
+  labs(
+    title = "Average sleep by favourite drink, with its caffeine",
+    x = "Average hours of sleep", y = NULL
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+## Is this what you expected?
+
+```{r echo=FALSE}
+survey_drinks |>
+  filter(!is.na(favourite_drink)) |>
+  group_by(favourite_drink, caffeine_mg) |>
+  summarize(mean_sleep = mean(sleep_hours, na.rm = TRUE), .groups = "drop") |>
+  mutate(favourite_drink = fct_reorder(favourite_drink, mean_sleep)) |>
+  ggplot(aes(x = mean_sleep, y = favourite_drink)) +
+  geom_col() +
+  geom_text(
+    aes(label = paste0(round(mean_sleep, 1), " h  (", caffeine_mg, " mg)")),
+    hjust = -0.1
+  ) +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.3))) +
+  labs(
+    title = "Average sleep by favourite drink, with its caffeine",
+    x = "Average hours of sleep", y = NULL
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+::: {.callout-warning title="Association, not cause"}
+Students who drink energy drinks also differ in workload and program. The chart shows a pattern, not what causes it.
 :::
 
-::: {.callout-important title="Why joins matter"}
-Real questions almost always need **several tables** (flights, airlines, weather, planes). Joins combine them, and unmatched rows are where missing data and bugs sneak in.
-:::
-
-# Keys
-
-## Primary and foreign keys {.smaller}
-
-- A **primary key** uniquely identifies **each row** in a table
-- A **foreign key** is a column that matches the **primary key of another table**
-
-| Table | Primary key | Matched by in `flights` |
-|-------|-------------|-------------------------|
-| `airlines` | `carrier` | `carrier` |
-| `airports` | `faa` | `origin`, `dest` |
-| `planes` | `tailnum` | `tailnum` |
-| `weather` | `origin` **and** `time_hour` (a **compound** key) | `origin` and `time_hour` |
-
-::: {.callout-warning title="Same name, different meaning"}
-`year` in `flights` is the **departure year**. `year` in `planes` is the year the plane was **built**. Don't assume a shared name means a shared key.
-:::
-
-## Check that a key is really a key
-
-Count by the key and look for rows where `n > 1`. An empty result means **no duplicates**:
+## Different types of "joins"
 
 ```{webr}
-planes |> count(tailnum) |> filter(n > 1)
-weather |> count(time_hour, origin) |> filter(n > 1)
+x <- tibble(key = c(1, 2, 3), x_value = c("a", "b", "c"))
+y <- tibble(key = c(1, 2, 4), y_value = c("A", "B", "D"))
+
+inner_join(x, y, by = "key")
+left_join(x, y, by = "key")
+full_join(x, y, by = "key")
 ```
 
-::: {.callout-warning title="Also check for missing keys"}
-A key with an `NA` can't identify anything: `planes |> filter(is.na(tailnum))`
+| Join | What The Table Keeps |
+|------|-------|
+| `inner_join()` | Only rows with a match in both |
+| `left_join()` | All rows of `x`, plus matches from `y` |
+| `full_join()` | All rows of both |
+
+
+## Filtering joins
+
+:::{.callout-warning title="Who did not match?"}
+`anti_join()` keeps the rows of `x` with **no match** in `y`. 
+
+`semi_join()` keeps the rows **with** a match.
 :::
-
-::: {.callout-caution title="Unique today is not the same as a valid key"}
-In `airports`, `alt` and `lat` happen to be unique for all rows but one pair. A key should be something that **should** identify a row, not something that happens to be unique. If there's no good key, add a **surrogate key** with `mutate(id = row_number())`.
-:::
-
-# Mutating joins
-
-## `left_join()`: add columns
-
-`left_join(x, y)` keeps **every row of `x`** and adds columns from `y`.
 
 ```{webr}
-flights2 <- flights |> 
-  select(year, time_hour, origin, dest, tailnum, carrier)
+# Drinks that no student chose
+drinks |>
+  anti_join(survey, by = join_by(drink == favourite_drink))
 
-flights2 |> left_join(airlines)
+# Students whose drink is not in the drinks table
+survey |>
+  anti_join(drinks, by = join_by(favourite_drink == drink)) |>
+  count(favourite_drink)
+
+# Students whose drink is in the drinks table
+survey |>
+  semi_join(drinks, by = join_by(favourite_drink == drink)) |>
+  nrow()
 ```
 
-::: {.callout-important title="A left join keeps all of x"}
-The result should have the **same number of rows as `x`**. If it doesn't, investigate.
+
+## What changed?
+
+::: {.callout-important title="Using Joins to find implicit missing"}
+Matcha and Bubble tea were never in the survey: **implicit** missing. Filtering joins *did not add any columns*. They only filter rows.
 :::
-
-## When there's no match
-
-No match in `y`? The row of `x` stays, and the new columns are `NA`:
 
 ```{webr}
-flights2 <- flights |> 
-  select(year, time_hour, origin, dest, tailnum, carrier)
-
-flights2 |> 
-  filter(tailnum == "N3ALAA") |> 
-  left_join(planes |> select(tailnum, type, engines, seats))
+survey |>
+  anti_join(drinks, by = join_by(favourite_drink == drink))
 ```
 
-::: {.callout-warning title="Unmatched rows become NA, silently"}
-`left_join()` never warns you. Check afterward with `anti_join()` or `sum(is.na(...))`.
-:::
+## Caffeine by early class
 
-## The natural join trap
-
-By default, `left_join()` matches on **every column the two tables share**:
-
-```{webr}
-flights2 <- flights |> 
-  select(year, time_hour, origin, dest, tailnum, carrier)
-
-flights2 |> left_join(planes)
+```r
+survey_drinks |>
+  filter(!is.na(has_early_class), !is.na(caffeine_mg)) |>
+  mutate(group = if_else(has_early_class == "Yes", "Early class", "No early class")) |>
+  group_by(group) |>
+  summarize(mean_caffeine = mean(caffeine_mg)) |>
+  ggplot(aes(x = mean_caffeine, y = group)) +
+  geom_col() +
+  geom_text(aes(label = paste(round(mean_caffeine), "mg")), hjust = -0.1) +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.2))) +
+  labs(
+    title = "Early-class students pick stronger drinks",
+    x = "Average caffeine (mg)", y = NULL
+  ) +
+  theme_minimal(base_size = 14)
 ```
 
-::: {.callout-warning title="Almost everything is NA!"}
-It matched on `tailnum` **and** `year`, but the two `year`s mean different things, so almost nothing matched.
-:::
+## Students with early classes need caffeine?
 
-## Fix it with `join_by()`
-
-Say which key you mean:
-
-```{webr}
-flights2 <- flights |> 
-  select(year, time_hour, origin, dest, tailnum, carrier)
-
-flights2 |> left_join(planes, join_by(tailnum))
+```{r echo=FALSE}
+survey_drinks |>
+  filter(!is.na(has_early_class), !is.na(caffeine_mg)) |>
+  mutate(group = if_else(has_early_class == "Yes", "Early class", "No early class")) |>
+  group_by(group) |>
+  summarize(mean_caffeine = mean(caffeine_mg)) |>
+  ggplot(aes(x = mean_caffeine, y = group)) +
+  geom_col() +
+  geom_text(aes(label = paste(round(mean_caffeine), "mg")), hjust = -0.1) +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.2))) +
+  labs(
+    title = "Early-class students pick stronger drinks",
+    x = "Average caffeine (mg)", y = NULL
+  ) +
+  theme_minimal(base_size = 14)
 ```
 
-- The two `year` columns are kept apart as `year.x` and `year.y`
 
-When the key columns have **different names**, name both sides:
-
-```{webr}
-flights2 <- flights |> 
-  select(year, time_hour, origin, dest, tailnum, carrier)
-
-flights2 |> left_join(airports, join_by(dest == faa))
-```
-
-::: {.callout-caution title="Always specify the key"}
-Even when a natural join happens to work, `join_by()` protects you if a column is later added to either table.
-:::
-
-# Filtering joins
-
-## `semi_join()` and `anti_join()`
-
-Filtering joins **don't add columns** and **never duplicate rows**.
-
-- `semi_join(x, y)` keeps rows of `x` that **have** a match in `y`
-- `anti_join(x, y)` keeps rows of `x` that have **no** match in `y`
-
-```{webr}
-# Airports that are origins of flights (only 3) 
-airports |> semi_join(flights, join_by(faa == origin))
-
-# Destinations with no record in airports
-flights |> 
-  anti_join(airports, join_by(dest == faa)) |> 
-  distinct(dest)
-
-# Planes with no record in planes
-flights |> 
-  anti_join(planes, join_by(tailnum)) |> 
-  distinct(tailnum)
-```
-
-::: {.callout-tip title="Check every join"}
-Before trusting a `left_join()`, run `anti_join()` on the same keys. It shows exactly which rows will get `NA`s.
-:::
-
-# How joins work
-
-## The four mutating joins
-
-```{webr}
-x <- tribble(~key, ~val_x, 1, "x1", 2, "x2", 3, "x3")
-y <- tribble(~key, ~val_y, 1, "y1", 2, "y2", 4, "y3")
-
-print("The following is inner_join")
-x |> inner_join(y, join_by(key))  # only keys in BOTH
-print("The following is left_join")
-x |> left_join(y, join_by(key))   # all of x
-print("The following is right_join")
-x |> right_join(y, join_by(key))  # all of y
-print("The following is full_join")
-x |> full_join(y, join_by(key))   # all of both
-```
-
-| Join | Keeps rows from | Unmatched rows get `NA` in |
-|------|-----------------|----------------------------|
-| `inner_join()` | only matches | none (they're dropped) |
-| `left_join()` | all of `x` | `y` columns |
-| `right_join()` | all of `y` | `x` columns |
-| `full_join()` | all of `x` and `y` | both |
-
-::: {.callout-warning title="Inner joins drop rows silently"}
-Don't use `inner_join()` for a plain "add columns" task unless you **want** to lose unmatched rows. Prefer `left_join()` and check for `NA`s.
-:::
-
-## Matching more than one row
-
-- **No match**: row dropped (inner) or filled with `NA` (outer)
-- **One match**: row kept as-is
-- **Multiple matches**: row **duplicated**, once per match
-
-```{webr}
-#| warning: true
-df1 <- tibble(key = c(1, 2, 2), val_x = c("x1", "x2", "x3"))
-df2 <- tibble(key = c(1, 2, 2), val_y = c("y1", "y2", "y3"))
-
-df1 |> inner_join(df2, join_by(key))
-```
-
-::: {.callout-warning title="Many-to-many: usually a mistake"}
-Key `2` appears twice in **both** tables, so every `x` row matches every `y` row and rows multiply. dplyr warns you. It often means a "key" isn't unique. If you really want it, add `relationship = "many-to-many"`.
-:::
-
-::: {.callout-important title="Compare row counts after every join"}
-An unexpected change in `nrow()` is the earliest sign that a key isn't what you thought.
-:::
-
-# Non-equi joins
-
-## Beyond `==`
-
-So far every join matched **equal** keys (equi joins). Non-equi joins match on other conditions.
-
-| Type | What it does |
-|------|--------------|
-| **Cross join** | every row of `x` with every row of `y` |
-| **Inequality join** | matches with `<`, `<=`, `>`, `>=` |
-| **Rolling join** | inequality join keeping only the **closest** match |
-| **Overlap join** | matches **ranges** that overlap or contain a value |
-
-```{webr}
-df <- tibble(id = 1:4, name = c("John", "Simon", "Tracy", "Max"))
-
-df |> cross_join(df)                 # 16 rows: every pair
-df |> inner_join(df, join_by(id < id))  # 6 rows: each unique pair once
-```
-
-::: {.callout-caution title="Row counts multiply"}
-A cross join of `n` rows with `m` rows gives `n × m` rows. Easy to blow up on big tables.
-:::
-
-## Rolling join: the closest match
-
-Give each employee the **most recent party** on or before their birthday:
-
-```{webr}
-parties <- tibble(
-  q = 1:4,
-  party = ymd(c("2022-01-10", "2022-04-04", "2022-07-11", "2022-10-03"))
-)
-employees <- tibble(
-  name = c("Ava", "Ben", "Chloe"),
-  birthday = ymd(c("2022-01-05", "2022-03-15", "2022-08-01"))
-)
-
-employees |> left_join(parties, join_by(closest(birthday >= party)))
-```
-
-::: {.callout-warning title="Edge cases fall through"}
-Ava was born **before** the first party, so she gets `NA`. Use `anti_join()` to find rows like her.
-:::
-
-## Overlap join: ranges
-
-`between(x, lower, upper)` matches a value inside a range:
-
-```{webr}
-parties <- tibble(
-  q = 1:4,
-  start = ymd(c("2022-01-01", "2022-04-04", "2022-07-11", "2022-10-03")),
-  end   = ymd(c("2022-04-03", "2022-07-10", "2022-10-02", "2022-12-31"))
-)
-employees <- tibble(
-  name = c("Ava", "Ben", "Chloe"),
-  birthday = ymd(c("2022-01-05", "2022-03-15", "2022-08-01"))
-)
-
-employees |> 
-  inner_join(parties, join_by(between(birthday, start, end)), unmatched = "error")
-```
-
-::: {.callout-important title='unmatched = "error"'}
-Makes the join **fail loudly** if any employee has no party, instead of silently dropping them.
-:::
-
-
-## Exercise
+## Exercise 3
 
 ::: {.callout-tip title="Live exercise"}
-Does every departing flight have a matching weather record for its origin and hour?
+1. Join `drinks` to the survey and compute the proportion of students who chose a sugary drink, for each program. Ignore students with no drink.
+2. How many students chose a drink that has more than 100 mg of caffeine?
 :::
 
 ```{webr}
-#| exercise: ex_bj_3
-flights |> 
-  anti_join()
+#| exercise: ex_joins
+# Part 1
+survey |>
+  left_join(drinks, by = join_by()) |>
+  filter(!is.na(sugary)) |>
+  group_by(program) |>
+  summarize(share_sugary = )
+
+# Part 2
+survey |>
+  left_join(drinks, by = join_by()) |>
+  filter() |>
+  nrow()
 ```
 
 ```{webr}
-#| exercise: ex_bj_3
+#| exercise: ex_joins
 #| solution: true
-flights |> 
-  anti_join(weather, join_by(origin, time_hour)) |> 
-  count()
-# If the count is not zero, some flights have no weather record for their hour.
-flights |> 
-  anti_join(weather, join_by(origin, time_hour)) |> 
-  count(origin, month)
-```
+# Part 1: the mean of a logical vector is a proportion
+survey |>
+  left_join(drinks, by = join_by(favourite_drink == drink)) |>
+  filter(!is.na(sugary)) |>
+  group_by(program) |>
+  summarize(share_sugary = mean(sugary == "Yes"))
 
-## Exercise
-
-::: {.callout-tip title="Live exercise"}
-What do the tail numbers with no matching record in `planes` have in common?
-(Hint: one variable explains most of the problems.)
-:::
-
-```{webr}
-#| exercise: ex_bj_4
-flights |> 
-  anti_join(planes, join_by(tailnum))
-```
-
-```{webr}
-#| exercise: ex_bj_4
-#| solution: true
-flights |> 
-  anti_join(planes, join_by(tailnum)) |> 
-  count(carrier, sort = TRUE) |> 
-  mutate(prop = n / sum(n))
-# One or two carriers account for nearly all of the unmatched planes.
-```
-
-## Exercise
-
-::: {.callout-tip title="Live exercise"}
-Add the latitude and longitude of the origin **and** destination airports to `flights`. Is it easier to rename the columns before or after joining?
-:::
-
-```{webr}
-#| exercise: ex_bj_6
-flights |> 
-  select(origin, dest)
-```
-
-```{webr}
-#| exercise: ex_bj_6
-#| solution: true
-# Renaming BEFORE the join avoids confusing .x / .y suffixes
-origin_loc <- airports |> select(faa, origin_lat = lat, origin_lon = lon)
-dest_loc   <- airports |> select(faa, dest_lat = lat, dest_lon = lon)
-
-flights |> 
-  select(origin, dest) |> 
-  left_join(origin_loc, join_by(origin == faa)) |> 
-  left_join(dest_loc, join_by(dest == faa))
+# Part 2: only the energy drink has more than 100 mg
+survey |>
+  left_join(drinks, by = join_by(favourite_drink == drink)) |>
+  filter(caffeine_mg > 100) |>
+  nrow()
 ```
 
 
-## Joins summary {.smaller}
+# Wrap-up
 
-- **Keys**: primary keys identify rows, foreign keys point to other tables
-- **Mutating joins** add columns: `left_join()`, `inner_join()`, `right_join()`, `full_join()`
-- **Filtering joins** keep or drop rows: `semi_join()`, `anti_join()`
-- **Non-equi joins**: cross, inequality, rolling, overlap
+## Back to the story
 
-::: {.callout-warning title="Join checklist"}
-1. Name the key explicitly with `join_by()`
-2. Check the key is **unique** where you expect it to be
-3. Compare **row counts** before and after
-4. Run `anti_join()` to see what **didn't** match
-:::
+| Question | Chapter | Tools we used |
+|----------|---------|---------------|
+| Can we trust our averages? | *Missing values* | `is.na()`, `na.rm`, `drop_na()`, `replace_na()`, `na_if()`, `complete()` |
+| Do students who drink more caffeine sleep less? | *Joins* | `left_join()`, `join_by()`, `anti_join()`, `semi_join()` |
 
 
-## Source
+## Sources
 
 ::: {.callout-note title="Attribution"}
 Content adapted from *R for Data Science (2e)* by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund:
@@ -927,3 +916,57 @@ Content adapted from *R for Data Science (2e)* by Hadley Wickham, Mine Çetinkay
 - Chapter 18: Missing values, <https://r4ds.hadley.nz/missing-values.html>
 - Chapter 19: Joins, <https://r4ds.hadley.nz/joins.html>
 :::
+
+
+# Appendix: read the text
+
+
+## Missing values: other tools (i) {.smaller}
+
+| Tool | What it does | Tiny example | Read the section on |
+|------|--------------|--------------|---------------------|
+| `fill()` | Fills `NA`s with the last value above (or below) | `fill(df, n, .direction = "down")` | Last observation carried forward |
+| `coalesce()` | First value that is not `NA` | `coalesce(x, 0)` | Fixed values |
+| `NaN`, `is.nan()` | "Not a number", for example `0 / 0` | `is.nan(0 / 0)` | NaN |
+| `drop_na()` with columns | Drops only rows missing **those** columns | `drop_na(df, avg_grade)` | Explicit missing values |
+
+
+## Missing values: other tools (ii) {.smaller}
+
+| Tool | What it does | Tiny example | Read the section on |
+|------|--------------|--------------|---------------------|
+| `if_any()`, `if_all()` | Tests a condition across several columns | `filter(if_any(a:c, is.na))` | Explicit missing values |
+| `complete()` with `nesting()` | Adds only the combinations that make sense | `complete(df, nesting(a, b))` | Implicit missing values |
+| `anti_join()` | Finds implicit gaps by comparing with a full list | `anti_join(all_days, df)` | Implicit missing values |
+
+
+## Missing values: other tools (iii) {.smaller}
+
+| Tool | What it does | Tiny example | Read the section on |
+|------|--------------|--------------|---------------------|
+| `.drop = FALSE` | Keeps empty groups in `group_by()` | `group_by(f, .drop = FALSE)` | Factors and empty groups |
+| `scale_x_discrete(drop = FALSE)` | Keeps empty levels on a plot axis | `scale_x_discrete(drop = FALSE)` | Factors and empty groups |
+
+
+## Joins: other tools (i) {.smaller}
+
+| Tool | What it does | Tiny example | Read the section on |
+|------|--------------|--------------|---------------------|
+| `right_join()` | Keeps **all** rows of `y` | `right_join(x, y, by = "key")` | Mutating joins |
+| `by = join_by(a == b)` | Matches columns with different names | `join_by(drink == favourite_drink)` | Specifying join keys |
+| `suffix` | Renames columns with the same name | `left_join(x, y, suffix = c("_x", "_y"))` | Specifying join keys |
+| `relationship`, `multiple` | Checks and controls many-to-many matches | `left_join(x, y, relationship = "many-to-one")` | How do joins work? |
+| `unmatched = "error"` | Stops if a row has no match | `inner_join(x, y, unmatched = "error")` | Specifying join keys |
+
+
+
+## Joins: other tools (ii) {.smaller}
+
+| Tool | What it does | Tiny example | Read the section on |
+|------|--------------|--------------|---------------------|
+| `cross_join()` | Every row of `x` with every row of `y` | `cross_join(x, y)` | Cross joins |
+| Inequality joins | Match with `<`, `<=`, `>`, `>=` | `join_by(date >= start)` | Filtering joins |
+| Rolling joins | Match with the **closest** value | `join_by(closest(date >= start))` | Rolling joins |
+| Overlap joins | Match ranges that overlap | `join_by(overlaps(a, b, c, d))` | Overlap joins |
+| Surrogate keys | A made-up key, such as `row_number()` | `mutate(id = row_number())` | Primary and foreign keys |
+
