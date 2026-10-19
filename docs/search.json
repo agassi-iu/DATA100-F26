@@ -2874,14 +2874,14 @@
     "href": "slides/DATA100-F26-Lecture-8.html#where-we-are-in-the-pipeline",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Where we are in the pipeline",
-    "text": "Where we are in the pipeline\nsleep_summary &lt;- survey |&gt;\n  mutate(\n    sleep_group = case_when(\n      sleep_hours &lt; 6    ~ \"Short\",\n      sleep_hours &lt;= 7.5 ~ \"Normal\",\n      sleep_hours &gt; 7.5  ~ \"Long\"\n    )\n  ) |&gt;\n  filter(!is.na(sleep_group), !is.na(avg_grade)) |&gt;\n  group_by(program, sleep_group) |&gt;\n  summarize(\n    n = n(),\n    mean_grade = mean(avg_grade),\n    pct_passing = mean(avg_grade &gt;= 60),\n    any_fail = any(avg_grade &lt; 50),\n    .groups = \"drop\"\n  )\nGoal: turn sleep_hours (a number) into sleep_group (a label)."
+    "text": "Where we are in the pipeline\nsleep_summary &lt;- survey |&gt;\n  mutate(\n    sleep_group = case_when(\n      sleep_hours &lt; 6    ~ \"Short\",\n      sleep_hours &lt;= 7.5 ~ \"Normal\",\n      sleep_hours &gt; 7.5  ~ \"Long\"\n    )\n  ) |&gt;\n  filter(!is.na(sleep_group), !is.na(avg_grade)) |&gt;\n  group_by(program, sleep_group) |&gt;\n  summarize(\n    n = n(),\n    mean_grade = mean(avg_grade),\n    pct_passing = mean(avg_grade &gt;= 60),\n    any_fail = any(avg_grade &lt; 50),\n    .groups = \"drop\"\n  )\nGoal: turn sleep_hours (a number) into sleep_group (a categorical label)."
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-8.html#the-mutate-function",
-    "href": "slides/DATA100-F26-Lecture-8.html#the-mutate-function",
+    "objectID": "slides/DATA100-F26-Lecture-8.html#modifying-a-column-of-data-set",
+    "href": "slides/DATA100-F26-Lecture-8.html#modifying-a-column-of-data-set",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "The mutate() Function",
-    "text": "The mutate() Function\n\n\n\n\n\n\n\nPurpose\n\n\nAdds new columns or modifies existing ones in a data frame. It operates column-wise and preserves the total number of rows.\n\n\n\n\n# Example: Create new columns for weekly sleep and high-sleep status\nsurvey |&gt;\n  mutate(\n    sleep_hours_week = sleep_hours * 7,\n    high_sleep = sleep_hours &gt; 7.5\n  )"
+    "section": "Modifying a column of data set",
+    "text": "Modifying a column of data set\n\n\n\n\n\n\n\nmutate()\n\n\nThis function adds new columns or modifies existing ones in a data frame. It operates column-wise and preserves the total number of rows.\n\n\n\n\nsurvey |&gt;\n  mutate(\n    sleep_hours_week = sleep_hours * 7,\n    high_sleep = sleep_hours &gt; 7.5\n  )\n\n\n\n\n\n\n\nCheckpoint\n\n\nWhat is the code from above trying to do?"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-8.html#creating-logical-vectors",
@@ -2895,7 +2895,7 @@
     "href": "slides/DATA100-F26-Lecture-8.html#who-sleeps-less-than-6-hours",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Who sleeps less than 6 hours?",
-    "text": "Who sleeps less than 6 hours?\n\n\n\n\n\n\n\n\n\nshort_sleep is a logical column\nWe can store it with mutate(), or use the same test directly inside filter()"
+    "text": "Who sleeps less than 6 hours?\n\n\n\n\n\n\n\n\n\nshort_sleep is a logical column\nWe can store it with mutate(), or use the same test directly inside filter()\nWhat is .keep?"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-8.html#choosing-which-columns-survive",
@@ -2909,28 +2909,28 @@
     "href": "slides/DATA100-F26-Lecture-8.html#how-many-true-false-and-na",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "How many TRUE, FALSE, and NA?",
-    "text": "How many TRUE, FALSE, and NA?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nA blank is not FALSE\n\n\nStudents who left sleep_hours blank get NA, not FALSE. R does not know whether they slept less than 6 hours.\n\nWe deal with these rows in Step 2."
+    "text": "How many TRUE, FALSE, and NA?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nA blank is not FALSE\n\n\nStudents who left sleep_hours blank get NA, not FALSE. R does not know whether they slept less than 6 hours.\n\nWe deal with these rows in later in Step 2 filter()."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-8.html#comparing-text",
     "href": "slides/DATA100-F26-Lecture-8.html#comparing-text",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Comparing text",
-    "text": "Comparing text\nhas_early_class is stored as text (\"Yes\" / \"No\"). Comparisons work on text too:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSpelling and capitals matter\n\n\n\"Yes\", \"yes\", and \"YES\" are three different values to R. Check how your data is spelled before you compare it."
+    "text": "Comparing text\nhas_early_class is stored as text (\"Yes\" / \"No\"). Comparisons work on text too:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSpelling and capitals matter\n\n\n\"Yes\", \"yes\", and \"YES\" are three different values to R. Check how your data is spelled before you compare it. We will look at how we deal with text (strings) next class."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-8.html#assigning-labels-using-logicals",
     "href": "slides/DATA100-F26-Lecture-8.html#assigning-labels-using-logicals",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Assigning labels using Logicals",
-    "text": "Assigning labels using Logicals\nif_else(condition, true, false) picks one value when the condition is TRUE and another when it is FALSE.\n\n\n\n\n\n\n\n\n\nTwo groups: fine\nA blank sleep_hours stays NA"
+    "text": "Assigning labels using Logicals\n\n\n\n\n\n\n\nif_else(condition, true, false)\n\n\nThis function picks one value when the condition is TRUE and another when it is FALSE.\n\n\n\n\n\n\n\n\n\n\n\n\n\nA blank sleep_hours stays NA\nThis works for two groups (TRUE vs FALSE conditions)"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-8.html#what-if-we-want-three-groups",
     "href": "slides/DATA100-F26-Lecture-8.html#what-if-we-want-three-groups",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "What if we want three groups?",
-    "text": "What if we want three groups?\nWe could nest one if_else() inside another:\n\n\n\n\n\n\n\n\n\nIt works, but it is already hard to read\nEvery extra group adds another layer\nTime for case_when()"
+    "text": "What if we want three groups?\n\n\n\n\n\n\n\nPiecewise functions\n\n\nWe could nest one if_else() inside another. Every extra group adds another layer.\n\n\n\n\n\n\n\n\n\n\n\n\n\nIt works, but it is already hard to read: time for case_when()"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-8.html#case_when",
@@ -3080,11 +3080,11 @@
     "text": "The correct version\n\n\n\n\n\n\n\n\nThat gets long. There is a shortcut."
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-8.html#in",
-    "href": "slides/DATA100-F26-Lecture-8.html#in",
+    "objectID": "slides/DATA100-F26-Lecture-8.html#is-this-in-my-vector",
+    "href": "slides/DATA100-F26-Lecture-8.html#is-this-in-my-vector",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "%in%",
-    "text": "%in%\nx %in% y returns a logical vector the same length as x. It is TRUE whenever a value of x appears anywhere in y.\n\n\n\n\n\n\n\n\nAn easy way to dodge the == / | ordering problem:"
+    "section": "Is this in my vector?",
+    "text": "Is this in my vector?\n\n\n\n\n\n\n\nx %in% y\n\n\nThis returns a logical vector the same length as x. It is TRUE whenever a value of x appears anywhere in y.\n\n\n\n\n\n\n\n\n\n\n\n\nAn easy way to dodge the == / | ordering problem:"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-8.html#in-and-missing-values",
@@ -3119,7 +3119,7 @@
     "href": "slides/DATA100-F26-Lecture-8.html#key-functions-here",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Key Functions Here",
-    "text": "Key Functions Here\n\n\n\n\n\n\n\ngroup_by()\n\n\nChanges the unit of analysis by organizing rows into groups. It is invisible on its own, but changes how subsequent functions operate.\n\n\n\n\n\n\n\n\n\n\n\nsummarize()\n\n\nCollapses multiple rows down into a single summary statistic per group.\n\n\n\n\n# Example: Calculate student counts and mean grades by program\nsurvey |&gt;\n  group_by(program) |&gt;\n  summarize(\n    n = n(),\n    mean_grade = mean(avg_grade, na.rm = TRUE)\n  )"
+    "text": "Key Functions Here\n\n\n\n\n\n\n\ngroup_by()\n\n\nThis function changes the unit of analysis by organizing rows into groups. It is invisible on its own, but changes how subsequent functions operate.\n\n\n\n\n\n\n\n\n\n\n\nsummarize()\n\n\nThis function collapses multiple rows down into a single summary statistic per group.\n\n\n\n\n# Example: Calculate student counts and mean grades by program\nsurvey |&gt;\n  group_by(program) |&gt;\n  summarize(\n    n = n(),\n    mean_grade = mean(avg_grade, na.rm = TRUE)\n  )"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-8.html#summaries-of-logical-vectors",
@@ -3154,7 +3154,7 @@
     "href": "slides/DATA100-F26-Lecture-8.html#putting-it-together",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Putting it together",
-    "text": "Putting it together\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWatch the group sizes\n\n\nLook at the n column. Some groups have only 10 to 15 students, so their averages are less trustworthy than the large ones."
+    "text": "Putting it together\n\n\n\n\n\n\n\nWatch the group sizes\n\n\nLook at the n column. Some groups have only 10 to 15 students, so their averages are less trustworthy than the large ones."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-8.html#exercise-3",
@@ -3168,7 +3168,7 @@
     "href": "slides/DATA100-F26-Lecture-8.html#back-to-the-question",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Back to the question",
-    "text": "Back to the question\n\nDo students who sleep less get lower grades, and does it depend on their program?\n\n\nOverall: students who sleep more have higher average grades\nWithin each program: the differences are small and not consistent\nWhy: programs differ in both sleep and grades, so mixing them together created the overall pattern\n\n\n\n\n\n\n\n\nCaution: What we cannot say\n\n\n\nThis is survey data, so it shows association, not cause\nSome groups are small, so differences of a point or two mean little\nA good analyst checks the group sizes before telling a story"
+    "text": "Back to the question\n\nDo students who sleep less get lower grades, and does it depend on their program?\n\n\nOverall: students who sleep more have higher average grades\nWithin each program:** the differences are small and not consistent\nWhy: programs differ in both sleep and grades, so mixing them together created the overall pattern\n\n\n\n\n\n\n\n\nCaution: What we cannot say\n\n\n\nThis is survey data, so it shows association, not cause\nSome groups are small, so differences of a point or two mean little\nA good analyst checks the group sizes before telling a story"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-8.html#chapter-summary",
@@ -3182,7 +3182,7 @@
     "href": "slides/DATA100-F26-Lecture-8.html#whats-next",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "What’s next",
-    "text": "What’s next\nLogical vectors will keep coming back:\n\nIn Chapter 14 (Strings), str_detect(x, pattern) returns a logical vector that is TRUE where elements of x match the pattern\nIn Chapter 17 (Dates and times), you will build logical vectors by comparing dates and times\n\n\n\n\n\n\n\n\nUp Next\n\n\nnumbers and strings. The survey has a bedtime column where students typed their bedtime in many different ways. We will clean it up."
+    "text": "What’s next\nLogical vectors will keep coming back:\n\nIn Chapter 14 (Strings), str_detect(x, pattern) returns a logical vector that is TRUE where elements of x match the pattern\nIn Chapter 17 (Dates and times), you will build logical vectors by comparing dates and times\n\n\n\n\n\n\n\n\nUp Next\n\n\nNumbers and Strings. The survey has a bedtime column where students typed their bedtime in many different ways. We will clean it up."
   },
   {
     "objectID": "slides.html",

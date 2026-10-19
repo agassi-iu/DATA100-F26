@@ -25357,7 +25357,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZ2xpbXBzZShzdXJ2ZXkpIn0=
 <p><strong>Definition</strong></p>
 </div>
 <div class="callout-content">
-<p>A <strong>logical vector</strong> is the simplest kind of vector: every element is exactly one of three values.</p>
+<p>A logical vector is the simplest kind of vector: every element is exactly one of three values.</p>
 <ul>
 <li class="fragment"><code>TRUE</code></li>
 <li class="fragment"><code>FALSE</code></li>
@@ -25396,31 +25396,45 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiZ2xpbXBzZShzdXJ2ZXkpIn0=
 <span id="cb2-15"><a aria-label="15"></a>    <span class="at">any_fail =</span> <span class="fu">any</span>(avg_grade <span class="sc">&lt;</span> <span class="dv">50</span>),</span>
 <span id="cb2-16"><a aria-label="16"></a>    <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span></span>
 <span id="cb2-17"><a aria-label="17"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong>Goal:</strong> turn <code>sleep_hours</code> (a number) into <code>sleep_group</code> (a label).</p>
+<p><strong>Goal:</strong> turn <code>sleep_hours</code> (a number) into <code>sleep_group</code> (a categorical label).</p>
 </section>
-<section id="the-mutate-function" class="slide level2">
-<h2>The <code>mutate()</code> Function</h2>
-<div title="Purpose">
+<section id="modifying-a-column-of-data-set" class="slide level2">
+<h2>Modifying a column of data set</h2>
+<div title="`mutate()`">
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>Purpose</strong></p>
+<p><strong><code>mutate()</code></strong></p>
 </div>
 <div class="callout-content">
-<p>Adds new columns or modifies existing ones in a data frame. It operates column-wise and preserves the total number of rows.</p>
+<p>This function adds new columns or modifies existing ones in a data frame. It operates column-wise and preserves the total number of rows.</p>
 </div>
 </div>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a aria-label="1"></a><span class="co"># Example: Create new columns for weekly sleep and high-sleep status</span></span>
-<span id="cb3-2"><a aria-label="2"></a>survey <span class="sc">|&gt;</span></span>
-<span id="cb3-3"><a aria-label="3"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb3-4"><a aria-label="4"></a>    <span class="at">sleep_hours_week =</span> sleep_hours <span class="sc">*</span> <span class="dv">7</span>,</span>
-<span id="cb3-5"><a aria-label="5"></a>    <span class="at">high_sleep =</span> sleep_hours <span class="sc">&gt;</span> <span class="fl">7.5</span></span>
-<span id="cb3-6"><a aria-label="6"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a aria-label="1"></a>survey <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a aria-label="2"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb3-3"><a aria-label="3"></a>    <span class="at">sleep_hours_week =</span> sleep_hours <span class="sc">*</span> <span class="dv">7</span>,</span>
+<span id="cb3-4"><a aria-label="4"></a>    <span class="at">high_sleep =</span> sleep_hours <span class="sc">&gt;</span> <span class="fl">7.5</span></span>
+<span id="cb3-5"><a aria-label="5"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div title="Checkpoint">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Checkpoint</strong></p>
+</div>
+<div class="callout-content">
+<p>What is the code from above trying to do?</p>
+</div>
+</div>
+</div>
+</div>
 </section>
 <section id="creating-logical-vectors" class="slide level2 smaller">
 <h2>Creating logical vectors</h2>
@@ -25474,8 +25488,9 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoic3VydmV5IHw+XG4gIG11dGF0
 </div>
 </div>
 <ul>
-<li class="fragment"><code>short_sleep</code> is a <strong>logical column</strong></li>
+<li class="fragment"><code>short_sleep</code> is a logical column</li>
 <li class="fragment">We can store it with <code>mutate()</code>, or use the same test directly inside <code>filter()</code></li>
+<li class="fragment">What is <code>.keep</code>?</li>
 </ul>
 </section>
 <section id="choosing-which-columns-survive" class="slide level2 smaller">
@@ -25551,7 +25566,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoic3VydmV5IHw+XG4gIG11dGF0
 <div class="callout-content">
 <p>Students who left <code>sleep_hours</code> blank get <code>NA</code>, not <code>FALSE</code>. <em>R</em> does not know whether they slept less than 6 hours.</p>
 <ul>
-<li class="fragment">We deal with these rows in Step 2.</li>
+<li class="fragment">We deal with these rows in later in Step 2 <code>filter()</code>.</li>
 </ul>
 </div>
 </div>
@@ -25581,7 +25596,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoic3VydmV5IHw+XG4gIG11dGF0
 <p><strong>Spelling and capitals matter</strong></p>
 </div>
 <div class="callout-content">
-<p><code>&quot;Yes&quot;</code>, <code>&quot;yes&quot;</code>, and <code>&quot;YES&quot;</code> are three different values to R. Check how your data is spelled before you compare it.</p>
+<p><code>&quot;Yes&quot;</code>, <code>&quot;yes&quot;</code>, and <code>&quot;YES&quot;</code> are three different values to R. Check how your data is spelled before you compare it. We will look at how we deal with text (strings) next class.</p>
 </div>
 </div>
 </div>
@@ -25589,7 +25604,21 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoic3VydmV5IHw+XG4gIG11dGF0
 </section>
 <section id="assigning-labels-using-logicals" class="slide level2">
 <h2>Assigning labels using Logicals</h2>
-<p><code>if_else(condition, true, false)</code> picks one value when the condition is <code>TRUE</code> and another when it is <code>FALSE</code>.</p>
+<div title="`if_else(condition, true, false)`">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong><code>if_else(condition, true, false)</code></strong></p>
+</div>
+<div class="callout-content">
+<p>This function picks one value when the <code>condition</code> is <code>TRUE</code> and another when it is <code>FALSE</code>.</p>
+</div>
+</div>
+</div>
+</div>
 <div class="cell">
 <div>
 <div id="webr-6" class="exercise-cell">
@@ -25601,13 +25630,27 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoic3VydmV5IHw+XG4gIG11dGF0
 </div>
 </div>
 <ul>
-<li class="fragment">Two groups: fine</li>
 <li class="fragment">A blank <code>sleep_hours</code> stays <code>NA</code></li>
+<li class="fragment">This works for two groups (<code>TRUE</code> vs <code>FALSE</code> conditions)</li>
 </ul>
 </section>
 <section id="what-if-we-want-three-groups" class="slide level2">
 <h2>What if we want three groups?</h2>
-<p>We could nest one <code>if_else()</code> inside another:</p>
+<div title="Piecewise functions">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Piecewise functions</strong></p>
+</div>
+<div class="callout-content">
+<p>We could nest one <code>if_else()</code> inside another. Every extra group adds another layer.</p>
+</div>
+</div>
+</div>
+</div>
 <div class="cell">
 <div>
 <div id="webr-7" class="exercise-cell">
@@ -25619,9 +25662,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoic3VydmV5IHw+XG4gIG11dGF0
 </div>
 </div>
 <ul>
-<li class="fragment">It works, but it is already hard to read</li>
-<li class="fragment">Every extra group adds another layer</li>
-<li class="fragment">Time for <code>case_when()</code></li>
+<li class="fragment">It works, but it is already hard to read: time for <code>case_when()</code></li>
 </ul>
 </section>
 <section id="case_when" class="slide level2">
@@ -25980,7 +26021,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoic3VydmV5IHw+XG4gIGZpbHRl
 <li class="fragment">This is the first half of our pipeline’s <code>filter()</code> line</li>
 </ul>
 </section>
-<section id="combining-logical-vectors" class="slide level2">
+<section id="combining-logical-vectors" class="slide level2 smaller">
 <h2>Combining logical vectors</h2>
 <p>Once you have several logical vectors, combine them with Boolean algebra:</p>
 <table class="caption-top">
@@ -26108,7 +26149,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoic3VydmV5IHw+XG4gIGZpbHRl
 </div>
 <p>It does not give an error, but it does not work either. Every row came back. Why?</p>
 </section>
-<section id="what-went-wrong" class="slide level2">
+<section id="what-went-wrong" class="slide level2 smaller">
 <h2>What went wrong?</h2>
 <ol type="1">
 <li class="fragment">R first evaluates <code>stress_level == 4</code>, producing a logical vector (call it <code>four</code>)</li>
@@ -26170,9 +26211,23 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoic3VydmV5IHw+XG4gIGZpbHRl
 </div>
 <p>That gets long. There is a shortcut.</p>
 </section>
-<section id="in" class="slide level2">
-<h2><code>%in%</code></h2>
-<p><code>x %in% y</code> returns a logical vector the same length as <code>x</code>. It is <code>TRUE</code> whenever a value of <code>x</code> appears anywhere in <code>y</code>.</p>
+<section id="is-this-in-my-vector" class="slide level2">
+<h2>Is this in my vector?</h2>
+<div title="`x %in% y`">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong><code>x %in% y</code></strong></p>
+</div>
+<div class="callout-content">
+<p>This returns a logical vector the same length as <code>x</code>. It is <code>TRUE</code> whenever a value of <code>x</code> appears anywhere in <code>y</code>.</p>
+</div>
+</div>
+</div>
+</div>
 <div class="cell">
 <div>
 <div id="webr-29" class="exercise-cell">
@@ -26253,7 +26308,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoic3VydmV5IHw+XG4gIG11dGF0
 </div>
 <div class="callout-content">
 <ol type="1">
-<li class="fragment">How many students left <code>sleep_hours</code> blank? Then count the blanks in <strong>every</strong> column.</li>
+<li class="fragment">How many students left <code>sleep_hours</code> blank? Then count the blanks in every column.</li>
 <li class="fragment">Find students in Arts or Business who sleep less than 6 hours. Use <code>%in%</code>.</li>
 <li class="fragment">Find the same students again, this time using <code>|</code>.</li>
 </ol>
@@ -26344,7 +26399,7 @@ survey |&gt;
 <p><strong><code>group_by()</code></strong></p>
 </div>
 <div class="callout-content">
-<p>Changes the unit of analysis by organizing rows into groups. It is invisible on its own, but changes how subsequent functions operate.</p>
+<p>This function changes the unit of analysis by organizing rows into groups. It is invisible on its own, but changes how subsequent functions operate.</p>
 </div>
 </div>
 </div>
@@ -26359,7 +26414,7 @@ survey |&gt;
 <p><strong><code>summarize()</code></strong></p>
 </div>
 <div class="callout-content">
-<p>Collapses multiple rows down into a single summary statistic per group.</p>
+<p>This function collapses multiple rows down into a single summary statistic per group.</p>
 </div>
 </div>
 </div>
@@ -26451,7 +26506,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoic3VydmV5IHw+XG4gIGdyb3Vw
 </div>
 </div>
 </section>
-<section id="any-and-all" class="slide level2">
+<section id="any-and-all" class="slide level2 smaller">
 <h2><code>any()</code> and <code>all()</code></h2>
 <ul>
 <li class="fragment"><code>any(x)</code> is the equivalent of <code>|</code>: <code>TRUE</code> if there is at least one <code>TRUE</code> in <code>x</code></li>
@@ -26475,16 +26530,6 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoic3VydmV5IHw+XG4gIGdyb3Vw
 </section>
 <section id="putting-it-together" class="slide level2">
 <h2>Putting it together</h2>
-<div class="cell">
-<div>
-<div id="webr-40" class="exercise-cell">
-
-</div>
-<script type="webr-40-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoic2xlZXBfc3VtbWFyeSA8LSBzdXJ2ZXkgfD5cbiAgbXV0YXRlKFxuICAgIHNsZWVwX2dyb3VwID0gY2FzZV93aGVuKFxuICAgICAgc2xlZXBfaG91cnMgPCA2ICAgIH4gXCJTaG9ydFwiLFxuICAgICAgc2xlZXBfaG91cnMgPD0gNy41IH4gXCJOb3JtYWxcIixcbiAgICAgIHNsZWVwX2hvdXJzID4gNy41ICB+IFwiTG9uZ1wiXG4gICAgKVxuICApIHw+XG4gIGZpbHRlcighaXMubmEoc2xlZXBfZ3JvdXApLCAhaXMubmEoYXZnX2dyYWRlKSkgfD5cbiAgZ3JvdXBfYnkocHJvZ3JhbSwgc2xlZXBfZ3JvdXApIHw+XG4gIHN1bW1hcml6ZShcbiAgICBuID0gbigpLFxuICAgIG1lYW5fZ3JhZGUgPSBtZWFuKGF2Z19ncmFkZSksXG4gICAgcGN0X3Bhc3NpbmcgPSBtZWFuKGF2Z19ncmFkZSA+PSA2MCksXG4gICAgYW55X2ZhaWwgPSBhbnkoYXZnX2dyYWRlIDwgNTApLFxuICAgIC5ncm91cHMgPSBcImRyb3BcIlxuICApXG5cbnNsZWVwX3N1bW1hcnkifQ==
-</script>
-</div>
-</div>
 <div title="Watch the group sizes">
 <div class="callout callout-caution callout-titled callout-style-default">
 <div class="callout-body">
@@ -26500,6 +26545,16 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoic2xlZXBfc3VtbWFyeSA8LSBz
 </div>
 </div>
 </div>
+<div class="cell">
+<div>
+<div id="webr-40" class="exercise-cell">
+
+</div>
+<script type="webr-40-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoic2xlZXBfc3VtbWFyeSA8LSBzdXJ2ZXkgfD5cbiAgbXV0YXRlKFxuICAgIHNsZWVwX2dyb3VwID0gY2FzZV93aGVuKFxuICAgICAgc2xlZXBfaG91cnMgPCA2ICAgIH4gXCJTaG9ydFwiLFxuICAgICAgc2xlZXBfaG91cnMgPD0gNy41IH4gXCJOb3JtYWxcIixcbiAgICAgIHNsZWVwX2hvdXJzID4gNy41ICB+IFwiTG9uZ1wiXG4gICAgKVxuICApIHw+XG4gIGZpbHRlcighaXMubmEoc2xlZXBfZ3JvdXApLCAhaXMubmEoYXZnX2dyYWRlKSkgfD5cbiAgZ3JvdXBfYnkocHJvZ3JhbSwgc2xlZXBfZ3JvdXApIHw+XG4gIHN1bW1hcml6ZShcbiAgICBuID0gbigpLFxuICAgIG1lYW5fZ3JhZGUgPSBtZWFuKGF2Z19ncmFkZSksXG4gICAgcGN0X3Bhc3NpbmcgPSBtZWFuKGF2Z19ncmFkZSA+PSA2MCksXG4gICAgYW55X2ZhaWwgPSBhbnkoYXZnX2dyYWRlIDwgNTApLFxuICAgIC5ncm91cHMgPSBcImRyb3BcIlxuICApXG5cbnNsZWVwX3N1bW1hcnkifQ==
+</script>
+</div>
+</div>
 </section>
 <section id="exercise-3" class="slide level2">
 <h2>Exercise 3</h2>
@@ -26513,7 +26568,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoic2xlZXBfc3VtbWFyeSA8LSBz
 <p><strong>Live exercise</strong></p>
 </div>
 <div class="callout-content">
-<p>For each <strong>program</strong>, find:</p>
+<p>For each program, find:</p>
 <ul>
 <li class="fragment"><code>n_short</code>: how many students sleep under 6 hours</li>
 <li class="fragment"><code>prop_short</code>: the proportion of students who sleep under 6 hours</li>
@@ -26568,9 +26623,9 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiZXhfc3VtbWFyaXplIn0s
 <p>Do students who sleep less get lower grades, and does it depend on their program?</p>
 </blockquote>
 <ul>
-<li class="fragment"><strong>Overall:</strong> students who sleep more have higher average grades</li>
-<li class="fragment"><strong>Within each program:</strong> the differences are small and not consistent</li>
-<li class="fragment"><strong>Why:</strong> programs differ in both sleep and grades, so mixing them together created the overall pattern</li>
+<li class="fragment">Overall: students who sleep more have higher average grades</li>
+<li class="fragment">Within each program:** the differences are small and not consistent</li>
+<li class="fragment">Why: programs differ in both sleep and grades, so mixing them together created the overall pattern</li>
 </ul>
 <div title="Caution: What we cannot say">
 <div class="callout callout-caution callout-titled callout-style-default">
@@ -26583,7 +26638,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiZXhfc3VtbWFyaXplIn0s
 </div>
 <div class="callout-content">
 <ul>
-<li class="fragment">This is survey data, so it shows <strong>association</strong>, not cause</li>
+<li class="fragment">This is survey data, so it shows <em>association</em>, not cause</li>
 <li class="fragment">Some groups are small, so differences of a point or two mean little</li>
 <li class="fragment">A good analyst checks the group sizes before telling a story</li>
 </ul>
@@ -26596,10 +26651,10 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiZXhfc3VtbWFyaXplIn0s
 <h2>Chapter summary</h2>
 <p>A logical vector is simple (each value is <code>TRUE</code>, <code>FALSE</code>, or <code>NA</code>), but it is very powerful.</p>
 <ul>
-<li class="fragment"><strong>Create</strong> them with <code>&gt;</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>==</code>, <code>!=</code>, and <code>is.na()</code></li>
-<li class="fragment"><strong>Combine</strong> them with <code>!</code>, <code>&amp;</code>, and <code>|</code></li>
-<li class="fragment"><strong>Summarize</strong> them with <code>any()</code>, <code>all()</code>, <code>sum()</code>, and <code>mean()</code></li>
-<li class="fragment"><strong>Transform</strong> conditionally with <code>if_else()</code> and <code>case_when()</code></li>
+<li class="fragment">Create them with <code>&gt;</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>==</code>, <code>!=</code>, and <code>is.na()</code></li>
+<li class="fragment">Combine them with <code>!</code>, <code>&amp;</code>, and <code>|</code></li>
+<li class="fragment">Summarize them with <code>any()</code>, <code>all()</code>, <code>sum()</code>, and <code>mean()</code></li>
+<li class="fragment">Transform conditionally with <code>if_else()</code> and <code>case_when()</code></li>
 </ul>
 </section>
 <section id="whats-next" class="slide level2">
@@ -26619,7 +26674,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiZXhfc3VtbWFyaXplIn0s
 <p><strong>Up Next</strong></p>
 </div>
 <div class="callout-content">
-<p><strong>numbers and strings</strong>. The survey has a <code>bedtime</code> column where students typed their bedtime in many different ways. We will clean it up.</p>
+<p><strong>Numbers and Strings</strong>. The survey has a <code>bedtime</code> column where students typed their bedtime in many different ways. We will clean it up.</p>
 </div>
 </div>
 </div>

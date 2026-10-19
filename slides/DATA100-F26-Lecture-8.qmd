@@ -175,7 +175,7 @@ glimpse(survey)
 ## What is a logical vector?
 
 ::: {.callout-note title="Definition"}
-A **logical vector** is the simplest kind of vector: every element is exactly one of three values.
+A logical vector is the simplest kind of vector: every element is exactly one of three values.
 
 - `TRUE`
 - `FALSE`
@@ -210,23 +210,26 @@ sleep_summary <- survey |>
   )
 ```
 
-**Goal:** turn `sleep_hours` (a number) into `sleep_group` (a label).
+**Goal:** turn `sleep_hours` (a number) into `sleep_group` (a categorical label).
 
 
-## The `mutate()` Function
+## Modifying a column of data set
 
-::: {.callout-note title="Purpose"}
-Adds new columns or modifies existing ones in a data frame. It operates column-wise and preserves the total number of rows.
+::: {.callout-note title="`mutate()`"}
+This function adds new columns or modifies existing ones in a data frame. It operates column-wise and preserves the total number of rows.
 :::
   
 ```r
-# Example: Create new columns for weekly sleep and high-sleep status
 survey |>
   mutate(
     sleep_hours_week = sleep_hours * 7,
     high_sleep = sleep_hours > 7.5
   )
 ```
+
+:::{.callout-important title="Checkpoint"}
+What is the code from above trying to do?
+:::
 
 ## Creating logical vectors {.smaller}
 
@@ -250,8 +253,9 @@ survey |>
   mutate(short_sleep = sleep_hours < 6, .keep = "used")
 ```
 
-- `short_sleep` is a **logical column**
+- `short_sleep` is a logical column
 - We can store it with `mutate()`, or use the same test directly inside `filter()`
+- What is `.keep`?
 
 
 ## Choosing which columns survive {.smaller}
@@ -280,7 +284,7 @@ survey |>
 ::: {.callout-important title="A blank is not FALSE"}
 Students who left `sleep_hours` blank get `NA`, not `FALSE`. *R* does not know whether they slept less than 6 hours.
 
-- We deal with these rows in Step 2.
+- We deal with these rows in later in Step 2 `filter()`.
 :::
 
 ## Comparing text
@@ -294,12 +298,15 @@ survey |>
 ```
 
 ::: {.callout-caution title="Spelling and capitals matter"}
-`"Yes"`, `"yes"`, and `"YES"` are three different values to R. Check how your data is spelled before you compare it.
+`"Yes"`, `"yes"`, and `"YES"` are three different values to R. Check how your data is spelled before you compare it. We will look at how we deal with text (strings) next class.
 :::
 
 ## Assigning labels using Logicals
 
-`if_else(condition, true, false)` picks one value when the condition is `TRUE` and another when it is `FALSE`.
+
+:::{.callout-note title="`if_else(condition, true, false)`"}
+This function picks one value when the `condition` is `TRUE` and another when it is `FALSE`.
+:::
 
 ```{webr}
 survey |>
@@ -310,12 +317,14 @@ survey |>
   count(sleep_label)
 ```
 
-- Two groups: fine
 - A blank `sleep_hours` stays `NA`
+- This works for two groups (`TRUE` vs `FALSE` conditions)
 
 ## What if we want three groups?
 
-We could nest one `if_else()` inside another:
+:::{.callout-note title="Piecewise functions"}
+We could nest one `if_else()` inside another. Every extra group adds another layer.
+:::
 
 ```{webr}
 survey |>
@@ -329,9 +338,7 @@ survey |>
   count(sleep_group)
 ```
 
-- It works, but it is already hard to read
-- Every extra group adds another layer
-- Time for `case_when()`
+- It works, but it is already hard to read: time for `case_when()`
 
 ## `case_when()`
 
@@ -567,7 +574,7 @@ survey |>
 - `!is.na(x)` reads as "x is **not** missing"
 - This is the first half of our pipeline's `filter()` line
 
-## Combining logical vectors
+## Combining logical vectors {.smaller}
 
 Once you have several logical vectors, combine them with Boolean algebra:
 
@@ -635,7 +642,7 @@ survey |>
 
 It does not give an error, but it does not work either. Every row came back. Why?
 
-## What went wrong?
+## What went wrong? {.smaller}
 
 1. R first evaluates `stress_level == 4`, producing a logical vector (call it `four`)
 2. Then it computes `four | 5`
@@ -674,9 +681,11 @@ survey |>
 
 That gets long. There is a shortcut.
 
-## `%in%`
+## Is this in my vector?
 
-`x %in% y` returns a logical vector the same length as `x`. It is `TRUE` whenever a value of `x` appears anywhere in `y`.
+:::{.callout-note title="`x %in% y`"}
+This returns a logical vector the same length as `x`. It is `TRUE` whenever a value of `x` appears anywhere in `y`.
+:::
 
 ```{webr}
 1:12 %in% c(1, 5, 11)
@@ -722,7 +731,7 @@ survey |>
 ## Exercise 2
 
 ::: {.callout-tip title="Live exercise"}
-1. How many students left `sleep_hours` blank? Then count the blanks in **every** column.
+1. How many students left `sleep_hours` blank? Then count the blanks in every column.
 2. Find students in Arts or Business who sleep less than 6 hours. Use `%in%`.
 3. Find the same students again, this time using `|`. 
 :::
@@ -798,11 +807,11 @@ sleep_summary <- survey |>
 ## Key Functions Here
 
 ::: {.callout-note title="`group_by()`"}
-Changes the unit of analysis by organizing rows into groups. It is invisible on its own, but changes how subsequent functions operate.
+This function changes the unit of analysis by organizing rows into groups. It is invisible on its own, but changes how subsequent functions operate.
 :::
 
 ::: {.callout-tip title="`summarize()`"}
-Collapses multiple rows down into a single summary statistic per group. 
+This function collapses multiple rows down into a single summary statistic per group. 
 :::
 
 ```r
@@ -853,7 +862,7 @@ Try deleting `na.rm = TRUE` from the code above. One `NA` in a group makes the w
 `mean(x < 6, na.rm = TRUE)` is the proportion **among students who answered**. It does not count blank rows as `FALSE`. In our pipeline, we avoid the problem by filtering the blank rows out first.
 :::
 
-## `any()` and `all()`
+## `any()` and `all()` {.smaller}
 
 - `any(x)` is the equivalent of `|`: `TRUE` if there is at least one `TRUE` in `x`
 - `all(x)` is the equivalent of `&`: `TRUE` only if **every** value of `x` is `TRUE`
@@ -872,6 +881,10 @@ survey |>
 - We usually want to know *how many*, which is why `sum()` and `mean()` come first
 
 ## Putting it together
+
+::: {.callout-caution title="Watch the group sizes"}
+Look at the `n` column. Some groups have only 10 to 15 students, so their averages are less trustworthy than the large ones.
+:::
 
 ```{webr}
 sleep_summary <- survey |>
@@ -895,14 +908,11 @@ sleep_summary <- survey |>
 sleep_summary
 ```
 
-::: {.callout-caution title="Watch the group sizes"}
-Look at the `n` column. Some groups have only 10 to 15 students, so their averages are less trustworthy than the large ones.
-:::
 
 ## Exercise 3
 
 ::: {.callout-tip title="Live exercise"}
-For each **program**, find:
+For each program, find:
 
 - `n_short`: how many students sleep under 6 hours
 - `prop_short`: the proportion of students who sleep under 6 hours
@@ -942,12 +952,12 @@ survey |>
 
 > Do students who sleep less get lower grades, and does it depend on their program?
 
-- **Overall:** students who sleep more have higher average grades
-- **Within each program:** the differences are small and not consistent
-- **Why:** programs differ in both sleep and grades, so mixing them together created the overall pattern
+- Overall: students who sleep more have higher average grades
+- Within each program:** the differences are small and not consistent
+- Why: programs differ in both sleep and grades, so mixing them together created the overall pattern
 
 ::: {.callout-caution title="Caution: What we cannot say"}
-- This is survey data, so it shows **association**, not cause
+- This is survey data, so it shows *association*, not cause
 - Some groups are small, so differences of a point or two mean little
 - A good analyst checks the group sizes before telling a story
 :::
@@ -956,10 +966,10 @@ survey |>
 
 A logical vector is simple (each value is `TRUE`, `FALSE`, or `NA`), but it is very powerful.
 
-- **Create** them with `>`, `<`, `<=`, `>=`, `==`, `!=`, and `is.na()`
-- **Combine** them with `!`, `&`, and `|`
-- **Summarize** them with `any()`, `all()`, `sum()`, and `mean()`
-- **Transform** conditionally with `if_else()` and `case_when()`
+- Create them with `>`, `<`, `<=`, `>=`, `==`, `!=`, and `is.na()`
+- Combine them with `!`, `&`, and `|`
+- Summarize them with `any()`, `all()`, `sum()`, and `mean()`
+- Transform conditionally with `if_else()` and `case_when()`
 
 ## What's next
 
@@ -969,5 +979,5 @@ Logical vectors will keep coming back:
 - In Chapter 17 (Dates and times), you will build logical vectors by comparing dates and times
 
 ::: {.callout-important title="Up Next"}
-**numbers and strings**. The survey has a `bedtime` column where students typed their bedtime in many different ways. We will clean it up.
+**Numbers and Strings**. The survey has a `bedtime` column where students typed their bedtime in many different ways. We will clean it up.
 :::
