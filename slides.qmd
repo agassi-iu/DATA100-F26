@@ -32,6 +32,10 @@ title: "Lecture Slides"
 - [Lecture 7 Slides](slides/DATA100-F26-Lecture-7.html)
 
 
+## Group Project Guidance 1
+- [Group Project Guidance Slides](slides/DATA100-F26-Group-Project-Guidance-1.html)
+
+
 ## Lecture 8: Data Tidying - Logical Vectors
 - [Lecture 8 Slides](slides/DATA100-F26-Lecture-8.html)
 
