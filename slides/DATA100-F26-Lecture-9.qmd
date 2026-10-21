@@ -71,7 +71,47 @@ library(tidyverse)
 library(readr)
 
 survey <- read.csv("data/sleep_survey_v2.csv", fileEncoding = "WINDOWS-1252")
+bed_clean <- survey |>
+  select(student_id, bedtime) |>
+  mutate(bedtime_clean = str_to_lower(str_trim(bedtime))) |>
+  separate_wider_delim(
+    bedtime_clean,
+    delim = " ",
+    names = c("time", "ampm"),
+    too_few = "align_start",
+    too_many = "merge"
+  )
+program_summary <- survey |>
+  filter(!is.na(sleep_hours)) |>
+  group_by(program) |>
+  summarize(
+    n = n(),
+    mean_sleep = mean(sleep_hours)
+  ) |>
+  mutate(
+    hours = mean_sleep %/% 1,
+    minutes = round((mean_sleep %% 1) * 60),
+    rank_least = min_rank(mean_sleep)
+  )
 ```
+
+## What the chart looks like without any work
+
+```{r echo=FALSE}
+survey |>
+  filter(!is.na(sleep_hours)) |>
+  group_by(program) |>
+  summarize(mean_sleep = mean(sleep_hours)) |>
+  ggplot(aes(x = mean_sleep, y = program, fill = program)) +
+  geom_col(show.legend = FALSE) +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.15))) +
+  labs(
+    title = "Average sleep by program",
+    x = "Hours per night", y = NULL
+  ) +
+  theme_minimal(base_size = 14)
+```
+
 
 ## Foreshadowing the final output of today
 
@@ -84,7 +124,7 @@ survey |>
     hours = mean_sleep %/% 1,
     minutes = round((mean_sleep %% 1) * 60),
     program = fct_reorder(program, mean_sleep),
-    label = str_glue("{hours} h {minutes} min")
+    label = str_c(hours, " h ", minutes, " min")
   ) |>
   ggplot(aes(x = mean_sleep, y = program, fill = program)) +
   geom_col(show.legend = FALSE) +
@@ -125,14 +165,14 @@ I may leave some of the undiscussed functions or tools in an *appendix table* at
 | Step | Tool (Chapter 13) |
 |--------|-----------------|
 | Fix numbers typed as text | `parse_number()` |
-| Count students | `count()`, `n()`, `n_distinct()` |
+| Count students | `count()`, `n()` |
 | Transform columns | `pmin()`, `pmax()`, `%/%`, `%%`, `round()`, `cut()` |
 | Rank programs | `min_rank()` |
 | Summarize | `mean()`, `median()` |
 
 ## Making numbers: 
 
-:::[.callout-note title="`parse_number()`"]
+::: {.callout-note title="`parse_number()`"}
 Numbers sometimes arrive as text, typically when data is imported. *readr* has two parsers:
 - `parse_double()` for strings that are clean numbers
 - `parse_number()` for strings with extra text around the number
@@ -175,24 +215,6 @@ survey |>
 ::: {.callout-warning title="n() only works inside dplyr verbs"}
 `n()` returns the size of the current group. Outside of `summarize()`, `mutate()`, or `filter()`, there is no "current group", so it fails.
 - i.e. `survey |> n(program)` doesn't mean anything.
-:::
-
-## Unique values
-
-::: {.callout-note title="`n_distinct()`"}
-This function counts the unique values of `x`. A quick check: does every student appear only once?
-:::
-
-```{webr}
-survey |>
-  summarize(
-    students = n(),
-    unique_ids = n_distinct(student_id)
-  )
-```
-
-::: {.callout-caution title="NA counts as a value"}
-By default `n_distinct()` counts `NA` as one more distinct value. Add `na.rm = TRUE` if you do not want that.
 :::
 
 ## Recycling Vectors
@@ -405,13 +427,11 @@ program_summary
 ## Exercise 1
 
 ::: {.callout-tip title="Live exercise"}
-1. Use `cut()` to make a `study_band` column from `study_hours_week`: under 10, 10 to 19, 20 to 29, and 30 or more. Count the students in each band.
-2. For each program, compute the mean **and** median of `study_hours_week`, rounded to 1 decimal place. Which program has the biggest gap between them?
+Use `cut()` to make a `study_band` column from `study_hours_week`: under 10, 10 to 19, 20 to 29, and 30 or more. Count the students in each band.
 :::
 
 ```{webr}
 #| exercise: ex_numbers
-# Part 1
 survey |>
   mutate(
     study_band = cut(
@@ -419,19 +439,11 @@ survey |>
     )
   ) |>
   count(study_band)
-
-# Part 2
-survey |>
-  group_by(program) |>
-  summarize(
-
-  )
 ```
 
 ```{webr}
 #| exercise: ex_numbers
 #| solution: true
-# Part 1
 survey |>
   mutate(
     study_band = cut(
@@ -442,14 +454,6 @@ survey |>
     )
   ) |>
   count(study_band)
-
-# Part 2
-survey |>
-  group_by(program) |>
-  summarize(
-    mean_study = round(mean(study_hours_week), 1),
-    median_study = round(median(study_hours_week), 1)
-  )
 ```
 
 
@@ -460,7 +464,7 @@ survey |>
 
 | Step | Tool (Chapter 14) |
 |------|-------------------|
-| Build text from data | `str_c()`, `str_glue()` |
+| Build text from data | `str_c()` |
 | Measure text | `str_length()` |
 | Split one column into several | `separate_wider_delim()` |
 | Tidy up capitals | `str_to_lower()`, `str_to_upper()` |
@@ -484,30 +488,13 @@ df |> mutate(greeting = str_c("Hi ", name, "!"))
 Just like in arithmetic, if any input is `NA`, the result is `NA`. The fourth greeting is missing.
 :::
 
-## Make it simpler!
-
-:::{.callout-note title="`str_glue()`"}
-`str_c()` gets awkward with many pieces. `str_glue()` lets you write the whole string in one go, with `{ }` marking code to evaluate.
-:::
-
-
-```{webr}
-df <- tibble(name = c("Flora", "David", "Terra", NA))
-df |> mutate(greeting = str_glue("Hi {name}!"))
-```
-
-::: {.callout-warning title="NA behaves differently"}
-Unlike `str_c()`, `str_glue()` converts a missing value to the text `"NA"`.
-:::
-
-
 ## Piecing everything together
 
 Using the `program_summary` from Part 1, this builds the labels for our chart:
 
 ```{webr}
 program_summary |>
-  mutate(label = str_glue("{program}: {hours} h {minutes} min"))
+  mutate(label = str_c(program, ": ", hours, " h ", minutes, " min"))
 ```
 
 ## Oh wait! What's the problem?
@@ -646,22 +633,6 @@ bed_std |>
 
 - Rows we cannot trust remain as `NA`
 
-## `str_c()` or `str_glue()` for unclear rows?
-
-```{webr}
-bed_clean |>
-  filter(is.na(ampm)) |>
-  mutate(
-    with_str_c = str_c(time, " ", ampm),
-    with_str_glue = str_glue("{time} {ampm}")
-  ) |>
-  select(bedtime, with_str_c, with_str_glue)
-```
-
-::: {.callout-important title="NA is honest"}
-`str_c()` keeps the `NA`: we do not know the bedtime. `str_glue()` turns it into text like `"23:30 NA"`, which **looks like data but is not**. Choose `str_c()` when a missing piece should make the whole result missing.
-:::
-
 ## How far did we get? {.smaller}
 
 | Problem | Solved today? |
@@ -713,7 +684,6 @@ survey |>
 ::: {.callout-tip title="Live exercise"}
 1. How many students typed a `bedtime` longer than 10 characters? What do those entries look like?
 2. Use `str_c()` to make a label for each student, like `S499733 (Arts): 11:30 PM`. What happens to students with a blank bedtime?
-3. Repeat Part 2 with `str_glue()`. How do the blank bedtimes look now?
 :::
 
 ```{webr}
@@ -725,12 +695,6 @@ survey |>
   head(5)
 
 # Part 2
-survey |>
-  mutate(label = ) |>
-  select(label) |>
-  head(5)
-
-# Part 3
 survey |>
   mutate(label = ) |>
   select(label) |>
@@ -749,12 +713,6 @@ survey |>
 # Part 2: blank bedtimes give NA for the whole label
 survey |>
   mutate(label = str_c(student_id, " (", program, "): ", bedtime)) |>
-  select(label) |>
-  head(5)
-
-# Part 3: blank bedtimes become the text "NA" inside the label
-survey |>
-  mutate(label = str_glue("{student_id} ({program}): {bedtime}")) |>
   select(label) |>
   head(5)
 ```
@@ -907,7 +865,7 @@ Typing groupings by hand is fine for five drinks. With many levels, you would us
 program_summary |>
   mutate(
     program = fct_reorder(program, mean_sleep),
-    label = str_glue("{hours} h {minutes} min")
+    label = str_c(hours, " h ", minutes, " min")
   ) |>
   ggplot(aes(x = mean_sleep, y = program, fill = program)) +
   geom_col(show.legend = FALSE) +
@@ -927,36 +885,57 @@ program_summary |>
 ## Exercise 3
 
 ::: {.callout-tip title="Live exercise"}
-Make a bar chart of `favourite_drink` for students who answered the question:
+For students who answered the favourite drink question:
 
-1. Order the bars from the most common drink to the least common with `fct_infreq(factor)`
-2. Keep the top 3 drinks and lump the rest into `"Other"` with `fct_lump_n(factor, n = 3)`
+1. Count the students for each drink, then draw a sideways column chart with the drinks ordered from the most common to the least common, using `fct_reorder()`.
+2. Use `fct_collapse()` to group the drinks into `"Hot"` (Coffee, Tea) and `"Cold"` (Energy drink, Pop, Water). Count the students in each group.
 :::
 
 ```{webr}
 #| exercise: ex_factors
+# Part 1
+survey |>
+  filter(!is.na(favourite_drink)) |>
+  count(favourite_drink) |>
+  mutate(favourite_drink = fct_reorder(favourite_drink, )) |>
+  ggplot(aes(x = n, y = favourite_drink)) +
+  geom_col()
+
+# Part 2
 survey |>
   filter(!is.na(favourite_drink)) |>
   mutate(
-    favourite_drink =
+    drink_type = fct_collapse(
+      favourite_drink,
+
+    )
   ) |>
-  ggplot(aes(x = favourite_drink)) +
-  geom_bar()
+  count(drink_type)
 ```
 
 ```{webr}
 #| exercise: ex_factors
 #| solution: true
+# Part 1
+survey |>
+  filter(!is.na(favourite_drink)) |>
+  count(favourite_drink) |>
+  mutate(favourite_drink = fct_reorder(favourite_drink, n)) |>
+  ggplot(aes(x = n, y = favourite_drink)) +
+  geom_col()
+
+# Part 2
 survey |>
   filter(!is.na(favourite_drink)) |>
   mutate(
-    favourite_drink = fct_infreq(favourite_drink),
-    favourite_drink = fct_lump_n(favourite_drink, n = 3)
+    drink_type = fct_collapse(
+      favourite_drink,
+      Hot = c("Coffee", "Tea"),
+      Cold = c("Energy drink", "Pop", "Water")
+    )
   ) |>
-  ggplot(aes(x = favourite_drink)) +
-  geom_bar()
+  count(drink_type)
 ```
-
 
 # Wrap-up
 
@@ -965,7 +944,7 @@ survey |>
 | Question | Chapter | Tools we used |
 |----------|---------|---------------|
 | How much do they sleep? | **Numbers** | `count()`, `%/%`, `%%`, `round()`, `cut()`, `min_rank()`, `median()` |
-| When do they go to bed? | **Strings** | `str_c()`, `str_glue()`, `str_length()`, `separate_wider_delim()`, `str_to_lower()` |
+| When do they go to bed? | **Strings** | `str_c()`, `str_length()`, `separate_wider_delim()`, `str_to_lower()` |
 | Is the chart readable? | **Factors** | `fct_reorder()`, `fct_relevel()`, `fct_recode()`, `fct_collapse()` |
 
 ## What's next, and sources
@@ -992,6 +971,7 @@ Content adapted from *R for Data Science (2e)* by Hadley Wickham, Mine Çetinkay
 |------|--------------|--------------|---------------------|
 | `count(..., wt = )` | A weighted count: a sum of another column | `count(program, wt = study_hours_week)` | Counts |
 | `sum(is.na(x))` | Counts the missing values | `sum(is.na(sleep_hours))` | Counts |
+| `n_distinct()` | Counts the unique values. Does every student appear once? `NA` counts as a value unless `na.rm = TRUE` | `n_distinct(student_id)` | Counts |
 | `floor()`, `ceiling()` | Round down / up. No `digits` argument, so scale first | `floor(123.456)` | Rounding |
 
 
@@ -1037,7 +1017,6 @@ Content adapted from *R for Data Science (2e)* by Hadley Wickham, Mine Çetinkay
 | Raw strings: `r"(...)"` | Write a string without escaping anything | `r"(C:\data)"` | Raw strings |
 | `\n`, `\t`, `\u00b5` | New line, tab, and other special characters | `"a\tb"` | Other special characters |
 | `str_view()` | Shows the **raw** contents of a string, without the escapes | `str_view("a\\b")` | Escapes |
-| `{{` and `}}` in `str_glue()` | Writes a literal brace | `str_glue("{{x}}")` | `str_glue()` |
 
 
 ## Strings: other tools (iii) {.smaller}

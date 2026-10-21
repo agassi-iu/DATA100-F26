@@ -49,6 +49,13 @@
     "text": "My sleep report\nI want a summary of the sleep survey on:\n\nHow much do students in each program sleep? (Numbers, Chapter 13)\nWhen do they go to bed? (Strings, Chapter 14)\nCan we make the chart readable? (Factors, Chapter 16)"
   },
   {
+    "objectID": "slides/DATA100-F26-Lecture-9.html#what-the-chart-looks-like-without-any-work",
+    "href": "slides/DATA100-F26-Lecture-9.html#what-the-chart-looks-like-without-any-work",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "What the chart looks like without any work",
+    "text": "What the chart looks like without any work"
+  },
+  {
     "objectID": "slides/DATA100-F26-Lecture-9.html#foreshadowing-the-final-output-of-today",
     "href": "slides/DATA100-F26-Lecture-9.html#foreshadowing-the-final-output-of-today",
     "title": "DATA100 Introduction to Data Analytics",
@@ -67,14 +74,14 @@
     "href": "slides/DATA100-F26-Lecture-9.html#learning-objectives",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Learning Objectives",
-    "text": "Learning Objectives\n\n\n\n\n\n\n\nStep\nTool (Chapter 13)\n\n\n\n\nFix numbers typed as text\nparse_number()\n\n\nCount students\ncount(), n(), n_distinct()\n\n\nTransform columns\npmin(), pmax(), %/%, %%, round(), cut()\n\n\nRank programs\nmin_rank()\n\n\nSummarize\nmean(), median()"
+    "text": "Learning Objectives\n\n\n\n\n\n\n\nStep\nTool (Chapter 13)\n\n\n\n\nFix numbers typed as text\nparse_number()\n\n\nCount students\ncount(), n()\n\n\nTransform columns\npmin(), pmax(), %/%, %%, round(), cut()\n\n\nRank programs\nmin_rank()\n\n\nSummarize\nmean(), median()"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-9.html#making-numbers",
     "href": "slides/DATA100-F26-Lecture-9.html#making-numbers",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Making numbers:",
-    "text": "Making numbers:\n:::[.callout-note title=“parse_number()”] Numbers sometimes arrive as text, typically when data is imported. readr has two parsers: - parse_double() for strings that are clean numbers - parse_number() for strings with extra text around the number :::\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCheckpoint\n\n\nDo you see what these functions are trying to do?"
+    "text": "Making numbers:\n\n\n\n\n\n\n\nparse_number()\n\n\nNumbers sometimes arrive as text, typically when data is imported. readr has two parsers: - parse_double() for strings that are clean numbers - parse_number() for strings with extra text around the number\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCheckpoint\n\n\nDo you see what these functions are trying to do?"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-9.html#counting",
@@ -82,13 +89,6 @@
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Counting",
     "text": "Counting\n\n\n\n\n\n\n\ncount()\n\n\nThis function gives a quick tally of how many rows have each value. Add sort = TRUE to see the biggest groups first.\n\n\n\n\n\n\n\n\n\n\n\n\ncount() is a shortcut. The long way lets you compute extra summaries in the same step:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nn() only works inside dplyr verbs\n\n\nn() returns the size of the current group. Outside of summarize(), mutate(), or filter(), there is no “current group”, so it fails. - i.e. survey |&gt; n(program) doesn’t mean anything."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#unique-values",
-    "href": "slides/DATA100-F26-Lecture-9.html#unique-values",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Unique values",
-    "text": "Unique values\n\n\n\n\n\n\n\nn_distinct()\n\n\nThis function counts the unique values of x. A quick check: does every student appear only once?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNA counts as a value\n\n\nBy default n_distinct() counts NA as one more distinct value. Add na.rm = TRUE if you do not want that."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-9.html#recycling-vectors",
@@ -165,14 +165,14 @@
     "href": "slides/DATA100-F26-Lecture-9.html#exercise-1",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Exercise 1",
-    "text": "Exercise 1\n\n\n\n\n\n\n\nLive exercise\n\n\n\nUse cut() to make a study_band column from study_hours_week: under 10, 10 to 19, 20 to 29, and 30 or more. Count the students in each band.\nFor each program, compute the mean and median of study_hours_week, rounded to 1 decimal place. Which program has the biggest gap between them?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n# Part 1\nsurvey |&gt;\n  mutate(\n    study_band = cut(\n      study_hours_week,\n      breaks = c(-Inf, 10, 20, 30, Inf),\n      labels = c(\"Under 10\", \"10 to 19\", \"20 to 29\", \"30 or more\"),\n      right = FALSE\n    )\n  ) |&gt;\n  count(study_band)\n\n# Part 2\nsurvey |&gt;\n  group_by(program) |&gt;\n  summarize(\n    mean_study = round(mean(study_hours_week), 1),\n    median_study = round(median(study_hours_week), 1)\n  )\n# Part 1\nsurvey |&gt;\n  mutate(\n    study_band = cut(\n      study_hours_week,\n      breaks = c(-Inf, 10, 20, 30, Inf),\n      labels = c(\"Under 10\", \"10 to 19\", \"20 to 29\", \"30 or more\"),\n      right = FALSE\n    )\n  ) |&gt;\n  count(study_band)\n\n# Part 2\nsurvey |&gt;\n  group_by(program) |&gt;\n  summarize(\n    mean_study = round(mean(study_hours_week), 1),\n    median_study = round(median(study_hours_week), 1)\n  )"
+    "text": "Exercise 1\n\n\n\n\n\n\n\nLive exercise\n\n\nUse cut() to make a study_band column from study_hours_week: under 10, 10 to 19, 20 to 29, and 30 or more. Count the students in each band.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nsurvey |&gt;\n  mutate(\n    study_band = cut(\n      study_hours_week,\n      breaks = c(-Inf, 10, 20, 30, Inf),\n      labels = c(\"Under 10\", \"10 to 19\", \"20 to 29\", \"30 or more\"),\n      right = FALSE\n    )\n  ) |&gt;\n  count(study_band)\nsurvey |&gt;\n  mutate(\n    study_band = cut(\n      study_hours_week,\n      breaks = c(-Inf, 10, 20, 30, Inf),\n      labels = c(\"Under 10\", \"10 to 19\", \"20 to 29\", \"30 or more\"),\n      right = FALSE\n    )\n  ) |&gt;\n  count(study_band)"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-9.html#learning-objectives-1",
     "href": "slides/DATA100-F26-Lecture-9.html#learning-objectives-1",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Learning Objectives",
-    "text": "Learning Objectives\n\n\n\nStep\nTool (Chapter 14)\n\n\n\n\nBuild text from data\nstr_c(), str_glue()\n\n\nMeasure text\nstr_length()\n\n\nSplit one column into several\nseparate_wider_delim()\n\n\nTidy up capitals\nstr_to_lower(), str_to_upper()"
+    "text": "Learning Objectives\n\n\n\nStep\nTool (Chapter 14)\n\n\n\n\nBuild text from data\nstr_c()\n\n\nMeasure text\nstr_length()\n\n\nSplit one column into several\nseparate_wider_delim()\n\n\nTidy up capitals\nstr_to_lower(), str_to_upper()"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-9.html#combining-text",
@@ -180,13 +180,6 @@
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Combining text:",
     "text": "Combining text:\n\n\n\n\n\n\n\nstr_c()\n\n\nThis function takes any number of vectors and returns a character vector. It is similar to base R’s paste0(), but it follows tidyverse recycling rules.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMissing values are contagious\n\n\nJust like in arithmetic, if any input is NA, the result is NA. The fourth greeting is missing."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#make-it-simpler",
-    "href": "slides/DATA100-F26-Lecture-9.html#make-it-simpler",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Make it simpler!",
-    "text": "Make it simpler!\n\n\n\n\n\n\n\nstr_glue()\n\n\nstr_c() gets awkward with many pieces. str_glue() lets you write the whole string in one go, with { } marking code to evaluate.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNA behaves differently\n\n\nUnlike str_c(), str_glue() converts a missing value to the text \"NA\"."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-9.html#piecing-everything-together",
@@ -238,13 +231,6 @@
     "text": "Putting the pieces together\nUse str_c() to rebuild one standard bedtime. We only do it when ampm is really am or pm:\n\n\n\n\n\n\n\n\n\nRows we cannot trust remain as NA"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-9.html#str_c-or-str_glue-for-unclear-rows",
-    "href": "slides/DATA100-F26-Lecture-9.html#str_c-or-str_glue-for-unclear-rows",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "str_c() or str_glue() for unclear rows?",
-    "text": "str_c() or str_glue() for unclear rows?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNA is honest\n\n\nstr_c() keeps the NA: we do not know the bedtime. str_glue() turns it into text like \"23:30 NA\", which looks like data but is not. Choose str_c() when a missing piece should make the whole result missing."
-  },
-  {
     "objectID": "slides/DATA100-F26-Lecture-9.html#how-far-did-we-get",
     "href": "slides/DATA100-F26-Lecture-9.html#how-far-did-we-get",
     "title": "DATA100 Introduction to Data Analytics",
@@ -263,7 +249,7 @@
     "href": "slides/DATA100-F26-Lecture-9.html#exercise-2",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Exercise 2",
-    "text": "Exercise 2\n\n\n\n\n\n\n\nLive exercise\n\n\n\nHow many students typed a bedtime longer than 10 characters? What do those entries look like?\nUse str_c() to make a label for each student, like S499733 (Arts): 11:30 PM. What happens to students with a blank bedtime?\nRepeat Part 2 with str_glue(). How do the blank bedtimes look now?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n# Part 1\nsurvey |&gt;\n  filter(str_length(bedtime) &gt; 10) |&gt;\n  count(bedtime, sort = TRUE) |&gt;\n  head(5)\n\n# Part 2: blank bedtimes give NA for the whole label\nsurvey |&gt;\n  mutate(label = str_c(student_id, \" (\", program, \"): \", bedtime)) |&gt;\n  select(label) |&gt;\n  head(5)\n\n# Part 3: blank bedtimes become the text \"NA\" inside the label\nsurvey |&gt;\n  mutate(label = str_glue(\"{student_id} ({program}): {bedtime}\")) |&gt;\n  select(label) |&gt;\n  head(5)\n# Part 1\nsurvey |&gt;\n  filter(str_length(bedtime) &gt; 10) |&gt;\n  count(bedtime, sort = TRUE) |&gt;\n  head(5)\n\n# Part 2: blank bedtimes give NA for the whole label\nsurvey |&gt;\n  mutate(label = str_c(student_id, \" (\", program, \"): \", bedtime)) |&gt;\n  select(label) |&gt;\n  head(5)\n\n# Part 3: blank bedtimes become the text \"NA\" inside the label\nsurvey |&gt;\n  mutate(label = str_glue(\"{student_id} ({program}): {bedtime}\")) |&gt;\n  select(label) |&gt;\n  head(5)"
+    "text": "Exercise 2\n\n\n\n\n\n\n\nLive exercise\n\n\n\nHow many students typed a bedtime longer than 10 characters? What do those entries look like?\nUse str_c() to make a label for each student, like S499733 (Arts): 11:30 PM. What happens to students with a blank bedtime?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n# Part 1\nsurvey |&gt;\n  filter(str_length(bedtime) &gt; 10) |&gt;\n  count(bedtime, sort = TRUE) |&gt;\n  head(5)\n\n# Part 2: blank bedtimes give NA for the whole label\nsurvey |&gt;\n  mutate(label = str_c(student_id, \" (\", program, \"): \", bedtime)) |&gt;\n  select(label) |&gt;\n  head(5)\n# Part 1\nsurvey |&gt;\n  filter(str_length(bedtime) &gt; 10) |&gt;\n  count(bedtime, sort = TRUE) |&gt;\n  head(5)\n\n# Part 2: blank bedtimes give NA for the whole label\nsurvey |&gt;\n  mutate(label = str_c(student_id, \" (\", program, \"): \", bedtime)) |&gt;\n  select(label) |&gt;\n  head(5)"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-9.html#can-we-make-the-chart-readable",
@@ -319,14 +305,14 @@
     "href": "slides/DATA100-F26-Lecture-9.html#exercise-3",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Exercise 3",
-    "text": "Exercise 3\n\n\n\n\n\n\n\nLive exercise\n\n\nMake a bar chart of favourite_drink for students who answered the question:\n\nOrder the bars from the most common drink to the least common with fct_infreq(factor)\nKeep the top 3 drinks and lump the rest into \"Other\" with fct_lump_n(factor, n = 3)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nsurvey |&gt;\n  filter(!is.na(favourite_drink)) |&gt;\n  mutate(\n    favourite_drink = fct_infreq(favourite_drink),\n    favourite_drink = fct_lump_n(favourite_drink, n = 3)\n  ) |&gt;\n  ggplot(aes(x = favourite_drink)) +\n  geom_bar()\nsurvey |&gt;\n  filter(!is.na(favourite_drink)) |&gt;\n  mutate(\n    favourite_drink = fct_infreq(favourite_drink),\n    favourite_drink = fct_lump_n(favourite_drink, n = 3)\n  ) |&gt;\n  ggplot(aes(x = favourite_drink)) +\n  geom_bar()"
+    "text": "Exercise 3\n\n\n\n\n\n\n\nLive exercise\n\n\nFor students who answered the favourite drink question:\n\nCount the students for each drink, then draw a sideways column chart with the drinks ordered from the most common to the least common, using fct_reorder().\nUse fct_collapse() to group the drinks into \"Hot\" (Coffee, Tea) and \"Cold\" (Energy drink, Pop, Water). Count the students in each group.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n# Part 1\nsurvey |&gt;\n  filter(!is.na(favourite_drink)) |&gt;\n  count(favourite_drink) |&gt;\n  mutate(favourite_drink = fct_reorder(favourite_drink, n)) |&gt;\n  ggplot(aes(x = n, y = favourite_drink)) +\n  geom_col()\n\n# Part 2\nsurvey |&gt;\n  filter(!is.na(favourite_drink)) |&gt;\n  mutate(\n    drink_type = fct_collapse(\n      favourite_drink,\n      Hot = c(\"Coffee\", \"Tea\"),\n      Cold = c(\"Energy drink\", \"Pop\", \"Water\")\n    )\n  ) |&gt;\n  count(drink_type)\n# Part 1\nsurvey |&gt;\n  filter(!is.na(favourite_drink)) |&gt;\n  count(favourite_drink) |&gt;\n  mutate(favourite_drink = fct_reorder(favourite_drink, n)) |&gt;\n  ggplot(aes(x = n, y = favourite_drink)) +\n  geom_col()\n\n# Part 2\nsurvey |&gt;\n  filter(!is.na(favourite_drink)) |&gt;\n  mutate(\n    drink_type = fct_collapse(\n      favourite_drink,\n      Hot = c(\"Coffee\", \"Tea\"),\n      Cold = c(\"Energy drink\", \"Pop\", \"Water\")\n    )\n  ) |&gt;\n  count(drink_type)"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-9.html#back-to-the-report",
     "href": "slides/DATA100-F26-Lecture-9.html#back-to-the-report",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Back to the report",
-    "text": "Back to the report\n\n\n\n\n\n\n\n\nQuestion\nChapter\nTools we used\n\n\n\n\nHow much do they sleep?\nNumbers\ncount(), %/%, %%, round(), cut(), min_rank(), median()\n\n\nWhen do they go to bed?\nStrings\nstr_c(), str_glue(), str_length(), separate_wider_delim(), str_to_lower()\n\n\nIs the chart readable?\nFactors\nfct_reorder(), fct_relevel(), fct_recode(), fct_collapse()"
+    "text": "Back to the report\n\n\n\n\n\n\n\n\nQuestion\nChapter\nTools we used\n\n\n\n\nHow much do they sleep?\nNumbers\ncount(), %/%, %%, round(), cut(), min_rank(), median()\n\n\nWhen do they go to bed?\nStrings\nstr_c(), str_length(), separate_wider_delim(), str_to_lower()\n\n\nIs the chart readable?\nFactors\nfct_reorder(), fct_relevel(), fct_recode(), fct_collapse()"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-9.html#whats-next-and-sources",
@@ -340,7 +326,7 @@
     "href": "slides/DATA100-F26-Lecture-9.html#numbers-other-tools-i",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Numbers: other tools (i)",
-    "text": "Numbers: other tools (i)\n\n\n\n\n\n\n\n\n\nTool\nWhat it does\nTiny example\nRead the section on\n\n\n\n\ncount(..., wt = )\nA weighted count: a sum of another column\ncount(program, wt = study_hours_week)\nCounts\n\n\nsum(is.na(x))\nCounts the missing values\nsum(is.na(sleep_hours))\nCounts\n\n\nfloor(), ceiling()\nRound down / up. No digits argument, so scale first\nfloor(123.456)\nRounding"
+    "text": "Numbers: other tools (i)\n\n\n\n\n\n\n\n\n\nTool\nWhat it does\nTiny example\nRead the section on\n\n\n\n\ncount(..., wt = )\nA weighted count: a sum of another column\ncount(program, wt = study_hours_week)\nCounts\n\n\nsum(is.na(x))\nCounts the missing values\nsum(is.na(sleep_hours))\nCounts\n\n\nn_distinct()\nCounts the unique values. Does every student appear once? NA counts as a value unless na.rm = TRUE\nn_distinct(student_id)\nCounts\n\n\nfloor(), ceiling()\nRound down / up. No digits argument, so scale first\nfloor(123.456)\nRounding"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-9.html#numbers-other-tools-ii",
@@ -375,7 +361,7 @@
     "href": "slides/DATA100-F26-Lecture-9.html#strings-other-tools-ii",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Strings: other tools (ii)",
-    "text": "Strings: other tools (ii)\n\n\n\n\n\n\n\n\n\nTool\nWhat it does\nTiny example\nRead the section on\n\n\n\n\nRaw strings: r\"(...)\"\nWrite a string without escaping anything\nr\"(C:\\data)\"\nRaw strings\n\n\n\\n, \\t, \\u00b5\nNew line, tab, and other special characters\n\"a\\tb\"\nOther special characters\n\n\nstr_view()\nShows the raw contents of a string, without the escapes\nstr_view(\"a\\\\b\")\nEscapes\n\n\n{{ and }} in str_glue()\nWrites a literal brace\nstr_glue(\"{{x}}\")\nstr_glue()"
+    "text": "Strings: other tools (ii)\n\n\n\n\n\n\n\n\n\nTool\nWhat it does\nTiny example\nRead the section on\n\n\n\n\nRaw strings: r\"(...)\"\nWrite a string without escaping anything\nr\"(C:\\data)\"\nRaw strings\n\n\n\\n, \\t, \\u00b5\nNew line, tab, and other special characters\n\"a\\tb\"\nOther special characters\n\n\nstr_view()\nShows the raw contents of a string, without the escapes\nstr_view(\"a\\\\b\")\nEscapes"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-9.html#strings-other-tools-iii",
@@ -1561,41 +1547,6 @@
     "text": "Course Hub\nAnnouncements, submissions, and discussions happen on MyLearningSpace — this site is your reference hub for slides, schedule, and syllabus details.\n\n\n\n\n\n\nTipBefore the first class\n\n\n\nPlease install R and RStudio before our first lab. See the Slides page for the Lecture 1 walkthrough on installation."
   },
   {
-    "objectID": "assignments.html",
-    "href": "assignments.html",
-    "title": "Assignments",
-    "section": "",
-    "text": "All labs and the capstone project are submitted through MyLearningSpace. This page tracks what’s due and when."
-  },
-  {
-    "objectID": "assignments.html#labs",
-    "href": "assignments.html#labs",
-    "title": "Assignments",
-    "section": "Labs",
-    "text": "Labs\n\n\n\nLab\nTopic\nDate\n\n\n\n\nLab 0\nIntroduction\nSep 14\n\n\nLab 1\n—\nSep 21\n\n\nLab 2\n—\nSep 28\n\n\nLab 3\n—\nOct 05\n\n\nLab 4\n—\nOct 19\n\n\nLab 5\n—\nOct 26\n\n\nLab 6\n—\nNov 02\n\n\nLab 7\n—\nNov 16\n\n\nLab 8\n—\nNov 23\n\n\nLab 9\n—\nNov 30\n\n\nLab 10\n—\nDec 02\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nLabs are worth 30% of your final grade, to be submitted during labs weekly on Mondays. See the Syllabus for full grading breakdown."
-  },
-  {
-    "objectID": "assignments.html#capstone-project",
-    "href": "assignments.html#capstone-project",
-    "title": "Assignments",
-    "section": "Capstone Project",
-    "text": "Capstone Project\nThe capstone project (15%) has multiple checkpoints across the term. Details and rubric will be posted here as each checkpoint approaches.\n\n\n\nCheckpoint\nDescription\nDue\n\n\n\n\nProposal\nDataset + research question\nTBD\n\n\nProgress Check\nDraft analysis\nTBD\n\n\nFinal Submission\nReport + presentation\nDec 3"
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation:\n\nPhD in Mathematical and Statistical Modelling at Wilfrid Laurier University | 2026\nMMath in Statistics at University of Waterloo | 2020\nBBA/BA Financial Mathematics at Wilfrid Laurier University | 2019\n\nTeaching Experience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nFall 2026: Wednesdays 14:00–16:00 in room LH3073, or by appointment."
-  },
-  {
-    "objectID": "about.html#bio",
-    "href": "about.html#bio",
-    "title": "About",
-    "section": "",
-    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation:\n\nPhD in Mathematical and Statistical Modelling at Wilfrid Laurier University | 2026\nMMath in Statistics at University of Waterloo | 2020\nBBA/BA Financial Mathematics at Wilfrid Laurier University | 2019\n\nTeaching Experience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nFall 2026: Wednesdays 14:00–16:00 in room LH3073, or by appointment."
-  },
-  {
     "objectID": "courses.html",
     "href": "courses.html",
     "title": "Teaching Experience",
@@ -1622,6 +1573,41 @@
     "title": "Teaching Experience",
     "section": "Graduate TA Experience",
     "text": "Graduate TA Experience\n\nWilfrid Laurier Univesrity\n\nMA307/507 (Numerical Analysis)\nMA451/651 (Stochastic Calculus)\nMA477/677 (Quantitative Financial Risk Management)\nST359/559 (Probability II)\nST462/662 (Advanced Regression)\nST473/674 (Financial Data Analysis)\nST494/694 (Statistical Learning)"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation:\n\nPhD in Mathematical and Statistical Modelling at Wilfrid Laurier University | 2026\nMMath in Statistics at University of Waterloo | 2020\nBBA/BA Financial Mathematics at Wilfrid Laurier University | 2019\n\nTeaching Experience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nFall 2026: Wednesdays 14:00–16:00 in room LH3073, or by appointment."
+  },
+  {
+    "objectID": "about.html#bio",
+    "href": "about.html#bio",
+    "title": "About",
+    "section": "",
+    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation:\n\nPhD in Mathematical and Statistical Modelling at Wilfrid Laurier University | 2026\nMMath in Statistics at University of Waterloo | 2020\nBBA/BA Financial Mathematics at Wilfrid Laurier University | 2019\n\nTeaching Experience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nFall 2026: Wednesdays 14:00–16:00 in room LH3073, or by appointment."
+  },
+  {
+    "objectID": "assignments.html",
+    "href": "assignments.html",
+    "title": "Assignments",
+    "section": "",
+    "text": "All labs and the capstone project are submitted through MyLearningSpace. This page tracks what’s due and when."
+  },
+  {
+    "objectID": "assignments.html#labs",
+    "href": "assignments.html#labs",
+    "title": "Assignments",
+    "section": "Labs",
+    "text": "Labs\n\n\n\nLab\nTopic\nDate\n\n\n\n\nLab 0\nIntroduction\nSep 14\n\n\nLab 1\n—\nSep 21\n\n\nLab 2\n—\nSep 28\n\n\nLab 3\n—\nOct 05\n\n\nLab 4\n—\nOct 19\n\n\nLab 5\n—\nOct 26\n\n\nLab 6\n—\nNov 02\n\n\nLab 7\n—\nNov 16\n\n\nLab 8\n—\nNov 23\n\n\nLab 9\n—\nNov 30\n\n\nLab 10\n—\nDec 02\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nLabs are worth 30% of your final grade, to be submitted during labs weekly on Mondays. See the Syllabus for full grading breakdown."
+  },
+  {
+    "objectID": "assignments.html#capstone-project",
+    "href": "assignments.html#capstone-project",
+    "title": "Assignments",
+    "section": "Capstone Project",
+    "text": "Capstone Project\nThe capstone project (15%) has multiple checkpoints across the term. Details and rubric will be posted here as each checkpoint approaches.\n\n\n\nCheckpoint\nDescription\nDue\n\n\n\n\nProposal\nDataset + research question\nTBD\n\n\nProgress Check\nDraft analysis\nTBD\n\n\nFinal Submission\nReport + presentation\nDec 3"
   },
   {
     "objectID": "exams/MT1_Practice.html",
