@@ -557,7 +557,7 @@
     "href": "slides/DATA100-F26-Lecture-5.html#the-diamond-data",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "The Diamond Data",
-    "text": "The Diamond Data\n\n\n\n\n\n\n\nThe diamonds variables\n\n\n\n\n\nVariable\nMeaning\n\n\n\n\nprice\nprice in US dollars\n\n\ncarat\nweight of the diamond\n\n\ncut\nquality of the cut: Fair, Good, Very Good, Premium, Ideal\n\n\ncolor\ndiamond color, from J (worst) to D (best)\n\n\nclarity\nhow clear the diamond is: I1 (worst) to IF (best)\n\n\nx, y, z\nlength, width, depth in mm\n\n\ndepth\ntotal depth percentage\n\n\ntable\nwidth of the top of the diamond relative to widest point"
+    "text": "The Diamond Data\n\n\n\nVariable\nMeaning\n\n\n\n\nprice\nprice in US dollars\n\n\ncarat\nweight of the diamond\n\n\ncut\nquality of the cut: Fair, Good, Very Good, Premium, Ideal\n\n\ncolor\ndiamond color, from J (worst) to D (best)\n\n\nclarity\nhow clear the diamond is: I1 (worst) to IF (best)\n\n\nx, y, z\nlength, width, depth in mm\n\n\ndepth\ntotal depth percentage\n\n\ntable\nwidth of the top of the diamond relative to widest point"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-5.html#a-first-look",
@@ -585,7 +585,7 @@
     "href": "slides/DATA100-F26-Lecture-5.html#clusters-mean-subgroups",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Clusters mean subgroups",
-    "text": "Clusters mean subgroups\nWhen a distribution separates into clumps, you can ask yourself:\n\nHow are observations within a cluster alike?\nHow do clusters differ from each other?\nWhat explains the split?\nCould the clusters be an artifact rather than real structure?\n\n::: {.callout-important title”Recall from last week”} The three clusters from Financial Wellness data: stressed, coping, and comfortable. :::"
+    "text": "Clusters mean subgroups\nWhen a distribution separates into clumps, you can ask yourself:\n\nHow are observations within a cluster alike?\nHow do clusters differ from each other?\nWhat explains the split?\nCould the clusters be an artifact rather than real structure?\n\n\n\n\n\n\n\n\nRecall from last week\n\n\nThe three clusters from Financial Wellness data: stressed, coping, and comfortable."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-5.html#unusual-values-hide-in-plain-sight",
@@ -1985,7 +1985,7 @@
     "href": "slides/DATA100-F26-Lecture-10.html#code-1",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Code",
-    "text": "Code\n\nsleep_times |&gt;\n  mutate(\n    after_midnight = bedtime_dt &gt; make_datetime(2026, 10, 6, tz = \"America/Toronto\")\n  ) |&gt;\n  filter(!is.na(avg_grade)) |&gt;\n  ggplot(aes(x = sleep_hours, y = avg_grade, colour = after_midnight)) +\n  geom_point(alpha = 0.5) +\n  scale_colour_manual(\n    values = c(\"FALSE\" = \"grey60\", \"TRUE\" = \"firebrick\"),\n    labels = c(\"Bed before midnight\", \"Awake after midnight\"),\n    name = NULL\n  ) +\n  labs(\n    title = \"Sleep and grades, by bedtime\",\n    x = \"Hours of sleep\", y = \"Average grade\"\n  ) +\n  theme_minimal(base_size = 14)"
+    "text": "Code\n\nsleep_times |&gt;\n  mutate(\n    after_midnight = bedtime_dt &gt; make_datetime(2026, 10, 28, tz = \"America/Toronto\")\n  ) |&gt;\n  filter(!is.na(avg_grade)) |&gt;\n  ggplot(aes(x = sleep_hours, y = avg_grade, colour = after_midnight)) +\n  geom_point(alpha = 0.5) +\n  scale_colour_manual(\n    values = c(\"FALSE\" = \"grey60\", \"TRUE\" = \"firebrick\"),\n    labels = c(\"Bed before midnight\", \"Awake after midnight\"),\n    name = NULL\n  ) +\n  labs(\n    title = \"Sleep and grades, by bedtime\",\n    x = \"Hours of sleep\", y = \"Average grade\"\n  ) +\n  theme_minimal(base_size = 14)"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-10.html#what-does-the-scatter-plot-say",

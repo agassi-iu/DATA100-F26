@@ -715,7 +715,7 @@ asleep |>
 ```{r echo=FALSE}
 sleep_times |>
   mutate(
-    after_midnight = bedtime_dt > make_datetime(2026, 10, 6, tz = "America/Toronto")
+    after_midnight = bedtime_dt > make_datetime(2026, 10, 28, tz = "America/Toronto")
   ) |>
   filter(!is.na(avg_grade)) |>
   ggplot(aes(x = sleep_hours, y = avg_grade, colour = after_midnight)) +
@@ -737,7 +737,7 @@ sleep_times |>
 ```{r eval=FALSE}
 sleep_times |>
   mutate(
-    after_midnight = bedtime_dt > make_datetime(2026, 10, 6, tz = "America/Toronto")
+    after_midnight = bedtime_dt > make_datetime(2026, 10, 28, tz = "America/Toronto")
   ) |>
   filter(!is.na(avg_grade)) |>
   ggplot(aes(x = sleep_hours, y = avg_grade, colour = after_midnight)) +

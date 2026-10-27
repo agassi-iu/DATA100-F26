@@ -74,9 +74,7 @@ Even when the research question arrives fully formed, you still have to know whe
 
 
 ::: {.callout-note title="Data cleaning"}
-
 A *special case* of EDA: you're asking whether the data meets your expectations, and using the same tools like visualization, transformation, modelling to find out.
-
 :::
 
 ## Two Guiding Questions
@@ -133,7 +131,6 @@ distribution is how you see it.**
 
 ## The Diamond Data {.smaller}
 
-::: {.callout-note title="The `diamonds` variables"}
 | Variable | Meaning |
 |---|---|
 | `price` | price in US dollars |
@@ -144,7 +141,6 @@ distribution is how you see it.**
 | `x`, `y`, `z` | length, width, depth in mm |
 | `depth` | total depth percentage |
 | `table` | width of the top of the diamond relative to widest point |
-:::
 
 ## A first look
 
@@ -185,7 +181,7 @@ When a distribution separates into clumps, you can ask yourself:
 - What explains the split?
 - Could the clusters be an artifact rather than real structure?
 
-::: {.callout-important title"Recall from last week"}
+::: {.callout-important title="Recall from last week"}
 The three clusters from Financial Wellness data: stressed, coping, and comfortable.
 :::
 
@@ -283,11 +279,9 @@ diamonds2 <- diamonds |>
 ```
 
 ::: {.callout-note}
-
 `filter()` basically isolates the rows where the `y` values are between 3 and 20, while keeping the rest of the variables (as long as their corresponding `y` is between 3 and 20). It discards the rest.
 
 `mutate()` changes (like mutation) the column of `y` such that if `y` is less than 3 **OR** `y` is greater than 20, then the corresponding `y` value becomes `NA`.
-
 :::
 
 
