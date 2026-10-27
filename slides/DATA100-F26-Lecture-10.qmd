@@ -693,7 +693,7 @@ asleep |>
 
 ## Code
 
-```{r echo=FALSE}
+```{r eval=FALSE}
 asleep |>
   group_by(program) |>
   summarize(share_asleep = mean(asleep_1am)) |>

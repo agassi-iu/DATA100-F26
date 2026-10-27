@@ -1971,7 +1971,7 @@
     "href": "slides/DATA100-F26-Lecture-10.html#code",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Code",
-    "text": "Code"
+    "text": "Code\n\nasleep |&gt;\n  group_by(program) |&gt;\n  summarize(share_asleep = mean(asleep_1am)) |&gt;\n  mutate(program = fct_reorder(program, share_asleep)) |&gt;\n  ggplot(aes(x = share_asleep, y = program)) +\n  geom_col() +\n  geom_text(aes(label = scales::percent(share_asleep, accuracy = 1)), hjust = -0.1) +\n  scale_x_continuous(expand = expansion(mult = c(0, 0.2))) +\n  labs(\n    title = \"Share of students asleep at 1 AM\",\n    x = NULL, y = NULL\n  ) +\n  theme_minimal(base_size = 14)"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-10.html#better-sleep-better-grades",
