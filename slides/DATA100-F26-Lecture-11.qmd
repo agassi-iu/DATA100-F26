@@ -3,7 +3,7 @@ title: "DATA100 Introduction to Data Analytics"
 subtitle: "Lecture 11: Missing Values and Joins"
 author: "Agassi Iu"
 institute: "Wilfrid Laurier University"
-date: "November 3, 2026"
+date: "October 29, 2026"
 format:
   live-revealjs:
     resources:
@@ -594,7 +594,11 @@ counts <- tibble(
 )
 
 counts |>
-  complete()
+  complete(
+    weekday = c(),
+    fill = list(n = 0)
+  ) |>
+  mutate(n = replace_na())
 ```
 
 ```{webr}
@@ -686,7 +690,9 @@ A primary key is a column whose values are unique: no two rows share one, so eac
 
 :::{.callout-note title="`left_join()`"}
 The function `left_join(x, y)` keeps every row of `x` and adds the matching columns of `y`. In the end, you will get the same number of rows but more columns (more information you learn about each observation). 
+
 - You can also use `join_by(a == b)` to say which column in `x` matches with which column in `y`
+
 :::
 
 ```{webr}
@@ -706,8 +712,8 @@ survey_drinks |>
 ```{webr}
 survey_drinks |>
   filter(is.na(favourite_drink)) |>
-  select(student_id, favourite_drink, caffeine_mg) |>
-  head(5)
+  select(student_id, favourite_drink, caffeine_mg) 
+
 
 survey_drinks |>
   summarize(missing_caffeine = sum(is.na(caffeine_mg)))

@@ -1194,7 +1194,7 @@
     "href": "slides/DATA100-F26-Lecture-11.html#combining-tables",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Combining tables",
-    "text": "Combining tables\n\n\n\n\n\n\n\nleft_join()\n\n\nThe function left_join(x, y) keeps every row of x and adds the matching columns of y. In the end, you will get the same number of rows but more columns (more information you learn about each observation). - You can also use join_by(a == b) to say which column in x matches with which column in y"
+    "text": "Combining tables\n\n\n\n\n\n\n\nleft_join()\n\n\nThe function left_join(x, y) keeps every row of x and adds the matching columns of y. In the end, you will get the same number of rows but more columns (more information you learn about each observation).\n\nYou can also use join_by(a == b) to say which column in x matches with which column in y"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-11.html#what-about-students-with-no-drink",
