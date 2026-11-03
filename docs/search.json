@@ -2566,7 +2566,7 @@
     "href": "slides/DATA100-F26-Lecture-12.html#operators-at-a-glance",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Operators at a glance",
-    "text": "Operators at a glance\n\n\n\n\n\n\n\n\n\n\nOperator\nName\nReturns\nExample\nResult\n\n\n\n\n&\nand\nTRUE or FALSE\nTRUE & FALSE\nFALSE\n\n\n|\nor\nTRUE or FALSE\nTRUE | FALSE\nTRUE\n\n\n!\nnot\nTRUE or FALSE\n!TRUE\nFALSE\n\n\n==\nequal to\nTRUE or FALSE\n5 == 5\nTRUE\n\n\n%in%\nis in a list\nTRUE or FALSE\n2 %in% c(1, 2, 3)\nTRUE\n\n\n%/%\ninteger division\na number\n7%/%3\n2\n\n\n%%\nremainder\na number\n7 %% 3\n1\n\n\n\n\n\n\n\n\n\n\nWatch out for\n\n\n\n%% is the odd one out: it gives a number, not TRUE or FALSE\n== tests for equality. A single = assigns a value\nWith an NA, most of these return NA (NA %in% NA is the exception)"
+    "text": "Operators at a glance\n\n\n\n\n\n\n\n\n\n\nOperator\nName\nReturns\nExample\nResult\n\n\n\n\n&\nand\nTRUE or FALSE\nTRUE & FALSE\nFALSE\n\n\n|\nor\nTRUE or FALSE\nTRUE | FALSE\nTRUE\n\n\n!\nnot\nTRUE or FALSE\n!TRUE\nFALSE\n\n\n==\nequal to\nTRUE or FALSE\n5 == 5\nTRUE\n\n\n%in%\nis in a list\nTRUE or FALSE\n2 %in% c(1, 2, 3)\nTRUE\n\n\n%/%\ninteger division\na number\n7%/%3\n2\n\n\n%%\nremainder\na number\n7 %% 3\n1\n\n\n\n\n\n\n\n\n\n\nWatch out for\n\n\n\n== tests for equality. A single = assigns a value\nWith an NA, most of these return NA (NA %in% NA is the exception)"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-12.html#comparisons-and-na",
@@ -2720,7 +2720,7 @@
     "href": "slides/DATA100-F26-Lecture-12.html#why-pivot",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Why pivot?",
-    "text": "Why pivot?\n\n\nWide: one column per quiz\n\n\n\nstudent\nquiz1\nquiz2\nquiz3\n\n\n\n\nAna\n80\n90\n85\n\n\nBen\n70\n75\nNA\n\n\n\n\nLong: one row per student and quiz\n\n\n\nstudent\nquiz\nscore\n\n\n\n\nJerry\nquiz1\n80\n\n\nJerry\nquiz2\n90\n\n\nJerry\nquiz3\n85\n\n\nBen\nquiz1\n70\n\n\nBen\nquiz2\n75\n\n\nBen\nquiz3\nNA\n\n\n\n\n\nThe wide table is easy for people to read\nMost R tools want the long one: ggplot2 maps quiz to the x-axis or a colour, and group_by(quiz) needs a quiz column\nPivoting changes the shape, not the information"
+    "text": "Why pivot?\n\n\nWide: one column per quiz\n\n\n\nstudent\nquiz1\nquiz2\nquiz3\n\n\n\n\nJerry\n80\n90\n85\n\n\nBen\n70\n75\nNA\n\n\n\n\nLong: one row per student and quiz\n\n\n\nstudent\nquiz\nscore\n\n\n\n\nJerry\nquiz1\n80\n\n\nJerry\nquiz2\n90\n\n\nJerry\nquiz3\n85\n\n\nBen\nquiz1\n70\n\n\nBen\nquiz2\n75\n\n\nBen\nquiz3\nNA\n\n\n\n\n\nThe wide table is easy for people to read\nMost R tools want the long one: ggplot2 maps quiz to the x-axis or a colour, and group_by(quiz) needs a quiz column\nPivoting changes the shape, not the information"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-12.html#same-data-two-shapes",

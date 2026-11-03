@@ -47,7 +47,7 @@ library(lubridate)
 ## What the midterm covers {.smaller}
 
 | Lecture | The problem we solved | Chapter |
-|---------|-----------------------|---------|
+|-------------|-------------------|---------|
 | 8: Logical vectors | Do students who sleep less get lower grades? | 12 |
 | 9: Words and numbers | A sleep report: how much, when, and a readable chart | 13, 14, 16 |
 | 10: Fancy words and numbers | Finish cleaning `bedtime`, then find wake-up times | 15, 17 |
@@ -85,7 +85,6 @@ Almost every wrong answer comes from one of these: an `NA`, a recycled vector, a
 | `%%` | remainder | a number | `7 %% 3` | `1` |
 
 ::: {.callout-warning title="Watch out for"}
-- `%%` is the odd one out: it gives a number, not `TRUE` or `FALSE`
 - `==` tests for equality. A single `=` assigns a value
 - With an `NA`, most of these return `NA` (`NA %in% NA` is the exception)
 :::
@@ -703,7 +702,7 @@ No error. One lowercase letter and the join silently gives `NA`.
 
 | student | quiz1 | quiz2 | quiz3 |
 |---------|-------|-------|-------|
-| Ana | 80 | 90 | 85 |
+| Jerry | 80 | 90 | 85 |
 | Ben | 70 | 75 | `NA` |
 :::
 ::: {.column width="50%"}
@@ -743,7 +742,7 @@ An Excel *pivot table* is roughly `count()` followed by `pivot_wider()`. The boo
 
 ```{webr}
 x <- tibble(
-  student = c("Ana", "Ben"),
+  student = c("Jerry", "Ben"),
   quiz1   = c(80, 70),
   quiz2   = c(90, 75),
   quiz3   = c(85, NA)
@@ -790,7 +789,7 @@ data |>
 
 ```{webr}
 x <- tibble(
-  student = c("Ana", "Ben"),
+  student = c("Jerry", "Ben"),
   quiz1 = c(80, 70), quiz2 = c(90, 75), quiz3 = c(85, NA)
 )
 
