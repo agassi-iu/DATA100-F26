@@ -881,17 +881,7 @@ On Tuesday nobody ordered coffee, so `count()` has **no row** for it: implicit m
 ## Which one should I use? {.smaller}
 
 | You have... | Use | Because |
-|-------------|-----|---------|
-| column names that are really values (`quiz1`, `wk1`, years) | `pivot_longer()` | each value belongs in a cell of one column |
-| a plot to draw (colour, facets, an axis) | long | `ggplot2` needs one column for each of these |
-| a `group_by()` and `summarize()` across those columns | long | you can only group by a column |
-| a column of categories and a number, and you want a grid to read | `pivot_wider()` | a compact table for a report |
-| two groups side by side and you want to subtract them (`quiz2 - quiz1`) | wide | arithmetic across columns is easy |
-| counts from `across()` (Lecture 11) | `pivot_longer()` | one row per column, ready to plot |
-
-## Cleaned with pivot tables {.smaller}
-| You have... | Use | Because |
-|-------------|-----|---------|
+|--------------|-----|--------|
 | column names that are really values (`quiz1`, `wk1`, years) | `pivot_longer()` | each value belongs in a cell of one column |
 | a plot to draw (colour, facets, an axis) | `pivot_longer()` | `ggplot2` needs one column for each of these |
 | a `group_by()` and `summarize()` across those columns | `pivot_longer()` | you can only group by a column |
@@ -899,9 +889,6 @@ On Tuesday nobody ordered coffee, so `count()` has **no row** for it: implicit m
 | a column of categories and a number, and you want a grid to read | `pivot_wider()` | a compact table for a report |
 | two groups side by side and you want to subtract them (`quiz2 - quiz1`) | `pivot_wider()` | arithmetic across columns is easy |
 
-::: {.callout-important title="Rule of thumb"}
-**Long to analyze and plot, wide to present.** You can always pivot back, because pivoting does not change the information.
-:::
 
 
 # Announcements

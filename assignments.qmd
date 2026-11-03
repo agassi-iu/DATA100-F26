@@ -34,3 +34,14 @@ The capstone project (**15%**) has multiple checkpoints across the term. Details
 | Proposal | Dataset + research question | TBD |
 | Progress Check | Draft analysis | TBD |
 | Final Submission | Report + presentation | Dec 3 |
+
+
+
+## Group Project Guidance 1
+- [Visualization](slides/DATA100-F26-Group-Project-Guidance-1.html)
+
+
+
+## Group Project Guidance 2
+- [Data Tidying and Transformation](slides/DATA100-F26-Group-Project-Guidance-2.html)
+

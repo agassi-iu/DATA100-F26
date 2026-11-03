@@ -27382,58 +27382,9 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoib3JkZXJzIDwtIHRpYmJsZShc
 <h2>Which one should I use?</h2>
 <table class="caption-top">
 <colgroup>
-<col style="width: 48%">
+<col style="width: 51%">
 <col style="width: 18%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>You have…</th>
-<th>Use</th>
-<th>Because</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>column names that are really values (<code>quiz1</code>, <code>wk1</code>, years)</td>
-<td><code>pivot_longer()</code></td>
-<td>each value belongs in a cell of one column</td>
-</tr>
-<tr class="even">
-<td>a plot to draw (colour, facets, an axis)</td>
-<td>long</td>
-<td><code>ggplot2</code> needs one column for each of these</td>
-</tr>
-<tr class="odd">
-<td>a <code>group_by()</code> and <code>summarize()</code> across those columns</td>
-<td>long</td>
-<td>you can only group by a column</td>
-</tr>
-<tr class="even">
-<td>a column of categories and a number, and you want a grid to read</td>
-<td><code>pivot_wider()</code></td>
-<td>a compact table for a report</td>
-</tr>
-<tr class="odd">
-<td>two groups side by side and you want to subtract them (<code>quiz2 - quiz1</code>)</td>
-<td>wide</td>
-<td>arithmetic across columns is easy</td>
-</tr>
-<tr class="even">
-<td>counts from <code>across()</code> (Lecture 11)</td>
-<td><code>pivot_longer()</code></td>
-<td>one row per column, ready to plot</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="cleaned-with-pivot-tables" class="slide level2 smaller">
-<h2>Cleaned with pivot tables</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 48%">
-<col style="width: 18%">
-<col style="width: 33%">
+<col style="width: 29%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -27475,21 +27426,6 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoib3JkZXJzIDwtIHRpYmJsZShc
 </tr>
 </tbody>
 </table>
-<div title="Rule of thumb">
-<div class="callout callout-important callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Rule of thumb</strong></p>
-</div>
-<div class="callout-content">
-<p><strong>Long to analyze and plot, wide to present.</strong> You can always pivot back, because pivoting does not change the information.</p>
-</div>
-</div>
-</div>
-</div>
 </section></section>
 <section>
 <section id="announcements" class="title-slide slide level1 center">

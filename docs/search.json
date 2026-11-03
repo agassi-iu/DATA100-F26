@@ -2016,6 +2016,20 @@
     "text": "Capstone Project\nThe capstone project (15%) has multiple checkpoints across the term. Details and rubric will be posted here as each checkpoint approaches.\n\n\n\nCheckpoint\nDescription\nDue\n\n\n\n\nProposal\nDataset + research question\nTBD\n\n\nProgress Check\nDraft analysis\nTBD\n\n\nFinal Submission\nReport + presentation\nDec 3"
   },
   {
+    "objectID": "assignments.html#group-project-guidance-1",
+    "href": "assignments.html#group-project-guidance-1",
+    "title": "Assignments",
+    "section": "Group Project Guidance 1",
+    "text": "Group Project Guidance 1\n\nVisualization"
+  },
+  {
+    "objectID": "assignments.html#group-project-guidance-2",
+    "href": "assignments.html#group-project-guidance-2",
+    "title": "Assignments",
+    "section": "Group Project Guidance 2",
+    "text": "Group Project Guidance 2\n\nData Tidying and Transformation"
+  },
+  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
@@ -2769,14 +2783,7 @@
     "href": "slides/DATA100-F26-Lecture-12.html#which-one-should-i-use",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Which one should I use?",
-    "text": "Which one should I use?\n\n\n\n\n\n\n\n\nYou have…\nUse\nBecause\n\n\n\n\ncolumn names that are really values (quiz1, wk1, years)\npivot_longer()\neach value belongs in a cell of one column\n\n\na plot to draw (colour, facets, an axis)\nlong\nggplot2 needs one column for each of these\n\n\na group_by() and summarize() across those columns\nlong\nyou can only group by a column\n\n\na column of categories and a number, and you want a grid to read\npivot_wider()\na compact table for a report\n\n\ntwo groups side by side and you want to subtract them (quiz2 - quiz1)\nwide\narithmetic across columns is easy\n\n\ncounts from across() (Lecture 11)\npivot_longer()\none row per column, ready to plot"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-12.html#cleaned-with-pivot-tables",
-    "href": "slides/DATA100-F26-Lecture-12.html#cleaned-with-pivot-tables",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Cleaned with pivot tables",
-    "text": "Cleaned with pivot tables\n\n\n\n\n\n\n\n\nYou have…\nUse\nBecause\n\n\n\n\ncolumn names that are really values (quiz1, wk1, years)\npivot_longer()\neach value belongs in a cell of one column\n\n\na plot to draw (colour, facets, an axis)\npivot_longer()\nggplot2 needs one column for each of these\n\n\na group_by() and summarize() across those columns\npivot_longer()\nyou can only group by a column\n\n\ncounts from across() (Lecture 11)\npivot_longer()\none row per column, ready to plot\n\n\na column of categories and a number, and you want a grid to read\npivot_wider()\na compact table for a report\n\n\ntwo groups side by side and you want to subtract them (quiz2 - quiz1)\npivot_wider()\narithmetic across columns is easy\n\n\n\n\n\n\n\n\n\n\nRule of thumb\n\n\nLong to analyze and plot, wide to present. You can always pivot back, because pivoting does not change the information."
+    "text": "Which one should I use?\n\n\n\n\n\n\n\n\nYou have…\nUse\nBecause\n\n\n\n\ncolumn names that are really values (quiz1, wk1, years)\npivot_longer()\neach value belongs in a cell of one column\n\n\na plot to draw (colour, facets, an axis)\npivot_longer()\nggplot2 needs one column for each of these\n\n\na group_by() and summarize() across those columns\npivot_longer()\nyou can only group by a column\n\n\ncounts from across() (Lecture 11)\npivot_longer()\none row per column, ready to plot\n\n\na column of categories and a number, and you want a grid to read\npivot_wider()\na compact table for a report\n\n\ntwo groups side by side and you want to subtract them (quiz2 - quiz1)\npivot_wider()\narithmetic across columns is easy"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-12.html#next-class",
@@ -3757,13 +3764,6 @@
     "title": "Lecture Slides",
     "section": "Lecture 7: Visualization and Midterm Review",
     "text": "Lecture 7: Visualization and Midterm Review\n\nLecture 7 Slides"
-  },
-  {
-    "objectID": "slides.html#group-project-guidance-1",
-    "href": "slides.html#group-project-guidance-1",
-    "title": "Lecture Slides",
-    "section": "Group Project Guidance 1",
-    "text": "Group Project Guidance 1\n\nGroup Project Guidance Slides"
   },
   {
     "objectID": "slides.html#lecture-8-data-tidying-and-transformation---logical-vectors",
