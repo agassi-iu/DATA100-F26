@@ -1,8 +1,7 @@
-drink,serving_ml,caffeine_mg,sugary
-Coffee,240,95,No
-Energy drink,473,160,Yes
-Tea,240,47,No
-Pop,355,34,Yes
-Water,500,0,No
-Matcha,240,70,No
-Bubble tea,500,50,Yes
+item,price,caffeine_mg,has_dairy,prop_sales
+Americano,3.25,225,No,0.14
+Latte,4.5,150,Yes,0.28
+Cappuccino,4.25,150,Yes,0.18
+Mocha,5,175,Yes,0.16
+Matcha,5.25,70,Yes,0.16
+Earl Grey,3,55,No,0.08

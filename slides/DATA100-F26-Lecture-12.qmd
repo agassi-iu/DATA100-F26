@@ -1,0 +1,923 @@
+---
+title: "DATA100 Introduction to Data Analytics"
+subtitle: "Lecture 12: Data Tidying and Transformation Recap + Midterm Review"
+author: "Agassi Iu"
+institute: "Wilfrid Laurier University"
+date: "November 3, 2026"
+format:
+  live-revealjs:
+    theme: sky
+    slide-number: true
+    transition: slide
+    incremental: true
+    embed-resources: true # Embeds figures and libraries into a single portable HTML file
+filters:
+  - live
+webr:
+  packages:
+    - dplyr
+    - tidyr
+    - tibble
+    - stringr
+    - forcats
+    - lubridate
+execute:
+  echo: true
+  warning: false   # Hides warnings and package loading messages
+  message: false
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+<!-- webr setup: no data files in this deck, every example is built by hand -->
+```{webr}
+#| include: false
+#| autorun: true
+library(dplyr)
+library(tidyr)
+library(tibble)
+library(stringr)
+library(forcats)
+library(lubridate)
+```
+
+
+# Midterm review
+
+## What the midterm covers {.smaller}
+
+| Lecture | The problem we solved | Chapter |
+|---------|-----------------------|---------|
+| 8: Logical vectors | Do students who sleep less get lower grades? | 12 |
+| 9: Words and numbers | A sleep report: how much, when, and a readable chart | 13, 14, 16 |
+| 10: Fancy words and numbers | Finish cleaning `bedtime`, then find wake-up times | 15, 17 |
+| 11: Missing values and joins | Can we trust the survey? Does caffeine cost sleep? | 18, 19 |
+| 12: Pivoting (today) | Reading tables | 5 |
+::: {.callout-note title="No survey data in this review"}
+Every example is small enough to work out **by hand**, like the midterm. If you can predict the output of a 3-row tibble, you can handle the big one.
+:::
+
+
+## How to use this review guide?
+
+1. Ask yourself what does each line print? What is the anticipated output?
+2. Click *Run Code* to see the output, and compare it with what you had in mind.
+3. Try to explain your choices. If you were wrong, read the tip below and find out the reason of your mistake.
+
+::: {.callout-tip title="What to look for on the midterm"}
+Almost every wrong answer comes from one of these: an `NA`, a recycled vector, a wrong order, or a key that does not match. Look for them first.
+:::
+
+
+# Logical vectors
+
+
+## Operators at a glance {.smaller}
+
+| Operator | Name | Returns | Example | Result |
+|----------|------|---------|---------|--------|
+| `&` | and | `TRUE` or `FALSE` | `TRUE & FALSE` | `FALSE` |
+| <code>&#124;</code> | or | `TRUE` or `FALSE` | <code>TRUE &#124; FALSE</code> | `TRUE` |
+| `!` | not | `TRUE` or `FALSE` | `!TRUE` | `FALSE` |
+| `==` | equal to | `TRUE` or `FALSE` | `5 == 5` | `TRUE` |
+| `%in%` | is in a list | `TRUE` or `FALSE` | `2 %in% c(1, 2, 3)` | `TRUE` |
+| `%/%` | integer division | a number | `7%/%3` | `2` |
+| `%%` | remainder | a number | `7 %% 3` | `1` |
+
+::: {.callout-warning title="Watch out for"}
+- `%%` is the odd one out: it gives a number, not `TRUE` or `FALSE`
+- `==` tests for equality. A single `=` assigns a value
+- With an `NA`, most of these return `NA` (`NA %in% NA` is the exception)
+:::
+
+## Comparisons and `NA` {.smaller}
+
+What does each line print?
+
+```{webr}
+x <- c(3, NA, 8, 5)
+
+x > 4
+sum(x > 4)
+sum(x > 4, na.rm = TRUE)
+mean(x > 4, na.rm = TRUE)
+```
+
+. . .
+
+::: {.callout-note title="Tracing the code"}
+| Line | Result | Why |
+|-----|-----|---------|
+| `x > 4` | `FALSE`, `NA`, `TRUE`, `TRUE` | the `NA` stays `NA` |
+| `sum(x > 4)` | `NA` | one unknown makes the total unknown |
+| `sum(x > 4, na.rm = TRUE)` | 2 | counts the `TRUE`s among the known values |
+| `mean(x > 4, na.rm = TRUE)` | 0.667 | 2 out of **3** known values, not 2 out of 4 |
+:::
+
+
+## Boolean algebra with `NA` {.smaller}
+
+```{webr}
+x <- c(TRUE, FALSE, NA)
+
+x & NA
+x | NA
+NA == NA
+NA %in% NA
+```
+
+. . .
+
+::: {.callout-note title="Truth table"}
+| `x` | `x & NA` | <code>x &#124; NA</code> |
+|-----|----------|--------------------------|
+| `TRUE` | `NA` | `TRUE` |
+| `FALSE` | `FALSE` | `NA` |
+| `NA` | `NA` | `NA` |
+:::
+
+::: {.callout-tip title="One rule for all of them"}
+If the answer is the same whichever way the `NA` resolves, you get that answer (`FALSE & NA` is `FALSE`, `TRUE | NA` is `TRUE`). Otherwise you get `NA`. `NA == NA` is `NA`, but `NA %in% NA` is `TRUE` because `%in%` follows different rules.
+:::
+
+
+## Why `TRUE | FALSE` is `TRUE`, and `TRUE & FALSE` is `FALSE` {.smaller}
+
+::: {.callout-note title="OR (`|`): at least one must be true"}
+- Example: "In order to pass this course, you must score 90% on the final exam **or** submit a 80-page final report for your group project."
+- Scenario: You score 91% on your final exam (`TRUE`) but you did not submit the final report (`FALSE`)
+- Did you pass? **Yes!** Because you fulfilled at least one of the passing requirements
+- So `TRUE | FALSE` is `TRUE`: a single `TRUE` satisfies the rule
+- That's why `TRUE|NA` is also `TRUE` since both `TRUE|TRUE` and `TRUE|FALSE` give `TRUE
+:::
+
+::: {.callout-tip title="AND (`&`): both must be true"}
+- Example: "In order to pass this course, you must score 90% on the final exam **and** submit a 80-page final report for your group project."
+- Scenario: You score 91% on your final exam (`TRUE`) but you did not submit the final report (`FALSE`)
+- Did you pass? **No!** The condition requires you to both score above 90% on the exam and submit the final report! You only did half the work
+- So `TRUE & FALSE` is `FALSE`: one `FALSE` breaks the rule
+- That's why `FALSE&NA` is also `FALSE` since both `FALSE&TRUE` and `FALSE&FALSE` give `FALSE
+:::
+
+## The `filter()` traps {.smaller}
+
+`pull(stress)` shows which values survive the filter.
+
+```{webr}
+df <- tibble(stress = c(1, 4, 5, 2, NA))
+
+df |> filter(stress == 4 | 5) |> pull(stress)
+df |> filter(stress %in% c(4, 5)) |> pull(stress)
+df |> filter(stress == NA) |> pull(stress)
+df |> filter(is.na(stress)) |> pull(stress)
+```
+
+. . .
+
+::: {.callout-note title="Tracing the code"}
+| Filter | Rows kept | What happened? |
+|------|------|------------|
+| <code>stress == 4 &#124; 5</code> | **all 5**, even the `NA` | `5` counts as `TRUE`, and `NA | TRUE` is `TRUE` |
+| `stress %in% c(4, 5)` | 4 and 5 | `%in%` never returns `NA` |
+| `stress == NA` | none | `== NA` is always `NA`, and `filter()` drops `NA` |
+| `is.na(stress)` | the `NA` row | the right way to find blanks |
+:::
+
+## `case_when()` {.smaller}
+
+```{webr}
+hours <- c(5, 7, 9, NA)
+
+case_when(hours < 6 ~ "Short", hours <= 7.5 ~ "Normal", hours > 7.5 ~ "Long")
+case_when(hours <= 7.5 ~ "Normal", hours < 6 ~ "Short", hours > 7.5 ~ "Long")
+case_when(hours < 6 ~ "Short", hours <= 7.5 ~ "Normal", .default = "Long")
+```
+
+. . .
+
+::: {.callout-note title="Tracing the code"}
+| `hours` | Line 1 | Line 2 (Normal first) | Line 3 (`.default`) |
+|---------|--------|-----------------------|---------------------|
+| 5 | Short | **Normal** | Short |
+| 7 | Normal | Normal | Normal |
+| 9 | Long | Long | Long |
+| `NA` | `NA` | `NA` | **Long** |
+:::
+
+::: {.callout-warning title="Watch out for"}
+- Only the **first** `TRUE` condition is used, so order matters (line 2 never says `"Short"`)
+- `.default` also catches the `NA` (anything that does not satisfies the previous conditions get lumped into the `.default` category)
+:::
+
+
+# Words and numbers
+
+## Recycling {.smaller}
+
+```{webr}
+x <- c(1, 2, 3, 4, 5, 6)
+x * c(1, 2)
+x * c(1, 2, 3, 4)
+
+program <- c("Business", "Arts", "Arts", "Business")
+program == c("Arts", "Business")
+program %in% c("Arts", "Business")
+```
+
+. . .
+
+::: {.callout-note title="Compare position by position"}
+| `program` | recycled partner | `==` | `%in%` |
+|-----------|------------------|------|--------|
+| Business | Arts | `FALSE` | `TRUE` |
+| Arts | Business | `FALSE` | `TRUE` |
+| Arts | Arts | `TRUE` | `TRUE` |
+| Business | Business | `TRUE` | `TRUE` |
+:::
+
+::: {.callout-warning title="Watch out for"}
+- `==` does not ask "is this one of the two?". That is the job of `%in%`
+- Lengths 6 and 2 recycle silently. Lengths 6 and 4 still compute, but R warns that 6 is not a multiple of 4
+:::
+
+
+## `pmin()`, ranks, and the mean {.smaller}
+
+```{webr}
+a <- c(1, 5, 7)
+b <- c(3, 2, NA)
+
+pmin(a, b, na.rm = TRUE)
+min(a, b, na.rm = TRUE)
+
+min_rank(c(30, 10, 20, 10))
+min_rank(desc(c(30, 10, 20, 10)))
+
+mean(c(0, 0, 0, 1, 20))
+median(c(0, 0, 0, 1, 20))
+```
+
+. . .
+
+::: {.callout-note title="Tracing the code"}
+| Line | Result | What happened? |
+|------|---|----------|
+| `pmin(a, b, na.rm = TRUE)` | 1, 2, 7 | row by row; the `NA` is ignored, so row 3 is 7 |
+| `min(a, b, na.rm = TRUE)` | 1 | one value for everything |
+| `min_rank(c(30, 10, 20, 10))` | 4, 1, 3, 1 | the two 10s share rank 1, so the next rank is 3 |
+| `min_rank(desc(...))` | 1, 3, 2, 3 | `desc()` flips the order |
+| `mean()` and `median()` | 4.2 and 0 | one large value pulls the mean up |
+:::
+
+## `%/%`, `%%`, `round()` and `cut()` {.smaller}
+
+```{webr}
+25 %/% 7
+25 %% 7
+round(123.456, 1)
+round(123.456, -1)
+
+x <- c(0, 5, 6, 10)
+cut(x, breaks = c(0, 5, 10), labels = c("low", "high"))
+cut(x, breaks = c(0, 5, 10), labels = c("low", "high"), right = FALSE)
+```
+
+. . .
+
+::: {.callout-note title="Which bin?"}
+| `x` | Default: `(0, 5]`, `(5, 10]` | `right = FALSE`: `[0, 5)`, `[5, 10)` |
+|-----------|---------------------------|-----------------------------------|
+| 0 | `NA` | low |
+| 5 | low | high |
+| 6 | high | high |
+| 10 | high | `NA` |
+:::
+
+::: {.callout-tip title="Tip"}
+- A negative `digits` rounds to the left of the decimal point: `-1` is the nearest ten
+- Values outside the breaks become `NA`
+:::
+
+## Strings and `NA` {.smaller}
+
+```{webr}
+name <- c("Flora", NA, "Terra")
+
+str_c("Hi ", name, "!")
+str_length(c("a", "R for data", NA))
+str_to_lower(str_trim("  PM "))
+```
+
+. . .
+
+::: {.callout-note title="Tracing the code"}
+| Line | Result | Why |
+|-------|----|--------|
+| `str_c("Hi ", name, "!")` | `"Hi Flora!"`, `NA`, `"Hi Terra!"` | an `NA` input gives an `NA` output |
+| `str_length(c("a", "R for data", NA))` | 1, 10, `NA` | spaces count as characters |
+| `str_to_lower(str_trim("  PM "))` | `"pm"` | trim the spaces, then lower the capitals |
+:::
+
+## Splitting text {.smaller}
+
+The first attempt fails. What does the fixed attempt give?
+
+```{webr}
+#| error: true
+times <- tibble(bedtime = c("11:30 pm", "midnight", "around 11 pm"))
+
+times |>
+  separate_wider_delim(bedtime, delim = " ", names = c("time", "ampm"))
+
+times |>
+  separate_wider_delim(
+    bedtime, delim = " ", names = c("time", "ampm"),
+    too_few = "align_start", too_many = "merge"
+  )
+```
+
+. . .
+
+::: {.callout-note title="Why the first attempt errors"}
+| `bedtime` | Pieces | Problem |
+|-----------|--------|---------|
+| 11:30 pm | 2 | fits |
+| midnight | 1 | too few |
+| around 11 pm | 3 | too many |
+:::
+
+::: {.callout-tip title="The fixed attempt"}
+| time | ampm |
+|------|------|
+| 11:30 | pm |
+| midnight | `NA` |
+| around | 11 pm |
+:::
+
+::: {.callout-warning title="Watch out for"}
+`align_start` fills the missing piece with `NA`, and `merge` glues the extra pieces onto the last column. The last row is still wrong (`around` is not a time), so tidy the text first.
+:::
+
+## Factors {.smaller}
+
+```{webr}
+month_levels <- c("Jan", "Feb", "Mar", "Apr")
+f <- factor(c("Mar", "Jan", "Jam", "Apr"), levels = month_levels)
+
+f
+sort(f)
+
+n <- tibble(drink = c("Coffee", "Tea", "Pop"), n = c(30, 50, 10))
+levels(fct_reorder(n$drink, n$n))
+fct_collapse(n$drink, Hot = c("Coffee", "Tea"))
+```
+
+. . .
+
+::: {.callout-note title="Tracing the code"}
+| Line | Result | What happened? |
+|------|-----|--------|
+| `f` | Mar, Jan, `NA`, Apr | `"Jam"` is not in `levels`, so it is silently `NA` |
+| `sort(f)` | Jan, Mar, Apr | sorted by the level order, and the `NA` is dropped |
+| `levels(fct_reorder(drink, n))` | Pop, Coffee, Tea | levels sorted by `n`, smallest first |
+| `fct_collapse(drink, Hot = ...)` | Hot, Hot, Pop | levels you do not mention (Pop) stay the same |
+:::
+
+::: {.callout-tip title="Tip"}
+Smallest first is why the biggest bar ends up at the top of a sideways chart.
+:::
+
+
+# Lecture 10: Fancy words and numbers
+
+## Does it match? {.smaller}
+
+```{webr}
+x <- c("11:30 pm", "23:30", "midnight", "idk", "11:30 PM")
+
+str_detect(x, "pm")
+str_detect(x, regex("pm", ignore_case = TRUE))
+str_detect(x, "\\d")
+str_detect(x, "^\\d{1,2}:\\d{2} ?(am|pm)$")
+```
+
+. . .
+
+::: {.callout-note title="Tracing the code"}
+| `x` | `"pm"` | `ignore_case` | `"\\d"` | Our desired format of time |
+|-----|--------|---------------|---------|------------|
+| 11:30 pm | `TRUE` | `TRUE` | `TRUE` | `TRUE` |
+| 23:30 | `FALSE` | `FALSE` | `TRUE` | `FALSE` |
+| midnight | `FALSE` | `FALSE` | `FALSE` | `FALSE` |
+| idk | `FALSE` | `FALSE` | `FALSE` | `FALSE` |
+| 11:30 PM | `FALSE` | `TRUE` | `TRUE` | `FALSE` |
+:::
+
+
+
+## Cleaning with a chain {.smaller}
+
+```{webr}
+x <- c(" Around 11:30PM", "11.30 p.m.", "midnight")
+
+x |>
+  str_trim() |>
+  str_to_lower() |>
+  str_remove("^(around|about|~) ?") |>
+  str_replace("midnight", "12:00 am") |>
+  str_replace("p\\.m\\.", "pm") |>
+  str_replace("([0-9])(am|pm)", "\\1 \\2") |>
+  str_replace("\\.", ":")
+```
+
+. . .
+
+::: {.callout-note title="Follow each string down the chain"}
+| After | `" Around 11:30PM"` | `"11.30 p.m."` | `"midnight"` |
+|-------------------------------|---------|---------|---------|
+| `str_trim()` and `str_to_lower()` | `"around 11:30pm"` | `"11.30 p.m."` | `"midnight"` |
+| `str_remove()` | `"11:30pm"` | `"11.30 p.m."` | `"midnight"` |
+| `str_replace("midnight", ...)` | `"11:30pm"` | `"11.30 p.m."` | `"12:00 am"` |
+| `str_replace("p\\.m\\.", ...)` | `"11:30pm"` | `"11.30 pm"` | `"12:00 am"` |
+| `str_replace("([0-9](am|pm)", ...)` | `"11:30 pm"` | `"11.30 pm"` | `"12:00 am"` |
+| `str_replace("\\.", ":")` | `"11:30 pm"` | `"11:30 pm"` | `"12:00 am"` |
+:::
+
+
+## Pulling pieces out, and the 24-hour rule {.smaller}
+
+```{webr}
+tibble(clean = c("11:30 pm", "2330", "idk")) |>
+  separate_wider_regex(
+    clean,
+    patterns = c(hh = "\\d{1,2}", ":?", mm = "\\d{0,2}", " ?", ampm = "am|pm|"),
+    too_few = "align_start"
+  )
+
+df <- tibble(hh = c(11, 11, 23, 1, 12), ampm = c("pm", "", "", "", ""))
+
+df |>
+  mutate(
+    hour24 = case_when(
+      ampm == "am" ~ hh %% 12,
+      ampm == "pm" ~ hh %% 12 + 12,
+      hh >= 13 | hh == 0 ~ hh,
+      hh >= 6 & hh <= 11 ~ hh + 12,
+      hh <= 5 | hh == 12 ~ hh %% 12
+    )
+  ) |>
+  pull(hour24)
+```
+
+. . .
+
+::: {.callout-note title="The pieces"}
+| hh | mm | ampm |
+|----|----|------|
+| 11 | 30 | pm |
+| 23 | 30 | (empty) |
+| `NA` | `NA` | `NA` |
+:::
+
+::: {.callout-tip title="The 24-hour rule"}
+| hh | ampm | Applying the rule | `hour24` |
+|------|--------|-----------------|--------|
+| 11 | pm | `pm`: 11 %% 12 + 12 | 23 |
+| 11 | (empty) | 6 to 11, no `am` or `pm`: evening, add 12 | 23 |
+| 23 | (empty) | 13 or more: already 24-hour | 23 |
+| 1 | (empty) | 5 or less: after midnight | 1 |
+| 12 | (empty) | 12 with no `am` or `pm`: 12 %% 12 | 0 |
+:::
+
+
+## Creating date-times {.smaller}
+
+```{webr}
+ymd("2026-10-27")
+mdy("October 27, 2026")
+dmy("27-Oct-2026")
+
+t <- ymd_hms("2026-10-27 06:35:00")
+hour(t)
+minute(t)
+day(t)
+wday(t, label = TRUE)
+
+make_datetime(2026, 10, 27) + hours(25) + minutes(30)
+```
+
+. . .
+
+::: {.callout-note title="Tracing the code"}
+| Line | Result | What happened? |
+|------|--------|---------------|
+| `ymd()`, `mdy()`, `dmy()` | everything returns to `2026-10-27` | the function name spells the order of the pieces |
+| `hour(t)`, `minute(t)` | 6 and 35 | returns hour and minute |
+| `day(t)`, `wday(t, label = TRUE)` | 27 and Tue | day of the month vs day of the week |
+| `make_datetime(...) + hours(25) + minutes(30)` | `2026-10-28 01:30:00 UTC` | 25 hours after midnight rolls over to 1 AM |
+:::
+
+::: {.callout-warning title="Watch out for"}
+With no `tz`, the time zone is UTC.
+:::
+
+## Periods, durations, and `%within%` {.smaller}
+
+```{webr}
+start <- ymd_hms("2026-11-01 00:00:00", tz = "America/Toronto")
+start + days(1)
+start + ddays(1)
+
+bed   <- ymd_hms("2026-10-27 23:30:00", tz = "America/Toronto")
+wake  <- bed + dhours(7.5)
+check <- ymd_hms("2026-10-28 06:45:00", tz = "America/Toronto")
+
+wake
+check %within% interval(bed, wake)
+```
+
+. . .
+
+::: {.callout-note title="Tracing the code"}
+| Line | Result | Why |
+|---------|------|----------|
+| `start + days(1)` | `2026-11-02 EST` | a period moves the clock by one calendar day |
+| `start + ddays(1)` | `2026-11-01 23:00:00 EST` | a duration is exactly 24 hours, and that day has 25 |
+| `wake` | `2026-10-28 07:00:00 EDT` | 11:30 PM plus 7.5 hours |
+| `check %within% interval(bed, wake)` | `TRUE` | 6:45 AM is inside 11:30 PM to 7:00 AM |
+:::
+
+::: {.callout-tip title="Tip"}
+Sleep lasts a fixed amount of time, so we add it with `dhours()`.
+:::
+
+
+# Missing values and joins
+
+## Explicit and implicit missing {.smaller}
+
+Day 2 is explicit. Day 3 is implicit. What does `complete()` do?
+
+```{webr}
+responses <- tibble(day = c(1, 2, 4), n = c(10, NA, 7))
+
+mean(responses$n)
+mean(responses$n, na.rm = TRUE)
+
+responses |>
+  complete(day = 1:4, fill = list(n = 0))
+```
+
+. . .
+
+::: {.callout-note title="The table after `complete()`"}
+| day | n | Was it missing? |
+|-----|---|------|
+| 1 | 10 | present |
+| 2 | `NA` | explicit missing |
+| 3 | 0 | implicit missing |
+| 4 | 7 | present |
+:::
+
+::: {.callout-warning title="Watch out for"}
+`fill` only applies to rows `complete()` adds, so the explicit `NA` on day 2 stays. To fix that one too, add `mutate(n = replace_na(n, 0))`.
+:::
+
+
+## The `NA` counting trap {.smaller}
+
+```{webr}
+sleep <- c(5, NA, 7, 8, NA, 4)
+
+sum(sleep < 6)
+sum(sleep < 6, na.rm = TRUE)
+sum(sleep >= 6, na.rm = TRUE)
+sum(is.na(sleep))
+
+tibble(sleep) |> filter(sleep < 6) |> nrow()
+```
+
+. . .
+
+::: {.callout-note title="Where the 6 students went"}
+| Group | Count | Values |
+|-------|-------|--------|
+| `sleep < 6` | 2 | 5, 4 |
+| `sleep >= 6` | 2 | 7, 8 |
+| `NA` | 2 | in neither group |
+| Total | 6 | |
+:::
+
+
+## Handling `NA` {.smaller}
+
+```{webr}
+x <- c(10, NA, 30, NA)
+
+replace_na(x, 0)
+coalesce(x, 99)
+na_if(c(72, -99, 85), -99)
+
+filled <- replace_na(x, mean(x, na.rm = TRUE))
+c(mean(x, na.rm = TRUE), mean(filled))
+c(sd(x, na.rm = TRUE), sd(filled))
+```
+
+. . .
+
+::: {.callout-note title="Tracing the code"}
+| Line | Result | What happened? |
+|------|--------|-----|
+| `replace_na(x, 0)` | 10, 0, 30, 0 | every `NA` becomes 0 |
+| `coalesce(x, 99)` | 10, 99, 30, 99 | the first value that is not `NA` |
+| `na_if(c(72, -99, 85), -99)` | 72, `NA`, 85 | the code `-99` becomes a real `NA` |
+| mean before and after filling | 20 and 20 | the mean of the known values does not move |
+| `sd` before and after filling | 14.14 and 8.16 | the filled values sit at the mean, so the spread shrinks |
+:::
+
+## Join types {.smaller}
+
+```{webr}
+x <- tibble(key = c(1, 2, 3), x_value = c("a", "b", "c"))
+y <- tibble(key = c(1, 2, 4), y_value = c("A", "B", "D"))
+
+inner_join(x, y, by = "key")
+left_join(x, y, by = "key")
+full_join(x, y, by = "key")
+anti_join(x, y, by = "key")
+semi_join(x, y, by = "key")
+```
+
+. . .
+
+::: {.callout-note title="Tracing the code"}
+| Join | Rows | Keys | Columns |
+|------|------|------|---------|
+| `inner_join()` | 2 | 1, 2 | both |
+| `left_join()` | 3 | 1, 2, 3 | both, `y_value` is `NA` for key 3 |
+| `full_join()` | 4 | 1, 2, 3, 4 | both, `NA` on either side |
+| `anti_join()` | 1 | 3 | `x` only |
+| `semi_join()` | 2 | 1, 2 | `x` only |
+:::
+
+## A key that does not match {.smaller}
+
+```{webr}
+students <- tibble(id = 1:3, favourite_drink = c("Coffee", "coffee", "Tea"))
+drinks <- tibble(drink = c("Coffee", "Tea"), caffeine_mg = c(95, 47))
+
+drinks |> count(drink) |> filter(n > 1)
+
+students |> left_join(drinks, by = join_by(favourite_drink == drink))
+students |> anti_join(drinks, by = join_by(favourite_drink == drink))
+```
+
+. . .
+
+::: {.callout-note title="The `left_join()` result"}
+| id | favourite_drink | caffeine_mg |
+|----|-----------------|-------------|
+| 1 | Coffee | 95 |
+| 2 | coffee | `NA` |
+| 3 | Tea | 47 |
+:::
+
+::: {.callout-tip title="Tip"}
+- Line 4 gives 0 rows: no `drink` appears twice, so `drink` is a **primary key** of `drinks`
+- Line 7 returns exactly student 2: `anti_join()` finds the rows with no match
+- `favourite_drink` is the **foreign key**: it holds values that should exist in the primary key of the other table
+:::
+
+::: {.callout-warning title="What to watch out for"}
+No error. One lowercase letter and the join silently gives `NA`.
+:::
+
+
+# Pivoting
+
+## Why pivot? {.smaller}
+
+:::: {.columns}
+::: {.column width="50%"}
+**Wide**: one column per quiz
+
+| student | quiz1 | quiz2 | quiz3 |
+|---------|-------|-------|-------|
+| Ana | 80 | 90 | 85 |
+| Ben | 70 | 75 | `NA` |
+:::
+::: {.column width="50%"}
+**Long**: one row per student and quiz
+
+| student | quiz | score |
+|---------|------|-------|
+| Jerry | quiz1 | 80 |
+| Jerry | quiz2 | 90 |
+| Jerry | quiz3 | 85 |
+| Ben | quiz1 | 70 |
+| Ben | quiz2 | 75 |
+| Ben | quiz3 | `NA` |
+:::
+::::
+
+- The wide table is easy for people to read
+- Most *R* tools want the long one: `ggplot2` maps `quiz` to the x-axis or a colour, and `group_by(quiz)` needs a `quiz` column
+- Pivoting changes the **shape**, not the information
+
+
+## Same data, two shapes {.smaller}
+
+::: {.callout-note title="Tidy data: three rules"}
+1. Each variable is a column
+2. Each observation is a row
+3. Each value is a cell
+
+The wide table breaks rule 1: `quiz` is one variable, but its values are spread across three column names.
+:::
+
+::: {.callout-tip title="Coming from Excel?"}
+An Excel *pivot table* is roughly `count()` followed by `pivot_wider()`. The book calls the tools `pivot_longer()` and `pivot_wider()`.
+:::
+
+## A tiny example {.smaller}
+
+```{webr}
+x <- tibble(
+  student = c("Ana", "Ben"),
+  quiz1   = c(80, 70),
+  quiz2   = c(90, 75),
+  quiz3   = c(85, NA)
+)
+x
+
+long <- x |>
+  pivot_longer(cols = quiz1:quiz3, names_to = "quiz", values_to = "score")
+long
+
+long |>
+  pivot_wider(names_from = quiz, values_from = score)
+```
+
+. . .
+
+::: {.callout-note title="What happened"}
+- `pivot_longer()`: 2 rows and 4 columns became 6 rows and 3 columns. The old column names (`quiz1`, `quiz2`, `quiz3`) went into `quiz`, and the old values went into `score`
+- `pivot_wider()`: the last call gives back exactly `x`
+:::
+
+## `pivot_longer()`: definition {.smaller}
+
+::: {.callout-note title="`pivot_longer()`"}
+This function makes a table **longer**: it takes several columns and stacks them into rows. You get fewer columns and more rows. Use it when the column names are really values (`quiz1`, `quiz2`, `wk1`, `2024`).
+:::
+
+```r
+data |>
+  pivot_longer(
+    cols = quiz1:quiz3,    # which columns to stack
+    names_to = "quiz",     # new column for the old column NAMES
+    values_to = "score"    # new column for the old column VALUES
+  )
+```
+
+::: {.callout-tip title="Three questions to ask when you construct this table"}
+1. Which columns hold values? (e.g. `quiz1:quiz3`, `-student`, `starts_with("quiz")`, `everything()`)
+2. What do I call the column for the names?
+3. What do I call the column for the values?
+:::
+
+## `pivot_longer()`: examples {.smaller}
+
+```{webr}
+x <- tibble(
+  student = c("Ana", "Ben"),
+  quiz1 = c(80, 70), quiz2 = c(90, 75), quiz3 = c(85, NA)
+)
+
+# Everything except student
+x |> pivot_longer(-student, names_to = "quiz", values_to = "score")
+
+# Drop the missing score
+x |> pivot_longer(-student, names_to = "quiz", values_to = "score",
+                  values_drop_na = TRUE)
+
+# Clean the names: "quiz1" becomes the number 1
+x |> pivot_longer(-student, names_to = "quiz", values_to = "score",
+                  names_prefix = "quiz", names_transform = as.integer)
+
+# From Lecture 11: counting the NAs in every column
+mini <- tibble(sleep = c(7, NA, 6), stress = c(NA, NA, 4))
+
+mini |>
+  summarize(across(everything(), ~ sum(is.na(.x)))) |>
+  pivot_longer(everything(), names_to = "column", values_to = "missing")
+```
+
+. . .
+
+::: {.callout-note title="What each option does"}
+| Option | Effect |
+|-----|___--------|
+| `values_drop_na = TRUE` | removes the rows where the value is `NA` (5 rows instead of 6) |
+| `names_prefix = "quiz"` | removes `"quiz"` from the front of each name |
+| `names_transform = as.integer` | turns the names from text into numbers |
+| last example | one row per column: `sleep` has 1 missing, `stress` has 2 |
+:::
+
+## `pivot_wider()`: definition {.smaller}
+
+::: {.callout-note title="`pivot_wider()`"}
+This function makes a table **wider**: it spreads the values of one column into several new columns. You get more columns and fewer rows. Use it when you want a grid that people can read, or to put two groups side by side.
+:::
+
+```r
+data |>
+  pivot_wider(
+    names_from = quiz,     # column whose VALUES become the new column names
+    values_from = score,   # column whose values fill the new cells
+    values_fill = 0        # optional: what to put in an empty cell
+  )
+```
+
+::: {.callout-tip title="How rows are merged"}
+All the other columns identify the row. Rows with the same values in those columns are merged into one row.
+:::
+
+## `pivot_wider()`: examples {.smaller}
+
+```{webr}
+orders <- tibble(
+  day  = c("Mon", "Mon", "Tue", "Tue"),
+  item = c("tea", "coffee", "tea", "tea")
+)
+
+orders |> count(day, item)
+
+orders |>
+  count(day, item) |>
+  pivot_wider(names_from = item, values_from = n)
+
+orders |>
+  count(day, item) |>
+  pivot_wider(names_from = item, values_from = n, values_fill = 0)
+```
+
+. . .
+
+::: {.callout-note title="Another way to express the table"}
+| day | coffee | tea |
+|-----|--------|-----|
+| Mon | 1 | 1 |
+| Tue | `NA` (or 0 with `values_fill`) | 2 |
+:::
+
+::: {.callout-tip title="Link to Lecture 11"}
+On Tuesday nobody ordered coffee, so `count()` has **no row** for it: implicit missing. `pivot_wider()` turns it into an explicit `NA`, and `values_fill = 0` replaces it, like `complete()` did.
+:::
+
+::: {.callout-warning title="Watch out for"}
+`"tea"` and `"Tea"` are different values, so they become **two** columns.
+:::
+
+## Which one should I use? {.smaller}
+
+| You have... | Use | Because |
+|-------------|-----|---------|
+| column names that are really values (`quiz1`, `wk1`, years) | `pivot_longer()` | each value belongs in a cell of one column |
+| a plot to draw (colour, facets, an axis) | long | `ggplot2` needs one column for each of these |
+| a `group_by()` and `summarize()` across those columns | long | you can only group by a column |
+| a column of categories and a number, and you want a grid to read | `pivot_wider()` | a compact table for a report |
+| two groups side by side and you want to subtract them (`quiz2 - quiz1`) | wide | arithmetic across columns is easy |
+| counts from `across()` (Lecture 11) | `pivot_longer()` | one row per column, ready to plot |
+
+## Cleaned with pivot tables {.smaller}
+| You have... | Use | Because |
+|-------------|-----|---------|
+| column names that are really values (`quiz1`, `wk1`, years) | `pivot_longer()` | each value belongs in a cell of one column |
+| a plot to draw (colour, facets, an axis) | `pivot_longer()` | `ggplot2` needs one column for each of these |
+| a `group_by()` and `summarize()` across those columns | `pivot_longer()` | you can only group by a column |
+| counts from `across()` (Lecture 11) | `pivot_longer()` | one row per column, ready to plot |
+| a column of categories and a number, and you want a grid to read | `pivot_wider()` | a compact table for a report |
+| two groups side by side and you want to subtract them (`quiz2 - quiz1`) | `pivot_wider()` | arithmetic across columns is easy |
+
+::: {.callout-important title="Rule of thumb"}
+**Long to analyze and plot, wide to present.** You can always pivot back, because pivoting does not change the information.
+:::
+
+
+# Announcements
+
+## Next Class
+
+::: {.callout-important title="Midterm practice!"}
+You should probably come to next class as we don't have any practice problems for the upcoming midterm.
+::: 
+
+
+::: {.callout-caution title="Group project"}
+You should have found a group of 4-5 for the final project by now. if you don't have a group, please let me know so that I can put you in a group (randomly).
+:::
+
+::: {.callout-tip title="Studying tips for the midterm"}
+Review your lab assignments (both pre and in-lab). Ask yourself the question: "If I am given this problem where I am required to clean and/or transform the data in a particular way, what should I do? Which functions am I using? How do I verify that I am doing it correctly?
+:::

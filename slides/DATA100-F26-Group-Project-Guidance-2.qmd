@@ -1,0 +1,368 @@
+---
+title: "DATA100 Introduction to Data Analytics"
+subtitle: "Mini-Project: Tidying a Campus Cafe's Orders"
+author: "Agassi Iu"
+institute: "Wilfrid Laurier University"
+date: "November 5, 2026"
+format:
+  live-revealjs:
+    resources:
+      - data/cafe_sales.csv
+      - data/drinks.csv
+    theme: sky
+    slide-number: true
+    transition: slide
+    incremental: true
+    embed-resources: true # Embeds figures and libraries into a single portable HTML file
+filters:
+  - live
+webr:
+  packages:
+    - ggplot2
+    - dplyr
+    - tidyr
+    - tibble
+    - readr
+    - stringr
+    - forcats
+    - purrr
+    - scales
+    - lubridate
+execute:
+  echo: true
+  warning: false   # Hides warnings and package loading messages
+  message: false
+  fig-width: 7
+  fig-height: 4
+  fig-align: center
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+<!-- webr setup -->
+```{webr}
+#| include: false
+#| autorun: true
+library(dplyr)
+library(tidyr)
+library(tibble)
+library(readr)
+library(stringr)
+library(lubridate)
+library(ggplot2)
+
+sales  <- read.csv("data/cafe_sales.csv")
+drinks <- read.csv("data/drinks.csv")
+```
+
+
+## Today's Agenda
+
+::: {.callout-tip title="Exercise"}
+You will do a **mini version** of the data preparation part of the group project: take some messy data, fix what is broken, and use it to answer questions. 
+:::
+
+::: {.callout-caution title="Expectations"}
+
+- This is only for practice, and it counts for our weekly participation.
+
+- First I will show you a toolbox of small examples. Your job is to spot the same problems in the cafe data.
+
+- I have included *checkpoints* in your .Rmd file that tell you whether you are on track. I care more about your effort than a perfect PDF.
+
+:::
+
+
+# Today's Exercise
+
+## Plan for today
+
+| Time | What happens |
+|---|---|
+| Part 1 | Why we cannot just answer the questions |
+| Part 2 | The toolbox: small examples |
+| Part 3 | You work in groups |
+| Part 4 | (Group) Submission |
+
+
+## Today's Participation Credit
+
+1. Get into a group with neighbours sitting next to you.
+2. Work through the five questions in the Rmd. For each: run it, see what goes wrong, fix it, check it, answer it.
+3. Knit into a *pdf* and submit to Gradescope (make sure that everyone's name is in the submission; i.e. you must make a group submission if only one person is submitting).
+
+
+## Meet the data:
+
+::: {.callout-tip title="Cafe Orders"}
+A campus cafe owner has given us two weeks of orders (November 1 to 14). He wants to know how the business has been performing, but the data is messy.
+:::
+
+
+Each row is *one customer*. Each column is *one variable*.
+
+
+## Data description (i){.smaller}
+
+The `sales` table:
+
+| Variable | Type | Description |
+|---|---|---------|
+| `customer_id` | ID | Customer number |
+| `date` | Date | Day of the order (November 1 to 14, 2026) |
+| `time` | Time | Time of the order. The cafe is open from 8:00 to 6:00 |
+| `item` | Categorical | Drink ordered (6 drinks) |
+| `revenue` | Numeric (dollars) | What the customer paid, including any tip |
+| `payment` | Categorical | How they paid |
+| `rating` | Ordinal (1-5) | Rating from 1 (worst) to 5 (best) |
+
+
+## Data description (ii){.smaller}
+
+The `drinks` table has **one row per drink**. It lets you look up facts about each drink.
+
+| Variable | Type | Description |
+|---|---|------|
+| `item` | Categorical | Drink name (same as in `sales`) |
+| `price` | Numeric (dollars) | Menu price of one drink |
+| `caffeine_mg` | Numeric | Caffeine in the drink (mg) |
+| `has_dairy` | Binary | Does it contain dairy? (Yes / No) |
+| `prop_sales` | Numeric | Share of the cafe's sales this drink had historically |
+
+
+## The five questions
+
+1. Do weekend days have more customers per day than weekdays?
+2. What is the most popular drink in the morning and in the afternoon?
+3. Which payment method has the highest average tip, and which has the most customers who gave a rating?
+4. Do actual drink sales match the cafe's historical proportions?
+5. **Fun Challenge:** A "lucky" customer gets a gift mug if their order is placed at exactly ":13" past the hour. Which drink do lucky customers choose most often, and what is their average rating compared with everyone else's?
+
+
+# Why we cannot just answer the questions
+
+## The raw data
+
+```{webr}
+glimpse(sales)
+```
+
+- Nothing crashed. But can we trust this data?
+
+
+## Try the questions on the raw data
+
+```{webr}
+# Q1: how many different dates? (The cafe was open for 14 days.)
+# sales |> count(date) |> nrow()
+
+# Q3: how many payment methods? (The cafe takes 3.)
+# sales |> count(payment)
+
+# Q3: the average revenue?
+# mean(sales$revenue)
+
+# Q5: the average rating? (Ratings go from 1 to 5.)
+# mean(sales$rating)
+```
+
+::: {.callout-warning title="No error, but the wrong answer"}
+Most of these code *ran*. They just gave us nonsense. That is why the data needs fixing before we do anything meaningful with it.
+:::
+
+
+## Today's task
+
+::: {.callout-important title="For every question"}
+1. Run it on the raw data
+2. Name what went wrong
+3. Fix the column
+4. Check it, then answer
+:::
+
+You do not need to memorize any functions. Here is the toolbox.
+
+
+# The toolbox
+
+## How the toolbox works
+
+::: {.callout-note title="These are small examples, not exactly your data"}
+Each slide has a tiny messy example, what goes wrong with it, and the function that fixes it. The examples are about bakeries and libraries, **not** cafes.
+
+Click **Run Code**, then change the numbers and words to see what happens.
+:::
+
+::: {.callout-tip title="Your job"}
+Spot the similar problems in the cafe data, and potentially apply the same tool.
+:::
+
+
+## Text that should be numbers
+
+::: {.callout-note title="`parse_number()`"}
+Turns text with extra symbols into a number.
+:::
+
+```{webr}
+x <- c("$1523.05", "243", "34,234")
+
+mean(x)                # text has no average
+parse_number(x)
+mean(parse_number(x))
+```
+
+
+## Same thing, but different spelling
+
+::: {.callout-note title="`str_to_lower()`"}
+Makes all the letters lower case, so one thing has one spelling.
+:::
+
+```{webr}
+pets <- tibble(pet = c("Dog", "dog", "Cat", "cat", "DOG"))
+
+pets |> count(pet)                                  # 5 spellings, 2 pets
+
+pets |>
+  mutate(pet = str_to_lower(pet)) |>
+  count(pet)
+```
+
+
+## A number that means "missing"
+
+::: {.callout-note title="`na_if(x, value)`"}
+Turns one special value into `NA`. Then `na.rm = TRUE` ignores it.
+:::
+
+```{webr}
+pages <- c(12, 30, -1, 25, -1)     # -1 means "did not answer"
+
+mean(pages)                         # too low!
+pages_clean <- na_if(pages, -1)
+pages_clean
+mean(pages_clean, na.rm = TRUE)
+```
+
+::: {.callout-tip title="How do I find the special number?"}
+Look at `summary()` of the column. A 1-to-5 rating should not have a minimum far below 1.
+:::
+
+
+## Some date formats
+
+::: {.callout-note title="`ymd()`, `dmy()`, `str_sub()`"}
+`ymd()` reads year-first dates and `dmy()` reads day-first dates. `str_sub(x, 1, 4)` takes the first 4 characters.
+:::
+
+```{webr}
+d <- c("2026-03-14", "14-03-2026", "2026-05-02", "02-05-2026")
+
+ymd(d)                                    # the day-first ones fail
+str_sub(d, 1, 4)                          # year-first starts with 2026
+
+if_else(str_sub(d, 1, 4) == "2026", ymd(d), dmy(d))
+```
+
+- `if_else(condition, value if TRUE, value if FALSE)`
+- You may see a "failed to parse" warning. That's okay.
+
+
+## Which day of the week?
+
+::: {.callout-note title="`wday()`"}
+Gets the day of the week from a date. With `week_start = 1`, Monday is 1 and Sunday is 7.
+:::
+
+```{webr}
+days <- ymd(c("2026-03-12", "2026-03-14", "2026-03-15"))
+
+wday(days, label = TRUE, abbr = FALSE)     # the names
+wday(days, week_start = 1)                  # the numbers
+
+# How do I figure out if my data set contains the days I need?
+
+```
+
+
+## Time without AM or PM
+
+::: {.callout-note title="`separate_wider_delim()`"}
+Splits one column into two at a symbol, like `:`. Then `as.numeric()` turns the pieces into numbers.
+:::
+
+m
+```{webr}
+library_times <- tibble(time = c("9:15", "11:40", "12:05", "3:20", "4:45"))
+
+library_times |>
+  separate_wider_delim(time, delim = ":", names = c("hh", "mm")) |>
+  mutate(
+    hh = as.numeric(hh),
+    mm = as.numeric(mm),
+    hour24 = NA,
+    period = NA
+  )
+```
+
+
+
+
+## The top item in each group
+
+::: {.callout-note title="`group_by()` and `slice_max()`"}
+`slice_max(n, n = 1)` keeps the row with the biggest `n` in each group.
+:::
+
+```{webr}
+bakery <- tibble(
+  period = c("am", "am", "am", "pm", "pm", "pm", "pm"),
+  item   = c("Bagel", "Bagel", "Scone", "Scone", "Scone", "Bagel", "Muffin")
+)
+
+bakery |> count(period, item)
+
+bakery |>
+  count(period, item) |>
+  group_by(period) |>
+  slice_max(n, n = 1)
+```
+
+
+# Time to work
+
+## Getting started
+
+::: {.callout-note title="Groups"}
+Sit with your project group (4 to 5 students).
+:::
+
+1. Download `cafe_sales.csv`, `drinks.csv` and `DATA100_F26_Group_Project_Exercise_2.Rmd` from the *MyLearningSpace*
+2. Put them in the *same folder*, then open the *.Rmd* in *RStudio*.
+
+
+## How to work through it
+
+In the Rmd, each question has the same four steps: **run, name the problem, fix, check**.
+
+::: {.callout-tip title="If you are stuck"}
+1. Re-read the `# INSTRUCTIONS` and the checkpoint.
+2. Find the appropriate function that you may need for this slide or other lecture slides.
+3. Ask your group.
+4. Ask me.
+:::
+
+
+## Wrap-up and submit
+
+1. Knit your Rmd to PDF
+2. Upload the PDF to Gradescope *(one per group, add all members)*
+3. Submit what you have by the end of class.
+
+If a chunk has an error, the PDF still knits. The error just shows up in the PDF.
+
+
+::: {.callout-note title="Next Project Guidance"}
+Predictive analysis. Details to be announced soon.
+:::

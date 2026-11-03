@@ -1,0 +1,313 @@
+---
+title: "Untitled"
+format: html
+---
+
+
+# Putting it all together
+
+## A tiny survey
+
+
+```{webr echo=FALSE}
+#| autorun: true
+mini <- tibble(
+  id          = 1:6,
+  program     = c("Arts", "Arts", "Business", "Business", "Arts", "Business"),
+  bedtime     = c("11:30 pm", "midnight", "idk", "23:15", NA, "1 am"),
+  sleep_hours = c(7.5, 6, 5, NA, 8, 4.5),
+  drink       = c("Coffee", "Tea", "Coffee", "Pop", "Tea", "Matcha")
+)
+
+menu <- tibble(drink = c("Coffee", "Tea", "Pop"), caffeine_mg = c(95, 47, 0))
+
+mini
+```
+
+```{webr}
+#| autorun: true
+mini <- tibble(
+  id          = 1:6,
+  program     = c("Arts", "Arts", "Business", "Business", "Arts", "Business"),
+  bedtime     = c("11:30 pm", "midnight", "idk", "23:15", NA, "1 am"),
+  sleep_hours = c(7.5, 6, 5, NA, 8, 4.5),
+  drink       = c("Coffee", "Tea", "Coffee", "Pop", "Tea", "Matcha")
+)
+
+menu <- tibble(drink = c("Coffee", "Tea", "Pop"), caffeine_mg = c(95, 47, 0))
+
+mini
+```
+
+
+## One pipeline, four lectures {.smaller}
+
+```{webr}
+mini |>
+  mutate(
+    bed_ok = str_detect(bedtime, regex("\\d|midnight", ignore_case = TRUE)),
+    sleep_group = case_when(
+      sleep_hours < 6    ~ "Short",
+      sleep_hours <= 7.5 ~ "Normal",
+      sleep_hours > 7.5  ~ "Long"
+    )
+  ) |>
+  left_join(menu, by = "drink") |>
+  group_by(program) |>
+  summarize(
+    n = n(),
+    n_readable = sum(bed_ok, na.rm = TRUE),
+    mean_sleep = mean(sleep_hours, na.rm = TRUE),
+    n_short = sum(sleep_group == "Short", na.rm = TRUE),
+    mean_caffeine = mean(caffeine_mg, na.rm = TRUE)
+  )
+```
+
+. . .
+
+::: {.callout-note title="The final table"}
+| program | n | n_readable | mean_sleep | n_short | mean_caffeine |
+|---------|---|------------|------------|---------|---------------|
+| Arts | 3 | 2 | 7.17 | 0 | 63 |
+| Business | 3 | 2 | 4.75 | 2 | 47.5 |
+:::
+
+::: {.callout-tip title="Where each lecture shows up"}
+- `str_detect()`: `"idk"` is `FALSE`, the blank is `NA`, and `na.rm = TRUE` leaves both out of the count
+- `case_when()`: the `NA` sleep stays `NA`, so it is not counted as `"Short"`
+- `left_join()`: `"Matcha"` is not in `menu`, so its caffeine is `NA`
+- `na.rm = TRUE` changes the denominator: Business caffeine is `(95 + 0) / 2`
+:::
+
+
+# Silent failures
+
+## No error does not mean correct {.smaller}
+
+::: {.callout-warning title="What is a silent failure?"}
+Code that runs with no error and no warning, and still gives a wrong or empty answer. These are the questions that cost the most marks, because nothing tells you to look twice.
+:::
+
+
+::: {.callout-important title="Something that maybe you can do"}
+1. Count the rows before and after
+2. Count the `NA`s: `sum(is.na(x))`
+3. Look at a few rows, not just the summary
+4. Try it by hand on a tiny example
+:::
+
+::: {.callout-tip title="Loud errors are the friendly ones"}
+`separate_wider_delim()` with uneven pieces, or `n()` outside `summarize()`, stop and tell you what is wrong. The next slides are about the ones that do not.
+:::
+
+## Missing values: count and filter {.smaller}
+
+| What you write | What R does | Why | How to catch fix it |
+|----------------|-------------|-----|---------------------|
+| `sum(x < 6)` with an `NA` in `x` | `NA` | `NA` is contagious | `na.rm = TRUE`, or filter first |
+| `filter(x == NA)` | 0 rows | `== NA` is always `NA` | `is.na(x)` |
+| `filter(x < 6)` and `filter(x >= 6)` | the counts do not add up to the total | `filter()` drops `NA` from both sides | `sum(is.na(x))` |
+| `mean(x, na.rm = TRUE)` | the mean of those who answered | the denominator shrinks | report how many answered |
+| `drop_na()` on several columns | loses a row if any of them is `NA` | rows, not cells, are removed | name only the columns you need |
+
+## Missing values: hidden and filled {.smaller}
+
+| What you write | What R does | Why | How to catch fix it |
+|----------------|-------------|-----|---------------------|
+| `read.csv()` on a blank cell | `""`, not `NA` | `is.na()` finds none of them | `na.strings = c("", "NA")` |
+| `"idk"` or `"n/a"` in a column | stays as real text | missing in disguise | regex, `na_if()`, then `NA` |
+| `case_when(..., .default = "Long")` | labels the `NA` rows `"Long"` | `.default` catches everything left | write the last condition out |
+| fill with the mean | same mean, smaller `sd` | the filled values sit at the mean | choose a method and say which |
+| `complete(fill = ...)` | the explicit `NA` stays | `fill` only covers the new rows | add `replace_na()` |
+| a plot of counts by hour | no point for an empty hour | implicit missing: there is no row | `complete()` first |
+
+## Logical vectors {.smaller}
+
+| What you write | What R does | Why | Catch or fix it |
+|----------------|-------------|-----|-----------------|
+| <code>filter(x == 4 &#124; 5)</code> | every row | `5` counts as `TRUE` | `x == 4 &#124; x == 5`, or `%in%` |
+| `program == c("Arts", "Business")` | the wrong rows | the shorter vector is recycled | `program %in% c(...)` |
+| `case_when()` in the wrong order | a later line is never reached | the first `TRUE` wins | most specific condition first; `count()` the result |
+| `x == "yes"` when the data says `"Yes"` | `FALSE`, so no rows | capitals matter | `count()` the column first |
+| `filter(a, b)` | rows where **both** are true | a comma means `&` | use <code>&#124;</code> for either |
+| `any(c(FALSE, NA))` | `NA`, not `FALSE` | the `NA` could be `TRUE` | `na.rm = TRUE` |
+| `NA %in% NA` | `TRUE` | `%in%` follows different rules from `==` | know which one you are using |
+
+## Numbers {.smaller}
+
+| What you write | What R does | Why | Catch or fix it |
+|----------------|-------------|-----|-----------------|
+| `x * c(1, 2)` with `x` of length 6 | recycles, no message | 6 is a multiple of 2 | check the lengths |
+| `x * c(1, 2, 3, 4)` with `x` of length 6 | still computes, with a warning | 6 is not a multiple of 4 | do not ignore the warning |
+| `cut()` with a value outside the breaks | `NA` | no bin for it | `-Inf` and `Inf` as outer breaks |
+| `cut()` with a value on a break | goes to the **lower** bin | bins are `(a, b]` | `right = FALSE` |
+| `min(a, b)` when you wanted each row | one number for the whole table | `min()` summarizes | `pmin()` |
+| `round(x, -1)` | rounds to the nearest ten | a negative `digits` moves left | read the argument |
+| `mean()` of a skewed variable | a value far from the typical one | a few large values | report the median too |
+
+## Strings and regular expressions {.smaller}
+
+| What you write | What R does | Why | Catch or fix it |
+|----------------|-------------|-----|-----------------|
+| `str_c("Hi ", NA)` | `NA` | `NA` is contagious | `replace_na()` first |
+| `str_replace(x, "\\.", ":")` | changes only the **first** dot | `str_replace()` stops at one match | `str_replace_all()` |
+| `"."` in a pattern | matches **any** character | `.` is a special character | `"\\."` |
+| a pattern with no `^` and `$` | also matches inside longer text | `"around 11:30 pm"` contains a time | anchor the pattern |
+| `str_detect(x, "pm")` on `"11:30 PM"` | `FALSE` | capitals matter | `regex(ignore_case = TRUE)` |
+| `filter(!str_detect(x, ...))` | drops the `NA` rows, keeps `""` | `!NA` is `NA`; `""` does not match, so `!` makes it `TRUE` | turn blanks into `NA` first |
+| a chain of `str_replace()` rules | `"11:30pm"` stays glued | it only fixes what you wrote a rule for | `count()` what is left |
+
+## Factors {.smaller}
+
+| What you write | What R does | Why | Catch or fix it |
+|----------------|-------------|-----|-----------------|
+| `factor(x, levels = ...)` with a typo in `x` | `NA`, no warning | the value is not in `levels` | `sum(is.na(f))` |
+| no `levels` given | alphabetical order | the default | `levels = ...` or `fct_relevel()` |
+| a bar chart of text categories | alphabetical bars | text sorts alphabetically | `fct_reorder()` |
+| `fct_recode()` and `fct_collapse()` | levels you do not mention stay as they are | only the named levels change | `levels()` afterwards |
+| `group_by(f)` on a factor | empty levels vanish | `.drop = TRUE` is the default | `.drop = FALSE` |
+| `sort(f)` | follows the **level** order and drops `NA` | a factor is not sorted like text | `levels(f)` |
+
+## Dates and times {.smaller}
+
+| What you write | What R does | Why | Catch or fix it |
+|----------------|-------------|-----|-----------------|
+| `ymd_hms("2026-10-27 23:30:00")` | the time is labelled **UTC** | no `tz` given | `tz = "America/Toronto"` |
+| `ymd("10/27/2026")` | `NA`, with a warning | the pieces are in a different order | `mdy()` |
+| `start + days(1)` vs `start + ddays(1)` | different answers across daylight saving | period vs duration | `dhours()` for how long something lasts |
+| a bedtime at 1 AM on the reference night | lands **before** the 11 PM bedtimes | the date does not roll over | add 24 hours when `hour < 12` |
+| `bed > midnight` vs `bed >= midnight` | a student at exactly 12:00 changes sides | the boundary | decide, and say which |
+| `force_tz()` vs `with_tz()` | `force_tz()` keeps the clock and changes the moment; `with_tz()` keeps the moment and changes the clock | different jobs | pick by what you mean |
+
+## Joins and keys {.smaller}
+
+| What you write | What R does | Why | Catch or fix it |
+|----------------|-------------|-----|-----------------|
+| keys spelled `"coffee"` and `"Coffee"` | `NA` columns for those rows | the keys do not match | `anti_join()` |
+| a lookup table with a **repeated** key | the rows multiply | one row matches several | count the key, look for `n > 1` |
+| `inner_join()` | rows with no match disappear | only matches are kept | compare `nrow()` before and after |
+| two tables share a non-key column name | columns end in `.x` and `.y` | both are kept | `suffix` or `select()` first |
+| no `by` | joins on **all** shared columns | the default | always write `by = join_by(...)` |
+| `semi_join()` or `anti_join()` | no new columns | they only filter rows | use `left_join()` to add columns |
+
+## Summaries and groups {.smaller}
+
+| What you write | What R does | Why | Catch or fix it |
+|----------------|-------------|-----|-----------------|
+| `mean(x < 6, na.rm = TRUE)` | a proportion among those who answered | `na.rm` changes the denominator | say how many answered |
+| `sum(x == "Yes")` with an `NA` | `NA` | `NA` is contagious | `na.rm = TRUE` |
+| `group_by()` then `summarize()` | drops the last grouping level | a default, with only a message | `.groups = "drop"` |
+| `n_distinct(x)` | counts `NA` as a value | `NA` is one more distinct value | `na.rm = TRUE` |
+| an average of a tiny group | looks precise, but is not | 10 students is not 1000 | print `n()` next to it |
+
+
+# Which tool when?
+
+## Lecture 8: Logical vectors {.smaller}
+
+| I want to... | Use | Tiny example |
+|--------------|-----|--------------|
+| Make a `TRUE` or `FALSE` test | `<`, `<=`, `>`, `>=`, `==`, `!=` | `sleep < 6` |
+| Find or remove blanks | `is.na()`, `!is.na()` | `filter(!is.na(sleep))` |
+| Combine tests: and, or, not | `&`, <code>&#124;</code>, `!` | `x > 1 & x < 5` |
+| Test against a list | `%in%` | `program %in% c("Arts", "Business")` |
+| Make two labels | `if_else()` | `if_else(x < 6, "Short", "Not short")` |
+| Make three or more labels | `case_when()` | `case_when(x < 6 ~ "Short", ...)` |
+| Count the `TRUE`s | `sum()` | `sum(x < 6, na.rm = TRUE)` |
+| Take the proportion of `TRUE`s | `mean()` | `mean(x < 6, na.rm = TRUE)` |
+| Ask "at least one" or "every" | `any()`, `all()` | `any(grade < 50, na.rm = TRUE)` |
+
+## Lecture 9: Numbers {.smaller}
+
+| I want to... | Use | Tiny example |
+|--------------|-----|--------------|
+| Turn text into a number | `parse_number()`, `parse_double()` | `parse_number("$1,234")` |
+| Tally rows | `count()`, `n()` | `count(program, sort = TRUE)` |
+| Take the smaller or larger value per row | `pmin()`, `pmax()` | `pmin(a, b)` |
+| Split hours and minutes | `%/%`, `%%` | `6.7 %/% 1` |
+| Round | `round()`, `floor()`, `ceiling()` | `round(123.456, -1)` |
+| Cut numbers into bins | `cut()` | `cut(x, breaks = c(-Inf, 6, 7.5, Inf))` |
+| Rank | `min_rank()` | `min_rank(desc(x))` |
+| Describe a typical value | `mean()`, `median()` | report both when skewed |
+
+## Lecture 9: Strings and factors {.smaller}
+
+| I want to... | Use | Tiny example |
+|--------------|-----|--------------|
+| Glue text together | `str_c()` | `str_c(program, ": ", hours)` |
+| Measure text | `str_length()` | `str_length(bedtime)` |
+| Split a column into pieces | `separate_wider_delim()` | `delim = " ", names = c("time", "ampm")` |
+| Tidy spaces and capitals | `str_trim()`, `str_to_lower()` | `str_to_lower(str_trim(x))` |
+| Choose the order of categories | `factor(levels = ...)`, `fct_relevel()` | `fct_relevel(f, "Short", "Long")` |
+| Order categories by a number | `fct_reorder()` | `fct_reorder(program, mean_sleep)` |
+| Rename a level | `fct_recode()` | `fct_recode(f, Soda = "Pop")` |
+| Merge levels into groups | `fct_collapse()` | `fct_collapse(f, Hot = c("Coffee", "Tea"))` |
+| See the levels | `levels()` | `levels(f)` |
+
+## Lecture 10: Regular expressions {.smaller}
+
+| I want to... | Use | Tiny example |
+|--------------|-----|--------------|
+| Test for a pattern | `str_detect()` | `str_detect(x, "pm")` |
+| Ignore capitals | `regex(ignore_case = TRUE)` | `regex("pm", ignore_case = TRUE)` |
+| Match a digit, a dot, a start, an end | `\\d`, `\\.`, `^`, `$` | `"^\\d{1,2}:\\d{2}$"` |
+| Say "this or that" | <code>(am&#124;pm)</code> | <code>"(am&#124;pm)$"</code> |
+| Make a piece optional or repeated | `?`, `{1,2}` | `" ?"`, `"\\d{1,2}"` |
+| Delete text | `str_remove()` | `str_remove(x, "-ish$")` |
+| Replace the first match | `str_replace()` | `str_replace(x, "\\.", ":")` |
+| Pull pieces out into columns | `separate_wider_regex()` | `patterns = c(hh = "\\d{1,2}", ...)` |
+| Replace **every** match, or count matches | `str_replace_all()`, `str_count()` | see the Lecture 10 appendix |
+
+## Lecture 10: Dates and times {.smaller}
+
+| I want to... | Use | Tiny example |
+|--------------|-----|--------------|
+| Turn text into a date-time | `ymd()`, `mdy()`, `dmy()`, `ymd_hms()` | `ymd("2026-10-27")` |
+| Build a date-time from numbers | `make_datetime()` | `make_datetime(2026, 10, 27, 23, 30)` |
+| Pull out a piece | `hour()`, `minute()`, `day()`, `wday()` | `wday(t, label = TRUE)` |
+| Move the **clock** | `hours()`, `days()` (periods) | `start + days(1)` |
+| Add an **exact** amount of time | `dhours()`, `ddays()` (durations) | `bed + dhours(sleep)` |
+| Ask "is it inside this window?" | `interval()`, `%within%` | `t %within% interval(bed, wake)` |
+| Change the time zone | `force_tz()`, `with_tz()` | `with_tz(t, "UTC")` |
+
+## Lecture 11: Missing values {.smaller}
+
+| I want to... | Use | Tiny example |
+|--------------|-----|--------------|
+| Find the missing values | `is.na()`, `sum(is.na(x))` | `summarize(across(everything(), ~ sum(is.na(.x))))` |
+| Ignore them inside one calculation | `na.rm = TRUE` | `mean(x, na.rm = TRUE)` |
+| Remove the rows that have them | `drop_na()` | `drop_na(df, sleep_hours)` |
+| Fill them with a value | `replace_na()`, `coalesce()` | `replace_na(x, 0)` |
+| Turn a code into `NA` | `na_if()`, `na.strings` | `na_if(x, -99)` |
+| Add the rows that are absent | `complete()` | `complete(day = 1:5, fill = list(n = 0))` |
+| Keep empty groups | `.drop = FALSE` | `group_by(f, .drop = FALSE)` |
+
+## Lecture 11: Joins {.smaller}
+
+| I want to... | Use | Tiny example |
+|--------------|-----|--------------|
+| Add columns from another table | `left_join()` | `left_join(x, y, by = "key")` |
+| Keep only the rows that match | `inner_join()` | `inner_join(x, y, by = "key")` |
+| Keep every row from both tables | `full_join()` | `full_join(x, y, by = "key")` |
+| Match columns with different names | `join_by(a == b)` | `join_by(favourite_drink == drink)` |
+| Find rows with **no** match | `anti_join()` | `anti_join(x, y, by = "key")` |
+| Keep rows **with** a match, no new columns | `semi_join()` | `semi_join(x, y, by = "key")` |
+| Check that a key is unique | `count()` | count the key, then look for `n > 1` |
+
+## Pick the tool {.smaller}
+
+| The question | The tool | Lecture |
+|--------------|----------|---------|
+| Label each student Short, Normal or Long, and leave blanks as `NA` | `case_when()` with every condition written out | 8 |
+| What share sleep under 6 hours, among those who answered? | `mean(x < 6, na.rm = TRUE)` | 8, 11 |
+| Show 6.7 hours as 6 h 42 min | `%/%`, `%%`, `round()`, `str_c()` | 9 |
+| Draw the bars from most to least common | `count()`, then `fct_reorder()` | 9 |
+| Turn `11.30 p.m.` into `11:30 pm` | `str_to_lower()`, `str_replace()` | 10 |
+| Find every bedtime written as `hh:mm` | `str_detect()` with an anchored pattern | 10 |
+| When does she wake up, given her bedtime and sleep? | `bed + dhours(sleep)` | 10 |
+| Is she asleep at 1 AM? | `%within%` and `interval()` | 10 |
+| Replace blank answers with 0 | `replace_na()` | 11 |
+| Which hours had no responses at all? | `complete()` | 11 |
+| Which students have a drink that is not in `drinks`? | `anti_join()` | 11 |
+| Add each drink's caffeine to the survey | `left_join()` with `join_by()` | 11 |
+
