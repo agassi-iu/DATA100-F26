@@ -37,11 +37,7 @@ The capstone project (**15%**) has multiple checkpoints across the term. Details
 
 
 
-## Group Project Guidance 1
+## Group Project Guidance Slides
 - [Visualization](slides/DATA100-F26-Group-Project-Guidance-1.html)
-
-
-
-## Group Project Guidance 2
 - [Data Tidying and Transformation](slides/DATA100-F26-Group-Project-Guidance-2.html)
 

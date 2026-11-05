@@ -2016,18 +2016,11 @@
     "text": "Capstone Project\nThe capstone project (15%) has multiple checkpoints across the term. Details and rubric will be posted here as each checkpoint approaches.\n\n\n\nCheckpoint\nDescription\nDue\n\n\n\n\nProposal\nDataset + research question\nTBD\n\n\nProgress Check\nDraft analysis\nTBD\n\n\nFinal Submission\nReport + presentation\nDec 3"
   },
   {
-    "objectID": "assignments.html#group-project-guidance-1",
-    "href": "assignments.html#group-project-guidance-1",
+    "objectID": "assignments.html#group-project-guidance-slides",
+    "href": "assignments.html#group-project-guidance-slides",
     "title": "Assignments",
-    "section": "Group Project Guidance 1",
-    "text": "Group Project Guidance 1\n\nVisualization"
-  },
-  {
-    "objectID": "assignments.html#group-project-guidance-2",
-    "href": "assignments.html#group-project-guidance-2",
-    "title": "Assignments",
-    "section": "Group Project Guidance 2",
-    "text": "Group Project Guidance 2\n\nData Tidying and Transformation"
+    "section": "Group Project Guidance Slides",
+    "text": "Group Project Guidance Slides\n\nVisualization\nData Tidying and Transformation"
   },
   {
     "objectID": "about.html",
@@ -2139,7 +2132,7 @@
     "href": "slides/DATA100-F26-Group-Project-Guidance-2.html#meet-the-data",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Meet the data:",
-    "text": "Meet the data:\n\n\n\n\n\n\n\nCafe Orders\n\n\nA campus cafe owner has given us two weeks of orders (November 1 to 14). He wants to know how the business has been performing, but the data is messy.\n\n\n\n\nEach row is one customer. Each column is one variable."
+    "text": "Meet the data:\n\n\n\n\n\n\n\nCafe Orders\n\n\nA campus cafe owner has given us two weeks of orders (November 1 to 14). He wants to know how the business has been performing, but the data is messy.\n\n\n\n\n\nEach row is one customer.\nEach column is one variable.\nA good habit for data analysis is to view what the data looks like before doing anything (e.g. transformation/visualization) with it."
   },
   {
     "objectID": "slides/DATA100-F26-Group-Project-Guidance-2.html#data-description-i",
@@ -2181,7 +2174,7 @@
     "href": "slides/DATA100-F26-Group-Project-Guidance-2.html#todays-task",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Today’s task",
-    "text": "Today’s task\n\n\n\n\n\n\n\nFor every question\n\n\n\nRun it on the raw data\nName what went wrong\nFix the column\nCheck it, then answer\n\n\n\n\n\nYou do not need to memorize any functions. Here is the toolbox."
+    "text": "Today’s task\n\n\n\n\n\n\n\nFor every question\n\n\n\nRun it on the raw data\nName what went wrong (Note: you won’t be asked to do this in the exam, but it is great practice!)\nFix the column\nCheck it, then answer\n\n\n\n\n\nYou do not need to memorize any functions. Here is the toolbox."
   },
   {
     "objectID": "slides/DATA100-F26-Group-Project-Guidance-2.html#how-the-toolbox-works",
@@ -2251,7 +2244,7 @@
     "href": "slides/DATA100-F26-Group-Project-Guidance-2.html#how-to-work-through-it",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "How to work through it",
-    "text": "How to work through it\nIn the Rmd, each question has the same four steps: run, name the problem, fix, check.\n\n\n\n\n\n\n\nIf you are stuck\n\n\n\nRe-read the # INSTRUCTIONS and the checkpoint.\nFind the appropriate function that you may need for this slide or other lecture slides.\nAsk your group.\nAsk me."
+    "text": "How to work through it\nIn the Rmd, each question has the same four steps: run the code, name the problem, fix it, check again.\n\n\n\n\n\n\n\nIf you are stuck\n\n\n\nRe-read the # INSTRUCTIONS and the checkpoint.\nFind the appropriate function that you may need for this slide or other lecture slides.\nAsk your group.\nAsk me."
   },
   {
     "objectID": "slides/DATA100-F26-Group-Project-Guidance-2.html#wrap-up-and-submit",

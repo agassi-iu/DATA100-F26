@@ -99,7 +99,9 @@ A campus cafe owner has given us two weeks of orders (November 1 to 14). He want
 :::
 
 
-Each row is *one customer*. Each column is *one variable*.
+- Each row is *one customer*.
+- Each column is *one variable*. 
+- A good habit for data analysis is to view what the data looks like before doing anything (e.g. transformation/visualization) with it.
 
 
 ## Data description (i){.smaller}
@@ -130,7 +132,7 @@ The `drinks` table has **one row per drink**. It lets you look up facts about ea
 | `prop_sales` | Numeric | Share of the cafe's sales this drink had historically |
 
 
-## The five questions
+## The five questions {.smaller}
 
 1. Do weekend days have more customers per day than weekdays?
 2. What is the most popular drink in the morning and in the afternoon?
@@ -175,7 +177,7 @@ Most of these code *ran*. They just gave us nonsense. That is why the data needs
 
 ::: {.callout-important title="For every question"}
 1. Run it on the raw data
-2. Name what went wrong
+2. Name what went wrong (*Note: you won't be asked to do this in the exam, but it is great practice!*)
 3. Fix the column
 4. Check it, then answer
 :::
@@ -205,11 +207,12 @@ Turns text with extra symbols into a number.
 :::
 
 ```{webr}
-x <- c("$1523.05", "243", "34,234")
+x <- c("$4.50", "$1,200", "N/A", "")
 
 mean(x)                # text has no average
 parse_number(x)
-mean(parse_number(x))
+parse_number(x, na = c("", "N/A"))
+mean(parse_number(x,na=c("","N/A")),na.rm=T)
 ```
 
 
@@ -344,7 +347,7 @@ Sit with your project group (4 to 5 students).
 
 ## How to work through it
 
-In the Rmd, each question has the same four steps: **run, name the problem, fix, check**.
+In the Rmd, each question has the same four steps: run the code, name the problem, fix it, check again.
 
 ::: {.callout-tip title="If you are stuck"}
 1. Re-read the `# INSTRUCTIONS` and the checkpoint.
