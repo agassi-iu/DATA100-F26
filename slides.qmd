@@ -52,6 +52,10 @@ title: "Lecture Slides"
 - [Lecture 12 Slides](slides/DATA100-F26-Lecture-12.html)
 
 
+## Lecture 13: Asking Good Questions in Data Analytics
+- [Lecture 13 Slides](slides/DATA100-F26-Lecture-13.html)
+
+
 
 
 
