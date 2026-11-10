@@ -1,0 +1,1816 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<link href="../favicon.ico" rel="icon">
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
+
+  <meta name="author" content="Your Name">
+  <meta name="dcterms.date" content="2026-11-10">
+  <title>DATA100 – Getting Data into R</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-fc36d58f2b3a1f1c68d136a0c4cb29e5.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Getting Data into R</h1>
+  <p class="subtitle">R for Data Science (2e), Chapters 20–24: Spreadsheets, Databases, Arrow, Hierarchical Data, Web Scraping</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Your Name
+</div>
+</div>
+</div>
+
+  <p class="date">2026-11-10</p>
+</section>
+<section class="slide level2">
+
+<!--
+Code chunks use plain "r" fences (not "{r}") so the deck renders without R
+installed and without the example data files. To make a chunk executable,
+change its fence to "{r}" and make sure the data and packages are available.
+-->
+</section>
+<section>
+<section id="where-this-part-of-the-book-fits" class="title-slide slide level1 smaller center">
+<h1>Where this part of the book fits</h1>
+
+</section>
+<section id="the-import-part-at-a-glance" class="slide level2">
+<h2>The import part at a glance</h2>
+<p>Chapter 7 covered plain-text files (<code>.csv</code>, <code>.tsv</code>). These five chapters cover everything else:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 33%">
+<col style="width: 45%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Ch.</th>
+<th>Source</th>
+<th>Main tools</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>20</td>
+<td>Spreadsheets (Excel, Google Sheets)</td>
+<td>readxl, writexl, googlesheets4</td>
+</tr>
+<tr class="even">
+<td>21</td>
+<td>Databases</td>
+<td>DBI, dbplyr, duckdb, SQL</td>
+</tr>
+<tr class="odd">
+<td>22</td>
+<td>Large files on disk</td>
+<td>arrow, parquet</td>
+</tr>
+<tr class="even">
+<td>23</td>
+<td>Tree-like data (JSON)</td>
+<td>tidyr, jsonlite</td>
+</tr>
+<tr class="odd">
+<td>24</td>
+<td>Web pages</td>
+<td>rvest</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p><strong>Common thread:</strong> get data from where it lives into a tidy tibble.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="spreadsheets" class="title-slide slide level1 center">
+<h1>20 · Spreadsheets</h1>
+
+</section>
+<section id="why-spreadsheets-are-tricky" class="slide level2">
+<h2>Why spreadsheets are tricky</h2>
+<ul>
+<li>People use spreadsheets for <strong>storage, sharing, and presentation</strong> all at once</li>
+<li>So you get merged cells, notes above the data, mixed types, inconsistent headers</li>
+<li>Expect <strong>iteration</strong>: load, look, adjust, reload</li>
+</ul>
+<div class="fragment">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Read <em>Data Organization in Spreadsheets</em> (Broman &amp; Woo) if your collaborators build the spreadsheets.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="reading-excel-readxl" class="slide level2">
+<h2>Reading Excel: readxl</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb2-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(writexl)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Reads</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>read_xls()</code></td>
+<td><code>.xls</code> files</td>
+</tr>
+<tr class="even">
+<td><code>read_xlsx()</code></td>
+<td><code>.xlsx</code> files</td>
+</tr>
+<tr class="odd">
+<td><code>read_excel()</code></td>
+<td>either; guesses from the file</td>
+</tr>
+</tbody>
+</table>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a aria-hidden="true" tabindex="-1"></a>students <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/students.xlsx"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The result is a tibble, just like <code>read_csv()</code>.</p>
+</section>
+<section id="the-students-spreadsheet-whats-wrong" class="slide level2">
+<h2>The students spreadsheet: what’s wrong?</h2>
+<pre><code>#&gt;   `Student ID` `Full Name`   favourite.food   mealPlan   AGE
+#&gt;          &lt;dbl&gt; &lt;chr&gt;         &lt;chr&gt;            &lt;chr&gt;      &lt;chr&gt;
+#&gt; 3            3 Jayendra Lyne N/A              Breakfast… 7
+#&gt; 4            4 Leon Rossini  Anchovies        Lunch only &lt;NA&gt;
+#&gt; 5            5 Chidiegwu …   Pizza            Breakfast… five</code></pre>
+<p>Three problems to fix:</p>
+<ol type="1">
+<li>Messy column names</li>
+<li><code>"N/A"</code> isn’t recognized as a missing value</li>
+<li><code>age</code> is read as text (one entry is the word “five”)</li>
+</ol>
+</section>
+<section id="fixing-it-one-argument-at-a-time" class="slide level2">
+<h2>Fixing it, one argument at a time</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a aria-hidden="true" tabindex="-1"></a>students <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(</span>
+<span id="cb5-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/students.xlsx"</span>,</span>
+<span id="cb5-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">col_names =</span> <span class="fu">c</span>(<span class="st">"student_id"</span>, <span class="st">"full_name"</span>, <span class="st">"favourite_food"</span>,</span>
+<span id="cb5-4"><a aria-hidden="true" tabindex="-1"></a>                <span class="st">"meal_plan"</span>, <span class="st">"age"</span>),       <span class="co"># 1. snake_case names</span></span>
+<span id="cb5-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">skip =</span> <span class="dv">1</span>,                                <span class="co"># ...and drop the old header row</span></span>
+<span id="cb5-6"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">na =</span> <span class="fu">c</span>(<span class="st">""</span>, <span class="st">"N/A"</span>),                       <span class="co"># 2. extra NA strings</span></span>
+<span id="cb5-7"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">col_types =</span> <span class="fu">c</span>(<span class="st">"numeric"</span>, <span class="st">"text"</span>, <span class="st">"text"</span>, <span class="st">"text"</span>, <span class="st">"text"</span>)  <span class="co"># 3. keep age as text</span></span>
+<span id="cb5-8"><a aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-9"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a aria-hidden="true" tabindex="-1"></a>students <span class="ot">&lt;-</span> students <span class="sc">|&gt;</span></span>
+<span id="cb5-11"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb5-12"><a aria-hidden="true" tabindex="-1"></a>    <span class="at">age =</span> <span class="fu">if_else</span>(age <span class="sc">==</span> <span class="st">"five"</span>, <span class="st">"5"</span>, age),</span>
+<span id="cb5-13"><a aria-hidden="true" tabindex="-1"></a>    <span class="at">age =</span> <span class="fu">parse_number</span>(age)</span>
+<span id="cb5-14"><a aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p>Forcing <code>age</code> to <code>"numeric"</code> would silently turn “five” into <code>NA</code>. Read as text, then clean in R.</p>
+</div>
+</section>
+<section id="worksheets" class="slide level2">
+<h2>Worksheets</h2>
+<p>Spreadsheets can hold several <strong>worksheets</strong>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">excel_sheets</span>(<span class="st">"data/penguins.xlsx"</span>)</span>
+<span id="cb6-2"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "Torgersen Island" "Biscoe Island"    "Dream Island"</span></span>
+<span id="cb6-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a aria-hidden="true" tabindex="-1"></a>torgersen <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/penguins.xlsx"</span>,</span>
+<span id="cb6-5"><a aria-hidden="true" tabindex="-1"></a>                        <span class="at">sheet =</span> <span class="st">"Torgersen Island"</span>, <span class="at">na =</span> <span class="st">"NA"</span>)</span>
+<span id="cb6-6"><a aria-hidden="true" tabindex="-1"></a>biscoe    <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/penguins.xlsx"</span>,</span>
+<span id="cb6-7"><a aria-hidden="true" tabindex="-1"></a>                        <span class="at">sheet =</span> <span class="st">"Biscoe Island"</span>, <span class="at">na =</span> <span class="st">"NA"</span>)</span>
+<span id="cb6-8"><a aria-hidden="true" tabindex="-1"></a>dream     <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/penguins.xlsx"</span>,</span>
+<span id="cb6-9"><a aria-hidden="true" tabindex="-1"></a>                         <span class="at">sheet =</span> <span class="st">"Dream Island"</span>, <span class="at">na =</span> <span class="st">"NA"</span>)</span>
+<span id="cb6-10"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a aria-hidden="true" tabindex="-1"></a>penguins <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(torgersen, biscoe, dream)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Chapter 26 shows how to avoid this repetition.</p>
+</section>
+<section id="reading-part-of-a-sheet" class="slide level2">
+<h2>Reading part of a sheet</h2>
+<p>Real sheets often have notes above and below the data.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a aria-hidden="true" tabindex="-1"></a>deaths_path <span class="ot">&lt;-</span> <span class="fu">readxl_example</span>(<span class="st">"deaths.xlsx"</span>)</span>
+<span id="cb7-2"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a aria-hidden="true" tabindex="-1"></a><span class="fu">read_excel</span>(deaths_path, <span class="at">range =</span> <span class="st">"A5:F15"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>range</code> uses spreadsheet notation: <code>A5</code> is the top-left corner, <code>F15</code> the bottom-right</li>
+<li>Preferred over fiddling with <code>skip</code> and <code>n_max</code></li>
+</ul>
+</section>
+<section id="data-types-what-you-see-isnt-whats-stored" class="slide level2">
+<h2>Data types: what you see isn’t what’s stored</h2>
+<p>An Excel cell is one of four things: <strong>boolean, number, datetime, or text</strong>.</p>
+<ul>
+<li>Excel has no integers; everything is floating point, display formatting hides it</li>
+<li>Dates are stored as numbers (days since 1 Jan 1900)</li>
+<li>Something that <em>looks</em> numeric can actually be text</li>
+</ul>
+<p>Recommended workflow:</p>
+<ol type="1">
+<li>Let readxl <strong>guess</strong> the types</li>
+<li>Check the result</li>
+<li>Re-import with <code>col_types</code> if needed (<code>"list"</code> handles mixed-type columns)</li>
+</ol>
+<p>For exotic info like cell colour or bold text, look at <strong>tidyxl</strong>.</p>
+</section>
+<section id="writing-to-excel" class="slide level2">
+<h2>Writing to Excel</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a aria-hidden="true" tabindex="-1"></a>bake_sale <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb8-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">item     =</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">"brownie"</span>, <span class="st">"cupcake"</span>, <span class="st">"cookie"</span>)),</span>
+<span id="cb8-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">quantity =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">5</span>, <span class="dv">8</span>)</span>
+<span id="cb8-4"><a aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-5"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a aria-hidden="true" tabindex="-1"></a><span class="fu">write_xlsx</span>(bake_sale, <span class="at">path =</span> <span class="st">"data/bake-sale.xlsx"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Column names are included and bolded by default</li>
+<li><strong>Type information is lost</strong> on a round trip (the factor comes back as text), so Excel is a poor format for caching interim results</li>
+<li>Need styling or multiple sheets? Use <strong>openxlsx</strong> (not tidyverse-style: camelCase, no piping)</li>
+</ul>
+</section>
+<section id="google-sheets-googlesheets4" class="slide level2">
+<h2>Google Sheets: googlesheets4</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(googlesheets4)</span>
+<span id="cb9-2"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a aria-hidden="true" tabindex="-1"></a><span class="fu">gs4_deauth</span>()   <span class="co"># fine for public sheets; no sign-in needed</span></span>
+<span id="cb9-4"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a aria-hidden="true" tabindex="-1"></a>students_sheet_id <span class="ot">&lt;-</span> <span class="st">"1V1nPp1tzOuutXFLb3G9Eyxi3qxeEhnOXUzL5_BcCQ0w"</span></span>
+<span id="cb9-6"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a aria-hidden="true" tabindex="-1"></a>students <span class="ot">&lt;-</span> <span class="fu">read_sheet</span>(</span>
+<span id="cb9-8"><a aria-hidden="true" tabindex="-1"></a>  students_sheet_id,</span>
+<span id="cb9-9"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">col_names =</span> <span class="fu">c</span>(<span class="st">"student_id"</span>, <span class="st">"full_name"</span>, <span class="st">"favourite_food"</span>,</span>
+<span id="cb9-10"><a aria-hidden="true" tabindex="-1"></a>                <span class="st">"meal_plan"</span>, <span class="st">"age"</span>),</span>
+<span id="cb9-11"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">skip =</span> <span class="dv">1</span>,</span>
+<span id="cb9-12"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">na =</span> <span class="fu">c</span>(<span class="st">""</span>, <span class="st">"N/A"</span>),</span>
+<span id="cb9-13"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">col_types =</span> <span class="st">"dcccc"</span>       <span class="co"># short codes: double, character x4</span></span>
+<span id="cb9-14"><a aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Same ideas as readxl: <code>sheet</code>, <code>range</code>, <code>na</code>, <code>skip</code>, <code>col_names</code>.</p>
+</section>
+<section id="google-sheets-sheets-ranges-writing-auth" class="slide level2">
+<h2>Google Sheets: sheets, ranges, writing, auth</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">sheet_names</span>(penguins_sheet_id)                  <span class="co"># list worksheets</span></span>
+<span id="cb10-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">read_sheet</span>(penguins_sheet_id, <span class="at">sheet =</span> <span class="st">"Torgersen Island"</span>)</span>
+<span id="cb10-3"><a aria-hidden="true" tabindex="-1"></a><span class="fu">read_sheet</span>(deaths_url, <span class="at">range =</span> <span class="st">"A5:F15"</span>)</span>
+<span id="cb10-4"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a aria-hidden="true" tabindex="-1"></a><span class="fu">write_sheet</span>(bake_sale, <span class="at">ss =</span> <span class="st">"bake-sale"</span>)</span>
+<span id="cb10-6"><a aria-hidden="true" tabindex="-1"></a><span class="fu">write_sheet</span>(bake_sale, <span class="at">ss =</span> <span class="st">"bake-sale"</span>, <span class="at">sheet =</span> <span class="st">"Sales"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Private sheets and <strong>writing</strong> require authentication</li>
+<li><code>gs4_auth(email = "you@example.com")</code> picks a specific account</li>
+</ul>
+</section>
+<section id="chapter-20-takeaways" class="slide level2">
+<h2>Chapter 20 takeaways</h2>
+<ul>
+<li><code>read_excel()</code> and <code>read_sheet()</code> work almost identically</li>
+<li>Use <code>col_names</code>, <code>skip</code>, <code>na</code>, <code>col_types</code>, <code>sheet</code>, and <code>range</code> to get a clean import</li>
+<li>Expect trial and error; peek at the data, adjust, reload</li>
+<li>Writing: <code>writexl::write_xlsx()</code> for Excel, <code>write_sheet()</code> for Google Sheets</li>
+</ul>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="databases" class="title-slide slide level1 center">
+<h1>21 · Databases</h1>
+
+</section>
+<section id="why-databases" class="slide level2">
+<h2>Why databases?</h2>
+<ul>
+<li>Huge amounts of data live in them</li>
+<li>Asking someone for a CSV snapshot every time doesn’t scale</li>
+<li>You want to reach in and get the data <strong>when you need it</strong></li>
+</ul>
+<p>This chapter’s route:</p>
+<ol type="1">
+<li><strong>DBI</strong>: connect and send SQL</li>
+<li><strong>dbplyr</strong>: write dplyr, get SQL</li>
+<li>Use that translation to <strong>learn SQL</strong></li>
+</ol>
+</section>
+<section id="database-basics" class="slide level2">
+<h2>Database basics</h2>
+<p>A database is a collection of <strong>tables</strong> (like data frames), but:</p>
+<ul>
+<li>Tables live <strong>on disk</strong> and can be arbitrarily large</li>
+<li>Tables almost always have <strong>indexes</strong> for fast lookup</li>
+<li>Classic databases are <strong>row-oriented</strong> (built for collecting data); newer <strong>column-oriented</strong> ones are faster for analysis</li>
+</ul>
+</section>
+<section id="three-kinds-of-dbms" class="slide level2">
+<h2>Three kinds of DBMS</h2>
+<div class="columns">
+<div class="column" style="width:33%;">
+<p><strong>Client-server</strong></p>
+<p>Central server, you connect as a client.</p>
+<p>PostgreSQL, MariaDB, SQL Server, Oracle</p>
+</div><div class="column" style="width:33%;">
+<p><strong>Cloud</strong></p>
+<p>Like client-server but hosted; scales on demand.</p>
+<p>Snowflake, Redshift, BigQuery</p>
+</div><div class="column" style="width:33%;">
+<p><strong>In-process</strong></p>
+<p>Runs entirely on your computer.</p>
+<p>SQLite, <strong>duckdb</strong></p>
+</div></div>
+<p>The book uses <strong>duckdb</strong>: no server setup, and fast.</p>
+</section>
+<section id="connecting-with-dbi" class="slide level2">
+<h2>Connecting with DBI</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DBI)</span>
+<span id="cb11-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dbplyr)</span>
+<span id="cb11-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> DBI<span class="sc">::</span><span class="fu">dbConnect</span>(duckdb<span class="sc">::</span><span class="fu">duckdb</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Other DBMSs differ only in the connection call:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> DBI<span class="sc">::</span><span class="fu">dbConnect</span>(</span>
+<span id="cb12-2"><a aria-hidden="true" tabindex="-1"></a>  RPostgres<span class="sc">::</span><span class="fu">Postgres</span>(),</span>
+<span id="cb12-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">hostname =</span> <span class="st">"databases.mycompany.com"</span>,</span>
+<span id="cb12-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">port =</span> <span class="dv">1234</span></span>
+<span id="cb12-5"><a aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Always use DBI, plus a DBMS-specific package (RPostgres, RMariaDB…)</li>
+<li>No dedicated package? Try <strong>odbc</strong></li>
+<li>Ask your team or DBA for connection details</li>
+</ul>
+</section>
+<section id="putting-data-in-and-checking-it" class="slide level2">
+<h2>Putting data in and checking it</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">dbWriteTable</span>(con, <span class="st">"mpg"</span>, ggplot2<span class="sc">::</span>mpg)</span>
+<span id="cb13-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">dbWriteTable</span>(con, <span class="st">"diamonds"</span>, ggplot2<span class="sc">::</span>diamonds)</span>
+<span id="cb13-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a aria-hidden="true" tabindex="-1"></a><span class="fu">dbListTables</span>(con)</span>
+<span id="cb13-5"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "diamonds" "mpg"</span></span>
+<span id="cb13-6"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a aria-hidden="true" tabindex="-1"></a>con <span class="sc">|&gt;</span> <span class="fu">dbReadTable</span>(<span class="st">"diamonds"</span>) <span class="sc">|&gt;</span> <span class="fu">as_tibble</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Already know SQL? Send it directly:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a aria-hidden="true" tabindex="-1"></a>sql <span class="ot">&lt;-</span> <span class="st">"</span></span>
+<span id="cb14-2"><a aria-hidden="true" tabindex="-1"></a><span class="st">  SELECT carat, cut, clarity, color, price</span></span>
+<span id="cb14-3"><a aria-hidden="true" tabindex="-1"></a><span class="st">  FROM diamonds</span></span>
+<span id="cb14-4"><a aria-hidden="true" tabindex="-1"></a><span class="st">  WHERE price &gt; 15000</span></span>
+<span id="cb14-5"><a aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
+<span id="cb14-6"><a aria-hidden="true" tabindex="-1"></a><span class="fu">as_tibble</span>(<span class="fu">dbGetQuery</span>(con, sql))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="dbplyr-dplyr-with-a-different-backend" class="slide level2">
+<h2>dbplyr: dplyr with a different backend</h2>
+<p><code>tbl()</code> creates an object that <strong>represents</strong> a table:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a aria-hidden="true" tabindex="-1"></a>diamonds_db <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="st">"diamonds"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The object is <strong>lazy</strong>: dplyr verbs just record what you want and nothing runs until needed.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a aria-hidden="true" tabindex="-1"></a>big_diamonds_db <span class="ot">&lt;-</span> diamonds_db <span class="sc">|&gt;</span></span>
+<span id="cb16-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(price <span class="sc">&gt;</span> <span class="dv">15000</span>) <span class="sc">|&gt;</span></span>
+<span id="cb16-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(carat<span class="sc">:</span>clarity, price)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Row count shows as <code>??</code> because counting would require running the whole query.</p>
+</section>
+<section id="see-the-sql-then-collect" class="slide level2">
+<h2>See the SQL, then collect</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a aria-hidden="true" tabindex="-1"></a>big_diamonds_db <span class="sc">|&gt;</span> <span class="fu">show_query</span>()</span>
+<span id="cb17-2"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;SQL&gt;</span></span>
+<span id="cb17-3"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SELECT carat, cut, color, clarity, price</span></span>
+<span id="cb17-4"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; FROM diamonds</span></span>
+<span id="cb17-5"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; WHERE (price &gt; 15000.0)</span></span>
+<span id="cb17-6"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a aria-hidden="true" tabindex="-1"></a>big_diamonds <span class="ot">&lt;-</span> big_diamonds_db <span class="sc">|&gt;</span> <span class="fu">collect</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>show_query()</code>: a great way to <strong>learn SQL</strong> from dplyr you already know</li>
+<li><code>collect()</code>: run the query and pull results into an in-memory tibble</li>
+</ul>
+<div class="fragment">
+<p><strong>Typical pattern:</strong> filter and aggregate in the database, then <code>collect()</code> and finish in R.</p>
+</div>
+</section>
+<section id="sql-basics" class="slide level2">
+<h2>SQL basics</h2>
+<ul>
+<li>Top-level pieces are <strong>statements</strong> (<code>CREATE</code>, <code>INSERT</code>, <code>SELECT</code>); we focus on <code>SELECT</code> queries</li>
+<li>A query is made of <strong>clauses</strong>: <code>SELECT</code>, <code>FROM</code>, <code>WHERE</code>, <code>GROUP BY</code>, <code>ORDER BY</code></li>
+<li><code>SELECT</code> and <code>FROM</code> are always required: <code>SELECT * FROM table</code></li>
+</ul>
+<p>Two key differences from dplyr:</p>
+<ol type="1">
+<li><strong>Case doesn’t matter</strong> (convention: keywords in UPPERCASE)</li>
+<li><strong>Order matters</strong>: write <code>SELECT</code>, <code>FROM</code>, <code>WHERE</code>, <code>GROUP BY</code>, <code>ORDER BY</code></li>
+</ol>
+<div class="fragment">
+<p>Written order ≠ evaluation order. SQL evaluates <code>FROM</code> → <code>WHERE</code> → <code>GROUP BY</code> → <code>SELECT</code> → <code>ORDER BY</code>.</p>
+</div>
+</section>
+<section id="dplyr-verb-sql-clause" class="slide level2">
+<h2>dplyr verb → SQL clause</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>dplyr</th>
+<th>SQL</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>select()</code>, <code>rename()</code>, <code>relocate()</code>, <code>mutate()</code></td>
+<td><code>SELECT</code></td>
+</tr>
+<tr class="even">
+<td><code>summarize()</code></td>
+<td><code>SELECT</code> (with <code>GROUP BY</code>)</td>
+</tr>
+<tr class="odd">
+<td><code>group_by()</code></td>
+<td><code>GROUP BY</code></td>
+</tr>
+<tr class="even">
+<td><code>filter()</code></td>
+<td><code>WHERE</code> (or <code>HAVING</code> after a summary)</td>
+</tr>
+<tr class="odd">
+<td><code>arrange()</code></td>
+<td><code>ORDER BY</code></td>
+</tr>
+<tr class="even">
+<td><code>*_join()</code></td>
+<td><code>JOIN … ON</code> inside <code>FROM</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="select-group-by-where-order-by-in-action" class="slide level2">
+<h2>SELECT, GROUP BY, WHERE, ORDER BY in action</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a aria-hidden="true" tabindex="-1"></a>flights <span class="sc">|&gt;</span></span>
+<span id="cb18-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(dest <span class="sc">==</span> <span class="st">"IAH"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb18-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(dep_delay) <span class="sc">|&gt;</span></span>
+<span id="cb18-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">show_query</span>()</span>
+<span id="cb18-5"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SELECT *</span></span>
+<span id="cb18-6"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; FROM flights</span></span>
+<span id="cb18-7"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; WHERE (dest = 'IAH')</span></span>
+<span id="cb18-8"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ORDER BY dep_delay</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a aria-hidden="true" tabindex="-1"></a>diamonds_db <span class="sc">|&gt;</span></span>
+<span id="cb19-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(cut) <span class="sc">|&gt;</span></span>
+<span id="cb19-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">n =</span> <span class="fu">n</span>(), <span class="at">avg_price =</span> <span class="fu">mean</span>(price, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb19-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">show_query</span>()</span>
+<span id="cb19-5"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SELECT cut, COUNT(*) AS n, AVG(price) AS avg_price</span></span>
+<span id="cb19-6"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; FROM diamonds</span></span>
+<span id="cb19-7"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; GROUP BY cut</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="sql-quirks-to-remember" class="slide level2">
+<h2>SQL quirks to remember</h2>
+<ul>
+<li>Renaming is <strong>aliasing</strong> with <code>AS</code>; the old name goes on the <em>left</em></li>
+<li><code>=</code> for comparison (not <code>==</code>); <code>AND</code>/<code>OR</code> instead of <code>&amp;</code>/<code>|</code>; <code>IN</code> instead of <code>%in%</code></li>
+<li>Strings use <strong>single quotes</strong>; double quotes mark column/table names</li>
+<li><code>NULL</code> instead of <code>NA</code>: silently <strong>dropped</strong> in aggregations</li>
+<li>Filtering on a summarized value becomes <strong><code>HAVING</code></strong>, because <code>WHERE</code> runs before aggregation</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a aria-hidden="true" tabindex="-1"></a>diamonds_db <span class="sc">|&gt;</span> <span class="fu">group_by</span>(cut) <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span> <span class="fu">filter</span>(n <span class="sc">&gt;</span> <span class="dv">100</span>)</span>
+<span id="cb20-2"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ... GROUP BY cut</span></span>
+<span id="cb20-3"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; HAVING (COUNT(*) &gt; 100.0)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="subqueries-and-joins" class="slide level2">
+<h2>Subqueries and joins</h2>
+<p><strong>Subqueries</strong>: needed when a <code>SELECT</code> can’t reference a column it just created.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a aria-hidden="true" tabindex="-1"></a>flights <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">year1 =</span> year <span class="sc">+</span> <span class="dv">1</span>, <span class="at">year2 =</span> year1 <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> <span class="fu">show_query</span>()</span>
+<span id="cb21-2"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SELECT *, year1 + 1.0 AS year2</span></span>
+<span id="cb21-3"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; FROM (</span></span>
+<span id="cb21-4"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   SELECT *, "year" + 1.0 AS year1</span></span>
+<span id="cb21-5"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   FROM flights</span></span>
+<span id="cb21-6"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ) AS q01</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Joins</strong> use <code>ON</code> inside <code>FROM</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a aria-hidden="true" tabindex="-1"></a>flights <span class="sc">|&gt;</span> <span class="fu">left_join</span>(planes <span class="sc">|&gt;</span> <span class="fu">rename</span>(<span class="at">year_built =</span> year), <span class="fu">join_by</span>(tailnum))</span>
+<span id="cb22-2"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; FROM flights</span></span>
+<span id="cb22-3"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; LEFT JOIN planes</span></span>
+<span id="cb22-4"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ON (flights.tailnum = planes.tailnum)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Many tables to connect? The <strong>dm</strong> package can map the keys for you.</p>
+</section>
+<section id="translating-r-functions" class="slide level2">
+<h2>Translating R functions</h2>
+<ul>
+<li>Simple summaries translate directly (<code>mean()</code> → <code>AVG()</code>); more statistical ones are more complex (<code>median()</code>)</li>
+<li>Inside <code>mutate()</code>, summaries become <strong>window functions</strong> with <code>OVER (PARTITION BY …)</code></li>
+<li><code>lead()</code> / <code>lag()</code> also become window functions, so <code>arrange()</code> first (tables have no intrinsic order)</li>
+<li><code>if_else()</code>, <code>case_when()</code>, and <code>cut()</code> all become <strong><code>CASE WHEN</code></strong></li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a aria-hidden="true" tabindex="-1"></a>flights <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">description =</span> <span class="fu">if_else</span>(arr_delay <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="st">"delayed"</span>, <span class="st">"on-time"</span>))</span>
+<span id="cb23-2"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SELECT CASE WHEN (arr_delay &gt; 0.0) THEN 'delayed'</span></span>
+<span id="cb23-3"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             WHEN NOT (arr_delay &gt; 0.0) THEN 'on-time' </span><span class="re">END</span><span class="co"> AS description</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Not every R function is translated yet; see <code>vignette("translation-function", package = "dbplyr")</code>.</p>
+</section>
+<section id="chapter-21-takeaways" class="slide level2">
+<h2>Chapter 21 takeaways</h2>
+<ul>
+<li><strong>DBI</strong> connects and runs SQL; <strong>dbplyr</strong> translates dplyr to SQL</li>
+<li>Queries are lazy: <code>show_query()</code> to inspect, <code>collect()</code> to run</li>
+<li>Knowing some SQL is valuable: it’s <em>the</em> common language for data work</li>
+<li>Next steps: <em>SQL for Data Scientists</em> (Teate), <em>Practical SQL</em> (DeBarros)</li>
+</ul>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="arrow" class="title-slide slide level1 center">
+<h1>22 · Arrow</h1>
+
+</section>
+<section id="the-problem-with-csv" class="slide level2">
+<h2>The problem with CSV</h2>
+<ul>
+<li>CSV is simple, human-readable, and universal</li>
+<li>But it’s <strong>inefficient</strong>: lots of work to read into R</li>
+<li>Alternative: <strong>Parquet</strong>, an open binary format, paired with <strong>Apache Arrow</strong></li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb24-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arrow)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The arrow package is a <strong>dplyr backend</strong> for larger-than-memory datasets.</p>
+</section>
+<section id="arrow-or-dbplyr" class="slide level2">
+<h2>arrow or dbplyr?</h2>
+<p>Often the choice is made for you: the data is already in a database or in parquet files.</p>
+<p>If you’re starting from your own CSVs, you can either:</p>
+<ul>
+<li>load them into a <strong>database</strong>, or</li>
+<li>convert them to <strong>parquet</strong></li>
+</ul>
+<p>Early on, <strong>try both</strong> and see which works better for you.</p>
+</section>
+<section id="the-example-seattle-library-checkouts" class="slide level2">
+<h2>The example: Seattle library checkouts</h2>
+<ul>
+<li>~<strong>41 million</strong> rows: monthly checkouts per title, April 2005 – October 2022</li>
+<li>A <strong>9 GB</strong> CSV file, too big to comfortably load with <code>read_csv()</code></li>
+<li>Rule of thumb: you want at least <strong>twice</strong> the data size in RAM</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a aria-hidden="true" tabindex="-1"></a>curl<span class="sc">::</span><span class="fu">multi_download</span>(</span>
+<span id="cb25-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="st">"https://r4ds.s3.us-west-2.amazonaws.com/seattle-library-checkouts.csv"</span>,</span>
+<span id="cb25-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/seattle-library-checkouts.csv"</span>,</span>
+<span id="cb25-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">resume =</span> <span class="cn">TRUE</span></span>
+<span id="cb25-5"><a aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>curl::multi_download()</code> gives a progress bar and can resume interrupted downloads.</p>
+</section>
+<section id="opening-without-loading" class="slide level2">
+<h2>Opening without loading</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a aria-hidden="true" tabindex="-1"></a>seattle_csv <span class="ot">&lt;-</span> <span class="fu">open_dataset</span>(</span>
+<span id="cb26-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">sources =</span> <span class="st">"data/seattle-library-checkouts.csv"</span>,</span>
+<span id="cb26-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">col_types =</span> <span class="fu">schema</span>(<span class="at">ISBN =</span> <span class="fu">string</span>()),</span>
+<span id="cb26-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">format =</span> <span class="st">"csv"</span></span>
+<span id="cb26-5"><a aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>open_dataset()</code> scans a few thousand rows to learn the structure, then stops</li>
+<li>The first 80,000 rows have blank ISBNs, so we specify that column’s type</li>
+<li>Data is only read into memory <strong>as requested</strong></li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a aria-hidden="true" tabindex="-1"></a>seattle_csv <span class="sc">|&gt;</span></span>
+<span id="cb27-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(CheckoutYear) <span class="sc">|&gt;</span></span>
+<span id="cb27-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Checkouts =</span> <span class="fu">sum</span>(Checkouts)) <span class="sc">|&gt;</span></span>
+<span id="cb27-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(CheckoutYear) <span class="sc">|&gt;</span></span>
+<span id="cb27-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()          <span class="co"># ~10 seconds on the CSV</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="why-parquet" class="slide level2">
+<h2>Why parquet?</h2>
+<ul>
+<li><strong>Smaller</strong>: efficient encodings and compression</li>
+<li><strong>Rich types</strong>: column types are stored with the data (no guessing dates vs strings)</li>
+<li><strong>Column-oriented</strong>: matches how analysis reads data</li>
+<li><strong>Chunked</strong>: parts can be processed in parallel, and some can be skipped</li>
+</ul>
+<div class="fragment">
+<p>Downside: not human-readable. Far fewer tools read parquet than CSV.</p>
+</div>
+</section>
+<section id="partitioning" class="slide level2">
+<h2>Partitioning</h2>
+<p>Split a large dataset across <strong>many files</strong>.</p>
+<ul>
+<li>Partition by variables you <strong>filter on</strong>, so arrow can skip files</li>
+<li>Rough guide: avoid files under <strong>20 MB</strong> or over <strong>2 GB</strong>, and avoid more than <strong>10,000</strong> files</li>
+<li>No hard rules, so experiment</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a aria-hidden="true" tabindex="-1"></a>pq_path <span class="ot">&lt;-</span> <span class="st">"data/seattle-library-checkouts"</span></span>
+<span id="cb28-2"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a aria-hidden="true" tabindex="-1"></a>seattle_csv <span class="sc">|&gt;</span></span>
+<span id="cb28-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(CheckoutYear) <span class="sc">|&gt;</span></span>
+<span id="cb28-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_dataset</span>(<span class="at">path =</span> pq_path, <span class="at">format =</span> <span class="st">"parquet"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="what-we-get" class="slide level2">
+<h2>What we get</h2>
+<ul>
+<li>One 9 GB CSV → <strong>18 parquet files</strong>, roughly 100–300 MB each</li>
+<li>Total about <strong>4 GB</strong>, a little over half the CSV size</li>
+<li>Hive-style folder names: <code>CheckoutYear=2005/part-0.parquet</code></li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a aria-hidden="true" tabindex="-1"></a>seattle_pq <span class="ot">&lt;-</span> <span class="fu">open_dataset</span>(pq_path)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="dplyr-with-arrow" class="slide level2">
+<h2>dplyr with arrow</h2>
+<p>Same lazy pattern as dbplyr: build a query, <code>collect()</code> to run it.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a aria-hidden="true" tabindex="-1"></a>query <span class="ot">&lt;-</span> seattle_pq <span class="sc">|&gt;</span></span>
+<span id="cb30-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(CheckoutYear <span class="sc">&gt;=</span> <span class="dv">2018</span>, MaterialType <span class="sc">==</span> <span class="st">"BOOK"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb30-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(CheckoutYear, CheckoutMonth) <span class="sc">|&gt;</span></span>
+<span id="cb30-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">TotalCheckouts =</span> <span class="fu">sum</span>(Checkouts)) <span class="sc">|&gt;</span></span>
+<span id="cb30-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(CheckoutYear, CheckoutMonth)</span>
+<span id="cb30-6"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a aria-hidden="true" tabindex="-1"></a>query <span class="sc">|&gt;</span> <span class="fu">collect</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Like dbplyr, only some R expressions are supported; see <code>?acero</code> for the list.</p>
+</section>
+<section id="performance-csv-vs-parquet" class="slide level2">
+<h2>Performance: CSV vs parquet</h2>
+<p>Books checked out per month in 2021:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Format</th>
+<th>Elapsed time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Single CSV</td>
+<td>~11 seconds</td>
+</tr>
+<tr class="even">
+<td>Partitioned parquet</td>
+<td>~0.06 seconds</td>
+</tr>
+</tbody>
+</table>
+<p><strong>~100× faster</strong>, for two reasons:</p>
+<ol type="1">
+<li><strong>Partitioning</strong>: only 1 of the 18 files is read</li>
+<li><strong>Columnar format</strong>: only the 4 columns used are read</li>
+</ol>
+</section>
+<section id="arrow-duckdb" class="slide level2">
+<h2>Arrow + duckdb</h2>
+<p>Hand an arrow dataset to duckdb <strong>without copying memory</strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a aria-hidden="true" tabindex="-1"></a>seattle_pq <span class="sc">|&gt;</span></span>
+<span id="cb31-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">to_duckdb</span>() <span class="sc">|&gt;</span></span>
+<span id="cb31-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(CheckoutYear <span class="sc">&gt;=</span> <span class="dv">2018</span>, MaterialType <span class="sc">==</span> <span class="st">"BOOK"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb31-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(CheckoutYear) <span class="sc">|&gt;</span></span>
+<span id="cb31-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">TotalCheckouts =</span> <span class="fu">sum</span>(Checkouts)) <span class="sc">|&gt;</span></span>
+<span id="cb31-6"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(CheckoutYear)) <span class="sc">|&gt;</span></span>
+<span id="cb31-7"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Arrow’s goal: seamless moves between computing environments.</p>
+</section>
+<section id="chapter-22-takeaways" class="slide level2">
+<h2>Chapter 22 takeaways</h2>
+<ul>
+<li><code>open_dataset()</code> works with CSV or parquet without loading everything</li>
+<li>Convert big CSVs to <strong>partitioned parquet</strong> with <code>write_dataset()</code></li>
+<li>Use familiar dplyr verbs; <code>collect()</code> runs the query</li>
+<li><code>to_duckdb()</code> bridges arrow and databases</li>
+</ul>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="hierarchical-data" class="title-slide slide level1 center">
+<h1>23 · Hierarchical data</h1>
+
+</section>
+<section id="rectangling" class="slide level2">
+<h2>Rectangling</h2>
+<p><strong>Rectangling</strong> = turning tree-like data into a data frame of rows and columns.</p>
+<p>Hierarchical data is common, especially from the web. The plan:</p>
+<ol type="1">
+<li>Understand <strong>lists</strong></li>
+<li>Learn two tidyr functions: <code>unnest_longer()</code> and <code>unnest_wider()</code></li>
+<li>Work through <strong>case studies</strong></li>
+<li>Understand <strong>JSON</strong></li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb32-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(repurrrsive)</span>
+<span id="cb32-3"><a aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="lists" class="slide level2">
+<h2>Lists</h2>
+<p>Lists can hold elements of <strong>different types</strong>, including other lists.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a aria-hidden="true" tabindex="-1"></a>x1 <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="st">"a"</span>, <span class="cn">TRUE</span>)</span>
+<span id="cb33-2"><a aria-hidden="true" tabindex="-1"></a>x2 <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">a =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">b =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">c =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)   <span class="co"># named children</span></span>
+<span id="cb33-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(x2)</span>
+<span id="cb33-5"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; List of 3</span></span>
+<span id="cb33-6"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ a: int [1:2] 1 2</span></span>
+<span id="cb33-7"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ b: int [1:3] 1 2 3</span></span>
+<span id="cb33-8"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ c: int [1:4] 1 2 3 4</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>str()</code> gives a compact view of structure</li>
+<li>For big lists, switch to <code>View()</code> in RStudio (it even shows the subsetting code)</li>
+</ul>
+</section>
+<section id="nested-lists-vs-c" class="slide level2">
+<h2>Nested lists vs <code>c()</code></h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a aria-hidden="true" tabindex="-1"></a>x3 <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">list</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="fu">list</span>(<span class="dv">3</span>, <span class="dv">4</span>))   <span class="co"># a list of lists: hierarchy</span></span>
+<span id="cb34-2"><a aria-hidden="true" tabindex="-1"></a>x4 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">list</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="fu">list</span>(<span class="dv">3</span>, <span class="dv">4</span>))      <span class="co"># c() flattens to a list of 4</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a aria-hidden="true" tabindex="-1"></a>x5 <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">1</span>, <span class="fu">list</span>(<span class="dv">2</span>, <span class="fu">list</span>(<span class="dv">3</span>, <span class="fu">list</span>(<span class="dv">4</span>, <span class="fu">list</span>(<span class="dv">5</span>)))))</span>
+<span id="cb35-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(x5)</span>
+<span id="cb35-3"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; List of 2</span></span>
+<span id="cb35-4"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ : num 1</span></span>
+<span id="cb35-5"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ :List of 2</span></span>
+<span id="cb35-6"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ : num 2</span></span>
+<span id="cb35-7"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ :List of 2</span></span>
+<span id="cb35-8"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   .. ..$ : num 3</span></span>
+<span id="cb35-9"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="list-columns" class="slide level2">
+<h2>List-columns</h2>
+<p>Lists can live <strong>inside a tibble</strong>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb36-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>,</span>
+<span id="cb36-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>),</span>
+<span id="cb36-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">z =</span> <span class="fu">list</span>(<span class="fu">list</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="fu">list</span>(<span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>))</span>
+<span id="cb36-5"><a aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-6"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       x y     z</span></span>
+<span id="cb36-7"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;int&gt; &lt;chr&gt; &lt;list&gt;</span></span>
+<span id="cb36-8"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     1 a     &lt;list [2]&gt;</span></span>
+<span id="cb36-9"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2     2 b     &lt;list [3]&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>They behave like any other column (you can <code>filter()</code> on <code>x</code>)</li>
+<li>Computing <em>on</em> them is hard, so we’ll <strong>unnest</strong> them into regular variables</li>
+<li>Easier with <code>tibble()</code> than <code>data.frame()</code></li>
+</ul>
+</section>
+<section id="two-flavours-of-list-column" class="slide level2">
+<h2>Two flavours of list-column</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Named children</strong></p>
+<p>Same names in every row.</p>
+<p>→ become <strong>columns</strong></p>
+<p><code>unnest_wider()</code></p>
+</div><div class="column" style="width:50%;">
+<p><strong>Unnamed children</strong></p>
+<p>Number of elements varies per row.</p>
+<p>→ become <strong>rows</strong></p>
+<p><code>unnest_longer()</code></p>
+</div></div>
+</section>
+<section id="unnest_wider" class="slide level2">
+<h2><code>unnest_wider()</code></h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb37-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>x, <span class="sc">~</span>y,</span>
+<span id="cb37-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>, <span class="fu">list</span>(<span class="at">a =</span> <span class="dv">11</span>, <span class="at">b =</span> <span class="dv">12</span>),</span>
+<span id="cb37-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span>, <span class="fu">list</span>(<span class="at">a =</span> <span class="dv">21</span>, <span class="at">b =</span> <span class="dv">22</span>),</span>
+<span id="cb37-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="dv">3</span>, <span class="fu">list</span>(<span class="at">a =</span> <span class="dv">31</span>, <span class="at">b =</span> <span class="dv">32</span>),</span>
+<span id="cb37-6"><a aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb37-7"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-8"><a aria-hidden="true" tabindex="-1"></a>df1 <span class="sc">|&gt;</span> <span class="fu">unnest_wider</span>(y)</span>
+<span id="cb37-9"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       x     a     b</span></span>
+<span id="cb37-10"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     1    11    12</span></span>
+<span id="cb37-11"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2     2    21    22</span></span>
+<span id="cb37-12"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3     3    31    32</span></span>
+<span id="cb37-13"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-14"><a aria-hidden="true" tabindex="-1"></a>df1 <span class="sc">|&gt;</span> <span class="fu">unnest_wider</span>(y, <span class="at">names_sep =</span> <span class="st">"_"</span>)   <span class="co"># columns: x, y_a, y_b</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>names_sep</code> prevents name clashes.</p>
+</section>
+<section id="unnest_longer" class="slide level2">
+<h2><code>unnest_longer()</code></h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb38-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>x, <span class="sc">~</span>y,</span>
+<span id="cb38-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>, <span class="fu">list</span>(<span class="dv">11</span>, <span class="dv">12</span>, <span class="dv">13</span>),</span>
+<span id="cb38-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span>, <span class="fu">list</span>(<span class="dv">21</span>),</span>
+<span id="cb38-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="dv">3</span>, <span class="fu">list</span>(<span class="dv">31</span>, <span class="dv">32</span>),</span>
+<span id="cb38-6"><a aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb38-7"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-8"><a aria-hidden="true" tabindex="-1"></a>df2 <span class="sc">|&gt;</span> <span class="fu">unnest_longer</span>(y)</span>
+<span id="cb38-9"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       x     y</span></span>
+<span id="cb38-10"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     1    11</span></span>
+<span id="cb38-11"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2     1    12</span></span>
+<span id="cb38-12"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3     1    13</span></span>
+<span id="cb38-13"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4     2    21</span></span>
+<span id="cb38-14"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5     3    31</span></span>
+<span id="cb38-15"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6     3    32</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>x</code> is repeated for each element</li>
+<li>Empty list → the row <strong>disappears</strong> (use <code>keep_empty = TRUE</code> to keep it as <code>NA</code>)</li>
+</ul>
+</section>
+<section id="inconsistent-types" class="slide level2">
+<h2>Inconsistent types</h2>
+<p>What if a list-column mixes types?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a aria-hidden="true" tabindex="-1"></a>df4 <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb39-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>x, <span class="sc">~</span>y,</span>
+<span id="cb39-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="st">"a"</span>, <span class="fu">list</span>(<span class="dv">1</span>),</span>
+<span id="cb39-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="st">"b"</span>, <span class="fu">list</span>(<span class="st">"a"</span>, <span class="cn">TRUE</span>, <span class="dv">5</span>)</span>
+<span id="cb39-5"><a aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb39-6"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-7"><a aria-hidden="true" tabindex="-1"></a>df4 <span class="sc">|&gt;</span> <span class="fu">unnest_longer</span>(y)</span>
+<span id="cb39-8"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   x     y</span></span>
+<span id="cb39-9"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 a     &lt;dbl [1]&gt;</span></span>
+<span id="cb39-10"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 b     &lt;chr [1]&gt;</span></span>
+<span id="cb39-11"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 b     &lt;lgl [1]&gt;</span></span>
+<span id="cb39-12"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 b     &lt;dbl [1]&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>unnest_longer()</code> keeps the columns unchanged, so you get a <strong>list-column of length-1 vectors</strong>. Dealing with it needs tools from Chapter 26.</p>
+</section>
+<section id="other-tidyr-functions-to-know-about" class="slide level2">
+<h2>Other tidyr functions to know about</h2>
+<ul>
+<li><code>unnest_auto()</code>: picks wider or longer for you. Fine for exploration, but it hides your data’s structure</li>
+<li><code>unnest()</code>: expands rows <em>and</em> columns; useful for list-columns containing data frames (common in tidymodels)</li>
+</ul>
+</section>
+<section id="case-study-1-very-wide-data-gh_repos" class="slide level2">
+<h2>Case study 1: very wide data (<code>gh_repos</code>)</h2>
+<p>GitHub repos for six users, deeply nested.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a aria-hidden="true" tabindex="-1"></a>repos <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">json =</span> gh_repos)</span>
+<span id="cb40-2"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-3"><a aria-hidden="true" tabindex="-1"></a>repos <span class="sc">|&gt;</span></span>
+<span id="cb40-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_longer</span>(json) <span class="sc">|&gt;</span>     <span class="co"># one row per repo (176 rows)</span></span>
+<span id="cb40-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_wider</span>(json)         <span class="co"># one column per field (68 columns!)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Pick the columns you want, then widen the nested <code>owner</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a aria-hidden="true" tabindex="-1"></a>repos <span class="sc">|&gt;</span></span>
+<span id="cb41-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_longer</span>(json) <span class="sc">|&gt;</span></span>
+<span id="cb41-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_wider</span>(json) <span class="sc">|&gt;</span></span>
+<span id="cb41-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, full_name, owner, description) <span class="sc">|&gt;</span></span>
+<span id="cb41-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_wider</span>(owner, <span class="at">names_sep =</span> <span class="st">"_"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>owner</code> also has an <code>id</code>, so without <code>names_sep</code> you get a duplicate-name error.</p>
+</section>
+<section id="case-study-2-relational-data-got_chars" class="slide level2">
+<h2>Case study 2: relational data (<code>got_chars</code>)</h2>
+<p>Nested data can stand in for <strong>several tables</strong>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a aria-hidden="true" tabindex="-1"></a>chars <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">json =</span> got_chars)</span>
+<span id="cb42-2"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-3"><a aria-hidden="true" tabindex="-1"></a>characters <span class="ot">&lt;-</span> chars <span class="sc">|&gt;</span></span>
+<span id="cb42-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_wider</span>(json) <span class="sc">|&gt;</span></span>
+<span id="cb42-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, name, gender, culture, born, died, alive)</span>
+<span id="cb42-6"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-7"><a aria-hidden="true" tabindex="-1"></a>titles <span class="ot">&lt;-</span> chars <span class="sc">|&gt;</span></span>
+<span id="cb42-8"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_wider</span>(json) <span class="sc">|&gt;</span></span>
+<span id="cb42-9"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, titles) <span class="sc">|&gt;</span></span>
+<span id="cb42-10"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_longer</span>(titles) <span class="sc">|&gt;</span></span>
+<span id="cb42-11"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(titles <span class="sc">!=</span> <span class="st">""</span>) <span class="sc">|&gt;</span></span>
+<span id="cb42-12"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">title =</span> titles)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Repeat for aliases, allegiances, books, TV series, then <strong>join</strong> back to <code>characters</code> when needed.</p>
+</section>
+<section id="case-study-3-deeply-nested-gmaps_cities" class="slide level2">
+<h2>Case study 3: deeply nested (<code>gmaps_cities</code>)</h2>
+<p>Google geocoding results for five cities. Alternate the two functions:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a aria-hidden="true" tabindex="-1"></a>locations <span class="ot">&lt;-</span> gmaps_cities <span class="sc">|&gt;</span></span>
+<span id="cb43-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_wider</span>(json) <span class="sc">|&gt;</span>        <span class="co"># results + status</span></span>
+<span id="cb43-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>status) <span class="sc">|&gt;</span></span>
+<span id="cb43-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_longer</span>(results) <span class="sc">|&gt;</span>    <span class="co"># one row per match</span></span>
+<span id="cb43-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_wider</span>(results)        <span class="co"># address, geometry, ...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Washington and Arlington each get <strong>two</strong> matches (state/DC, Texas/Virginia).</p>
+</section>
+<section id="drilling-into-geometry" class="slide level2">
+<h2>Drilling into <code>geometry</code></h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a aria-hidden="true" tabindex="-1"></a>locations <span class="sc">|&gt;</span></span>
+<span id="cb44-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(city, formatted_address, geometry) <span class="sc">|&gt;</span></span>
+<span id="cb44-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_wider</span>(geometry) <span class="sc">|&gt;</span></span>
+<span id="cb44-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">!</span>location<span class="sc">:</span>viewport) <span class="sc">|&gt;</span></span>
+<span id="cb44-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_wider</span>(bounds) <span class="sc">|&gt;</span></span>
+<span id="cb44-6"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">ne =</span> northeast, <span class="at">sw =</span> southwest) <span class="sc">|&gt;</span></span>
+<span id="cb44-7"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_wider</span>(<span class="fu">c</span>(ne, sw), <span class="at">names_sep =</span> <span class="st">"_"</span>)</span>
+<span id="cb44-8"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   city    formatted_address  ne_lat ne_lng sw_lat sw_lng</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Once you know the path, shortcut with <strong><code>hoist()</code></strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a aria-hidden="true" tabindex="-1"></a>locations <span class="sc">|&gt;</span></span>
+<span id="cb45-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(city, formatted_address, geometry) <span class="sc">|&gt;</span></span>
+<span id="cb45-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">hoist</span>(</span>
+<span id="cb45-4"><a aria-hidden="true" tabindex="-1"></a>    geometry,</span>
+<span id="cb45-5"><a aria-hidden="true" tabindex="-1"></a>    <span class="at">ne_lat =</span> <span class="fu">c</span>(<span class="st">"bounds"</span>, <span class="st">"northeast"</span>, <span class="st">"lat"</span>),</span>
+<span id="cb45-6"><a aria-hidden="true" tabindex="-1"></a>    <span class="at">sw_lat =</span> <span class="fu">c</span>(<span class="st">"bounds"</span>, <span class="st">"southwest"</span>, <span class="st">"lat"</span>),</span>
+<span id="cb45-7"><a aria-hidden="true" tabindex="-1"></a>    <span class="at">ne_lng =</span> <span class="fu">c</span>(<span class="st">"bounds"</span>, <span class="st">"northeast"</span>, <span class="st">"lng"</span>),</span>
+<span id="cb45-8"><a aria-hidden="true" tabindex="-1"></a>    <span class="at">sw_lng =</span> <span class="fu">c</span>(<span class="st">"bounds"</span>, <span class="st">"southwest"</span>, <span class="st">"lng"</span>)</span>
+<span id="cb45-9"><a aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="json-data-types" class="slide level2">
+<h2>JSON data types</h2>
+<p>JSON is how most web APIs return data. Six types:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>JSON</th>
+<th>R equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>null</code></td>
+<td><code>NA</code></td>
+</tr>
+<tr class="even">
+<td>string (double quotes only)</td>
+<td>character</td>
+</tr>
+<tr class="odd">
+<td>number (no <code>Inf</code>/<code>NaN</code>)</td>
+<td>numeric</td>
+</tr>
+<tr class="even">
+<td><code>true</code> / <code>false</code></td>
+<td><code>TRUE</code> / <code>FALSE</code></td>
+</tr>
+<tr class="odd">
+<td>array <code>[1, 2, 3]</code></td>
+<td>unnamed list</td>
+</tr>
+<tr class="even">
+<td>object <code>{"x": 1}</code></td>
+<td>named list</td>
+</tr>
+</tbody>
+</table>
+<p>No native dates (stored as strings → <code>parse_date()</code>); sometimes numbers arrive as strings (→ <code>parse_double()</code>).</p>
+</section>
+<section id="reading-json-with-jsonlite" class="slide level2">
+<h2>Reading JSON with jsonlite</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite)</span>
+<span id="cb46-2"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-3"><a aria-hidden="true" tabindex="-1"></a>gh_users2 <span class="ot">&lt;-</span> <span class="fu">read_json</span>(<span class="fu">gh_users_json</span>())      <span class="co"># from a file</span></span>
+<span id="cb46-4"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-5"><a aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(<span class="fu">parse_json</span>(<span class="st">'{"x": [1, 2, 3]}'</span>))          <span class="co"># from a string</span></span>
+<span id="cb46-6"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; List of 1</span></span>
+<span id="cb46-7"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  $ x:List of 3</span></span>
+<span id="cb46-8"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ : int 1</span></span>
+<span id="cb46-9"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ : int 2</span></span>
+<span id="cb46-10"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ..$ : int 3</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The book avoids <code>fromJSON()</code> because its <strong>automatic simplification</strong> hides what’s happening. Rectangle it yourself.</p>
+</section>
+<section id="starting-the-rectangling-process" class="slide level2">
+<h2>Starting the rectangling process</h2>
+<p><strong>Top-level array</strong> (most common): one row per element.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a aria-hidden="true" tabindex="-1"></a>json <span class="ot">&lt;-</span> <span class="st">'[{"name": "John", "age": 34}, {"name": "Susan", "age": 27}]'</span></span>
+<span id="cb47-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">json =</span> <span class="fu">parse_json</span>(json)) <span class="sc">|&gt;</span> <span class="fu">unnest_wider</span>(json)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Top-level object</strong>: wrap it in a list first.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">json =</span> <span class="fu">list</span>(<span class="fu">parse_json</span>(json)))</span>
+<span id="cb48-2"><a aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span></span>
+<span id="cb48-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_wider</span>(json) <span class="sc">|&gt;</span></span>
+<span id="cb48-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_longer</span>(results) <span class="sc">|&gt;</span></span>
+<span id="cb48-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_wider</span>(results)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Or reach in and start from the part you want: <code>tibble(results = parse_json(json)$results)</code>.</p>
+</section>
+<section id="chapter-23-takeaways" class="slide level2">
+<h2>Chapter 23 takeaways</h2>
+<ul>
+<li>Hierarchical data = <strong>lists</strong>; in tibbles, <strong>list-columns</strong></li>
+<li>Only two core tools: <code>unnest_longer()</code> (→ rows) and <code>unnest_wider()</code> (→ columns)</li>
+<li>Repeat them as many times as the nesting requires; <code>hoist()</code> shortcuts known paths</li>
+<li>JSON maps closely onto R lists (arrays ↔︎ unnamed, objects ↔︎ named)</li>
+</ul>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="web-scraping" class="title-slide slide level1 center">
+<h1>24 · Web scraping</h1>
+
+</section>
+<section id="when-theres-no-api" class="slide level2">
+<h2>When there’s no API</h2>
+<ul>
+<li>If a site offers an <strong>API</strong>, prefer it: more reliable (JSON → Chapter 23)</li>
+<li>If not, you can still <strong>scrape</strong> the HTML with <strong>rvest</strong></li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb49-2"><a aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="ethics-and-legality" class="slide level2">
+<h2>Ethics and legality</h2>
+<p><em>Not legal advice. Consult a lawyer when in doubt.</em></p>
+<p>Rule of thumb: you’re likely fine if the data is <strong>public, non-personal, and factual</strong>.</p>
+<ul>
+<li><strong>Be respectful</strong>: pause between requests; the <strong>polite</strong> package does this and caches pages</li>
+<li><strong>Terms of service</strong>: often forbid scraping; respect where possible. Binding-ness depends on jurisdiction and on whether you took an explicit action (account, checkbox)</li>
+<li><strong>Personally identifiable information</strong>: be extremely careful (GDPR; the OkCupid study is a cautionary tale)</li>
+<li><strong>Copyright</strong>: facts aren’t protected, original content may be (fair use might apply)</li>
+</ul>
+</section>
+<section id="html-basics" class="slide level2">
+<h2>HTML basics</h2>
+<p>Pages are a <strong>hierarchy of elements</strong>: start tag, optional attributes, contents, end tag.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb50"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb50-1"><a aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">html</span><span class="dt">&gt;</span></span>
+<span id="cb50-2"><a aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">head</span><span class="dt">&gt;</span></span>
+<span id="cb50-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">title</span><span class="dt">&gt;</span>Page title<span class="dt">&lt;/</span><span class="kw">title</span><span class="dt">&gt;</span></span>
+<span id="cb50-4"><a aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">head</span><span class="dt">&gt;</span></span>
+<span id="cb50-5"><a aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">body</span><span class="dt">&gt;</span></span>
+<span id="cb50-6"><a aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">h1</span><span class="ot"> id</span><span class="op">=</span><span class="st">'first'</span><span class="dt">&gt;</span>A heading<span class="dt">&lt;/</span><span class="kw">h1</span><span class="dt">&gt;</span></span>
+<span id="cb50-7"><a aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span>Some text <span class="dv">&amp;amp;</span> <span class="dt">&lt;</span><span class="kw">b</span><span class="dt">&gt;</span>some bold text.<span class="dt">&lt;/</span><span class="kw">b</span><span class="dt">&gt;&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb50-8"><a aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">img</span><span class="ot"> src</span><span class="op">=</span><span class="st">'myimg.png'</span><span class="ot"> width</span><span class="op">=</span><span class="st">'100'</span><span class="ot"> height</span><span class="op">=</span><span class="st">'100'</span><span class="dt">&gt;</span></span>
+<span id="cb50-9"><a aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">body</span><span class="dt">&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>&lt;html&gt;</code> → <code>&lt;head&gt;</code> (metadata) + <code>&lt;body&gt;</code> (content)</li>
+<li>Block tags (<code>&lt;h1&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;ol&gt;</code>) structure the page; inline tags (<code>&lt;b&gt;</code>, <code>&lt;a&gt;</code>) format text</li>
+<li>Key attributes: <code>id</code>, <code>class</code>, <code>href</code>, <code>src</code></li>
+<li>Escapes like <code>&amp;amp;</code> are handled automatically by rvest</li>
+</ul>
+</section>
+<section id="getting-the-page-into-r" class="slide level2">
+<h2>Getting the page into R</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a aria-hidden="true" tabindex="-1"></a>html <span class="ot">&lt;-</span> <span class="fu">read_html</span>(<span class="st">"http://rvest.tidyverse.org/"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>For examples, <code>minimal_html()</code> lets you write HTML inline:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a aria-hidden="true" tabindex="-1"></a>html <span class="ot">&lt;-</span> <span class="fu">minimal_html</span>(<span class="st">"</span></span>
+<span id="cb52-2"><a aria-hidden="true" tabindex="-1"></a><span class="st">  &lt;h1&gt;This is a heading&lt;/h1&gt;</span></span>
+<span id="cb52-3"><a aria-hidden="true" tabindex="-1"></a><span class="st">  &lt;p id='first'&gt;This is a paragraph&lt;/p&gt;</span></span>
+<span id="cb52-4"><a aria-hidden="true" tabindex="-1"></a><span class="st">  &lt;p class='important'&gt;This is an important paragraph&lt;/p&gt;</span></span>
+<span id="cb52-5"><a aria-hidden="true" tabindex="-1"></a><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="css-selectors-the-essential-three" class="slide level2">
+<h2>CSS selectors: the essential three</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Selector</th>
+<th>Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>p</code></td>
+<td>all <code>&lt;p&gt;</code> elements</td>
+</tr>
+<tr class="even">
+<td><code>.title</code></td>
+<td>elements with <code>class="title"</code></td>
+</tr>
+<tr class="odd">
+<td><code>#title</code></td>
+<td>the element with <code>id="title"</code> (unique)</td>
+</tr>
+</tbody>
+</table>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a aria-hidden="true" tabindex="-1"></a>html <span class="sc">|&gt;</span> <span class="fu">html_elements</span>(<span class="st">"p"</span>)           <span class="co"># both paragraphs</span></span>
+<span id="cb53-2"><a aria-hidden="true" tabindex="-1"></a>html <span class="sc">|&gt;</span> <span class="fu">html_elements</span>(<span class="st">".important"</span>)   <span class="co"># one</span></span>
+<span id="cb53-3"><a aria-hidden="true" tabindex="-1"></a>html <span class="sc">|&gt;</span> <span class="fu">html_elements</span>(<span class="st">"#first"</span>)       <span class="co"># one</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="html_element-vs-html_elements" class="slide level2">
+<h2><code>html_element()</code> vs <code>html_elements()</code></h2>
+<ul>
+<li><code>html_elements()</code> → <strong>all</strong> matches (zero matches → empty result)</li>
+<li><code>html_element()</code> → <strong>one result per input</strong> (no match → <code>NA</code>)</li>
+</ul>
+<div class="fragment">
+<p>Combine them: <code>html_elements()</code> to find <strong>observations</strong>, then <code>html_element()</code> to find <strong>variables</strong>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a aria-hidden="true" tabindex="-1"></a>characters <span class="ot">&lt;-</span> html <span class="sc">|&gt;</span> <span class="fu">html_elements</span>(<span class="st">"li"</span>)     <span class="co"># one per character</span></span>
+<span id="cb54-2"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-3"><a aria-hidden="true" tabindex="-1"></a>characters <span class="sc">|&gt;</span> <span class="fu">html_element</span>(<span class="st">".weight"</span>)         <span class="co"># 4 results, NA for missing</span></span>
+<span id="cb54-4"><a aria-hidden="true" tabindex="-1"></a>characters <span class="sc">|&gt;</span> <span class="fu">html_elements</span>(<span class="st">".weight"</span>)        <span class="co"># only 3, connection to names lost!</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="extracting-text-and-attributes" class="slide level2">
+<h2>Extracting text and attributes</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a aria-hidden="true" tabindex="-1"></a>characters <span class="sc">|&gt;</span> <span class="fu">html_element</span>(<span class="st">"b"</span>) <span class="sc">|&gt;</span> <span class="fu">html_text2</span>()</span>
+<span id="cb55-2"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "C-3PO"  "R4-P17" "R2-D2"  "Yoda"</span></span>
+<span id="cb55-3"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-4"><a aria-hidden="true" tabindex="-1"></a>characters <span class="sc">|&gt;</span> <span class="fu">html_element</span>(<span class="st">".weight"</span>) <span class="sc">|&gt;</span> <span class="fu">html_text2</span>()</span>
+<span id="cb55-5"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "167 kg" NA       "96 kg"  "66 kg"</span></span>
+<span id="cb55-6"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-7"><a aria-hidden="true" tabindex="-1"></a>html <span class="sc">|&gt;</span></span>
+<span id="cb55-8"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_elements</span>(<span class="st">"p"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb55-9"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_element</span>(<span class="st">"a"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb55-10"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_attr</span>(<span class="st">"href"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Use <strong><code>html_text2()</code></strong>, not <code>html_text()</code>: better handling of nested HTML</li>
+<li><code>html_attr()</code> always returns <strong>strings</strong>; convert numbers/dates yourself</li>
+</ul>
+</section>
+<section id="tables" class="slide level2">
+<h2>Tables</h2>
+<p>HTML tables (<code>&lt;table&gt;</code>, <code>&lt;tr&gt;</code>, <code>&lt;th&gt;</code>, <code>&lt;td&gt;</code>) have a shortcut:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a aria-hidden="true" tabindex="-1"></a>html <span class="sc">|&gt;</span></span>
+<span id="cb56-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_element</span>(<span class="st">".mytable"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb56-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_table</span>()</span>
+<span id="cb56-4"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       x     y</span></span>
+<span id="cb56-5"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1   1.5   2.7</span></span>
+<span id="cb56-6"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2   4.9   1.3</span></span>
+<span id="cb56-7"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3   7.2   8.1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Numbers are converted automatically</li>
+<li>Turn that off with <code>convert = FALSE</code> if it misbehaves</li>
+</ul>
+</section>
+<section id="finding-the-right-selector" class="slide level2">
+<h2>Finding the right selector</h2>
+<p>The hardest part: you want selectors that are both <strong>specific</strong> (no extras) and <strong>sensitive</strong> (catch everything).</p>
+<ul>
+<li><strong>SelectorGadget</strong>: click positive/negative examples to generate a selector</li>
+<li><strong>Browser dev tools</strong> (Chrome: right-click → <em>Inspect</em>): explore the HTML; <em>Copy as Selector</em></li>
+<li><strong>Selectors Explained</strong> translates selectors into plain English</li>
+<li>Learn more with the <strong>CSS Dinner</strong> game and MDN docs</li>
+</ul>
+<p>Lots of trial and error is normal.</p>
+</section>
+<section id="case-study-star-wars-films" class="slide level2">
+<h2>Case study: Star Wars films</h2>
+<p>Each film shares a structure:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb57"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb57-1"><a aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">section</span><span class="dt">&gt;</span></span>
+<span id="cb57-2"><a aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">h2</span><span class="ot"> data-id</span><span class="op">=</span><span class="st">"1"</span><span class="dt">&gt;</span>The Phantom Menace<span class="dt">&lt;/</span><span class="kw">h2</span><span class="dt">&gt;</span></span>
+<span id="cb57-3"><a aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span>Released: 1999-05-19<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb57-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span>Director: <span class="dt">&lt;</span><span class="kw">span</span><span class="ot"> class</span><span class="op">=</span><span class="st">"director"</span><span class="dt">&gt;</span>George Lucas<span class="dt">&lt;/</span><span class="kw">span</span><span class="dt">&gt;&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb57-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> class</span><span class="op">=</span><span class="st">"crawl"</span><span class="dt">&gt;</span>...<span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb57-6"><a aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">section</span><span class="dt">&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a aria-hidden="true" tabindex="-1"></a>section <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url) <span class="sc">|&gt;</span> <span class="fu">html_elements</span>(<span class="st">"section"</span>)   <span class="co"># 7 films</span></span>
+<span id="cb58-2"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-3"><a aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb58-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">title    =</span> section <span class="sc">|&gt;</span> <span class="fu">html_element</span>(<span class="st">"h2"</span>) <span class="sc">|&gt;</span> <span class="fu">html_text2</span>(),</span>
+<span id="cb58-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">released =</span> section <span class="sc">|&gt;</span> <span class="fu">html_element</span>(<span class="st">"p"</span>) <span class="sc">|&gt;</span> <span class="fu">html_text2</span>() <span class="sc">|&gt;</span></span>
+<span id="cb58-6"><a aria-hidden="true" tabindex="-1"></a>               <span class="fu">str_remove</span>(<span class="st">"Released: "</span>) <span class="sc">|&gt;</span> <span class="fu">parse_date</span>(),</span>
+<span id="cb58-7"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">director =</span> section <span class="sc">|&gt;</span> <span class="fu">html_element</span>(<span class="st">".director"</span>) <span class="sc">|&gt;</span> <span class="fu">html_text2</span>(),</span>
+<span id="cb58-8"><a aria-hidden="true" tabindex="-1"></a>  <span class="at">intro    =</span> section <span class="sc">|&gt;</span> <span class="fu">html_element</span>(<span class="st">".crawl"</span>) <span class="sc">|&gt;</span> <span class="fu">html_text2</span>()</span>
+<span id="cb58-9"><a aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="case-study-imdb-top-250" class="slide level2">
+<h2>Case study: IMDb top 250</h2>
+<p>Start with <code>html_table()</code>, then tidy:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a aria-hidden="true" tabindex="-1"></a>table <span class="ot">&lt;-</span> html <span class="sc">|&gt;</span> <span class="fu">html_element</span>(<span class="st">"table"</span>) <span class="sc">|&gt;</span> <span class="fu">html_table</span>()</span>
+<span id="cb59-2"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-3"><a aria-hidden="true" tabindex="-1"></a>ratings <span class="ot">&lt;-</span> table <span class="sc">|&gt;</span></span>
+<span id="cb59-4"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">rank_title_year =</span> <span class="st">`</span><span class="at">Rank &amp; Title</span><span class="st">`</span>, <span class="at">rating =</span> <span class="st">`</span><span class="at">IMDb Rating</span><span class="st">`</span>) <span class="sc">|&gt;</span></span>
+<span id="cb59-5"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rank_title_year =</span> <span class="fu">str_replace_all</span>(rank_title_year, <span class="st">"</span><span class="sc">\n</span><span class="st"> +"</span>, <span class="st">" "</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb59-6"><a aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate_wider_regex</span>(</span>
+<span id="cb59-7"><a aria-hidden="true" tabindex="-1"></a>    rank_title_year,</span>
+<span id="cb59-8"><a aria-hidden="true" tabindex="-1"></a>    <span class="at">patterns =</span> <span class="fu">c</span>(<span class="at">rank =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">d+"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">. "</span>, <span class="at">title =</span> <span class="st">".+"</span>, <span class="st">" +</span><span class="sc">\\</span><span class="st">("</span>,</span>
+<span id="cb59-9"><a aria-hidden="true" tabindex="-1"></a>                 <span class="at">year =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">d+"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">)"</span>)</span>
+<span id="cb59-10"><a aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Look at the raw HTML too:</strong> a <code>title</code> attribute held the number of votes, which the table didn’t show.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a aria-hidden="true" tabindex="-1"></a>html <span class="sc">|&gt;</span> <span class="fu">html_elements</span>(<span class="st">"td strong"</span>) <span class="sc">|&gt;</span> <span class="fu">html_attr</span>(<span class="st">"title"</span>)</span>
+<span id="cb60-2"><a aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; "9.2 based on 2,536,415 user ratings"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="dynamic-sites" class="slide level2">
+<h2>Dynamic sites</h2>
+<ul>
+<li>rvest downloads <strong>raw HTML</strong> and doesn’t run JavaScript</li>
+<li>If the page builds its content with JavaScript, <code>html_elements()</code> may return nothing like what you see in the browser</li>
+<li>Workaround: simulate a full browser (via the <strong>chromote</strong> package); check the rvest site for current status</li>
+</ul>
+<div class="fragment">
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Warning</strong></p>
+</div>
+<div class="callout-content">
+<p>Scraping code is <strong>fragile</strong>: if the site changes its structure, your code breaks.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="chapter-24-takeaways" class="slide level2">
+<h2>Chapter 24 takeaways</h2>
+<ul>
+<li>Check <strong>ethics and legality</strong> first: public, non-personal, factual; be polite</li>
+<li>HTML → elements and attributes; <strong>CSS selectors</strong> pick them out</li>
+<li><code>html_elements()</code> for observations, <code>html_element()</code> for variables, then <code>html_text2()</code> / <code>html_attr()</code> / <code>html_table()</code></li>
+<li>Expect trial and error, and expect breakage when sites change</li>
+</ul>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="wrap-up" class="title-slide slide level1 center">
+<h1>Wrap-up</h1>
+
+</section>
+<section id="the-whole-import-toolkit" class="slide level2">
+<h2>The whole import toolkit</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Where the data lives</th>
+<th>Reach for</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Excel / Google Sheets</td>
+<td><code>read_excel()</code>, <code>read_sheet()</code></td>
+</tr>
+<tr class="even">
+<td>A database</td>
+<td>DBI + dbplyr (<code>tbl()</code>, <code>show_query()</code>, <code>collect()</code>)</td>
+</tr>
+<tr class="odd">
+<td>Huge files on disk</td>
+<td>arrow (<code>open_dataset()</code>, parquet, <code>write_dataset()</code>)</td>
+</tr>
+<tr class="even">
+<td>JSON / nested lists</td>
+<td>jsonlite + <code>unnest_longer()</code> / <code>unnest_wider()</code> / <code>hoist()</code></td>
+</tr>
+<tr class="odd">
+<td>A website</td>
+<td>rvest (<code>html_elements()</code>, <code>html_text2()</code>, <code>html_table()</code>)</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>Next in the book: <strong>Program</strong> (functions, iteration, base R).</p>
+</div>
+</section>
+<section id="discussion-questions" class="slide level2">
+<h2>Discussion questions</h2>
+<ol type="1">
+<li>Which import problem from your own work do these tools solve?</li>
+<li>When would you convert CSV to parquet instead of loading into a database?</li>
+<li>Why is <code>unnest_auto()</code> convenient but risky?</li>
+<li>What would make you decide <em>not</em> to scrape a particular page?</li>
+</ol>
+</section>
+<section id="references" class="slide level2 smaller">
+<h2>References</h2>
+<ul>
+<li>Wickham, H., Çetinkaya-Rundel, M., &amp; Grolemund, G. <em>R for Data Science</em> (2nd ed.). Chapters 20–24. <a href="https://r4ds.hadley.nz/" class="uri">https://r4ds.hadley.nz/</a>
+<ul>
+<li>Ch. 20 Spreadsheets: <a href="https://r4ds.hadley.nz/spreadsheets.html" class="uri">https://r4ds.hadley.nz/spreadsheets.html</a></li>
+<li>Ch. 21 Databases: <a href="https://r4ds.hadley.nz/databases.html" class="uri">https://r4ds.hadley.nz/databases.html</a></li>
+<li>Ch. 22 Arrow: <a href="https://r4ds.hadley.nz/arrow.html" class="uri">https://r4ds.hadley.nz/arrow.html</a></li>
+<li>Ch. 23 Hierarchical data: <a href="https://r4ds.hadley.nz/rectangling.html" class="uri">https://r4ds.hadley.nz/rectangling.html</a></li>
+<li>Ch. 24 Web scraping: <a href="https://r4ds.hadley.nz/webscraping.html" class="uri">https://r4ds.hadley.nz/webscraping.html</a></li>
+</ul></li>
+<li>Broman, K. &amp; Woo, K. <em>Data Organization in Spreadsheets.</em> <a href="https://doi.org/10.1080/00031305.2017.1375989" class="uri">https://doi.org/10.1080/00031305.2017.1375989</a></li>
+</ul>
+<p><em>Slides summarize and adapt the book’s content. The book is licensed CC BY-NC-ND 3.0 US; keep attribution if you share these.</em></p>
+
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+<p>Based on <em>R for Data Science (2e)</em> — Wickham, Çetinkaya-Rundel &amp; Grolemund</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 6.0e-2,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp("https:\/\/agassi-iu\.github\.io\/DATA100-F26");
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

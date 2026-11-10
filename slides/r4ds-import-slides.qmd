@@ -1,0 +1,1186 @@
+---
+title: "Getting Data into R"
+subtitle: "R for Data Science (2e), Chapters 20–24: Spreadsheets, Databases, Arrow, Hierarchical Data, Web Scraping"
+author: "Your Name"
+date: today
+format:
+  revealjs:
+    theme: simple
+    slide-number: true
+    code-line-numbers: false
+    code-overflow: wrap
+    highlight-style: github
+    preview-links: auto
+    footer: "Based on *R for Data Science (2e)* — Wickham, Çetinkaya-Rundel & Grolemund"
+    width: 1280
+    height: 720
+    margin: 0.06
+---
+
+<!--
+Code chunks use plain "r" fences (not "{r}") so the deck renders without R
+installed and without the example data files. To make a chunk executable,
+change its fence to "{r}" and make sure the data and packages are available.
+-->
+
+# Where this part of the book fits {.smaller}
+
+## The import part at a glance
+
+Chapter 7 covered plain-text files (`.csv`, `.tsv`). These five chapters cover everything else:
+
+| Ch. | Source | Main tools |
+|-----|--------|-----------|
+| 20 | Spreadsheets (Excel, Google Sheets) | readxl, writexl, googlesheets4 |
+| 21 | Databases | DBI, dbplyr, duckdb, SQL |
+| 22 | Large files on disk | arrow, parquet |
+| 23 | Tree-like data (JSON) | tidyr, jsonlite |
+| 24 | Web pages | rvest |
+
+. . .
+
+**Common thread:** get data from where it lives into a tidy tibble.
+
+```r
+library(tidyverse)
+```
+
+---
+
+# 20 · Spreadsheets
+
+## Why spreadsheets are tricky
+
+- People use spreadsheets for **storage, sharing, and presentation** all at once
+- So you get merged cells, notes above the data, mixed types, inconsistent headers
+- Expect **iteration**: load, look, adjust, reload
+
+. . .
+
+::: {.callout-tip}
+Read *Data Organization in Spreadsheets* (Broman & Woo) if your collaborators build the spreadsheets.
+:::
+
+## Reading Excel: readxl
+
+```r
+library(readxl)
+library(writexl)
+```
+
+| Function | Reads |
+|---|---|
+| `read_xls()` | `.xls` files |
+| `read_xlsx()` | `.xlsx` files |
+| `read_excel()` | either; guesses from the file |
+
+```r
+students <- read_excel("data/students.xlsx")
+```
+
+The result is a tibble, just like `read_csv()`.
+
+## The students spreadsheet: what's wrong?
+
+```
+#>   `Student ID` `Full Name`   favourite.food   mealPlan   AGE
+#>          <dbl> <chr>         <chr>            <chr>      <chr>
+#> 3            3 Jayendra Lyne N/A              Breakfast… 7
+#> 4            4 Leon Rossini  Anchovies        Lunch only <NA>
+#> 5            5 Chidiegwu …   Pizza            Breakfast… five
+```
+
+Three problems to fix:
+
+1. Messy column names
+2. `"N/A"` isn't recognized as a missing value
+3. `age` is read as text (one entry is the word "five")
+
+## Fixing it, one argument at a time
+
+```r
+students <- read_excel(
+  "data/students.xlsx",
+  col_names = c("student_id", "full_name", "favourite_food",
+                "meal_plan", "age"),       # 1. snake_case names
+  skip = 1,                                # ...and drop the old header row
+  na = c("", "N/A"),                       # 2. extra NA strings
+  col_types = c("numeric", "text", "text", "text", "text")  # 3. keep age as text
+)
+
+students <- students |>
+  mutate(
+    age = if_else(age == "five", "5", age),
+    age = parse_number(age)
+  )
+```
+
+. . .
+
+Forcing `age` to `"numeric"` would silently turn "five" into `NA`. Read as text, then clean in R.
+
+## Worksheets
+
+Spreadsheets can hold several **worksheets**.
+
+```r
+excel_sheets("data/penguins.xlsx")
+#> [1] "Torgersen Island" "Biscoe Island"    "Dream Island"
+
+torgersen <- read_excel("data/penguins.xlsx",
+                        sheet = "Torgersen Island", na = "NA")
+biscoe    <- read_excel("data/penguins.xlsx",
+                        sheet = "Biscoe Island", na = "NA")
+dream     <- read_excel("data/penguins.xlsx",
+                         sheet = "Dream Island", na = "NA")
+
+penguins <- bind_rows(torgersen, biscoe, dream)
+```
+
+Chapter 26 shows how to avoid this repetition.
+
+## Reading part of a sheet
+
+Real sheets often have notes above and below the data.
+
+```r
+deaths_path <- readxl_example("deaths.xlsx")
+
+read_excel(deaths_path, range = "A5:F15")
+```
+
+- `range` uses spreadsheet notation: `A5` is the top-left corner, `F15` the bottom-right
+- Preferred over fiddling with `skip` and `n_max`
+
+## Data types: what you see isn't what's stored
+
+An Excel cell is one of four things: **boolean, number, datetime, or text**.
+
+- Excel has no integers; everything is floating point, display formatting hides it
+- Dates are stored as numbers (days since 1 Jan 1900)
+- Something that *looks* numeric can actually be text
+
+Recommended workflow:
+
+1. Let readxl **guess** the types
+2. Check the result
+3. Re-import with `col_types` if needed (`"list"` handles mixed-type columns)
+
+For exotic info like cell colour or bold text, look at **tidyxl**.
+
+## Writing to Excel
+
+```r
+bake_sale <- tibble(
+  item     = factor(c("brownie", "cupcake", "cookie")),
+  quantity = c(10, 5, 8)
+)
+
+write_xlsx(bake_sale, path = "data/bake-sale.xlsx")
+```
+
+- Column names are included and bolded by default
+- **Type information is lost** on a round trip (the factor comes back as text), so Excel is a poor format for caching interim results
+- Need styling or multiple sheets? Use **openxlsx** (not tidyverse-style: camelCase, no piping)
+
+## Google Sheets: googlesheets4
+
+```r
+library(googlesheets4)
+
+gs4_deauth()   # fine for public sheets; no sign-in needed
+
+students_sheet_id <- "1V1nPp1tzOuutXFLb3G9Eyxi3qxeEhnOXUzL5_BcCQ0w"
+
+students <- read_sheet(
+  students_sheet_id,
+  col_names = c("student_id", "full_name", "favourite_food",
+                "meal_plan", "age"),
+  skip = 1,
+  na = c("", "N/A"),
+  col_types = "dcccc"       # short codes: double, character x4
+)
+```
+
+Same ideas as readxl: `sheet`, `range`, `na`, `skip`, `col_names`.
+
+## Google Sheets: sheets, ranges, writing, auth
+
+```r
+sheet_names(penguins_sheet_id)                  # list worksheets
+read_sheet(penguins_sheet_id, sheet = "Torgersen Island")
+read_sheet(deaths_url, range = "A5:F15")
+
+write_sheet(bake_sale, ss = "bake-sale")
+write_sheet(bake_sale, ss = "bake-sale", sheet = "Sales")
+```
+
+- Private sheets and **writing** require authentication
+- `gs4_auth(email = "you@example.com")` picks a specific account
+
+## Chapter 20 takeaways
+
+- `read_excel()` and `read_sheet()` work almost identically
+- Use `col_names`, `skip`, `na`, `col_types`, `sheet`, and `range` to get a clean import
+- Expect trial and error; peek at the data, adjust, reload
+- Writing: `writexl::write_xlsx()` for Excel, `write_sheet()` for Google Sheets
+
+---
+
+# 21 · Databases
+
+## Why databases?
+
+- Huge amounts of data live in them
+- Asking someone for a CSV snapshot every time doesn't scale
+- You want to reach in and get the data **when you need it**
+
+This chapter's route:
+
+1. **DBI**: connect and send SQL
+2. **dbplyr**: write dplyr, get SQL
+3. Use that translation to **learn SQL**
+
+## Database basics
+
+A database is a collection of **tables** (like data frames), but:
+
+- Tables live **on disk** and can be arbitrarily large
+- Tables almost always have **indexes** for fast lookup
+- Classic databases are **row-oriented** (built for collecting data); newer **column-oriented** ones are faster for analysis
+
+## Three kinds of DBMS
+
+::: {.columns}
+::: {.column width="33%"}
+**Client-server**
+
+Central server, you connect as a client.
+
+PostgreSQL, MariaDB, SQL Server, Oracle
+:::
+::: {.column width="33%"}
+**Cloud**
+
+Like client-server but hosted; scales on demand.
+
+Snowflake, Redshift, BigQuery
+:::
+::: {.column width="33%"}
+**In-process**
+
+Runs entirely on your computer.
+
+SQLite, **duckdb**
+:::
+:::
+
+The book uses **duckdb**: no server setup, and fast.
+
+## Connecting with DBI
+
+```r
+library(DBI)
+library(dbplyr)
+
+con <- DBI::dbConnect(duckdb::duckdb())
+```
+
+Other DBMSs differ only in the connection call:
+
+```r
+con <- DBI::dbConnect(
+  RPostgres::Postgres(),
+  hostname = "databases.mycompany.com",
+  port = 1234
+)
+```
+
+- Always use DBI, plus a DBMS-specific package (RPostgres, RMariaDB…)
+- No dedicated package? Try **odbc**
+- Ask your team or DBA for connection details
+
+## Putting data in and checking it
+
+```r
+dbWriteTable(con, "mpg", ggplot2::mpg)
+dbWriteTable(con, "diamonds", ggplot2::diamonds)
+
+dbListTables(con)
+#> [1] "diamonds" "mpg"
+
+con |> dbReadTable("diamonds") |> as_tibble()
+```
+
+Already know SQL? Send it directly:
+
+```r
+sql <- "
+  SELECT carat, cut, clarity, color, price
+  FROM diamonds
+  WHERE price > 15000
+"
+as_tibble(dbGetQuery(con, sql))
+```
+
+## dbplyr: dplyr with a different backend
+
+`tbl()` creates an object that **represents** a table:
+
+```r
+diamonds_db <- tbl(con, "diamonds")
+```
+
+The object is **lazy**: dplyr verbs just record what you want and nothing runs until needed.
+
+```r
+big_diamonds_db <- diamonds_db |>
+  filter(price > 15000) |>
+  select(carat:clarity, price)
+```
+
+Row count shows as `??` because counting would require running the whole query.
+
+## See the SQL, then collect
+
+```r
+big_diamonds_db |> show_query()
+#> <SQL>
+#> SELECT carat, cut, color, clarity, price
+#> FROM diamonds
+#> WHERE (price > 15000.0)
+
+big_diamonds <- big_diamonds_db |> collect()
+```
+
+- `show_query()`: a great way to **learn SQL** from dplyr you already know
+- `collect()`: run the query and pull results into an in-memory tibble
+
+. . .
+
+**Typical pattern:** filter and aggregate in the database, then `collect()` and finish in R.
+
+## SQL basics
+
+- Top-level pieces are **statements** (`CREATE`, `INSERT`, `SELECT`); we focus on `SELECT` queries
+- A query is made of **clauses**: `SELECT`, `FROM`, `WHERE`, `GROUP BY`, `ORDER BY`
+- `SELECT` and `FROM` are always required: `SELECT * FROM table`
+
+Two key differences from dplyr:
+
+1. **Case doesn't matter** (convention: keywords in UPPERCASE)
+2. **Order matters**: write `SELECT`, `FROM`, `WHERE`, `GROUP BY`, `ORDER BY`
+
+. . .
+
+Written order ≠ evaluation order. SQL evaluates `FROM` → `WHERE` → `GROUP BY` → `SELECT` → `ORDER BY`.
+
+## dplyr verb → SQL clause
+
+| dplyr | SQL |
+|---|---|
+| `select()`, `rename()`, `relocate()`, `mutate()` | `SELECT` |
+| `summarize()` | `SELECT` (with `GROUP BY`) |
+| `group_by()` | `GROUP BY` |
+| `filter()` | `WHERE` (or `HAVING` after a summary) |
+| `arrange()` | `ORDER BY` |
+| `*_join()` | `JOIN … ON` inside `FROM` |
+
+## SELECT, GROUP BY, WHERE, ORDER BY in action
+
+```r
+flights |>
+  filter(dest == "IAH") |>
+  arrange(dep_delay) |>
+  show_query()
+#> SELECT *
+#> FROM flights
+#> WHERE (dest = 'IAH')
+#> ORDER BY dep_delay
+```
+
+```r
+diamonds_db |>
+  group_by(cut) |>
+  summarize(n = n(), avg_price = mean(price, na.rm = TRUE)) |>
+  show_query()
+#> SELECT cut, COUNT(*) AS n, AVG(price) AS avg_price
+#> FROM diamonds
+#> GROUP BY cut
+```
+
+## SQL quirks to remember
+
+- Renaming is **aliasing** with `AS`; the old name goes on the *left*
+- `=` for comparison (not `==`); `AND`/`OR` instead of `&`/`|`; `IN` instead of `%in%`
+- Strings use **single quotes**; double quotes mark column/table names
+- `NULL` instead of `NA`: silently **dropped** in aggregations
+- Filtering on a summarized value becomes **`HAVING`**, because `WHERE` runs before aggregation
+
+```r
+diamonds_db |> group_by(cut) |> summarize(n = n()) |> filter(n > 100)
+#> ... GROUP BY cut
+#> HAVING (COUNT(*) > 100.0)
+```
+
+## Subqueries and joins
+
+**Subqueries**: needed when a `SELECT` can't reference a column it just created.
+
+```r
+flights |> mutate(year1 = year + 1, year2 = year1 + 1) |> show_query()
+#> SELECT *, year1 + 1.0 AS year2
+#> FROM (
+#>   SELECT *, "year" + 1.0 AS year1
+#>   FROM flights
+#> ) AS q01
+```
+
+**Joins** use `ON` inside `FROM`:
+
+```r
+flights |> left_join(planes |> rename(year_built = year), join_by(tailnum))
+#> FROM flights
+#> LEFT JOIN planes
+#>   ON (flights.tailnum = planes.tailnum)
+```
+
+Many tables to connect? The **dm** package can map the keys for you.
+
+## Translating R functions
+
+- Simple summaries translate directly (`mean()` → `AVG()`); more statistical ones are more complex (`median()`)
+- Inside `mutate()`, summaries become **window functions** with `OVER (PARTITION BY …)`
+- `lead()` / `lag()` also become window functions, so `arrange()` first (tables have no intrinsic order)
+- `if_else()`, `case_when()`, and `cut()` all become **`CASE WHEN`**
+
+```r
+flights |> mutate(description = if_else(arr_delay > 0, "delayed", "on-time"))
+#> SELECT CASE WHEN (arr_delay > 0.0) THEN 'delayed'
+#>             WHEN NOT (arr_delay > 0.0) THEN 'on-time' END AS description
+```
+
+Not every R function is translated yet; see `vignette("translation-function", package = "dbplyr")`.
+
+## Chapter 21 takeaways
+
+- **DBI** connects and runs SQL; **dbplyr** translates dplyr to SQL
+- Queries are lazy: `show_query()` to inspect, `collect()` to run
+- Knowing some SQL is valuable: it's *the* common language for data work
+- Next steps: *SQL for Data Scientists* (Teate), *Practical SQL* (DeBarros)
+
+---
+
+# 22 · Arrow
+
+## The problem with CSV
+
+- CSV is simple, human-readable, and universal
+- But it's **inefficient**: lots of work to read into R
+- Alternative: **Parquet**, an open binary format, paired with **Apache Arrow**
+
+```r
+library(tidyverse)
+library(arrow)
+```
+
+The arrow package is a **dplyr backend** for larger-than-memory datasets.
+
+## arrow or dbplyr?
+
+Often the choice is made for you: the data is already in a database or in parquet files.
+
+If you're starting from your own CSVs, you can either:
+
+- load them into a **database**, or
+- convert them to **parquet**
+
+Early on, **try both** and see which works better for you.
+
+## The example: Seattle library checkouts
+
+- ~**41 million** rows: monthly checkouts per title, April 2005 – October 2022
+- A **9 GB** CSV file, too big to comfortably load with `read_csv()`
+- Rule of thumb: you want at least **twice** the data size in RAM
+
+```r
+curl::multi_download(
+  "https://r4ds.s3.us-west-2.amazonaws.com/seattle-library-checkouts.csv",
+  "data/seattle-library-checkouts.csv",
+  resume = TRUE
+)
+```
+
+`curl::multi_download()` gives a progress bar and can resume interrupted downloads.
+
+## Opening without loading
+
+```r
+seattle_csv <- open_dataset(
+  sources = "data/seattle-library-checkouts.csv",
+  col_types = schema(ISBN = string()),
+  format = "csv"
+)
+```
+
+- `open_dataset()` scans a few thousand rows to learn the structure, then stops
+- The first 80,000 rows have blank ISBNs, so we specify that column's type
+- Data is only read into memory **as requested**
+
+```r
+seattle_csv |>
+  group_by(CheckoutYear) |>
+  summarise(Checkouts = sum(Checkouts)) |>
+  arrange(CheckoutYear) |>
+  collect()          # ~10 seconds on the CSV
+```
+
+## Why parquet?
+
+- **Smaller**: efficient encodings and compression
+- **Rich types**: column types are stored with the data (no guessing dates vs strings)
+- **Column-oriented**: matches how analysis reads data
+- **Chunked**: parts can be processed in parallel, and some can be skipped
+
+. . .
+
+Downside: not human-readable. Far fewer tools read parquet than CSV.
+
+## Partitioning
+
+Split a large dataset across **many files**.
+
+- Partition by variables you **filter on**, so arrow can skip files
+- Rough guide: avoid files under **20 MB** or over **2 GB**, and avoid more than **10,000** files
+- No hard rules, so experiment
+
+```r
+pq_path <- "data/seattle-library-checkouts"
+
+seattle_csv |>
+  group_by(CheckoutYear) |>
+  write_dataset(path = pq_path, format = "parquet")
+```
+
+## What we get
+
+- One 9 GB CSV → **18 parquet files**, roughly 100–300 MB each
+- Total about **4 GB**, a little over half the CSV size
+- Hive-style folder names: `CheckoutYear=2005/part-0.parquet`
+
+```r
+seattle_pq <- open_dataset(pq_path)
+```
+
+## dplyr with arrow
+
+Same lazy pattern as dbplyr: build a query, `collect()` to run it.
+
+```r
+query <- seattle_pq |>
+  filter(CheckoutYear >= 2018, MaterialType == "BOOK") |>
+  group_by(CheckoutYear, CheckoutMonth) |>
+  summarize(TotalCheckouts = sum(Checkouts)) |>
+  arrange(CheckoutYear, CheckoutMonth)
+
+query |> collect()
+```
+
+Like dbplyr, only some R expressions are supported; see `?acero` for the list.
+
+## Performance: CSV vs parquet
+
+Books checked out per month in 2021:
+
+| Format | Elapsed time |
+|---|---|
+| Single CSV | ~11 seconds |
+| Partitioned parquet | ~0.06 seconds |
+
+**~100× faster**, for two reasons:
+
+1. **Partitioning**: only 1 of the 18 files is read
+2. **Columnar format**: only the 4 columns used are read
+
+## Arrow + duckdb
+
+Hand an arrow dataset to duckdb **without copying memory**:
+
+```r
+seattle_pq |>
+  to_duckdb() |>
+  filter(CheckoutYear >= 2018, MaterialType == "BOOK") |>
+  group_by(CheckoutYear) |>
+  summarize(TotalCheckouts = sum(Checkouts)) |>
+  arrange(desc(CheckoutYear)) |>
+  collect()
+```
+
+Arrow's goal: seamless moves between computing environments.
+
+## Chapter 22 takeaways
+
+- `open_dataset()` works with CSV or parquet without loading everything
+- Convert big CSVs to **partitioned parquet** with `write_dataset()`
+- Use familiar dplyr verbs; `collect()` runs the query
+- `to_duckdb()` bridges arrow and databases
+
+---
+
+# 23 · Hierarchical data
+
+## Rectangling
+
+**Rectangling** = turning tree-like data into a data frame of rows and columns.
+
+Hierarchical data is common, especially from the web. The plan:
+
+1. Understand **lists**
+2. Learn two tidyr functions: `unnest_longer()` and `unnest_wider()`
+3. Work through **case studies**
+4. Understand **JSON**
+
+```r
+library(tidyverse)
+library(repurrrsive)
+library(jsonlite)
+```
+
+## Lists
+
+Lists can hold elements of **different types**, including other lists.
+
+```r
+x1 <- list(1:4, "a", TRUE)
+x2 <- list(a = 1:2, b = 1:3, c = 1:4)   # named children
+
+str(x2)
+#> List of 3
+#>  $ a: int [1:2] 1 2
+#>  $ b: int [1:3] 1 2 3
+#>  $ c: int [1:4] 1 2 3 4
+```
+
+- `str()` gives a compact view of structure
+- For big lists, switch to `View()` in RStudio (it even shows the subsetting code)
+
+## Nested lists vs `c()`
+
+```r
+x3 <- list(list(1, 2), list(3, 4))   # a list of lists: hierarchy
+x4 <- c(list(1, 2), list(3, 4))      # c() flattens to a list of 4
+```
+
+```r
+x5 <- list(1, list(2, list(3, list(4, list(5)))))
+str(x5)
+#> List of 2
+#>  $ : num 1
+#>  $ :List of 2
+#>   ..$ : num 2
+#>   ..$ :List of 2
+#>   .. ..$ : num 3
+#> ...
+```
+
+## List-columns
+
+Lists can live **inside a tibble**.
+
+```r
+df <- tibble(
+  x = 1:2,
+  y = c("a", "b"),
+  z = list(list(1, 2), list(3, 4, 5))
+)
+#>       x y     z
+#>   <int> <chr> <list>
+#> 1     1 a     <list [2]>
+#> 2     2 b     <list [3]>
+```
+
+- They behave like any other column (you can `filter()` on `x`)
+- Computing *on* them is hard, so we'll **unnest** them into regular variables
+- Easier with `tibble()` than `data.frame()`
+
+## Two flavours of list-column
+
+::: {.columns}
+::: {.column width="50%"}
+**Named children**
+
+Same names in every row.
+
+→ become **columns**
+
+`unnest_wider()`
+:::
+::: {.column width="50%"}
+**Unnamed children**
+
+Number of elements varies per row.
+
+→ become **rows**
+
+`unnest_longer()`
+:::
+:::
+
+## `unnest_wider()`
+
+```r
+df1 <- tribble(
+  ~x, ~y,
+  1, list(a = 11, b = 12),
+  2, list(a = 21, b = 22),
+  3, list(a = 31, b = 32),
+)
+
+df1 |> unnest_wider(y)
+#>       x     a     b
+#> 1     1    11    12
+#> 2     2    21    22
+#> 3     3    31    32
+
+df1 |> unnest_wider(y, names_sep = "_")   # columns: x, y_a, y_b
+```
+
+`names_sep` prevents name clashes.
+
+## `unnest_longer()`
+
+```r
+df2 <- tribble(
+  ~x, ~y,
+  1, list(11, 12, 13),
+  2, list(21),
+  3, list(31, 32),
+)
+
+df2 |> unnest_longer(y)
+#>       x     y
+#> 1     1    11
+#> 2     1    12
+#> 3     1    13
+#> 4     2    21
+#> 5     3    31
+#> 6     3    32
+```
+
+- `x` is repeated for each element
+- Empty list → the row **disappears** (use `keep_empty = TRUE` to keep it as `NA`)
+
+## Inconsistent types
+
+What if a list-column mixes types?
+
+```r
+df4 <- tribble(
+  ~x, ~y,
+  "a", list(1),
+  "b", list("a", TRUE, 5)
+)
+
+df4 |> unnest_longer(y)
+#>   x     y
+#> 1 a     <dbl [1]>
+#> 2 b     <chr [1]>
+#> 3 b     <lgl [1]>
+#> 4 b     <dbl [1]>
+```
+
+`unnest_longer()` keeps the columns unchanged, so you get a **list-column of length-1 vectors**. Dealing with it needs tools from Chapter 26.
+
+## Other tidyr functions to know about
+
+- `unnest_auto()`: picks wider or longer for you. Fine for exploration, but it hides your data's structure
+- `unnest()`: expands rows *and* columns; useful for list-columns containing data frames (common in tidymodels)
+
+## Case study 1: very wide data (`gh_repos`)
+
+GitHub repos for six users, deeply nested.
+
+```r
+repos <- tibble(json = gh_repos)
+
+repos |>
+  unnest_longer(json) |>     # one row per repo (176 rows)
+  unnest_wider(json)         # one column per field (68 columns!)
+```
+
+Pick the columns you want, then widen the nested `owner`:
+
+```r
+repos |>
+  unnest_longer(json) |>
+  unnest_wider(json) |>
+  select(id, full_name, owner, description) |>
+  unnest_wider(owner, names_sep = "_")
+```
+
+`owner` also has an `id`, so without `names_sep` you get a duplicate-name error.
+
+## Case study 2: relational data (`got_chars`)
+
+Nested data can stand in for **several tables**.
+
+```r
+chars <- tibble(json = got_chars)
+
+characters <- chars |>
+  unnest_wider(json) |>
+  select(id, name, gender, culture, born, died, alive)
+
+titles <- chars |>
+  unnest_wider(json) |>
+  select(id, titles) |>
+  unnest_longer(titles) |>
+  filter(titles != "") |>
+  rename(title = titles)
+```
+
+Repeat for aliases, allegiances, books, TV series, then **join** back to `characters` when needed.
+
+## Case study 3: deeply nested (`gmaps_cities`)
+
+Google geocoding results for five cities. Alternate the two functions:
+
+```r
+locations <- gmaps_cities |>
+  unnest_wider(json) |>        # results + status
+  select(-status) |>
+  unnest_longer(results) |>    # one row per match
+  unnest_wider(results)        # address, geometry, ...
+```
+
+Washington and Arlington each get **two** matches (state/DC, Texas/Virginia).
+
+## Drilling into `geometry`
+
+```r
+locations |>
+  select(city, formatted_address, geometry) |>
+  unnest_wider(geometry) |>
+  select(!location:viewport) |>
+  unnest_wider(bounds) |>
+  rename(ne = northeast, sw = southwest) |>
+  unnest_wider(c(ne, sw), names_sep = "_")
+#>   city    formatted_address  ne_lat ne_lng sw_lat sw_lng
+```
+
+Once you know the path, shortcut with **`hoist()`**:
+
+```r
+locations |>
+  select(city, formatted_address, geometry) |>
+  hoist(
+    geometry,
+    ne_lat = c("bounds", "northeast", "lat"),
+    sw_lat = c("bounds", "southwest", "lat"),
+    ne_lng = c("bounds", "northeast", "lng"),
+    sw_lng = c("bounds", "southwest", "lng")
+  )
+```
+
+## JSON data types
+
+JSON is how most web APIs return data. Six types:
+
+| JSON | R equivalent |
+|---|---|
+| `null` | `NA` |
+| string (double quotes only) | character |
+| number (no `Inf`/`NaN`) | numeric |
+| `true` / `false` | `TRUE` / `FALSE` |
+| array `[1, 2, 3]` | unnamed list |
+| object `{"x": 1}` | named list |
+
+No native dates (stored as strings → `parse_date()`); sometimes numbers arrive as strings (→ `parse_double()`).
+
+## Reading JSON with jsonlite
+
+```r
+library(jsonlite)
+
+gh_users2 <- read_json(gh_users_json())      # from a file
+
+str(parse_json('{"x": [1, 2, 3]}'))          # from a string
+#> List of 1
+#>  $ x:List of 3
+#>   ..$ : int 1
+#>   ..$ : int 2
+#>   ..$ : int 3
+```
+
+The book avoids `fromJSON()` because its **automatic simplification** hides what's happening. Rectangle it yourself.
+
+## Starting the rectangling process
+
+**Top-level array** (most common): one row per element.
+
+```r
+json <- '[{"name": "John", "age": 34}, {"name": "Susan", "age": 27}]'
+tibble(json = parse_json(json)) |> unnest_wider(json)
+```
+
+**Top-level object**: wrap it in a list first.
+
+```r
+df <- tibble(json = list(parse_json(json)))
+df |>
+  unnest_wider(json) |>
+  unnest_longer(results) |>
+  unnest_wider(results)
+```
+
+Or reach in and start from the part you want: `tibble(results = parse_json(json)$results)`.
+
+## Chapter 23 takeaways
+
+- Hierarchical data = **lists**; in tibbles, **list-columns**
+- Only two core tools: `unnest_longer()` (→ rows) and `unnest_wider()` (→ columns)
+- Repeat them as many times as the nesting requires; `hoist()` shortcuts known paths
+- JSON maps closely onto R lists (arrays ↔ unnamed, objects ↔ named)
+
+---
+
+# 24 · Web scraping
+
+## When there's no API
+
+- If a site offers an **API**, prefer it: more reliable (JSON → Chapter 23)
+- If not, you can still **scrape** the HTML with **rvest**
+
+```r
+library(tidyverse)
+library(rvest)
+```
+
+## Ethics and legality
+
+*Not legal advice. Consult a lawyer when in doubt.*
+
+Rule of thumb: you're likely fine if the data is **public, non-personal, and factual**.
+
+- **Be respectful**: pause between requests; the **polite** package does this and caches pages
+- **Terms of service**: often forbid scraping; respect where possible. Binding-ness depends on jurisdiction and on whether you took an explicit action (account, checkbox)
+- **Personally identifiable information**: be extremely careful (GDPR; the OkCupid study is a cautionary tale)
+- **Copyright**: facts aren't protected, original content may be (fair use might apply)
+
+## HTML basics
+
+Pages are a **hierarchy of elements**: start tag, optional attributes, contents, end tag.
+
+```html
+<html>
+<head>
+  <title>Page title</title>
+</head>
+<body>
+  <h1 id='first'>A heading</h1>
+  <p>Some text &amp; <b>some bold text.</b></p>
+  <img src='myimg.png' width='100' height='100'>
+</body>
+```
+
+- `<html>` → `<head>` (metadata) + `<body>` (content)
+- Block tags (`<h1>`, `<p>`, `<ol>`) structure the page; inline tags (`<b>`, `<a>`) format text
+- Key attributes: `id`, `class`, `href`, `src`
+- Escapes like `&amp;` are handled automatically by rvest
+
+## Getting the page into R
+
+```r
+html <- read_html("http://rvest.tidyverse.org/")
+```
+
+For examples, `minimal_html()` lets you write HTML inline:
+
+```r
+html <- minimal_html("
+  <h1>This is a heading</h1>
+  <p id='first'>This is a paragraph</p>
+  <p class='important'>This is an important paragraph</p>
+")
+```
+
+## CSS selectors: the essential three
+
+| Selector | Matches |
+|---|---|
+| `p` | all `<p>` elements |
+| `.title` | elements with `class="title"` |
+| `#title` | the element with `id="title"` (unique) |
+
+```r
+html |> html_elements("p")           # both paragraphs
+html |> html_elements(".important")   # one
+html |> html_elements("#first")       # one
+```
+
+## `html_element()` vs `html_elements()`
+
+- `html_elements()` → **all** matches (zero matches → empty result)
+- `html_element()` → **one result per input** (no match → `NA`)
+
+. . .
+
+Combine them: `html_elements()` to find **observations**, then `html_element()` to find **variables**.
+
+```r
+characters <- html |> html_elements("li")     # one per character
+
+characters |> html_element(".weight")         # 4 results, NA for missing
+characters |> html_elements(".weight")        # only 3, connection to names lost!
+```
+
+## Extracting text and attributes
+
+```r
+characters |> html_element("b") |> html_text2()
+#> [1] "C-3PO"  "R4-P17" "R2-D2"  "Yoda"
+
+characters |> html_element(".weight") |> html_text2()
+#> [1] "167 kg" NA       "96 kg"  "66 kg"
+
+html |>
+  html_elements("p") |>
+  html_element("a") |>
+  html_attr("href")
+```
+
+- Use **`html_text2()`**, not `html_text()`: better handling of nested HTML
+- `html_attr()` always returns **strings**; convert numbers/dates yourself
+
+## Tables
+
+HTML tables (`<table>`, `<tr>`, `<th>`, `<td>`) have a shortcut:
+
+```r
+html |>
+  html_element(".mytable") |>
+  html_table()
+#>       x     y
+#> 1   1.5   2.7
+#> 2   4.9   1.3
+#> 3   7.2   8.1
+```
+
+- Numbers are converted automatically
+- Turn that off with `convert = FALSE` if it misbehaves
+
+## Finding the right selector
+
+The hardest part: you want selectors that are both **specific** (no extras) and **sensitive** (catch everything).
+
+- **SelectorGadget**: click positive/negative examples to generate a selector
+- **Browser dev tools** (Chrome: right-click → *Inspect*): explore the HTML; *Copy as Selector*
+- **Selectors Explained** translates selectors into plain English
+- Learn more with the **CSS Dinner** game and MDN docs
+
+Lots of trial and error is normal.
+
+## Case study: Star Wars films
+
+Each film shares a structure:
+
+```html
+<section>
+  <h2 data-id="1">The Phantom Menace</h2>
+  <p>Released: 1999-05-19</p>
+  <p>Director: <span class="director">George Lucas</span></p>
+  <div class="crawl">...</div>
+</section>
+```
+
+```r
+section <- read_html(url) |> html_elements("section")   # 7 films
+
+tibble(
+  title    = section |> html_element("h2") |> html_text2(),
+  released = section |> html_element("p") |> html_text2() |>
+               str_remove("Released: ") |> parse_date(),
+  director = section |> html_element(".director") |> html_text2(),
+  intro    = section |> html_element(".crawl") |> html_text2()
+)
+```
+
+## Case study: IMDb top 250
+
+Start with `html_table()`, then tidy:
+
+```r
+table <- html |> html_element("table") |> html_table()
+
+ratings <- table |>
+  select(rank_title_year = `Rank & Title`, rating = `IMDb Rating`) |>
+  mutate(rank_title_year = str_replace_all(rank_title_year, "\n +", " ")) |>
+  separate_wider_regex(
+    rank_title_year,
+    patterns = c(rank = "\\d+", "\\. ", title = ".+", " +\\(",
+                 year = "\\d+", "\\)")
+  )
+```
+
+**Look at the raw HTML too:** a `title` attribute held the number of votes, which the table didn't show.
+
+```r
+html |> html_elements("td strong") |> html_attr("title")
+#> "9.2 based on 2,536,415 user ratings"
+```
+
+## Dynamic sites
+
+- rvest downloads **raw HTML** and doesn't run JavaScript
+- If the page builds its content with JavaScript, `html_elements()` may return nothing like what you see in the browser
+- Workaround: simulate a full browser (via the **chromote** package); check the rvest site for current status
+
+. . .
+
+::: {.callout-warning}
+Scraping code is **fragile**: if the site changes its structure, your code breaks.
+:::
+
+## Chapter 24 takeaways
+
+- Check **ethics and legality** first: public, non-personal, factual; be polite
+- HTML → elements and attributes; **CSS selectors** pick them out
+- `html_elements()` for observations, `html_element()` for variables, then `html_text2()` / `html_attr()` / `html_table()`
+- Expect trial and error, and expect breakage when sites change
+
+---
+
+# Wrap-up
+
+## The whole import toolkit
+
+| Where the data lives | Reach for |
+|---|---|
+| Excel / Google Sheets | `read_excel()`, `read_sheet()` |
+| A database | DBI + dbplyr (`tbl()`, `show_query()`, `collect()`) |
+| Huge files on disk | arrow (`open_dataset()`, parquet, `write_dataset()`) |
+| JSON / nested lists | jsonlite + `unnest_longer()` / `unnest_wider()` / `hoist()` |
+| A website | rvest (`html_elements()`, `html_text2()`, `html_table()`) |
+
+. . .
+
+Next in the book: **Program** (functions, iteration, base R).
+
+## Discussion questions
+
+1. Which import problem from your own work do these tools solve?
+2. When would you convert CSV to parquet instead of loading into a database?
+3. Why is `unnest_auto()` convenient but risky?
+4. What would make you decide *not* to scrape a particular page?
+
+## References {.smaller}
+
+- Wickham, H., Çetinkaya-Rundel, M., & Grolemund, G. *R for Data Science* (2nd ed.). Chapters 20–24. <https://r4ds.hadley.nz/>
+  - Ch. 20 Spreadsheets: <https://r4ds.hadley.nz/spreadsheets.html>
+  - Ch. 21 Databases: <https://r4ds.hadley.nz/databases.html>
+  - Ch. 22 Arrow: <https://r4ds.hadley.nz/arrow.html>
+  - Ch. 23 Hierarchical data: <https://r4ds.hadley.nz/rectangling.html>
+  - Ch. 24 Web scraping: <https://r4ds.hadley.nz/webscraping.html>
+- Broman, K. & Woo, K. *Data Organization in Spreadsheets.* <https://doi.org/10.1080/00031305.2017.1375989>
+
+*Slides summarize and adapt the book's content. The book is licensed CC BY-NC-ND 3.0 US; keep attribution if you share these.*

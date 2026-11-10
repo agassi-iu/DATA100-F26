@@ -1,0 +1,474 @@
+---
+title: "DATA100 Introduction to Data Analytics"
+subtitle: "Lecture 13: Asking Questions for Data Analysis"
+author: "Agassi Iu"
+institute: "Wilfrid Laurier University"
+date: "November 10, 2026"
+format:
+  revealjs:
+    theme: sky
+    slide-number: true
+    transition: slide
+    embed-resources: true # Embeds figures and libraries into a single portable HTML file
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# First thing first: how do you ask a question?
+
+## Data analysis starts with a question
+
+::: {.callout-note title="Previously we had a sleep survey data"}
+
+- We have a survey of **1,000 students asking them about their sleeping habits
+
+- For the past couple weeks, I have been teaching you about data tidying and transformation with a leading **question**
+
+- When you change the question, you also change the analysis and necessary steps that get you there
+
+- A plot is only "interesting" when it answers something
+:::
+
+
+
+## What is wrong with asking weak questions?
+
+- You clean data you never needed
+
+- You make ten plots and cannot say which one matters
+
+- You find a pattern but cannot say what it means
+
+- You answer a different question than the one you were asked
+
+## The plan for today
+
+| Part | What we do |
+|------|------------|
+| 1 | Topics vs. questions, and the five types of questions |
+| 2 | What makes a question *good* |
+| 3 | Red flags |
+| 4 | Turning a question into an analysis plan |
+| 5 | Case study: university employee salaries |
+| 6 | Draft a question for your project (homework) |
+
+
+
+# Part 1: Topics vs. questions
+
+## A topic is not a question {.smaller}
+
+| Topic | A question about that topic |
+|---------------|---------------------|
+| Student sleep | Do students who sleep less get lower grades? |
+| Student stress | What proportion of students report a stress level of 4 or 5? |
+| Early classes | Do students with an early class sleep less than students without one? |
+
+- A topic would tell you where to look (e.g. specific variables)
+- A question tells you what to look for and when you are done
+
+
+## Several types of questions {.smaller}
+
+| Type | It asks... | Example (sleep survey) |
+|------|------------|------------------------|
+| Descriptive | What is typical? How many? | What proportion of students sleep under 6 hours? |
+| Comparison | Do groups differ? | Do Arts students sleep less than Business students? |
+| Association | Are two variables related? | Is sleep related to average grade? |
+| Prediction | Can we forecast an outcome? | Can we predict grade from sleep, program, and early classes? |
+| Causal | Does X *cause* Y? | Would more sleep *raise* a student's grade? |
+
+
+
+# Part 2: What makes a question good?
+
+## Good questions are SMART {.smaller}
+
+| Letter | Trait | Ask yourself |
+|--------|-------|--------------|
+| **S** | Specific | Could two people read it and do the same analysis? |
+| **M** | Measurable | Is every key word something I can compute from my variables? |
+| **A** | Achievable | Can my data answer it, and can I finish it with the time and tools I have? |
+| **R** | Relevant | Would anyone care about the answer? |
+| **T** | Time-bound | Does it name a time period (e.g. "the most recent year"), or a deadline I can meet? |
+
+
+## Going back to our example
+
+::: {.callout-note title="Example: the sleep survey"}
+*"In our survey, do students who sleep under 6 hours have lower average grades than those who sleep for more than 6 hours?"*
+
+- **S:** names the groups and the outcome
+- **M:** `sleep_hours` and `avg_grade` are columns
+- **A:** the survey has both columns
+- **R:** students and (maybe) academic advisors care about sleep and grades
+- **T:** it covers the survey period only
+:::
+
+## Four building blocks {.smaller}
+
+| Building block | Ask yourself | Sleep survey example |
+|----------------|--------------|----------------------|
+| Unit | Who or what is one row? | A student in the survey |
+| Variables | What do I measure? | `sleep_hours`, `avg_grade` |
+| Comparison | Compared to what? | Short vs. normal sleepers |
+| Context | Which splits matter? | By `program` |
+
+## Sharpening a question {.smaller}
+
+1. You've selected your topic: Student sleep
+2. Then ask a broad question: Does sleep affect grades?
+3. Sharpen your question: Do students who sleep less get lower grades?
+4. *Can someone actually answer it?*: In our survey, do students who sleep under 6 hours have lower average grades than those who sleep more than 6 hours, and does this differ by program?
+
+::: {.callout-note title="Relate back to coding"}
+Each step made the question easier to turn into code: the last version tells us exactly which groups to create and which columns to use.
+:::
+
+## Is your question too vague? {.smaller}
+
+Words like "more", "successful", or "stressed" feel clear, but `R` doesn't get that. Hence it needs a rule (like a formula)!
+
+| Vague phrase | What you must decide | One possible definition |
+|--------------|----------------------|-------------------------|
+| "Sleeps a lot" | Where is the cutoff? | `sleep_hours > 6` |
+| "Doing well" | Which measure? | `avg_grade >= 70` |
+| "Highly stressed" | Which values count? | `stress_level >= 4` |
+| "Has an early class" | Which column and value? | `has_early_class == "Yes"` |
+
+::: {.callout-tip title="Connection to logical vectors"}
+Defining a word sometimes means writing a **logical condition**.
+:::
+
+
+
+# Part 3: Red flags
+
+## Red flags {.smaller}
+
+| Red flag | Example | Better version |
+|----------|---------|----------------|
+| Too vague | What is interesting about students? | Choose a variable and a comparison |
+| Too broad | What affects grades? | Is average grade related to hours of sleep? |
+| Data cannot answer it | Why do students sleep less? | Do students with an early class sleep less? |
+| Causal wording | Does more sleep make students get better grades? | Do students who sleep more have higher average grades? |
+| Leading question | Why does an early class ruin students' sleep? | Do students with an early class sleep fewer hours? |
+
+## The hidden third variable
+
+In the sleep survey:
+
+- **Overall:** students who sleep more have higher average grades
+- **Within each program:** the pattern mostly disappears
+
+::: {.callout-important title="Could your results be justified by an external effect?"}
+Programs differ in *both* sleep and grades. The follow-up question, "does it depend on program?", came from asking *what else could explain this pattern*. Good questions should anticipate that!
+:::
+
+
+
+# Part 4: From question to analysis plan
+
+## Every part of a question becomes part of your code {.smaller}
+
+| Part of the question | Becomes... |
+|-----------|-----------------------|
+| Unit / population | Which rows to keep: `filter()` |
+| Variables | Which columns to use, create, or clean: `select()`, `mutate()` |
+| Comparison | `group_by()` + `summarize()` |
+| Context splits | An extra grouping variable, or `facet_wrap()` |
+| Answer | A summary table or a plot |
+
+## Check that the data can answer it
+
+Before committing to a question, look at the data:
+
+```r
+# Do the columns I need exist, and what type are they?
+glimpse(survey)
+
+# Are there enough rows in each group?
+survey |> count(program)
+
+# How much is missing?
+survey |> summarize(across(everything(), ~ sum(is.na(.x))))
+```
+
+::: {.callout-caution title="Watch the group sizes"}
+A group with only 10 to 15 students makes any average for that group less trustworthy.
+:::
+
+## Your question will change {.smaller}
+
+:::{.callout-tip}
+Question  ->  Look at the data  ->  Revise the question  ->  ...
+:::
+
+Reasons to revise:
+
+- A needed variable is missing, or mostly `NA`
+- A group turns out to be too small
+- The variable is coded differently than you assumed (`"Yes"` vs `"yes"`)
+- You find that the question was too generic
+
+::: {.callout-note title="This is completely normal!"}
+Revising a question after you see the data is not a failure. It is part of the process.
+:::
+
+
+# Part 5: Case study: University salaries
+
+
+## Where can I find data? {.smaller}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+### Kaggle
+
+- A large collection of data sets uploaded by users and organizations
+- Search by keyword, then filter by file type (CSV), size, license, and usability score
+- Each data set page shows a description, the columns, the file size, and the last update
+:::
+
+::: {.column width="50%"}
+### TidyTuesday
+
+- A new data set every week, posted on GitHub by the Data Science Learning Community
+- Every week has a *README* with a data dictionary, the source, and a link to an article
+- Designed for practice: curated, but still not always perfectly clean
+:::
+
+::::
+
+
+## Is this dataset good enough? {.smaller}
+
+| Ask yourself | Why it matters |
+|--------------|----------------|
+| Is there a data dictionary? | You need to know what each column means |
+| Do the columns match what my question needs? | Check with `glimpse()` before committing |
+| Who collected it, how, and when? | Source and age affect trust |
+| How many rows, and how much is missing? | Small or patchy data limits the question |
+
+::: {.callout-important title="Data first or question first?"}
+Browsing data sets can spark questions, and that is fine. Either way, go back to the question checklist: can *this* data answer *this* question?
+:::
+
+
+
+## A new data set {.smaller}
+
+**University Employee Salaries (2011 to present)**: public salary records of employees at Ohio's public universities, about 934,000 rows. 
+
+| Variable | What it records | Type |
+|----------|-----------|------------|
+| `name` | The employee's name | identifier |
+| `school` | Which university | categorical |
+| `job_description` | The job title (text) | text, many different values |
+| `department` | Which department | categorical |
+| `earnings` | Pay for that year | continuous |
+| `year` | The year of the record | numeric (date-like) |
+
+
+
+
+## Variable 1: `school` (categorical) {.smaller}
+
+`school` records which university an employee works at.
+
+::: {.callout-important title="Bad question"}
+"Which school is the best?"
+
+**Why it's bad:** "Best" is not defined, and the data records pay and job information only. It says nothing about teaching, research, or quality.
+:::
+
+::: {.callout-note title="Maybe a good question"}
+"Which three schools have the highest median earnings in the most recent year?"
+
+*A comparison with a clear measure (median earnings), a clear group (school), and a clear time.*
+:::
+
+::: {.callout-tip title="Maybe another good question"}
+"Do schools with more employees tend to have higher median earnings?"
+
+*An association question. Notice the unit changes: one row is now a **school**, not an employee.*
+:::
+
+## Variable 2: `department` (categorical) {.smaller}
+
+`department` records which department an employee works in.
+
+::: {.callout-important title="Bad question"}
+"Why do some departments pay more than others?"
+
+**Why it's bad:** It asks for *reasons*. The data has no information about demand, experience, or funding, so it can only show that pay differs, not *why*.
+:::
+
+::: {.callout-note title="Maybe a good question"}
+"Within one school, which departments have the highest median earnings in the most recent year?"
+
+*A comparison. Fixing the school and the year makes the departments fair to compare.*
+:::
+
+::: {.callout-tip title="Maybe another good question"}
+"How many employee records does each department in one school have in the most recent year?"
+
+*A descriptive question. It checks group sizes: a median from a tiny department is not trustworthy.*
+:::
+
+::: {.notes}
+Check the data: department names may be inconsistent across schools, so comparing within one school is safer.
+:::
+
+## Variable 3: `job_description` (text) {.smaller}
+
+`job_description` is the job title, stored as text with many different values.
+
+::: {.callout-important title="Bad question"}
+"Do professors earn more?"
+
+**Why it's bad:** More than whom? "Professor" could mean several different jobs, and there is no school or year. Nothing here is measurable yet.
+:::
+
+::: {.callout-note title="Maybe a good question"}
+"What are the 10 most common job descriptions?"
+
+*A descriptive question. It is a good first look at how messy the text is. But this is probably only good enough for preliminary analysis. *
+:::
+
+::: {.callout-tip title="Maybe another good question"}
+"Do employees whose job description contains the word 'professor' have higher median earnings than other employees in the most recent year?"
+
+*A comparison. We must write a rule for who counts as a professor (a text condition), which is the vague-word step from earlier.*
+:::
+
+## Variable 4: `earnings` (continuous) {.smaller}
+
+`earnings` records how much an employee was paid.
+
+::: {.callout-important title="Bad question"}
+"Who is overpaid?"
+
+**Why it's bad:** "Overpaid" is a judgment, not a measurement: overpaid compared to what? It also points at individuals instead of patterns.
+:::
+
+::: {.callout-note title="Maybe a good question"}
+"What is the typical (median) earnings in the most recent year, and how spread out are they?"
+
+*A descriptive question. It names the statistic, the year, and asks about spread too.*
+:::
+
+::: {.callout-tip title="Maybe another good question"}
+"What proportion of employee records in the most recent year show earnings above 100,000?"
+
+*A descriptive question with a defined cutoff. Any cutoff works, as long as you state it.*
+:::
+
+## Variable 5: `year` (numeric, date-like) {.smaller}
+
+`year` records the year of each salary record.
+
+::: {.callout-important title="Bad question"}
+"Did the pandemic cause salaries to change?"
+
+**Why it's bad:** It is causal. The data can show how earnings changed over time, but not why, because many other things changed at the same time.
+:::
+
+::: {.callout-note title="Maybe a good question"}
+"How did median earnings change between 2019 and 2021?"
+
+*A comparison across two years. It describes the change without claiming a cause.*
+:::
+
+::: {.callout-tip title="Maybe another good question"}
+"How have median earnings changed from 2011 to the most recent year?"
+
+*A trend question. Check whether the earnings are adjusted for inflation before interpreting it.*
+:::
+
+## Variable 6: `name` (identifier) {.smaller}
+
+`name` identifies the employee. We use it to understand the structure of the data, not to study people.
+
+::: {.callout-important title="Bad question"}
+"How much does one particular named employee earn, and is it fair?"
+
+**Why it's bad:** It targets an individual instead of a pattern, and "fair" is undefined. Analysis should be about groups.
+:::
+
+::: {.callout-note title="Maybe a good question"}
+"How many different people appear in the data?"
+
+*A descriptive question. It tells us what one row means. Again, perhaps this is a great start for your preliminary analysis. *
+:::
+
+::: {.callout-tip title="Maybe another good question"}
+"How many people appear more than once in the same year?"
+
+*A data-quality question. It tells us whether one row is one person, which changes how we count.*
+:::
+
+## Combine two or more variables 
+
+Single-variable questions are a start. Combining columns is where analysis gets interesting.
+
+::: {.callout-tip title="Example 1: `school` + `year` + `earnings`"}
+"Has the gap between the highest-paying and lowest-paying school (by median earnings) changed since 2011?"
+:::
+
+::: {.callout-caution title="Example 2: `department` + `year` + `earnings`"}
+"How have median earnings in one department changed since 2011?"
+:::
+
+
+# Part 6: Your project question
+
+## Activity 2: Draft your question {.smaller}
+
+::: {.callout-tip title="For homework"}
+Fill in each row for your group project. Try to aim for a draft, not a perfect answer, because you can always come back to modify it.
+:::
+
+| Prompt | Your answer |
+|--------|-------------|
+| 1. Topic and dataset | |
+| 2. Draft your initial question | |
+| 3. Type of question | |
+| 4. Unit (What are you working with?) | |
+| 5. Variables needed, and their types | |
+| 6. Some ambiguity in your data set | |
+| 7. One thing that could go wrong | |
+
+
+
+# Wrap-up
+
+
+## Key takeaways
+
+::: {.incremental}
+- Start with a question, not with code
+- A good question is specific, answerable, measurable, relevant, and right-sized
+- Match the question type to what your data can support
+- Turning vague words into logical conditions is part of the work
+- Expect to revise your question once you see the data
+:::
+
+
+# Appendix
+
+## Variable types guide your plot {.smaller}
+
+| Your question involves... | A suitable plot |
+|---------------------------|-----------------|
+| One numeric variable | `geom_histogram()` |
+| A numeric variable across categories | `geom_boxplot()` |
+| Two numeric variables | `geom_point()` |
+| Counts of categories | `geom_bar()` or `geom_col()` |
+| A numeric variable over time | `geom_line()` |
+
+- Knowing the **type** of each variable (numeric, categorical, ordinal, binary, date) tells you what you can compute and plot
+- "Use an appropriate plot type" starts with the question
