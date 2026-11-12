@@ -1,0 +1,498 @@
+---
+title: "DATA100 Introduction to Data Analytics"
+subtitle: "Importing data is not as easy as you think"
+author: "Agassi Iu (and Dr. D. Becker)"
+institute: "Wilfrid Laurier University"
+format:
+  revealjs:
+    theme: sky
+    slide-number: true
+    transition: slide
+    incremental: true
+    embed-resources: true # Embeds figures and libraries into a single portable HTML file
+execute:
+  echo: true
+  warning: false   # Hides warnings and package loading messages
+  message: false
+  fig-width: 7
+  fig-height: 4
+  fig-align: center
+---
+
+```{r}
+#| include: false
+library(tidyverse)
+library(repurrrsive)
+library(jsonlite)
+```
+
+
+# Importing `.csv` files
+
+## Importing a `.csv` {.smaller}
+
+This should be straightforward, right?
+
+```{r}
+co2 <- read_csv("data/monthly_in_situ_co2_mlo.csv")
+co2
+```
+
+::: {.callout-caution title="What do you notice?"}
+Look closely at the output. Do the column names and the first rows look the way you expect?
+:::
+
+
+## The power of `read_csv()` {.smaller}
+
+Have a look at `?read_csv`. These arguments solve most import problems:
+
+| Argument | What it controls |
+|------|----------------------|
+| `quote` | The character that wraps text fields (default: a double quote) |
+| `escape_backslash` | Whether a backslash escapes special characters (default: `FALSE`) |
+| `col_names` | Use the first row as names (`TRUE`), generate names (`FALSE`), or supply your own |
+| `col_types` | Tell R each column's type instead of letting it guess |
+| `col_select` | Read only some of the columns |
+| `id` | Add a column holding the file path (useful with several files) |
+| `na` | Which values count as missing (default: blank and `"NA"`) |
+| `name_repair` | How to fix problem column names (duplicates, blanks, spaces) |
+
+## Putting the arguments to work
+
+```{r eval=FALSE}
+read_csv(
+  "myfile.csv",
+  col_names = c("id", "group", "score"),  # supply names if the file has none
+  col_types = cols(id = col_character()), # control how a column is read
+  na = c("", "NA", "-99"),                # also treat -99 as missing
+  col_select = c(id, score)               # keep only these columns
+)
+```
+
+::: {.callout-tip title="Why this matters"}
+The default behaviour guesses. When the guess is wrong, these arguments let you tell R what the file really contains.
+:::
+
+
+# Several files at once
+
+## Read multiple files into a single data frame
+
+If several `.csv` files have the **same columns** (and the same column names), `read_csv()` can read them all into one data frame.
+
+::: {.callout-tip title="Keep the filenames with `id =`"}
+Store the filename in a column. If anything goes wrong with the data, it is easier to trace the problem back to its source.
+:::
+
+## Reading three files at once {.smaller}
+
+```{r}
+sales_files <- c(
+  "https://raw.githubusercontent.com/hadley/r4ds/refs/heads/main/data/01-sales.csv",
+  "https://raw.githubusercontent.com/hadley/r4ds/refs/heads/main/data/02-sales.csv",
+  "https://raw.githubusercontent.com/hadley/r4ds/refs/heads/main/data/03-sales.csv"
+)
+read_csv(
+  sales_files,      # the list of filenames to read from
+  id = "file"       # a new column named "file" keeps track of the filename
+)
+```
+
+## When a file does not exist
+
+```{r eval=FALSE}
+read_csv("https://pos.it/r4ds-04-sales")
+```
+
+::: {.callout-warning title="Cryptic error messages"}
+If a file does not exist, the error message can be hard to read. It depends on what the other end sends back.
+:::
+
+## Read every file in a folder
+
+Typing every filename gets old. `list.files()` collects them for you:
+
+```{r eval=FALSE}
+list.files("./", pattern = "\\.csv$", full.names = TRUE)
+```
+
+Combine it with `read_csv()` to import the whole folder:
+
+```{r eval=FALSE}
+csv_files <- list.files("./", pattern = "\\.csv$", full.names = TRUE)
+read_csv(csv_files, id = "file")
+```
+
+::: {.callout-note title="A regular expression"}
+The `pattern` is a **regular expression**. Here, `\\.csv$` means "ends in `.csv`".
+:::
+
+
+# Writing data
+
+## Write a data frame to file
+
+Corresponding to the `read_` functions, there are `write_` functions. Start with `?write_` in the Console.
+
+- We discuss two here:
+  - `write_csv()` (the partner of `read_csv()`)
+  - `write_parquet()` (the partner of `read_parquet()`)
+
+::: {.callout-note title="It does not matter where the data frame comes from"}
+`write_` functions convert any data frame into the right format to save. For example, `read_excel()` can read an Excel file into a data frame, and `write_csv()` can write that data frame back out as a `.csv`.
+:::
+
+## Using `write_csv()`
+
+This saves the `test` data frame as a `.csv` in the same folder as this `.qmd` file.
+
+```{r eval=FALSE}
+output_file <- "test.csv"
+write_csv(test, output_file)
+```
+
+::: {.callout-caution title="A drawback"}
+The **type information** for each column is lost. When you read the file back with `read_csv()`, you need to set all the types up again.
+:::
+
+## Shout out for `parquet` files {.smaller}
+
+`write_parquet()` (from the `arrow` package) saves *everything* in the data frame, including column types.
+
+```{r eval=FALSE}
+library(arrow)
+write_parquet(test, "test.parquet")
+read_parquet("test.parquet")      # recovers the data frame exactly
+```
+
+| | `.csv` | `.parquet` |
+|---|--------|------------|
+| Keeps column types | No | Yes |
+| Open in a text editor | Yes | No (it is *binary*) |
+
+::: {.callout-note title="No pain, no gain"}
+You get exact recovery, but you give up the ability to read the file in a simple text editor.
+:::
+
+
+# Importing spreadsheets
+
+## Excel files {.smaller}
+
+The packages `readxl` and `writexl` deal with Excel files.
+
+| Function | What it does |
+|----------|--------------|
+| `read_xls()` | Reads Excel files in `xls` format |
+| `read_xlsx()` | Reads Excel files in `xlsx` format |
+| `read_excel()` | Reads both `xls` and `xlsx` |
+| `write_xlsx()` | Writes a data frame in `xlsx` format |
+
+::: {.callout-note title="Writing may change the file"}
+`write_xlsx()` may produce a file slightly different from the one you read in, even if you read it from a `.xlsx` file.
+:::
+
+## Getting started and other packages
+
+- Reading local Excel files is quite similar to reading `.csv` files
+- Run `?read_excel` in the Console, or see the [textbook](https://r4ds.hadley.nz/spreadsheets#sec-reading-spreadsheets-excel)
+- The `openxlsx` package (textbook [2e, Section 21.2.8](https://r4ds.hadley.nz/spreadsheets#formatted-output)) can also read `xlsx` files, especially remote ones
+
+::: {.callout-caution title="Different conventions"}
+`openxlsx` follows slightly different conventions from the tidyverse style used in `readxl`. Look things up with `?` in the Console if unsure.
+:::
+
+
+# Importing deeply nested data: JSON
+
+## What is JSON?
+
+::: {.callout-note title="Definition"}
+**JSON** stands for **J**ava**S**cript **O**bject **N**otation. It is a very common format for getting data from a web server.
+:::
+
+- A JSON **object** is a set of *key-value pairs*, separated by commas, inside `{}`
+- A JSON **array** is a comma-separated list inside `[]`, such as `[1, 3, 4]`
+- Objects and arrays can be **nested** inside each other
+
+## What a JSON object looks like
+
+One repository from our example file (shortened):
+
+```json
+{
+    "id": 61160198,
+    "name": "after",
+    "full_name": "gaborcsardi/after",
+    "owner": {
+        "login": "gaborcsardi",
+        "id": 660288,
+        "type": "User",
+        "site_admin": false
+    },
+    "private": false,
+    "description": "Run Code in the Background",
+    "language": "R",
+    "stargazers_count": 5,
+    "default_branch": "master"
+}
+```
+
+Notice that `owner` is **another object inside** the object.
+
+## Packages and an example file {.smaller}
+
+```{r eval=FALSE}
+library(repurrrsive)
+library(jsonlite)
+```
+
+`repurrrsive` comes with a `gh_repos.json` file on your hard drive. This function gives its location:
+
+```{r}
+gh_repos_json()
+```
+
+::: {.callout-tip title="Open it in a text editor"}
+Navigate to the file and open it. It is a (nested) **array**, and each entry in the innermost array is a complicated JSON **object**.
+:::
+
+## Reading the file into R
+
+Use `read_json()` (from `jsonlite`) with the location of the file:
+
+```{r}
+gh_repos <- gh_repos_json() |> read_json()
+```
+
+The file has to do with GitHub repository information. In the same folder there are other `.json` files and matching `.xml` files.
+
+## Do not print it!
+
+::: {.callout-warning title="It is HUGE"}
+Typing `gh_repos` displays the whole thing, which is very long and very confusing.
+:::
+
+```{r eval=FALSE}
+gh_repos
+```
+
+Use `View()` instead. It shows the structure **and** the data:
+
+```{r eval=FALSE}
+View(gh_repos)
+```
+
+::: {.callout-note title="RStudio only"}
+`View()` is specific to RStudio.
+:::
+
+## What did `View()` show?
+
+- `gh_repos` is a **list of lists**
+- Each entry has many key-value pairs
+- The `owner` field contains **another object** inside
+
+A more universal tool is `str()`, which describes the **str**ucture of an object. The option `max.level` lets you look inside it in stages.
+
+## Drilling down: top level {.smaller .scrollable}
+
+```{r}
+gh_repos |> 
+  str(max.level = 1)
+```
+
+## Drilling down: one level down {.smaller .scrollable}
+
+```{r}
+gh_repos[[4]] |>
+  str(max.level = 1)
+```
+
+## Drilling down: one more level {.smaller .scrollable}
+
+```{r}
+gh_repos[[4]][[1]] |>
+  str(max.level = 1)
+```
+
+## Drilling down: into the `owner` field {.smaller .scrollable}
+
+```{r}
+gh_repos[[4]][[1]][["owner"]] |> 
+  str(max.level = 1)
+```
+
+
+# Rectangling with `unnest_` functions
+
+## The plan
+
+We have a complicated JSON array in R. We want a **data frame**.
+
+- Start with `tibble()` to get a data frame
+- Use `unnest_longer()` and `unnest_wider()`, depending on the structure to be unwrapped
+
+::: {.callout-note title="Rectangling"}
+Turning nested data into a rectangular data frame (rows and columns) is called **rectangling**.
+:::
+
+## Step 1: `tibble()` {.smaller}
+
+```{r}
+gh_repos_df_raw <- tibble(gh_repos)
+gh_repos_df_raw
+```
+
+This gives a tibble based on the first level of the array. Each row is another **array** of objects.
+
+## Step 2: `unnest_longer()` {.smaller}
+
+Each entry in the array becomes a **row**:
+
+```{r}
+gh_repos_df_level1 <- gh_repos_df_raw |>
+  unnest_longer(gh_repos)         # try unnest_wider for effects
+gh_repos_df_level1
+```
+
+Each row now holds a JSON **object**, not an array.
+
+## Step 3: `unnest_wider()` {.smaller}
+
+Each field in the object becomes a **column**:
+
+```{r}
+gh_repos_df_level2 <- gh_repos_df_level1 |>
+  unnest_wider(gh_repos)            # try unnest_longer for effects
+gh_repos_df_level2
+```
+
+## Step 4: unwrap `owner` {.smaller}
+
+This is almost a data frame, but `owner` still holds lists. Another `unnest_wider()` resolves it.
+
+```{r}
+gh_repos_df_level3 <- gh_repos_df_level2 |> 
+  unnest_wider(
+    owner,
+    names_sep = "_"            # comment out this to see the effect
+  )
+gh_repos_df_level3
+```
+
+::: {.callout-tip title="Use `names_sep`"}
+It attaches `owner` to the names of the subfields, so the new column names are explicit.
+:::
+
+## Checkpoint: longer or wider?
+
+::: {.callout-important title="Think about it"}
+- `unnest_longer()` turns each entry of an **array** into a **row**
+- `unnest_wider()` turns each field of an **object** into a **column**
+
+Look at `[1, 3, 4]` and at `{"id": 1, "name": "after"}`. Which function would you use for each?
+:::
+
+## Putting it together {.smaller}
+
+From the file location to a data frame, in one pipeline:
+
+```{r}
+gh_repos_location <- gh_repos_json()
+
+gh_repos_df <- gh_repos_location |>
+  read_json() |>
+  tibble() |>
+  rename(items = `read_json(gh_repos_location)`) |>  # stop prior to this to see why
+  unnest_longer(items) |>
+  unnest_wider(items) |>
+  unnest_wider(owner, names_sep = "_")
+
+gh_repos_df
+```
+
+It is easier to see the data with `View()`:
+
+```{r eval=FALSE}
+View(gh_repos_df)
+```
+
+## Now we can plot
+
+Once the data is tidy, we can plot it:
+
+```{r}
+gh_repos_df |>
+  ggplot(mapping = aes(x = log10(watchers), y = log10(size))) +
+  geom_jitter(mapping = aes(color = owner_login))
+```
+
+::: {.callout-caution title="Small sample"}
+The sample is small, so we cannot draw meaningful conclusions from this plot.
+:::
+
+
+# When the JSON is a single object
+
+## A different situation
+
+`gh_repos` is a **list** of JSON objects, so `tibble()` turned it into a tibble with one row per entry.
+
+If the file is exactly **one** JSON object, `tibble()` behaves differently. We can simulate this by taking a single object out of `gh_repos`:
+
+```{r}
+gh_repos_1 <- gh_repos[[1]][[1]]
+```
+
+```{r eval=FALSE}
+View(gh_repos_1)
+```
+
+## The problem {.smaller .scrollable}
+
+```{r}
+tibble(data = gh_repos_1)
+```
+
+::: {.callout-warning title="The field names are missing"}
+We get a tibble with one column, whose rows are the fields of the object. The most unsatisfying part is that the **names of the fields are completely missing**.
+:::
+
+## The fix {.smaller .scrollable}
+
+Force the single object into a `list` with one entry **before** making the tibble:
+
+```{r}
+(single_object <- tibble(data = list(gh_repos_1)))
+```
+
+Then `unnest_wider()` gives a one-row tibble, with each field as a column:
+
+```{r}
+single_object |>
+  unnest_wider(col = data)
+```
+
+
+# Wrap-up
+
+## Choosing the right tool {.smaller}
+
+| Format | Read | Write | Good to know |
+|--------|------|-------|--------------|
+| `.csv` | `read_csv()` | `write_csv()` | Plain text, but column types are lost |
+| Parquet | `read_parquet()` | `write_parquet()` | Binary, keeps column types |
+| Excel | `read_excel()` | `write_xlsx()` | Packages `readxl` and `writexl` |
+| JSON | `read_json()` | | Nested; needs rectangling with `unnest_` functions |
+
+## Key takeaways
+
+::: {.incremental}
+- `read_csv()` has many arguments; use them when the default guess is wrong
+- Use `id =` to keep track of which file each row came from
+- `write_csv()` loses column types; `parquet` keeps them
+- JSON is nested: look at the structure with `View()` or `str()` first
+- Rectangle with `tibble()`, then `unnest_longer()` (rows) and `unnest_wider()` (columns)
+:::

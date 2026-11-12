@@ -56,6 +56,10 @@ title: "Lecture Slides"
 - [Lecture 13 Slides](slides/DATA100-F26-Lecture-13.html)
 
 
+## Lecture 14: Importing Databases
+- [Lecture 14 Slides](slides/DATA100-F26-Lecture-14.html)
+
+
 
 
 
