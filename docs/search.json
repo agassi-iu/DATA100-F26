@@ -1145,7 +1145,7 @@
     "href": "slides/DATA100-F26-Lecture-14.html#when-a-file-does-not-exist",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "When a file does not exist",
-    "text": "When a file does not exist\n\nread_csv(\"https://pos.it/r4ds-04-sales\")\n\n\n\n\n\n\n\n\nCryptic error messages\n\n\nIf a file does not exist, the error message can be hard to read. It depends on what the other end sends back."
+    "text": "When a file does not exist\n\nread_csv(\"https://pos.it/r4ds-04-sales\")\n\n# A tibble: 103 × 1\n   `&lt;!DOCTYPE html&gt;`                                                            \n   &lt;chr&gt;                                                                        \n 1 \"&lt;html lang=\\\"en\\\"&gt;\"                                                         \n 2 \"&lt;head&gt;\"                                                                     \n 3 \"&lt;meta charset=\\\"utf-8\\\"&gt;\"                                                   \n 4 \"&lt;meta name=\\\"viewport\\\"\"                                                    \n 5 \"content=\\\"width=device-width, initial-scale=1, maximum-scale=1.0, user-scal…\n 6 \"&lt;meta http-equiv=\\\"Content-Type\\\" content=\\\"text/html; charset=utf-8\\\" /&gt;\"  \n 7 \"&lt;meta name=\\\"referrer\\\" content=\\\"no-referrer\\\" /&gt;\"                         \n 8 \"&lt;meta name=\\\"theme-color\\\" content=\\\"#000000\\\"&gt;\"                            \n 9 \"&lt;meta content=\\\"Rebrandly Official Dashboard.\\\" name=\\\"description\\\"&gt;\"      \n10 \"&lt;!--\"                                                                       \n# ℹ 93 more rows\n\n\n\n\n\n\n\n\n\nCryptic error messages\n\n\nIf a file does not exist, the error message can be hard to read. It depends on what the other end sends back."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-14.html#read-every-file-in-a-folder",
@@ -1313,7 +1313,7 @@
     "href": "slides/DATA100-F26-Lecture-14.html#now-we-can-plot",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Now we can plot",
-    "text": "Now we can plot\nOnce the data is tidy, we can plot it:\n\ngh_repos_df |&gt;\n  ggplot(mapping = aes(x = log10(watchers), y = log10(size))) +\n  geom_jitter(mapping = aes(color = owner_login))\n\n\n\n\n\n\n\n\n\nSmall sample\n\n\nThe sample is small, so we cannot draw meaningful conclusions from this plot."
+    "text": "Now we can plot\nOnce the data is tidy, we can plot it:\n\ngh_repos_df |&gt;\n  ggplot(mapping = aes(x = log10(watchers), y = log10(size))) +\n  geom_jitter(mapping = aes(color = owner_login))"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-14.html#a-different-situation",

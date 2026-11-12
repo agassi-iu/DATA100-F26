@@ -1,7 +1,7 @@
 ---
 title: "DATA100 Introduction to Data Analytics"
-subtitle: "Importing data is not as easy as you think"
-author: "Agassi Iu (and Dr. D. Becker)"
+subtitle: "Lecture 14: Importing data is not as easy as you think"
+author: "Agassi Iu (by Dr. D. Becker)"
 institute: "Wilfrid Laurier University"
 format:
   revealjs:
@@ -101,7 +101,7 @@ read_csv(
 
 ## When a file does not exist
 
-```{r eval=FALSE}
+```{r}
 read_csv("https://pos.it/r4ds-04-sales")
 ```
 
@@ -429,9 +429,6 @@ gh_repos_df |>
   geom_jitter(mapping = aes(color = owner_login))
 ```
 
-::: {.callout-caution title="Small sample"}
-The sample is small, so we cannot draw meaningful conclusions from this plot.
-:::
 
 
 # When the JSON is a single object
