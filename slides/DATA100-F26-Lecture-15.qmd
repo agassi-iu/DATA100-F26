@@ -1,0 +1,137 @@
+---
+title: "DATA100 Introduction to Data Analytics"
+subtitle: "Lecture 15: Data Science in Practice"
+author: "Agassi Iu"
+institute: "Wilfrid Laurier University"
+date: November 17, 2026
+format:
+  live-revealjs:
+    theme: sky
+    slide-number: true
+    transition: slide
+    incremental: true
+    embed-resources: true # Embeds figures and libraries into a single portable HTML file
+filters:
+  - live
+execute:
+  echo: true
+  warning: false   # Hides warnings and package loading messages
+  message: false
+  fig-width: 7
+  fig-height: 4
+  fig-align: center
+---
+
+## Where we are
+
+Over the next two lectures we build models. Before that, a step back: what actually happens around a model when you do a data science project?
+
+::: {.callout-important title="Recall from everything we know"}
+Last week we learned about how to come up with a good research question and how to import data. And previously we have done a lot of work on data tidying, transformation, and visualization. So what is next?
+:::
+
+
+:::{.callout-note title="Today's Agenda"}
+
+- the workflow behind a data science project
+- a live project from scratch
+:::
+
+## Give me something!
+
+::: {.callout-important title="Scenario"}
+Imagine your manager comes to you and hands youa usb stick containing a data set. They say: *"Find something useful in here."* What are you supposed to do?
+:::
+
+![](https://en.meming.world/images/en/c/c7/Confused_Nick_Young.jpg){fig-align="center" width="40%"}
+
+
+## The data project workflow
+
+```{mermaid}
+%%| echo: false
+%%| fig-width: 8
+flowchart LR
+  A[Question] --> B[Data]
+  B --> C[Clean]
+  C --> D[Explore]
+  D --> E[Model]
+  E --> F[Communicate]
+  D -.->|new question| A
+  E -.->|new question| A
+```
+
+::: {.callout-tip}
+Each arrow can point backwards too. Exploring the data often changes the question.
+:::
+
+## Most of the work is not the model
+
+::: {.callout-note title="A common surprise"}
+In practice, most of the time goes into the steps **around** the model: understanding the question, getting the data, cleaning it, and looking at it.
+:::
+
+- A model built on a vague question answers the wrong thing, very precisely.
+- A model built on data you do not understand is hard to trust.
+- Communication is part of the job: a result nobody understands changes nothing.
+
+
+## Start with the question {.smaller}
+
+The same data set can answer very different questions. The kind of question decides what you do next.
+
+| Type | What it asks | Example |
+|---|-------|-------|
+| Descriptive | What does the data look like? | What is the average sleep per night? |
+| Exploratory | What patterns are in here? | Do some programs sleep more than others? |
+| Inferential | Is a pattern real, and how big is it? | Is sleep related to grades? |
+| Predictive | What will a new value be? | What grade would we expect for someone sleeping 7 hours? |
+
+::: {.callout-note title="Looking ahead"}
+Lecture 16 and 17 are about models. A model can serve the inferential and predictive questions, and it can also describe a pattern. At this stage I don't expect you to ask these types of questions yet, but it doesn't hurt to think ahead!
+:::
+
+
+## Know your data
+
+::: {.callout-caution title="Questions to ask about any dataset"}
+1. Who collected it, and why?
+2. Who is in it? Who is missing?
+3. How was each variable measured? Self-reported, or recorded by a device?
+4. When was it collected? Is it still relevant?
+5. Does it contain anything unrealistic (impossible values, strange units, missing values coded as 0)?
+:::
+
+A clean-looking spreadsheet can still hide a biased sample or a measurement problem.
+
+
+
+# Let's practice! 
+
+
+
+## Reflection
+
+::: {.callout-caution title="Think about what you just saw"}
+1. What was the question at the start? Did it change?
+2. What did we do at each stage of the workflow?
+3. What surprised us, and how did we respond?
+4. What would make you doubt our conclusion?
+:::
+
+## Good practice 
+
+::: {.callout-important title="Make your work reproducible"}
+Keep your steps in a script or document, not in your head. Someone else (including you, next month) should be able to rerun everything.
+:::
+
+::: {.callout-tip title="Document your decisions"}
+Write down why you removed or changed anything. Never drop values just because they are inconvenient, and disclose what you removed.
+:::
+
+::: {.callout-note title="Report honestly"}
+Say what the data can and cannot tell you.
+:::
+
+# Your turn
+

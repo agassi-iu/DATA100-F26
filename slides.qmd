@@ -60,6 +60,17 @@ title: "Lecture Slides"
 - [Lecture 14 Slides](slides/DATA100-F26-Lecture-14.html)
 
 
+## Lecture 15: Data Science in Practice
+- [Lecture 15 Slides](slides/DATA100-F26-Lecture-15.html)
+
+
+## Lecture 16: Importing Databases
+- [Lecture 16 Slides](slides/DATA100-F26-Lecture-16.html)
+
+
+## Lecture 17: Importing Databases
+- [Lecture 17 Slides](slides/DATA100-F26-Lecture-17.html)
+
 
 
 

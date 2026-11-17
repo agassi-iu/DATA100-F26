@@ -3,9 +3,3 @@ title: "Midterm"
 format: html
 ---
 
-
-
-## Midterm 1: Written Exam
-
-- [Information](exams/MT1_F26_Info.qmd)
-- [Practice](exams/MT1_Practice.qmd)

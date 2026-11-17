@@ -5,10 +5,6 @@
     <lastmod>2026-09-10T02:25:06.824Z</lastmod>
   </url>
   <url>
-    <loc>https://agassi-iu.github.io/DATA100-F26/slides/Untitled.html</loc>
-    <lastmod>2026-11-01T04:39:14.451Z</lastmod>
-  </url>
-  <url>
     <loc>https://agassi-iu.github.io/DATA100-F26/slides/DATA100-F26-Lecture-9.html</loc>
     <lastmod>2026-10-21T17:17:17.273Z</lastmod>
   </url>
@@ -25,64 +21,76 @@
     <lastmod>2026-09-17T02:39:56.566Z</lastmod>
   </url>
   <url>
-    <loc>https://agassi-iu.github.io/DATA100-F26/slides/DATA100-F26-Lecture-14.html</loc>
-    <lastmod>2026-11-12T19:37:35.474Z</lastmod>
+    <loc>https://agassi-iu.github.io/DATA100-F26/slides/DATA100-F26-Lecture-17.html</loc>
+    <lastmod>2026-11-16T02:52:14.837Z</lastmod>
   </url>
   <url>
-    <loc>https://agassi-iu.github.io/DATA100-F26/slides/DATA100-F26-Lecture-12.html</loc>
-    <lastmod>2026-11-03T20:03:40.004Z</lastmod>
+    <loc>https://agassi-iu.github.io/DATA100-F26/slides/DATA100-F26-Lecture-15.html</loc>
+    <lastmod>2026-11-16T08:56:05.374Z</lastmod>
   </url>
   <url>
-    <loc>https://agassi-iu.github.io/DATA100-F26/slides/DATA100-F26-Lecture-10.html</loc>
-    <lastmod>2026-10-27T15:10:43.150Z</lastmod>
-  </url>
-  <url>
-    <loc>https://agassi-iu.github.io/DATA100-F26/slides/DATA100-F26-Group-Project-Guidance-2.html</loc>
-    <lastmod>2026-11-05T05:51:03.845Z</lastmod>
-  </url>
-  <url>
-    <loc>https://agassi-iu.github.io/DATA100-F26/schedule.html</loc>
-    <lastmod>2026-09-10T02:47:19.694Z</lastmod>
-  </url>
-  <url>
-    <loc>https://agassi-iu.github.io/DATA100-F26/index.html</loc>
-    <lastmod>2026-09-30T04:44:41.693Z</lastmod>
-  </url>
-  <url>
-    <loc>https://agassi-iu.github.io/DATA100-F26/courses.html</loc>
-    <lastmod>2026-09-10T02:24:48.608Z</lastmod>
-  </url>
-  <url>
-    <loc>https://agassi-iu.github.io/DATA100-F26/about.html</loc>
-    <lastmod>2026-09-10T02:22:34.918Z</lastmod>
-  </url>
-  <url>
-    <loc>https://agassi-iu.github.io/DATA100-F26/assignments.html</loc>
-    <lastmod>2026-11-03T20:25:30.014Z</lastmod>
-  </url>
-  <url>
-    <loc>https://agassi-iu.github.io/DATA100-F26/exams/MT1_Practice.html</loc>
-    <lastmod>2026-09-30T04:38:08.021Z</lastmod>
-  </url>
-  <url>
-    <loc>https://agassi-iu.github.io/DATA100-F26/midterm.html</loc>
-    <lastmod>2026-09-30T04:54:08.303Z</lastmod>
-  </url>
-  <url>
-    <loc>https://agassi-iu.github.io/DATA100-F26/slides/DATA100-F26-Group-Project-Guidance-1.html</loc>
-    <lastmod>2026-10-08T17:09:46.022Z</lastmod>
-  </url>
-  <url>
-    <loc>https://agassi-iu.github.io/DATA100-F26/slides/DATA100-F26-Lecture-1.html</loc>
-    <lastmod>2026-09-10T16:09:59.838Z</lastmod>
+    <loc>https://agassi-iu.github.io/DATA100-F26/slides/DATA100-F26-Lecture-13.html</loc>
+    <lastmod>2026-11-10T07:14:00.906Z</lastmod>
   </url>
   <url>
     <loc>https://agassi-iu.github.io/DATA100-F26/slides/DATA100-F26-Lecture-11.html</loc>
     <lastmod>2026-10-29T06:41:10.875Z</lastmod>
   </url>
   <url>
-    <loc>https://agassi-iu.github.io/DATA100-F26/slides/DATA100-F26-Lecture-13.html</loc>
-    <lastmod>2026-11-10T07:14:00.906Z</lastmod>
+    <loc>https://agassi-iu.github.io/DATA100-F26/slides/DATA100-F26-Lecture-1.html</loc>
+    <lastmod>2026-09-10T16:09:59.838Z</lastmod>
+  </url>
+  <url>
+    <loc>https://agassi-iu.github.io/DATA100-F26/slides/DATA100-F26-Group-Project-Guidance-1.html</loc>
+    <lastmod>2026-10-08T17:09:46.022Z</lastmod>
+  </url>
+  <url>
+    <loc>https://agassi-iu.github.io/DATA100-F26/project/Kyoto_Dinner_Analysis.html</loc>
+    <lastmod>2026-11-16T21:05:14.326Z</lastmod>
+  </url>
+  <url>
+    <loc>https://agassi-iu.github.io/DATA100-F26/index.html</loc>
+    <lastmod>2026-09-30T04:44:41.693Z</lastmod>
+  </url>
+  <url>
+    <loc>https://agassi-iu.github.io/DATA100-F26/assignments.html</loc>
+    <lastmod>2026-11-03T20:25:30.014Z</lastmod>
+  </url>
+  <url>
+    <loc>https://agassi-iu.github.io/DATA100-F26/about.html</loc>
+    <lastmod>2026-09-10T02:22:34.918Z</lastmod>
+  </url>
+  <url>
+    <loc>https://agassi-iu.github.io/DATA100-F26/courses.html</loc>
+    <lastmod>2026-09-10T02:24:48.608Z</lastmod>
+  </url>
+  <url>
+    <loc>https://agassi-iu.github.io/DATA100-F26/midterm.html</loc>
+    <lastmod>2026-11-17T04:31:08.617Z</lastmod>
+  </url>
+  <url>
+    <loc>https://agassi-iu.github.io/DATA100-F26/schedule.html</loc>
+    <lastmod>2026-09-10T02:47:19.694Z</lastmod>
+  </url>
+  <url>
+    <loc>https://agassi-iu.github.io/DATA100-F26/slides/DATA100-F26-Group-Project-Guidance-2.html</loc>
+    <lastmod>2026-11-05T05:51:03.845Z</lastmod>
+  </url>
+  <url>
+    <loc>https://agassi-iu.github.io/DATA100-F26/slides/DATA100-F26-Lecture-10.html</loc>
+    <lastmod>2026-10-27T15:10:43.150Z</lastmod>
+  </url>
+  <url>
+    <loc>https://agassi-iu.github.io/DATA100-F26/slides/DATA100-F26-Lecture-12.html</loc>
+    <lastmod>2026-11-03T20:03:40.004Z</lastmod>
+  </url>
+  <url>
+    <loc>https://agassi-iu.github.io/DATA100-F26/slides/DATA100-F26-Lecture-14.html</loc>
+    <lastmod>2026-11-12T19:37:35.474Z</lastmod>
+  </url>
+  <url>
+    <loc>https://agassi-iu.github.io/DATA100-F26/slides/DATA100-F26-Lecture-16.html</loc>
+    <lastmod>2026-11-17T04:46:34.943Z</lastmod>
   </url>
   <url>
     <loc>https://agassi-iu.github.io/DATA100-F26/slides/DATA100-F26-Lecture-2.html</loc>
@@ -101,11 +109,7 @@
     <lastmod>2026-10-20T17:53:14.746Z</lastmod>
   </url>
   <url>
-    <loc>https://agassi-iu.github.io/DATA100-F26/slides/r4ds-import-slides.html</loc>
-    <lastmod>2026-11-06T20:20:35.394Z</lastmod>
-  </url>
-  <url>
     <loc>https://agassi-iu.github.io/DATA100-F26/slides.html</loc>
-    <lastmod>2026-11-12T04:46:44.798Z</lastmod>
+    <lastmod>2026-11-17T04:13:52.958Z</lastmod>
   </url>
 </urlset>
