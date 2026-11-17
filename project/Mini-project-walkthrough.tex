@@ -1,0 +1,791 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{space}{xeCJK}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \ifXeTeX
+    \usepackage{xeCJK}
+    \setCJKmainfont[]{Noto Sans CJK JP}
+  \fi
+  \ifLuaTeX
+    \usepackage[]{luatexja-fontspec}
+    \setmainjfont[]{Noto Sans CJK JP}
+  \fi
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+% fallback for those not using the hyperref driver hyperxmp:
+\makeatletter
+\@ifundefined{xmpquote}{\newcommand{\xmpquote}[1]{#1}}{}
+\makeatother
+\hypersetup{
+  pdftitle={Finding a Great Place to Eat in Kyoto},
+  pdfauthor={Agassi Iu},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Finding a Great Place to Eat in Kyoto}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{Lecture 15 live demo: reference analysis}
+\author{Agassi Iu}
+\date{November 16, 2026}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\section{1. The question}\label{the-question}
+
+\textbf{Where should I eat dinner in Kyoto?}
+
+That is too vague to answer directly, so we break it into three smaller
+questions:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  What are the three most popular cuisines? \emph{(exploratory)}
+\item
+  What are the three best-rated restaurants at each price point?
+  \emph{(descriptive)}
+\item
+  Which restaurants are rated \textbf{much higher} than their price and
+  cuisine would lead us to expect? \emph{(predictive: a model, then a
+  look at its misses)}
+\end{enumerate}
+
+\section{2. The data}\label{the-data}
+
+The data are restaurant reviews from Tabelog, a Japanese review site
+(via Kaggle). Put \texttt{Kyoto\_Restaurant\_Info.csv} in the same
+folder as this file.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{kyoto\_raw }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"Kyoto\_Restaurant\_Info.csv"}\NormalTok{)}
+\FunctionTok{glimpse}\NormalTok{(kyoto\_raw)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 895
+## Columns: 14
+## $ ...1           <dbl> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, ~
+## $ Name           <chr> "Orudeidainingurajou", "Steak Frites Gaspard zinzin", "~
+## $ JapaneseName   <chr> "オールデイダイニング　ラジョウ", "ステックフリット ガスパール ザンザン", "和馬", "お好み焼き ~
+## $ Station        <chr> "Kyoto", "Karasuma", "Sanjo", "Tambaguchi", "Kyoto Shiy~
+## $ FirstCategory  <chr> "Buffet style", "Bistro", "Izakaya (Tavern)", "Okonomiy~
+## $ SecondCategory <chr> "Cafe", "Steak", "Japanese food (other)", "Izakaya (Tav~
+## $ DinnerPrice    <chr> "￥4000～￥4999", "￥3000～￥3999", "￥3000～￥3999", "￥3000～￥39~
+## $ LunchPrice     <chr> "￥2000～￥2999", "￥1000～￥1999", NA, NA, "￥1000～￥1999", "￥~
+## $ TotalRating    <dbl> 3.39, 3.18, 3.28, 3.14, 3.16, 3.08, 3.04, 3.34, 3.03, 3~
+## $ DinnerRating   <dbl> 3.20, 3.06, 3.28, 3.14, 3.16, 3.00, 3.05, 3.34, 3.04, 3~
+## $ LunchRating    <dbl> 3.38, 3.33, NA, NA, 3.05, 3.11, 3.00, NA, NA, NA, NA, 3~
+## $ ReviewNum      <dbl> 56, 70, 7, 16, 23, 24, 22, 23, 3, 92, 4, 120, 2, 39, 13~
+## $ Lat            <dbl> 34.98618, 35.00583, 35.00658, 34.99592, 35.00790, 34.98~
+## $ Long           <dbl> 135.7613, 135.7599, 135.7702, 135.7483, 135.7682, 135.7~
+\end{verbatim}
+
+Before trusting this data, ask the usual questions: who collected it,
+who is in it, and who is missing?
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Ratings: what is the range?}
+\FunctionTok{range}\NormalTok{(kyoto\_raw}\SpecialCharTok{$}\NormalTok{DinnerRating)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3.00 4.16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# How many reviews does a typical restaurant have?}
+\FunctionTok{summary}\NormalTok{(kyoto\_raw}\SpecialCharTok{$}\NormalTok{ReviewNum)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    1.00    7.00   15.00   27.08   30.00 1319.00
+\end{verbatim}
+
+Two things to notice:
+
+\begin{itemize}
+\tightlist
+\item
+  The lowest rating is exactly 3.0. This suggests the dataset only
+  includes restaurants rated 3.0 or above, so \textbf{poorly rated
+  restaurants are missing}. We can only compare good and very good
+  places.
+\item
+  Many restaurants have very few reviews, so their ratings are not
+  reliable.
+\end{itemize}
+
+\subsection{Cleaning}\label{cleaning}
+
+The prices are text such as \texttt{￥3000～￥3999}. We turn each one
+into a number: the \textbf{lower end} of its price band.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{kyoto }\OtherTok{\textless{}{-}}\NormalTok{ kyoto\_raw }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{) }\SpecialCharTok{|\textgreater{}}                                   \CommentTok{\# drop the unnamed row{-}number column}
+  \FunctionTok{mutate}\NormalTok{(}
+    \CommentTok{\# lower end of the price band; the band "～￥999" has no lower end, so it is 0}
+    \AttributeTok{price\_low =} \FunctionTok{if\_else}\NormalTok{(}
+      \FunctionTok{str\_starts}\NormalTok{(}\FunctionTok{str\_trim}\NormalTok{(DinnerPrice), }\StringTok{"～"}\NormalTok{),}
+      \DecValTok{0}\NormalTok{,}
+      \FunctionTok{as.numeric}\NormalTok{(}\FunctionTok{str\_extract}\NormalTok{(DinnerPrice, }\StringTok{"[0{-}9]+"}\NormalTok{))}
+\NormalTok{    ),}
+    \CommentTok{\# price bands in order from cheapest to most expensive (for plots)}
+    \AttributeTok{price\_band =} \FunctionTok{fct\_reorder}\NormalTok{(DinnerPrice, price\_low),}
+    \CommentTok{\# the three price points from the question}
+    \AttributeTok{price\_tier =} \FunctionTok{case\_when}\NormalTok{(}
+\NormalTok{      price\_low }\SpecialCharTok{\textless{}} \DecValTok{3000}  \SpecialCharTok{\textasciitilde{}} \StringTok{"Cheap"}\NormalTok{,      }\CommentTok{\# 0 to 2,999 yen}
+\NormalTok{      price\_low }\SpecialCharTok{\textless{}} \DecValTok{8000}  \SpecialCharTok{\textasciitilde{}} \StringTok{"Middle"}\NormalTok{,     }\CommentTok{\# 3,000 to 7,999 yen}
+\NormalTok{      price\_low }\SpecialCharTok{\textless{}} \DecValTok{15000} \SpecialCharTok{\textasciitilde{}} \StringTok{"Expensive"}\NormalTok{,  }\CommentTok{\# 8,000 to 14,999 yen}
+      \ConstantTok{TRUE}              \SpecialCharTok{\textasciitilde{}} \ConstantTok{NA\_character\_} \CommentTok{\# 15,000 yen and above: not in our tiers}
+\NormalTok{    ),}
+    \AttributeTok{price\_tier =} \FunctionTok{factor}\NormalTok{(price\_tier, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Cheap"}\NormalTok{, }\StringTok{"Middle"}\NormalTok{, }\StringTok{"Expensive"}\NormalTok{))}
+\NormalTok{  )}
+
+\NormalTok{kyoto }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{count}\NormalTok{(price\_tier) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{note =} \FunctionTok{if\_else}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(price\_tier), }\StringTok{"15,000 yen and above (left out)"}\NormalTok{, }\StringTok{""}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lrl@{}}
+\toprule\noalign{}
+price\_tier & n & note \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Cheap & 206 & \\
+Middle & 596 & \\
+Expensive & 79 & \\
+NA & 14 & 15,000 yen and above (left out) \\
+\end{longtable}
+}
+
+\subsection{Keep only restaurants with enough
+reviews}\label{keep-only-restaurants-with-enough-reviews}
+
+A rating based on one or two reviews tells us very little. For every
+question below we keep restaurants with \textbf{at least 10 reviews}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{rated }\OtherTok{\textless{}{-}}\NormalTok{ kyoto }\SpecialCharTok{|\textgreater{}} \FunctionTok{filter}\NormalTok{(ReviewNum }\SpecialCharTok{\textgreater{}=} \DecValTok{10}\NormalTok{)}
+
+\FunctionTok{c}\NormalTok{(}\AttributeTok{before =} \FunctionTok{nrow}\NormalTok{(kyoto), }\AttributeTok{after =} \FunctionTok{nrow}\NormalTok{(rated))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## before  after 
+##    895    602
+\end{verbatim}
+
+\section{3. Question 1: the three most popular
+cuisines}\label{question-1-the-three-most-popular-cuisines}
+
+``Popular'' can mean different things. We look at two measures and see
+whether they agree.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Number of restaurants} in the category
+\item
+  \textbf{Total number of reviews} across the category (a rough measure
+  of how many diners it attracts)
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{popular }\OtherTok{\textless{}{-}}\NormalTok{ rated }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{group\_by}\NormalTok{(FirstCategory) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{summarise}\NormalTok{(}
+    \AttributeTok{restaurants   =} \FunctionTok{n}\NormalTok{(),}
+    \AttributeTok{total\_reviews =} \FunctionTok{sum}\NormalTok{(ReviewNum),}
+    \AttributeTok{.groups =} \StringTok{"drop"}
+\NormalTok{  )}
+
+\NormalTok{popular }\SpecialCharTok{|\textgreater{}} \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(total\_reviews)) }\SpecialCharTok{|\textgreater{}} \FunctionTok{head}\NormalTok{(}\DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lrr@{}}
+\toprule\noalign{}
+FirstCategory & restaurants & total\_reviews \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Izakaya (Tavern) & 121 & 2945 \\
+Ramen & 12 & 2569 \\
+Italian & 54 & 2444 \\
+Yakiniku (BBQ Beef) & 54 & 1199 \\
+Kyoto Cuisine & 33 & 1059 \\
+Kaiseki (Traditional Japanese) & 23 & 894 \\
+Bar & 24 & 630 \\
+Cafe & 16 & 583 \\
+Buffet style & 12 & 581 \\
+Tempura & 8 & 534 \\
+\end{longtable}
+}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{top3\_cuisines }\OtherTok{\textless{}{-}}\NormalTok{ popular }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(total\_reviews)) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{slice\_head}\NormalTok{(}\AttributeTok{n =} \DecValTok{3}\NormalTok{)}
+
+\NormalTok{top3\_cuisines}
+\end{Highlighting}
+\end{Shaded}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lrr@{}}
+\toprule\noalign{}
+FirstCategory & restaurants & total\_reviews \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Izakaya (Tavern) & 121 & 2945 \\
+Ramen & 12 & 2569 \\
+Italian & 54 & 2444 \\
+\end{longtable}
+}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{popular }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{slice\_max}\NormalTok{(total\_reviews, }\AttributeTok{n =} \DecValTok{10}\NormalTok{, }\AttributeTok{with\_ties =} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{top3 =}\NormalTok{ FirstCategory }\SpecialCharTok{\%in\%}\NormalTok{ top3\_cuisines}\SpecialCharTok{$}\NormalTok{FirstCategory) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ total\_reviews, }\AttributeTok{y =} \FunctionTok{fct\_reorder}\NormalTok{(FirstCategory, total\_reviews), }\AttributeTok{fill =}\NormalTok{ top3)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_col}\NormalTok{(}\AttributeTok{show.legend =} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"grey70"}\NormalTok{, }\StringTok{"steelblue"}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \StringTok{"Total reviews"}\NormalTok{, }\AttributeTok{y =} \ConstantTok{NULL}\NormalTok{,}
+       \AttributeTok{title =} \StringTok{"Cuisines diners write about most"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{Mini-project-walkthrough_files/figure-latex/q1-plot-1} \end{center}
+
+If we count restaurants instead of reviews, does the top three change?
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{popular }\SpecialCharTok{|\textgreater{}} \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(restaurants)) }\SpecialCharTok{|\textgreater{}} \FunctionTok{head}\NormalTok{(}\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lrr@{}}
+\toprule\noalign{}
+FirstCategory & restaurants & total\_reviews \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Izakaya (Tavern) & 121 & 2945 \\
+Italian & 54 & 2444 \\
+Yakiniku (BBQ Beef) & 54 & 1199 \\
+Kyoto Cuisine & 33 & 1059 \\
+Bar & 24 & 630 \\
+\end{longtable}
+}
+
+\begin{quote}
+\textbf{Note:} The answer depends on how we \textbf{define} popular.
+Always say which definition you used.
+\end{quote}
+
+\section{4. Question 2: the top three restaurants at each price
+point}\label{question-2-the-top-three-restaurants-at-each-price-point}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{top\_by\_tier }\OtherTok{\textless{}{-}}\NormalTok{ rated }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(price\_tier)) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(DinnerRating), }\FunctionTok{desc}\NormalTok{(ReviewNum)) }\SpecialCharTok{|\textgreater{}}   \CommentTok{\# best rating first; more reviews breaks ties}
+  \FunctionTok{group\_by}\NormalTok{(price\_tier) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{slice\_head}\NormalTok{(}\AttributeTok{n =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{ungroup}\NormalTok{() }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{arrange}\NormalTok{(price\_tier, }\FunctionTok{desc}\NormalTok{(DinnerRating)) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{select}\NormalTok{(price\_tier, Name, JapaneseName, FirstCategory,}
+\NormalTok{         DinnerPrice, DinnerRating, ReviewNum)}
+
+\NormalTok{top\_by\_tier}
+\end{Highlighting}
+\end{Shaded}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.0880}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.2160}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.2240}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1520}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1360}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1040}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.0800}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+price\_tier
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Name
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+JapaneseName
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+FirstCategory
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+DinnerPrice
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+DinnerRating
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+ReviewNum
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Cheap & Giwontokiwa & ぎをん 常盤 & Soba & ￥1000～￥1999 & 3.60 &
+106 \\
+Cheap & Honkedaiichiasahi & 本家 第一旭 たかばし本店 & Ramen & ～￥999 &
+3.59 & 1319 \\
+Cheap & chuukasobatakayasu & 中華そば 高安 & Ramen & ～￥999 & 3.58 &
+713 \\
+Middle & Ryuunohige & 龍のひげ & Kyoto Cuisine & ￥5000～￥5999 & 3.74 &
+70 \\
+Middle & Zasoudouhigashiyamakyouto & THE SODOH HIGASHIYAMA KYOTO &
+Italian & ￥6000～￥7999 & 3.61 & 272 \\
+Middle & Takasegawa & TAKASEGAWA & Sumibiyaki & ￥5000～￥5999 & 3.60 &
+43 \\
+Expensive & Orudohonkonresutorankyouto & 老香港酒家京都 & Chinese &
+￥10000～￥14999 & 4.04 & 148 \\
+Expensive & ORTO & オルト & Innovative cuisine & ￥8000～￥9999 & 3.97 &
+53 \\
+Expensive & Iharada & いはら田 & Kyoto Cuisine & ￥10000～￥14999 & 3.91
+& 52 \\
+\end{longtable}
+}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(top\_by\_tier,}
+       \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ DinnerRating, }\AttributeTok{y =} \FunctionTok{fct\_reorder}\NormalTok{(Name, DinnerRating), }\AttributeTok{color =}\NormalTok{ FirstCategory)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size =} \DecValTok{4}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{ price\_tier, }\AttributeTok{ncol =} \DecValTok{1}\NormalTok{, }\AttributeTok{scales =} \StringTok{"free\_y"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \StringTok{"Dinner rating"}\NormalTok{, }\AttributeTok{y =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{color =} \StringTok{"Cuisine"}\NormalTok{,}
+       \AttributeTok{title =} \StringTok{"Top three restaurants at each price point"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{Mini-project-walkthrough_files/figure-latex/q2-plot-1} \end{center}
+
+\section{5. Question 3: which places beat their
+price?}\label{question-3-which-places-beat-their-price}
+
+The top-three lists favour expensive restaurants, because pricier places
+tend to be rated higher. A more useful question for a diner is:
+\textbf{which restaurants are rated higher than we would expect for
+their price and cuisine?}
+
+\subsection{Step 1: build a simple model of the typical
+rating}\label{step-1-build-a-simple-model-of-the-typical-rating}
+
+We predict \texttt{DinnerRating} from the price and the cuisine.
+Cuisines with fewer than 15 restaurants are grouped as ``Other'' so the
+model has enough data for each one.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model\_data }\OtherTok{\textless{}{-}}\NormalTok{ rated }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{price\_k =}\NormalTok{ price\_low }\SpecialCharTok{/} \DecValTok{1000}\NormalTok{,                      }\CommentTok{\# price in thousands of yen}
+    \AttributeTok{cuisine =} \FunctionTok{fct\_lump\_min}\NormalTok{(FirstCategory, }\AttributeTok{min =} \DecValTok{15}\NormalTok{)  }\CommentTok{\# small cuisines become "Other"}
+\NormalTok{  )}
+
+\NormalTok{rating\_fit }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(DinnerRating }\SpecialCharTok{\textasciitilde{}}\NormalTok{ price\_k }\SpecialCharTok{+}\NormalTok{ cuisine, }\AttributeTok{data =}\NormalTok{ model\_data)}
+
+\NormalTok{broom}\SpecialCharTok{::}\FunctionTok{tidy}\NormalTok{(rating\_fit)}
+\end{Highlighting}
+\end{Shaded}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.4750}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1375}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1250}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1375}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1250}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+term
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+estimate
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+std.error
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+statistic
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+p.value
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+(Intercept) & 3.1592615 & 0.0403123 & 78.3697619 & 0.0000000 \\
+price\_k & 0.0286363 & 0.0028435 & 10.0709319 & 0.0000000 \\
+cuisineCafe & -0.1322160 & 0.0623430 & -2.1207833 & 0.0343559 \\
+cuisineDining bar & -0.0438068 & 0.0634251 & -0.6906864 & 0.4900338 \\
+cuisineFrench & -0.1156515 & 0.0625090 & -1.8501589 & 0.0647896 \\
+cuisineItalian & -0.0542445 & 0.0474509 & -1.1431700 & 0.2534309 \\
+cuisineIzakaya (Tavern) & -0.0907753 & 0.0430440 & -2.1088931 &
+0.0353739 \\
+cuisineKaiseki (Traditional Japanese) & -0.0390042 & 0.0582337 &
+-0.6697868 & 0.5032553 \\
+cuisineKyoto Cuisine & -0.0199637 & 0.0527338 & -0.3785744 &
+0.7051399 \\
+cuisineYakiniku (BBQ Beef) & -0.0630829 & 0.0473028 & -1.3335968 &
+0.1828498 \\
+cuisineOther & -0.0317715 & 0.0412273 & -0.7706425 & 0.4412268 \\
+\end{longtable}
+}
+
+\begin{quote}
+\textbf{Note:} The \texttt{price\_k} row is the change in the predicted
+rating for every extra 1,000 yen on the price band, with cuisine held
+fixed. The cuisine rows compare each cuisine with the reference cuisine
+(the first level).
+\end{quote}
+
+The model explains only part of the variation in ratings:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(rating\_fit)}\SpecialCharTok{$}\NormalTok{r.squared}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.2040006
+\end{verbatim}
+
+This is expected. Price and cuisine alone cannot predict how good a
+restaurant is, and that leftover is exactly what we want to look at.
+
+\subsection{Step 2: look at the misses}\label{step-2-look-at-the-misses}
+
+For each restaurant, the \textbf{gap} is its actual rating minus the
+rating the model expected. A large positive gap means it is rated much
+higher than its price and cuisine suggest.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{gems }\OtherTok{\textless{}{-}}\NormalTok{ model\_data }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{expected =} \FunctionTok{fitted}\NormalTok{(rating\_fit),}
+    \AttributeTok{gap      =}\NormalTok{ DinnerRating }\SpecialCharTok{{-}}\NormalTok{ expected}
+\NormalTok{  )}
+
+\NormalTok{gems }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(gap)) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{select}\NormalTok{(Name, JapaneseName, FirstCategory, DinnerPrice,}
+\NormalTok{         DinnerRating, expected, gap, ReviewNum) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{mutate}\NormalTok{(}\FunctionTok{across}\NormalTok{(}\FunctionTok{c}\NormalTok{(expected, gap), \textbackslash{}(x) }\FunctionTok{round}\NormalTok{(x, }\DecValTok{2}\NormalTok{))) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{head}\NormalTok{(}\DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1971}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1825}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.2263}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1241}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0949}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0657}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0365}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0730}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Name
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+JapaneseName
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+FirstCategory
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+DinnerPrice
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+DinnerRating
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+expected
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+gap
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+ReviewNum
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Orudohonkonresutorankyouto & 老香港酒家京都 & Chinese & ￥10000～￥14999
+& 4.04 & 3.41 & 0.63 & 148 \\
+ORTO & オルト & Innovative cuisine & ￥8000～￥9999 & 3.97 & 3.36 & 0.61
+& 53 \\
+Iharada & いはら田 & Kyoto Cuisine & ￥10000～￥14999 & 3.91 & 3.43 &
+0.48 & 52 \\
+Kichisen & 京懐石 吉泉 & Kaiseki (Traditional Japanese) &
+￥20000～￥29999 & 4.16 & 3.69 & 0.47 & 79 \\
+Honkedaiichiasahi & 本家 第一旭 たかばし本店 & Ramen & ～￥999 & 3.59 &
+3.13 & 0.46 & 1319 \\
+Ryuunohige & 龍のひげ & Kyoto Cuisine & ￥5000～￥5999 & 3.74 & 3.28 &
+0.46 & 70 \\
+chuukasobatakayasu & 中華そば 高安 & Ramen & ～￥999 & 3.58 & 3.13 &
+0.45 & 713 \\
+Giwontokiwa & ぎをん 常盤 & Soba & ￥1000～￥1999 & 3.60 & 3.16 & 0.44 &
+106 \\
+gionni-yongo & 祗園245 & Italian & ￥10000～￥14999 & 3.83 & 3.39 & 0.44
+& 39 \\
+Yumeya & 夢屋 & Okonomiyaki & ￥1000～￥1999 & 3.55 & 3.16 & 0.39 &
+73 \\
+\end{longtable}
+}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(gems, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ expected, }\AttributeTok{y =}\NormalTok{ DinnerRating)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{alpha =} \FloatTok{0.4}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_abline}\NormalTok{(}\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{data =} \FunctionTok{slice\_max}\NormalTok{(gems, gap, }\AttributeTok{n =} \DecValTok{5}\NormalTok{, }\AttributeTok{with\_ties =} \ConstantTok{FALSE}\NormalTok{),}
+             \AttributeTok{color =} \StringTok{"firebrick"}\NormalTok{, }\AttributeTok{size =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_text}\NormalTok{(}\AttributeTok{data =} \FunctionTok{slice\_max}\NormalTok{(gems, gap, }\AttributeTok{n =} \DecValTok{5}\NormalTok{, }\AttributeTok{with\_ties =} \ConstantTok{FALSE}\NormalTok{),}
+            \FunctionTok{aes}\NormalTok{(}\AttributeTok{label =}\NormalTok{ Name), }\AttributeTok{hjust =} \FloatTok{1.05}\NormalTok{, }\AttributeTok{size =} \FloatTok{3.2}\NormalTok{, }\AttributeTok{check\_overlap =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \StringTok{"Rating expected from price and cuisine"}\NormalTok{,}
+       \AttributeTok{y =} \StringTok{"Actual dinner rating"}\NormalTok{,}
+       \AttributeTok{title =} \StringTok{"Points above the dashed line beat expectations"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{Mini-project-walkthrough_files/figure-latex/q3-plot-1} \end{center}
+
+\subsection{Step 3: hidden gems on a
+budget}\label{step-3-hidden-gems-on-a-budget}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{gems }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{filter}\NormalTok{(price\_tier }\SpecialCharTok{==} \StringTok{"Cheap"}\NormalTok{) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(gap)) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{select}\NormalTok{(Name, JapaneseName, FirstCategory, DinnerPrice, DinnerRating, gap, ReviewNum) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{gap =} \FunctionTok{round}\NormalTok{(gap, }\DecValTok{2}\NormalTok{)) }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{head}\NormalTok{(}\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1881}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.2475}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1386}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1485}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1287}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.0495}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.0990}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Name
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+JapaneseName
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+FirstCategory
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+DinnerPrice
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+DinnerRating
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+gap
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+ReviewNum
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Honkedaiichiasahi & 本家 第一旭 たかばし本店 & Ramen & ～￥999 & 3.59 &
+0.46 & 1319 \\
+chuukasobatakayasu & 中華そば 高安 & Ramen & ～￥999 & 3.58 & 0.45 &
+713 \\
+Giwontokiwa & ぎをん 常盤 & Soba & ￥1000～￥1999 & 3.60 & 0.44 & 106 \\
+Yumeya & 夢屋 & Okonomiyaki & ￥1000～￥1999 & 3.55 & 0.39 & 73 \\
+Suiba & すいば 蛸薬師室町店 & Stand Bar & ￥1000～￥1999 & 3.53 & 0.37 &
+29 \\
+\end{longtable}
+}
+
+\section{6. What we found}\label{what-we-found}
+
+\begin{itemize}
+\tightlist
+\item
+  The three most popular cuisines, measured by total reviews, are
+  \textbf{Izakaya (Tavern), Ramen, Italian}.
+\item
+  At each price point the best-rated places are in the table in Question
+  2.
+\item
+  The restaurants that beat their price and cuisine by the most are in
+  the table in Question 3. They are good candidates for ``where should I
+  eat?''.
+\end{itemize}
+
+\subsection{What this analysis can and cannot
+say}\label{what-this-analysis-can-and-cannot-say}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Missing bad restaurants.} Ratings start at 3.0, so we only see
+  places that already rate well.
+\item
+  \textbf{Popularity is not quality.} Many reviews means many diners,
+  not necessarily better food.
+\item
+  \textbf{Associations only.} The model describes how price, cuisine and
+  rating go together. It does not say that paying more \emph{causes} a
+  better rating.
+\item
+  \textbf{The model is simple.} It uses two variables and leaves a lot
+  of variation unexplained, which is why the gaps are interesting.
+\item
+  \textbf{A decision for you.} The tiers use the \emph{lower end} of
+  each price band, and restaurants priced at 15,000 yen and above are
+  left out.
+\end{itemize}
+
+\end{document}

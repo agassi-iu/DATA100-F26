@@ -1,0 +1,293 @@
+---
+title: "Finding a Great Place to Eat in Kyoto"
+subtitle: "Lecture 15 live demo: reference analysis"
+author: "Agassi Iu"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output:
+  pdf_document:
+    toc: true
+    latex_engine: xelatex
+    df_print: kable
+geometry: margin=0.8in
+fontsize: 10pt
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  fig.width = 6.5,
+  fig.height = 4,
+  fig.align = "center"
+)
+library(tidyverse)
+theme_set(theme_gray(base_size = 12))
+```
+
+# 1. The question
+
+**Where should I eat dinner in Kyoto?**
+
+That is too vague to answer directly, so we break it into three smaller questions:
+
+1. What are the three most popular cuisines? *(exploratory)*
+2. What are the three best-rated restaurants at each price point? *(descriptive)*
+3. Which restaurants are rated **much higher** than their price and cuisine would lead us to expect? *(predictive: a model, then a look at its misses)*
+
+# 2. The data
+
+The data are restaurant reviews from Tabelog, a Japanese review site (via Kaggle). Put `Kyoto_Restaurant_Info.csv` in the same folder as this file.
+
+```{r load}
+kyoto_raw <- read_csv("Kyoto_Restaurant_Info.csv")
+names(kyoto_raw)
+```
+
+Before trusting this data, ask the usual questions: who collected it, who is in it, and who is missing?
+
+```{r know-your-data}
+# Ratings: what is the range?
+range(kyoto_raw$DinnerRating)
+
+# How many reviews does a typical restaurant have?
+summary(kyoto_raw$ReviewNum)
+```
+
+Two things to notice:
+
+- The lowest rating is exactly 3.0. This suggests the dataset only includes restaurants rated 3.0 or above, so **poorly rated restaurants are missing**. We can only compare good and very good places.
+- Many restaurants have very few reviews, so their ratings are not reliable.
+
+## Cleaning
+
+The prices are stored as text ranges (for example, 3000 to 3999 yen) with Japanese symbols. We do three things: write each price band in plain text, turn it into a number (the **lower end** of the band), and assign the price tiers from the question.
+
+We also shorten long restaurant names so tables fit on the page.
+
+```{r clean}
+# The price text uses two fullwidth Japanese symbols; we build them from their codes
+yen   <- intToUtf8(0xFFE5)   # the fullwidth yen sign
+tilde <- intToUtf8(0xFF5E)   # the fullwidth tilde that separates the two ends of a band
+
+kyoto <- kyoto_raw |>
+  select(-1, -JapaneseName) |>                    # drop the row-number column and Japanese names
+  mutate(
+    # plain-text price band: "3000 to 3999", "0 to 999", "30000+"
+    price_text = DinnerPrice |>
+      str_replace_all(yen, "") |>            # remove the yen sign
+      str_replace_all(tilde, " to ") |>        # tilde becomes " to "
+      str_squish() |>
+      str_replace("^to ", "0 to ") |>
+      str_replace(" to$", "+"),
+    # lower end of the price band, in yen
+    price_low = if_else(
+      str_starts(str_trim(DinnerPrice), tilde),
+      0,
+      as.numeric(str_extract(DinnerPrice, "[0-9]+"))
+    ),
+    # the three price points from the question
+    price_tier = case_when(
+      price_low < 3000  ~ "Cheap",      # 0 to 2,999 yen
+      price_low < 8000  ~ "Middle",     # 3,000 to 7,999 yen
+      price_low < 15000 ~ "Expensive",  # 8,000 to 14,999 yen
+      TRUE              ~ NA_character_ # 15,000 yen and above: not in our tiers
+    ),
+    price_tier = factor(price_tier, levels = c("Cheap", "Middle", "Expensive")),
+    # shortened labels for tables and plots
+    short_name = str_trunc(str_squish(Name), 26),
+    short_cuisine = str_trunc(FirstCategory, 20)
+  ) |>
+  select(short_name, Station, FirstCategory, short_cuisine, price_text, price_low,
+         price_tier, DinnerRating, TotalRating, ReviewNum)
+
+glimpse(kyoto)
+```
+
+```{r tier-counts}
+kyoto |>
+  count(price_tier) |>
+  mutate(note = if_else(is.na(price_tier), "15,000 yen and above (left out)", ""))
+```
+
+## Keep only restaurants with enough reviews
+
+A rating based on one or two reviews tells us very little. For every question below we keep restaurants with **at least 10 reviews**.
+
+```{r filter-reviews}
+rated <- kyoto |> filter(ReviewNum >= 10)
+
+c(before = nrow(kyoto), after = nrow(rated))
+```
+
+# 3. Question 1: the three most popular cuisines
+
+"Popular" can mean different things. We look at two measures and see whether they agree.
+
+- **Number of restaurants** in the category
+- **Total number of reviews** across the category (a rough measure of how many diners it attracts)
+
+```{r q1-table}
+popular <- rated |>
+  group_by(FirstCategory) |>
+  summarise(
+    restaurants   = n(),
+    total_reviews = sum(ReviewNum),
+    .groups = "drop"
+  )
+
+popular |> arrange(desc(total_reviews)) |> head(10)
+```
+
+```{r q1-top3}
+top3_cuisines <- popular |>
+  arrange(desc(total_reviews)) |>
+  slice_head(n = 3)
+
+top3_cuisines
+```
+
+```{r q1-plot}
+popular |>
+  slice_max(total_reviews, n = 10, with_ties = FALSE) |>
+  mutate(top3 = FirstCategory %in% top3_cuisines$FirstCategory) |>
+  ggplot(aes(x = total_reviews, y = fct_reorder(FirstCategory, total_reviews), fill = top3)) +
+  geom_col(show.legend = FALSE) +
+  scale_fill_manual(values = c("grey70", "steelblue")) +
+  labs(x = "Total reviews", y = NULL,
+       title = "Cuisines diners write about most")
+```
+
+If we count restaurants instead of reviews, does the top three change?
+
+```{r q1-compare}
+popular |> arrange(desc(restaurants)) |> head(5)
+```
+
+> **Note:** The answer depends on how we **define** popular. Always say which definition you used.
+
+# 4. Question 2: the top three restaurants at each price point
+
+\small
+
+```{r q2-table}
+top_by_tier <- rated |>
+  filter(!is.na(price_tier)) |>
+  arrange(desc(DinnerRating), desc(ReviewNum)) |>   # best rating first; more reviews breaks ties
+  group_by(price_tier) |>
+  slice_head(n = 3) |>
+  ungroup() |>
+  arrange(price_tier, desc(DinnerRating))
+
+top_by_tier |>
+  select(price_tier, short_name, short_cuisine, price_text, DinnerRating, ReviewNum)
+```
+
+\normalsize
+
+```{r q2-plot, fig.height=5.5}
+ggplot(top_by_tier,
+       aes(x = DinnerRating, y = fct_reorder(short_name, DinnerRating), color = short_cuisine)) +
+  geom_point(size = 3.5) +
+  facet_wrap(~ price_tier, ncol = 1, scales = "free_y") +
+  labs(x = "Dinner rating", y = NULL, color = "Cuisine",
+       title = "Top three restaurants at each price point")
+```
+
+# 5. Question 3: which places beat their price?
+
+The top-three lists favour expensive restaurants, because pricier places tend to be rated higher. A more useful question for a diner is: **which restaurants are rated higher than we would expect for their price and cuisine?**
+
+## Step 1: build a simple model of the typical rating
+
+We predict `DinnerRating` from the price and the cuisine. Cuisines with fewer than 15 restaurants are grouped as "Other" so the model has enough data for each one.
+
+```{r q3-model}
+model_data <- rated |>
+  mutate(
+    price_k = price_low / 1000,                      # price in thousands of yen
+    cuisine = fct_lump_min(FirstCategory, min = 15)  # small cuisines become "Other"
+  )
+
+rating_fit <- lm(DinnerRating ~ price_k + cuisine, data = model_data)
+
+broom::tidy(rating_fit) |>
+  mutate(across(where(is.numeric), \(x) round(x, 3)))
+```
+
+> **Note:** The `price_k` row is the change in the predicted rating for every extra 1,000 yen on the price band, with cuisine held fixed. The cuisine rows compare each cuisine with the reference cuisine (the first level).
+
+The model explains only part of the variation in ratings:
+
+```{r q3-fit-quality}
+summary(rating_fit)$r.squared
+```
+
+This is expected. Price and cuisine alone cannot predict how good a restaurant is, and that leftover is exactly what we want to look at.
+
+## Step 2: look at the misses
+
+For each restaurant, the **gap** is its actual rating minus the rating the model expected. A large positive gap means it is rated much higher than its price and cuisine suggest.
+
+```{r q3-gaps}
+gems <- model_data |>
+  mutate(
+    expected = fitted(rating_fit),
+    gap      = DinnerRating - expected
+  )
+```
+
+\small
+
+```{r q3-top10}
+gems |>
+  arrange(desc(gap)) |>
+  select(short_name, short_cuisine, price_text, DinnerRating, expected, gap) |>
+  mutate(across(c(expected, gap), \(x) round(x, 2))) |>
+  head(10)
+```
+
+\normalsize
+
+```{r q3-plot}
+top5_gaps <- slice_max(gems, gap, n = 5, with_ties = FALSE)
+
+ggplot(gems, aes(x = expected, y = DinnerRating)) +
+  geom_point(alpha = 0.4) +
+  geom_abline(linetype = "dashed") +
+  geom_point(data = top5_gaps, color = "firebrick", size = 3) +
+  geom_text(data = top5_gaps, aes(label = short_name),
+            hjust = 1.05, size = 3, check_overlap = TRUE) +
+  labs(x = "Rating expected from price and cuisine",
+       y = "Actual dinner rating",
+       title = "Points above the dashed line beat expectations")
+```
+
+## Step 3: hidden gems on a budget
+
+\small
+
+```{r q3-cheap}
+gems |>
+  filter(price_tier == "Cheap") |>
+  arrange(desc(gap)) |>
+  select(short_name, short_cuisine, price_text, DinnerRating, gap) |>
+  mutate(gap = round(gap, 2)) |>
+  head(5)
+```
+
+\normalsize
+
+# 6. What we found
+
+- The three most popular cuisines, measured by total reviews, are **`r paste(top3_cuisines$FirstCategory, collapse = ", ")`**.
+- At each price point the best-rated places are in the table in Question 2.
+- The restaurants that beat their price and cuisine by the most are in the table in Question 3. They are good candidates for "where should I eat?".
+
+## What this analysis can and cannot say
+
+- **Missing bad restaurants.** Ratings start at 3.0, so we only see places that already rate well.
+- **Popularity is not quality.** Many reviews means many diners, not necessarily better food.
+- **Associations only.** The model describes how price, cuisine and rating go together. It does not say that paying more *causes* a better rating.
+- **The model is simple.** It uses two variables and leaves a lot of variation unexplained, which is why the gaps are interesting.
+- **A decision for you.** The tiers use the *lower end* of each price band, and restaurants priced at 15,000 yen and above are left out.
