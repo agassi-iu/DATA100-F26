@@ -62,10 +62,10 @@ survey <- read_csv("data/sleep_survey.csv", show_col_types = FALSE)
 **Covariation** is the tendency for two variables to move together. If they covary, knowing one improves your guess about the other.
 :::
 
-Today we turn that idea into something we can write down, fit, and check: a **model**.
+Today we turn that idea into something we can write down, fit, and check: a model.
 
-- Lecture 15 (today): one outcome, one predictor
-- Lecture 16 (next Tuesday): adding structure (categories and interactions)
+- Lecture 16 (today): one outcome, one predictor
+- Lecture 17 (next Tuesday): adding structure (categories and interactions)
 
 ## Model
 
@@ -75,11 +75,11 @@ A simplified, written-down description of how one variable changes with another.
 
 Models do different jobs:
 
-- **Descriptive:** summarize a pattern in the data
-- **Inferential:** test a claim about the world
-- **Predictive:** estimate values we have not observed
+- *Descriptive:* summarize a pattern in the data
+- *Inferential:* test a claim about the world
+- *Predictive:* estimate values we have not observed
 
-Today's example is mostly about inferential: is there a relationship, and how big is it?
+Today's example is mostly about inferential. Try and ask yourselves these questions: is there a relationship among these variables, and how big is it (can you quantify it)?
 
 
 # The sleep survey
@@ -92,23 +92,17 @@ Today's example is mostly about inferential: is there a relationship, and how bi
 | `program` | the student's program: Arts, Business, Engineering, Health Sci, Science |
 | `num_courses` | number of courses this term |
 | `study_hours_week` | hours spent studying per week |
-| `sleep_hours` | hours of sleep per night |
+| `sleep_hours` | **hours of sleep per night** |
 | `favourite_drink` | Coffee, Tea, Energy drink, Pop, Water |
 | `has_early_class` | does the student have an early class? Yes or No |
 | `work_hours_week` | hours of paid work per week |
 | `stress_level` | self-reported stress, 1 to 5 |
 | `sleep_quality` | self-reported sleep quality, 1 to 5 |
-| `avg_grade` | average grade (%) |
+| `avg_grade` | **average grade (%)** |
 
-**Today** we focus on two columns: `sleep_hours` and `avg_grade`.
 
-## Reminder of what the data looks like
 
-```{r}
-glimpse(survey)
-```
-
-## Plot first, model second
+## Simple Scatterplot
 
 ```{r}
 #| fig-height: 3.6
@@ -122,7 +116,7 @@ ggplot(survey, aes(x = sleep_hours, y = avg_grade)) +
 ::: {.callout-caution title="Questions to ask of any scatterplot"}
 1. Is the relationship going up or down?
     - Up suggests a positive association; down suggests a negative one.
-2. Is it roughly a straight line or a curve?
+2. If you were to draw a line of best fit, is it roughly a straight line or a curve?
     - If the variables are related, the pattern may be more than linear. A straight line will miss any bend in the points.
 3. How strong is it: do the points hug a line, or scatter widely?
     - If the points hug the pattern, knowing `x` gives a sharp guess for `y`. If they scatter widely, the trend may still be real, but any single prediction is rough.
@@ -131,7 +125,7 @@ ggplot(survey, aes(x = sleep_hours, y = avg_grade)) +
 :::
 
 
-## A question we can test
+## A question we can test {.smaller}
 
 Before looking at a model, we should write down what we want to find out. 
 
@@ -162,27 +156,6 @@ ggplot(survey, aes(x = sleep_hours, y = avg_grade)) +
 `method = lm` asks for a **linear model**. Now let's fit one ourselves.
 
 
-## Correlation {.smaller}
-
-```{r}
-cor(survey$sleep_hours, survey$avg_grade)
-```
-
-::: {.callout-note title="Correlation (r)"}
-A single number between **-1 and 1** that summarizes how closely two numeric variables follow a **straight-line** pattern.
-:::
-
-- Sign tells you the direction: positive means both rise together, negative means one rises as the other falls
-- Size tells you the strength: close to 0 means a weak pattern, close to 1 or -1 means the points hug a line
-- It has no units, so you can compare it across different pairs of variables
-
-::: {.callout-warning title="Careful"}
-Correlation only measures straight-line patterns, and it is not causation. A curved relationship can have a correlation near 0, and a strong correlation does not tell you *why* the variables move together.
-:::
-
-
-
-
 # Fitting a line
 
 ## The model formula
@@ -207,7 +180,7 @@ The function `lm(formula,data)` is used for linear modelling. There are primaril
 
 - `lm(y~x)`: linear model of `x` on the variable `y` (not from any data sets)
 - `lm(y~x,df)`: linear model of `x` on the variable `y` from the data frame `df`
-- `lm(y~x1+x2,df): linear model of both `x1` and `x2` on the variable `y` from the data frame `df`.
+- `lm(y~x1+x2,df)`: linear model of both `x1` and `x2` on the variable `y` from the data frame `df`.
 
 :::
 
@@ -242,6 +215,23 @@ The change in the predicted `y` when `x` increases by **1 unit**.
 The predicted `y` when `x = 0`. It is where the line crosses the y-axis. That is what `y` is expected to be when `x` is nothing.
 :::
 
+## Remarks
+
+::: {.callout-tip title="What we observed"}
+The intercept is 54.7180 and the slope for `sleep_hours` is 2.7945. 
+:::
+
+
+::: {.callout-caution title="Conclusion"}
+
+- "The average grade for students who have slept for zero hours is 54%".
+
+- "For every extra hour of sleep per night, a student's predicted average grade changes by 2.7945 percentage points."
+:::
+
+- Is the effect large or small compared with how much grades vary between students?
+- Would you bet on this prediction for any one student? Think back to the scatter plot.
+
 
 ## Exercise
 
@@ -253,7 +243,6 @@ The predicted `y` when `x = 0`. It is where the line crosses the y-axis. That is
 
 ```{webr}
 #| exercise: fit_line
-
 study.lm <- lm()
 study.lm
 ```
@@ -261,15 +250,18 @@ study.lm
 
 # Reading the output
 
-## Reading Output of Linear Models
+## Summary of `lm()`
+
+
+::: {.callout-warning title="Ugh. R is so lazy!!!  ٩(ˋᗣˊ*)و "}
+The `lm()` output only gives you minimal information. The coefficient table is not built until you ask for it with `summary()`.
+:::
+
 
 ```{r}
 summary(sleep.lm)
 ```
 
-::: {.callout-note title="Ugh. R is lazy! ٩(ˋᗣˊ*)و "}
-`lm()` computes only the minimum. The coefficient table is not built until you ask for it with `summary()`.
-:::
 
 ## The coefficient table {.smaller}
 
@@ -280,43 +272,9 @@ summary(sleep.lm)
 | `t value` | the estimate divided by its standard error |
 | `Pr(>|t|)` | the p-value for the null hypothesis that the true coefficient is 0 |
 
-A small p-value on the `sleep_hours` row is **evidence against** the null hypothesis that sleep has no relationship with grades.
+- A small p-value on the `sleep_hours` row is **evidence against** the null hypothesis that sleep has no relationship with grades. 
 
-## Concluding statement
-
-::: {.callout-tip title="Based on the inference:"}
-"For every extra hour of sleep per night, a student's predicted average grade changes by 2.7945 percentage points."
-:::
-
-- Is the effect large or small compared with how much grades vary between students?
-- Would you bet on this prediction for any one student? Think back to the scatter plot.
-
-## What a p-value does not say
-
-::: {.callout-warning title="Careful"}
-A small p-value does **not** mean the model fits well, and it does **not** mean the relationship is causal. It is only trustworthy if the model's assumptions look reasonable.
-:::
-
-::: {.callout-caution title="Does sleeping more *cause* higher grades?"}
-Students who sleep more may also differ in other ways: their program, their workload, their stress. The slope describes how grades and sleep move together, not why sleep affects grades.
-:::
-
-We check the model's assumptions with **residual plots**. That is next class.
-
-## Residuals: the leftovers
-
-A **residual** is the gap between an observed value and the model's fitted value. Points above zero have a higher grade than the line predicts, points below have a lower one.
-
-```{r echo=FALSE}
-#| fig-height: 3.2
-survey |>
-  mutate(fitted = fitted(sleep.lm), resid = resid(sleep.lm)) |>
-  ggplot(aes(x = sleep_hours, y = resid)) +
-  geom_point(size = 2, alpha = 0.6) +
-  geom_hline(yintercept = 0, linetype = "dashed") +
-  labs(x = "Sleep (hours per night)", y = "Residual")
-```
-
+- Normally when we read a summary table of regression model, a low p-value using has "*", "**", ,or "***" next to it as an indication.
 
 
 
@@ -384,14 +342,28 @@ predict(study.lm, study_hours_week=c(0,10,20,30))
 ```
 
 
+## Residuals: the leftovers
+
+A **residual** is the gap between an observed value and the model's fitted value. Points above zero have a higher grade than the line predicts, points below have a lower one.
+
+```{r echo=FALSE}
+#| fig-height: 3.2
+survey |>
+  mutate(fitted = fitted(sleep.lm), resid = resid(sleep.lm)) |>
+  ggplot(aes(x = sleep_hours, y = resid)) +
+  geom_point(size = 2, alpha = 0.6) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  labs(x = "Sleep (hours per night)", y = "Residual")
+```
+
+
+
 ## Summary {.smaller}
 
 - A model is a simplified description of how an outcome changes with a predictor
 - The formula `y ~ x` names the outcome on the left and the predictor on the right
 - `lm()` fits the line. But we need `summary()` to gives estimates, standard errors and p-values
-- Say the **slope** in words and units: the change in predicted `y` for a 1-unit increase in `x`
-- A small p-value is not proof of a good fit, and not proof of cause
-- **Do not extrapolate** beyond the observed range
+- How to interpret the slope?: The change in predicted `y` for a 1-unit increase in `x`
 
 ::: {.callout-important title="Next Class"}
 We are going to look at multiple effects. Do all programs look the same? Is one line enough? Can we find out if variables that related to each other can be used for the same model? What are the other values printed underneath in the `summary(lm(...))`?

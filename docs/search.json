@@ -2065,81 +2065,46 @@
     "text": "Wrap-up and submit\n\nKnit your Rmd to PDF\nUpload the PDF to Gradescope (one per group, add all members)\nUnfinished is okay. Submit what you have.\n\n\n\n\n\n\n\n\nNext Project Guidance\n\n\nTuesday, November 10. More details will come!\n\n\n\n\n\n\n\n\n\n\n\nHomework for Reading Week\n\n\nMake a group of 4-5 students among yourselves. Think about the type of data that you want to work with for your final project."
   },
   {
-    "objectID": "project/Kyoto_Dinner_Analysis.html",
-    "href": "project/Kyoto_Dinner_Analysis.html",
-    "title": "Finding a Great Place to Eat in Kyoto",
+    "objectID": "courses.html",
+    "href": "courses.html",
+    "title": "Teaching Experience",
     "section": "",
-    "text": "Where should I eat dinner in Kyoto?\nThat is too vague to answer directly, so we break it into three smaller questions:\n\nWhat are the three most popular cuisines? (exploratory)\nWhat are the three best-rated restaurants at each price point? (descriptive)\nWhich restaurants are rated much higher than their price and cuisine would lead us to expect? (predictive: a model, then a look at its misses)"
+    "text": "DATA100 (Introduction to Data Analytics)\nST230 (Introduction to Probability and Statistics in Sciences)"
   },
   {
-    "objectID": "project/Kyoto_Dinner_Analysis.html#cleaning",
-    "href": "project/Kyoto_Dinner_Analysis.html#cleaning",
-    "title": "Finding a Great Place to Eat in Kyoto",
-    "section": "Cleaning",
-    "text": "Cleaning\nThe prices are stored as text ranges (for example, 3000 to 3999 yen) with Japanese symbols. We do three things: write each price band in plain text, turn it into a number (the lower end of the band), and assign the price tiers from the question.\nWe also shorten long restaurant names so tables fit on the page.\n\n# The price text uses two fullwidth Japanese symbols; we build them from their codes\nyen   &lt;- intToUtf8(0xFFE5)   # the fullwidth yen sign\ntilde &lt;- intToUtf8(0xFF5E)   # the fullwidth tilde that separates the two ends of a band\n\nkyoto &lt;- kyoto_raw |&gt;\n  select(-1, -JapaneseName) |&gt;                    # drop the row-number column and Japanese names\n  mutate(\n    # plain-text price band: \"3000 to 3999\", \"0 to 999\", \"30000+\"\n    price_text = DinnerPrice |&gt;\n      str_replace_all(yen, \"\") |&gt;            # remove the yen sign\n      str_replace_all(tilde, \" to \") |&gt;        # tilde becomes \" to \"\n      str_squish() |&gt;\n      str_replace(\"^to \", \"0 to \") |&gt;\n      str_replace(\" to$\", \"+\"),\n    # lower end of the price band, in yen\n    price_low = if_else(\n      str_starts(str_trim(DinnerPrice), tilde),\n      0,\n      as.numeric(str_extract(DinnerPrice, \"[0-9]+\"))\n    ),\n    # the three price points from the question\n    price_tier = case_when(\n      price_low &lt; 3000  ~ \"Cheap\",      # 0 to 2,999 yen\n      price_low &lt; 8000  ~ \"Middle\",     # 3,000 to 7,999 yen\n      price_low &lt; 15000 ~ \"Expensive\",  # 8,000 to 14,999 yen\n      TRUE              ~ NA_character_ # 15,000 yen and above: not in our tiers\n    ),\n    price_tier = factor(price_tier, levels = c(\"Cheap\", \"Middle\", \"Expensive\")),\n    # shortened labels for tables and plots\n    short_name = str_trunc(str_squish(Name), 26),\n    short_cuisine = str_trunc(FirstCategory, 20)\n  ) |&gt;\n  select(short_name, Station, FirstCategory, short_cuisine, price_text, price_low,\n         price_tier, DinnerRating, TotalRating, ReviewNum)\n\nglimpse(kyoto)\n\nRows: 895\nColumns: 10\n$ short_name    &lt;chr&gt; \"Orudeidainingurajou\", \"Steak Frites Gaspard zi...\", \"KA…\n$ Station       &lt;chr&gt; \"Kyoto\", \"Karasuma\", \"Sanjo\", \"Tambaguchi\", \"Kyoto Shiya…\n$ FirstCategory &lt;chr&gt; \"Buffet style\", \"Bistro\", \"Izakaya (Tavern)\", \"Okonomiya…\n$ short_cuisine &lt;chr&gt; \"Buffet style\", \"Bistro\", \"Izakaya (Tavern)\", \"Okonomiya…\n$ price_text    &lt;chr&gt; \"4000 to 4999\", \"3000 to 3999\", \"3000 to 3999\", \"3000 to…\n$ price_low     &lt;dbl&gt; 4000, 3000, 3000, 3000, 4000, 4000, 3000, 3000, 3000, 40…\n$ price_tier    &lt;fct&gt; Middle, Middle, Middle, Middle, Middle, Middle, Middle, …\n$ DinnerRating  &lt;dbl&gt; 3.20, 3.06, 3.28, 3.14, 3.16, 3.00, 3.05, 3.34, 3.04, 3.…\n$ TotalRating   &lt;dbl&gt; 3.39, 3.18, 3.28, 3.14, 3.16, 3.08, 3.04, 3.34, 3.03, 3.…\n$ ReviewNum     &lt;dbl&gt; 56, 70, 7, 16, 23, 24, 22, 23, 3, 92, 4, 120, 2, 39, 13,…\n\n\n\nkyoto |&gt;\n  count(price_tier) |&gt;\n  mutate(note = if_else(is.na(price_tier), \"15,000 yen and above (left out)\", \"\"))\n\n# A tibble: 4 × 3\n  price_tier     n note                             \n  &lt;fct&gt;      &lt;int&gt; &lt;chr&gt;                            \n1 Cheap        206 \"\"                               \n2 Middle       596 \"\"                               \n3 Expensive     79 \"\"                               \n4 &lt;NA&gt;          14 \"15,000 yen and above (left out)\""
-  },
-  {
-    "objectID": "project/Kyoto_Dinner_Analysis.html#keep-only-restaurants-with-enough-reviews",
-    "href": "project/Kyoto_Dinner_Analysis.html#keep-only-restaurants-with-enough-reviews",
-    "title": "Finding a Great Place to Eat in Kyoto",
-    "section": "Keep only restaurants with enough reviews",
-    "text": "Keep only restaurants with enough reviews\nA rating based on one or two reviews tells us very little. For every question below we keep restaurants with at least 10 reviews.\n\nrated &lt;- kyoto |&gt; filter(ReviewNum &gt;= 10)\n\nc(before = nrow(kyoto), after = nrow(rated))\n\nbefore  after \n   895    602"
-  },
-  {
-    "objectID": "project/Kyoto_Dinner_Analysis.html#step-1-build-a-simple-model-of-the-typical-rating",
-    "href": "project/Kyoto_Dinner_Analysis.html#step-1-build-a-simple-model-of-the-typical-rating",
-    "title": "Finding a Great Place to Eat in Kyoto",
-    "section": "Step 1: build a simple model of the typical rating",
-    "text": "Step 1: build a simple model of the typical rating\nWe predict DinnerRating from the price and the cuisine. Cuisines with fewer than 15 restaurants are grouped as “Other” so the model has enough data for each one.\n\nmodel_data &lt;- rated |&gt;\n  mutate(\n    price_k = price_low / 1000,                      # price in thousands of yen\n    cuisine = fct_lump_min(FirstCategory, min = 15)  # small cuisines become \"Other\"\n  )\n\nrating_fit &lt;- lm(DinnerRating ~ price_k + cuisine, data = model_data)\n\nbroom::tidy(rating_fit) |&gt;\n  mutate(across(where(is.numeric), \\(x) round(x, 3)))\n\n# A tibble: 11 × 5\n   term                                  estimate std.error statistic p.value\n   &lt;chr&gt;                                    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;\n 1 (Intercept)                              3.16      0.04     78.4     0    \n 2 price_k                                  0.029     0.003    10.1     0    \n 3 cuisineCafe                             -0.132     0.062    -2.12    0.034\n 4 cuisineDining bar                       -0.044     0.063    -0.691   0.49 \n 5 cuisineFrench                           -0.116     0.063    -1.85    0.065\n 6 cuisineItalian                          -0.054     0.047    -1.14    0.253\n 7 cuisineIzakaya (Tavern)                 -0.091     0.043    -2.11    0.035\n 8 cuisineKaiseki (Traditional Japanese)   -0.039     0.058    -0.67    0.503\n 9 cuisineKyoto Cuisine                    -0.02      0.053    -0.379   0.705\n10 cuisineYakiniku (BBQ Beef)              -0.063     0.047    -1.33    0.183\n11 cuisineOther                            -0.032     0.041    -0.771   0.441\n\n\n\nNote: The price_k row is the change in the predicted rating for every extra 1,000 yen on the price band, with cuisine held fixed. The cuisine rows compare each cuisine with the reference cuisine (the first level).\n\nThe model explains only part of the variation in ratings:\n\nsummary(rating_fit)$r.squared\n\n[1] 0.2040006\n\n\nThis is expected. Price and cuisine alone cannot predict how good a restaurant is, and that leftover is exactly what we want to look at."
-  },
-  {
-    "objectID": "project/Kyoto_Dinner_Analysis.html#step-2-look-at-the-misses",
-    "href": "project/Kyoto_Dinner_Analysis.html#step-2-look-at-the-misses",
-    "title": "Finding a Great Place to Eat in Kyoto",
-    "section": "Step 2: look at the misses",
-    "text": "Step 2: look at the misses\nFor each restaurant, the gap is its actual rating minus the rating the model expected. A large positive gap means it is rated much higher than its price and cuisine suggest.\n\ngems &lt;- model_data |&gt;\n  mutate(\n    expected = fitted(rating_fit),\n    gap      = DinnerRating - expected\n  )\n\n\ngems |&gt;\n  arrange(desc(gap)) |&gt;\n  select(short_name, short_cuisine, price_text, DinnerRating, expected, gap) |&gt;\n  mutate(across(c(expected, gap), \\(x) round(x, 2))) |&gt;\n  head(10)\n\n# A tibble: 10 × 6\n   short_name               short_cuisine price_text DinnerRating expected   gap\n   &lt;chr&gt;                    &lt;chr&gt;         &lt;chr&gt;             &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;\n 1 Orudohonkonresutorankyo… Chinese       10000 to …         4.04     3.41  0.63\n 2 ORTO                     Innovative c… 8000 to 9…         3.97     3.36  0.61\n 3 Iharada                  Kyoto Cuisine 10000 to …         3.91     3.43  0.48\n 4 Kichisen                 Kaiseki (Tra… 20000 to …         4.16     3.69  0.47\n 5 Honkedaiichiasahi        Ramen         0 to 999           3.59     3.13  0.46\n 6 Ryuunohige               Kyoto Cuisine 5000 to 5…         3.74     3.28  0.46\n 7 chuukasobatakayasu       Ramen         0 to 999           3.58     3.13  0.45\n 8 Giwontokiwa              Soba          1000 to 1…         3.6      3.16  0.44\n 9 gionni-yongo             Italian       10000 to …         3.83     3.39  0.44\n10 Yumeya                   Okonomiyaki   1000 to 1…         3.55     3.16  0.39\n\n\n\ntop5_gaps &lt;- slice_max(gems, gap, n = 5, with_ties = FALSE)\n\nggplot(gems, aes(x = expected, y = DinnerRating)) +\n  geom_point(alpha = 0.4) +\n  geom_abline(linetype = \"dashed\") +\n  geom_point(data = top5_gaps, color = \"firebrick\", size = 3) +\n  geom_text(data = top5_gaps, aes(label = short_name),\n            hjust = 1.05, size = 3, check_overlap = TRUE) +\n  labs(x = \"Rating expected from price and cuisine\",\n       y = \"Actual dinner rating\",\n       title = \"Points above the dashed line beat expectations\")"
-  },
-  {
-    "objectID": "project/Kyoto_Dinner_Analysis.html#step-3-hidden-gems-on-a-budget",
-    "href": "project/Kyoto_Dinner_Analysis.html#step-3-hidden-gems-on-a-budget",
-    "title": "Finding a Great Place to Eat in Kyoto",
-    "section": "Step 3: hidden gems on a budget",
-    "text": "Step 3: hidden gems on a budget\n\ngems |&gt;\n  filter(price_tier == \"Cheap\") |&gt;\n  arrange(desc(gap)) |&gt;\n  select(short_name, short_cuisine, price_text, DinnerRating, gap) |&gt;\n  mutate(gap = round(gap, 2)) |&gt;\n  head(5)\n\n# A tibble: 5 × 5\n  short_name         short_cuisine price_text   DinnerRating   gap\n  &lt;chr&gt;              &lt;chr&gt;         &lt;chr&gt;               &lt;dbl&gt; &lt;dbl&gt;\n1 Honkedaiichiasahi  Ramen         0 to 999             3.59  0.46\n2 chuukasobatakayasu Ramen         0 to 999             3.58  0.45\n3 Giwontokiwa        Soba          1000 to 1999         3.6   0.44\n4 Yumeya             Okonomiyaki   1000 to 1999         3.55  0.39\n5 Suiba              Stand Bar     1000 to 1999         3.53  0.37"
-  },
-  {
-    "objectID": "project/Kyoto_Dinner_Analysis.html#what-this-analysis-can-and-cannot-say",
-    "href": "project/Kyoto_Dinner_Analysis.html#what-this-analysis-can-and-cannot-say",
-    "title": "Finding a Great Place to Eat in Kyoto",
-    "section": "What this analysis can and cannot say",
-    "text": "What this analysis can and cannot say\n\nMissing bad restaurants. Ratings start at 3.0, so we only see places that already rate well.\nPopularity is not quality. Many reviews means many diners, not necessarily better food.\nAssociations only. The model describes how price, cuisine and rating go together. It does not say that paying more causes a better rating.\nThe model is simple. It uses two variables and leaves a lot of variation unexplained, which is why the gaps are interesting.\nA decision for you. The tiers use the lower end of each price band, and restaurants priced at 15,000 yen and above are left out."
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "DATA100: Introduction to Data Analytics",
+    "objectID": "courses.html#current-courses",
+    "href": "courses.html#current-courses",
+    "title": "Teaching Experience",
     "section": "",
-    "text": "Welcome to DATA100 — Introduction to Data Analytics! This course introduces you to the fundamentals of data analysis using R, covering everything from R basics and data types to R Markdown/Quarto reporting, data wrangling, and communicating results.\n\n\n\n\n\n\nNoteInstructor\n\n\n\nAgassi Iu · Wilfrid Laurier University Office Hours: Wednesdays 14:00–16:00, LH3073 (or by appointment)"
+    "text": "DATA100 (Introduction to Data Analytics)\nST230 (Introduction to Probability and Statistics in Sciences)"
   },
   {
-    "objectID": "index.html#welcome",
-    "href": "index.html#welcome",
-    "title": "DATA100: Introduction to Data Analytics",
+    "objectID": "courses.html#past-courses",
+    "href": "courses.html#past-courses",
+    "title": "Teaching Experience",
+    "section": "Past Courses",
+    "text": "Past Courses\n\nST474/674 (Monte Carlo Methods)"
+  },
+  {
+    "objectID": "courses.html#graduate-ta-experience",
+    "href": "courses.html#graduate-ta-experience",
+    "title": "Teaching Experience",
+    "section": "Graduate TA Experience",
+    "text": "Graduate TA Experience\n\nWilfrid Laurier Univesrity\n\nMA307/507 (Numerical Analysis)\nMA451/651 (Stochastic Calculus)\nMA477/677 (Quantitative Financial Risk Management)\nST359/559 (Probability II)\nST462/662 (Advanced Regression)\nST473/674 (Financial Data Analysis)\nST494/694 (Statistical Learning)"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
     "section": "",
-    "text": "Welcome to DATA100 — Introduction to Data Analytics! This course introduces you to the fundamentals of data analysis using R, covering everything from R basics and data types to R Markdown/Quarto reporting, data wrangling, and communicating results.\n\n\n\n\n\n\nNoteInstructor\n\n\n\nAgassi Iu · Wilfrid Laurier University Office Hours: Wednesdays 14:00–16:00, LH3073 (or by appointment)"
+    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation:\n\nPhD in Mathematical and Statistical Modelling at Wilfrid Laurier University | 2026\nMMath in Statistics at University of Waterloo | 2020\nBBA/BA Financial Mathematics at Wilfrid Laurier University | 2019\n\nTeaching Experience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nFall 2026: Wednesdays 14:00–16:00 in room LH3073, or by appointment."
   },
   {
-    "objectID": "index.html#quick-links",
-    "href": "index.html#quick-links",
-    "title": "DATA100: Introduction to Data Analytics",
-    "section": "Quick Links",
-    "text": "Quick Links\n\n👋 About — more about your instructor\n📄 Syllabus — grading breakdown, policies, and expectations\n🗓️ Schedule — weekly topics and readings\n📊 Slides — lecture slide decks\n📝 Assignments — labs, capstone project, and due dates\n🎯 Midterms — midterm, information, practices"
-  },
-  {
-    "objectID": "index.html#course-hub",
-    "href": "index.html#course-hub",
-    "title": "DATA100: Introduction to Data Analytics",
-    "section": "Course Hub",
-    "text": "Course Hub\nAnnouncements, submissions, and discussions happen on MyLearningSpace — this site is your reference hub for slides, schedule, and syllabus details.\n\n\n\n\n\n\nTipBefore the first class\n\n\n\nPlease install R and RStudio before our first lab. See the Slides page for the Lecture 1 walkthrough on installation."
+    "objectID": "about.html#bio",
+    "href": "about.html#bio",
+    "title": "About",
+    "section": "",
+    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation:\n\nPhD in Mathematical and Statistical Modelling at Wilfrid Laurier University | 2026\nMMath in Statistics at University of Waterloo | 2020\nBBA/BA Financial Mathematics at Wilfrid Laurier University | 2019\n\nTeaching Experience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nFall 2026: Wednesdays 14:00–16:00 in room LH3073, or by appointment."
   },
   {
     "objectID": "assignments.html",
@@ -2170,46 +2135,32 @@
     "text": "Group Project Guidance Slides\n\nVisualization\nData Tidying and Transformation"
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "DATA100: Introduction to Data Analytics",
     "section": "",
-    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation:\n\nPhD in Mathematical and Statistical Modelling at Wilfrid Laurier University | 2026\nMMath in Statistics at University of Waterloo | 2020\nBBA/BA Financial Mathematics at Wilfrid Laurier University | 2019\n\nTeaching Experience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nFall 2026: Wednesdays 14:00–16:00 in room LH3073, or by appointment."
+    "text": "Welcome to DATA100 — Introduction to Data Analytics! This course introduces you to the fundamentals of data analysis using R, covering everything from R basics and data types to R Markdown/Quarto reporting, data wrangling, and communicating results.\n\n\n\n\n\n\nNoteInstructor\n\n\n\nAgassi Iu · Wilfrid Laurier University Office Hours: Wednesdays 14:00–16:00, LH3073 (or by appointment)"
   },
   {
-    "objectID": "about.html#bio",
-    "href": "about.html#bio",
-    "title": "About",
+    "objectID": "index.html#welcome",
+    "href": "index.html#welcome",
+    "title": "DATA100: Introduction to Data Analytics",
     "section": "",
-    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation:\n\nPhD in Mathematical and Statistical Modelling at Wilfrid Laurier University | 2026\nMMath in Statistics at University of Waterloo | 2020\nBBA/BA Financial Mathematics at Wilfrid Laurier University | 2019\n\nTeaching Experience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nFall 2026: Wednesdays 14:00–16:00 in room LH3073, or by appointment."
+    "text": "Welcome to DATA100 — Introduction to Data Analytics! This course introduces you to the fundamentals of data analysis using R, covering everything from R basics and data types to R Markdown/Quarto reporting, data wrangling, and communicating results.\n\n\n\n\n\n\nNoteInstructor\n\n\n\nAgassi Iu · Wilfrid Laurier University Office Hours: Wednesdays 14:00–16:00, LH3073 (or by appointment)"
   },
   {
-    "objectID": "courses.html",
-    "href": "courses.html",
-    "title": "Teaching Experience",
-    "section": "",
-    "text": "DATA100 (Introduction to Data Analytics)\nST230 (Introduction to Probability and Statistics in Sciences)"
+    "objectID": "index.html#quick-links",
+    "href": "index.html#quick-links",
+    "title": "DATA100: Introduction to Data Analytics",
+    "section": "Quick Links",
+    "text": "Quick Links\n\n👋 About — more about your instructor\n📄 Syllabus — grading breakdown, policies, and expectations\n🗓️ Schedule — weekly topics and readings\n📊 Slides — lecture slide decks\n📝 Assignments — labs, capstone project, and due dates\n🎯 Midterms — midterm, information, practices"
   },
   {
-    "objectID": "courses.html#current-courses",
-    "href": "courses.html#current-courses",
-    "title": "Teaching Experience",
-    "section": "",
-    "text": "DATA100 (Introduction to Data Analytics)\nST230 (Introduction to Probability and Statistics in Sciences)"
-  },
-  {
-    "objectID": "courses.html#past-courses",
-    "href": "courses.html#past-courses",
-    "title": "Teaching Experience",
-    "section": "Past Courses",
-    "text": "Past Courses\n\nST474/674 (Monte Carlo Methods)"
-  },
-  {
-    "objectID": "courses.html#graduate-ta-experience",
-    "href": "courses.html#graduate-ta-experience",
-    "title": "Teaching Experience",
-    "section": "Graduate TA Experience",
-    "text": "Graduate TA Experience\n\nWilfrid Laurier Univesrity\n\nMA307/507 (Numerical Analysis)\nMA451/651 (Stochastic Calculus)\nMA477/677 (Quantitative Financial Risk Management)\nST359/559 (Probability II)\nST462/662 (Advanced Regression)\nST473/674 (Financial Data Analysis)\nST494/694 (Statistical Learning)"
+    "objectID": "index.html#course-hub",
+    "href": "index.html#course-hub",
+    "title": "DATA100: Introduction to Data Analytics",
+    "section": "Course Hub",
+    "text": "Course Hub\nAnnouncements, submissions, and discussions happen on MyLearningSpace — this site is your reference hub for slides, schedule, and syllabus details.\n\n\n\n\n\n\nTipBefore the first class\n\n\n\nPlease install R and RStudio before our first lab. See the Slides page for the Lecture 1 walkthrough on installation."
   },
   {
     "objectID": "schedule.html",
@@ -3154,42 +3105,35 @@
     "href": "slides/DATA100-F26-Lecture-16.html#where-we-left-off",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Where we left off",
-    "text": "Where we left off\n\n\n\n\n\n\n\nRecall from pre-Midterm 1\n\n\nCovariation is the tendency for two variables to move together. If they covary, knowing one improves your guess about the other.\n\n\n\n\nToday we turn that idea into something we can write down, fit, and check: a model.\n\nLecture 15 (today): one outcome, one predictor\nLecture 16 (next Tuesday): adding structure (categories and interactions)"
+    "text": "Where we left off\n\n\n\n\n\n\n\nRecall from pre-Midterm 1\n\n\nCovariation is the tendency for two variables to move together. If they covary, knowing one improves your guess about the other.\n\n\n\n\nToday we turn that idea into something we can write down, fit, and check: a model.\n\nLecture 16 (today): one outcome, one predictor\nLecture 17 (next Tuesday): adding structure (categories and interactions)"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-16.html#model",
     "href": "slides/DATA100-F26-Lecture-16.html#model",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Model",
-    "text": "Model\n\n\n\n\n\n\n\nWhat is a model?\n\n\nA simplified, written-down description of how one variable changes with another. It is never the whole truth, but it can be useful.\n\n\n\n\nModels do different jobs:\n\nDescriptive: summarize a pattern in the data\nInferential: test a claim about the world\nPredictive: estimate values we have not observed\n\nToday’s example is mostly about inferential: is there a relationship, and how big is it?"
+    "text": "Model\n\n\n\n\n\n\n\nWhat is a model?\n\n\nA simplified, written-down description of how one variable changes with another. It is never the whole truth, but it can be useful.\n\n\n\n\nModels do different jobs:\n\nDescriptive: summarize a pattern in the data\nInferential: test a claim about the world\nPredictive: estimate values we have not observed\n\nToday’s example is mostly about inferential. Try and ask yourselves these questions: is there a relationship among these variables, and how big is it (can you quantify it)?"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-16.html#the-sleep-survey-1",
     "href": "slides/DATA100-F26-Lecture-16.html#the-sleep-survey-1",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "The sleep survey",
-    "text": "The sleep survey\n\n\n\n\n\n\n\nVariable\nMeaning\n\n\n\n\nprogram\nthe student’s program: Arts, Business, Engineering, Health Sci, Science\n\n\nnum_courses\nnumber of courses this term\n\n\nstudy_hours_week\nhours spent studying per week\n\n\nsleep_hours\nhours of sleep per night\n\n\nfavourite_drink\nCoffee, Tea, Energy drink, Pop, Water\n\n\nhas_early_class\ndoes the student have an early class? Yes or No\n\n\nwork_hours_week\nhours of paid work per week\n\n\nstress_level\nself-reported stress, 1 to 5\n\n\nsleep_quality\nself-reported sleep quality, 1 to 5\n\n\navg_grade\naverage grade (%)\n\n\n\nToday we focus on two columns: sleep_hours and avg_grade."
+    "text": "The sleep survey\n\n\n\n\n\n\n\nVariable\nMeaning\n\n\n\n\nprogram\nthe student’s program: Arts, Business, Engineering, Health Sci, Science\n\n\nnum_courses\nnumber of courses this term\n\n\nstudy_hours_week\nhours spent studying per week\n\n\nsleep_hours\nhours of sleep per night\n\n\nfavourite_drink\nCoffee, Tea, Energy drink, Pop, Water\n\n\nhas_early_class\ndoes the student have an early class? Yes or No\n\n\nwork_hours_week\nhours of paid work per week\n\n\nstress_level\nself-reported stress, 1 to 5\n\n\nsleep_quality\nself-reported sleep quality, 1 to 5\n\n\navg_grade\naverage grade (%)"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-16.html#reminder-of-what-the-data-looks-like",
-    "href": "slides/DATA100-F26-Lecture-16.html#reminder-of-what-the-data-looks-like",
+    "objectID": "slides/DATA100-F26-Lecture-16.html#simple-scatterplot",
+    "href": "slides/DATA100-F26-Lecture-16.html#simple-scatterplot",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Reminder of what the data looks like",
-    "text": "Reminder of what the data looks like\n\nglimpse(survey)\n\nRows: 300\nColumns: 10\n$ program          &lt;chr&gt; \"Engineering\", \"Health Sci\", \"Science\", \"Arts\", \"Arts…\n$ num_courses      &lt;dbl&gt; 5, 4, 4, 3, 6, 4, 5, 5, 6, 4, 3, 6, 5, 4, 4, 4, 4, 5,…\n$ study_hours_week &lt;dbl&gt; 25.5, 20.0, 14.1, 4.0, 15.6, 18.2, 19.7, 16.7, 25.8, …\n$ sleep_hours      &lt;dbl&gt; 5.7, 5.9, 4.6, 7.6, 6.8, 5.0, 7.4, 7.0, 5.7, 7.6, 5.8…\n$ favourite_drink  &lt;chr&gt; \"Coffee\", \"Energy drink\", \"Energy drink\", \"Energy dri…\n$ has_early_class  &lt;chr&gt; \"Yes\", \"No\", \"Yes\", \"No\", \"No\", \"Yes\", \"No\", \"Yes\", \"…\n$ work_hours_week  &lt;dbl&gt; 0, 0, 0, 14, 11, 4, 9, 0, 16, 0, 4, 0, 0, 0, 0, 13, 0…\n$ stress_level     &lt;dbl&gt; 3, 4, 4, 2, 4, 3, 3, 3, 3, 2, 4, 3, 3, 3, 3, 3, 4, 3,…\n$ sleep_quality    &lt;dbl&gt; 2, 2, 2, 4, 3, 2, 5, 2, 2, 2, 3, 3, 2, 4, 2, 3, 3, 3,…\n$ avg_grade        &lt;dbl&gt; 74.6, 66.3, 67.4, 78.7, 89.4, 65.5, 58.7, 89.8, 73.6,…"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-16.html#plot-first-model-second",
-    "href": "slides/DATA100-F26-Lecture-16.html#plot-first-model-second",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Plot first, model second",
-    "text": "Plot first, model second\n\nggplot(survey, aes(x = sleep_hours, y = avg_grade)) +\n  geom_point(size = 2, alpha = 0.6,col=\"blue\") +\n  labs(x = \"Sleep (hours per night)\", y = \"Average grade (%)\")"
+    "section": "Simple Scatterplot",
+    "text": "Simple Scatterplot\n\nggplot(survey, aes(x = sleep_hours, y = avg_grade)) +\n  geom_point(size = 2, alpha = 0.6,col=\"blue\") +\n  labs(x = \"Sleep (hours per night)\", y = \"Average grade (%)\")"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-16.html#checkpoint",
     "href": "slides/DATA100-F26-Lecture-16.html#checkpoint",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Checkpoint",
-    "text": "Checkpoint\n\n\n\n\n\n\n\nQuestions to ask of any scatterplot\n\n\n\nIs the relationship going up or down?\n\nUp suggests a positive association; down suggests a negative one.\n\nIs it roughly a straight line or a curve?\n\nIf the variables are related, the pattern may be more than linear. A straight line will miss any bend in the points.\n\nHow strong is it: do the points hug a line, or scatter widely?\n\nIf the points hug the pattern, knowing x gives a sharp guess for y. If they scatter widely, the trend may still be real, but any single prediction is rough.\n\nAre there any unusual points?\n\nRemember the outliers? Check whether they are errors or real observations before deciding what to do with them."
+    "text": "Checkpoint\n\n\n\n\n\n\n\nQuestions to ask of any scatterplot\n\n\n\nIs the relationship going up or down?\n\nUp suggests a positive association; down suggests a negative one.\n\nIf you were to draw a line of best fit, is it roughly a straight line or a curve?\n\nIf the variables are related, the pattern may be more than linear. A straight line will miss any bend in the points.\n\nHow strong is it: do the points hug a line, or scatter widely?\n\nIf the points hug the pattern, knowing x gives a sharp guess for y. If they scatter widely, the trend may still be real, but any single prediction is rough.\n\nAre there any unusual points?\n\nRemember the outliers? Check whether they are errors or real observations before deciding what to do with them."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-16.html#a-question-we-can-test",
@@ -3206,13 +3150,6 @@
     "text": "Adding a straight line\n\nggplot(survey, aes(x = sleep_hours, y = avg_grade)) +\n  geom_point(size = 2, alpha = 0.6) +\n  geom_smooth(method = lm, se = FALSE) +\n  labs(x = \"Sleep (hours per night)\", y = \"Average grade (%)\")\n\n\nmethod = lm asks for a linear model. Now let’s fit one ourselves."
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-16.html#correlation",
-    "href": "slides/DATA100-F26-Lecture-16.html#correlation",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Correlation",
-    "text": "Correlation\n\ncor(survey$sleep_hours, survey$avg_grade)\n\n[1] 0.3034471\n\n\n\n\n\n\n\n\n\nCorrelation (r)\n\n\nA single number between -1 and 1 that summarizes how closely two numeric variables follow a straight-line pattern.\n\n\n\n\n\nSign tells you the direction: positive means both rise together, negative means one rises as the other falls\nSize tells you the strength: close to 0 means a weak pattern, close to 1 or -1 means the points hug a line\nIt has no units, so you can compare it across different pairs of variables\n\n\n\n\n\n\n\n\nCareful\n\n\nCorrelation only measures straight-line patterns, and it is not causation. A curved relationship can have a correlation near 0, and a strong correlation does not tell you why the variables move together."
-  },
-  {
     "objectID": "slides/DATA100-F26-Lecture-16.html#the-model-formula",
     "href": "slides/DATA100-F26-Lecture-16.html#the-model-formula",
     "title": "DATA100 Introduction to Data Analytics",
@@ -3224,7 +3161,7 @@
     "href": "slides/DATA100-F26-Lecture-16.html#fitting-a-linear-model",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Fitting a Linear Model",
-    "text": "Fitting a Linear Model\n\n\n\n\n\n\n\nlm()\n\n\nThe function lm(formula,data) is used for linear modelling. There are primarily two important arguments: a formula and a data frame. The simplest examples of a linear model can be\n\nlm(y~x): linear model of x on the variable y (not from any data sets)\nlm(y~x,df): linear model of x on the variable y from the data frame df\nlm(y~x1+x2,df): linear model of bothx1andx2on the variableyfrom the data framedf`."
+    "text": "Fitting a Linear Model\n\n\n\n\n\n\n\nlm()\n\n\nThe function lm(formula,data) is used for linear modelling. There are primarily two important arguments: a formula and a data frame. The simplest examples of a linear model can be\n\nlm(y~x): linear model of x on the variable y (not from any data sets)\nlm(y~x,df): linear model of x on the variable y from the data frame df\nlm(y~x1+x2,df): linear model of both x1 and x2 on the variable y from the data frame df."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-16.html#example-of-linear-model",
@@ -3241,6 +3178,13 @@
     "text": "Reading the coefficients\nA straight-line model has two coefficients:\n\\[\\hat{y} = b_0 + b_1 x\\]\n\n\n\n\n\n\n\nSlope (b1)\n\n\nThe change in the predicted y when x increases by 1 unit.\n\nIf x goes up by 1, predicted y changes by + \\(b_01\\)\nIf x goes down by 1, predicted y changes by − \\(b_1\\)\n\n\n\n\n\n\nPositive slope: predicted y goes up by \\(b_1\\) when x increases by 1\nNegative slope: predicted y goes down by \\(b_1\\) when x increases by 1\nZero slope: predicted y does not change on whatever value of x.\n\n\n\n\n\n\n\n\nIntercept (b0)\n\n\nThe predicted y when x = 0. It is where the line crosses the y-axis. That is what y is expected to be when x is nothing."
   },
   {
+    "objectID": "slides/DATA100-F26-Lecture-16.html#remarks",
+    "href": "slides/DATA100-F26-Lecture-16.html#remarks",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Remarks",
+    "text": "Remarks\n\n\n\n\n\n\n\nWhat we observed\n\n\nThe intercept is 54.7180 and the slope for sleep_hours is 2.7945.\n\n\n\n\n\n\n\n\n\n\n\nConclusion\n\n\n\n“The average grade for students who have slept for zero hours is 54%”.\n“For every extra hour of sleep per night, a student’s predicted average grade changes by 2.7945 percentage points.”\n\n\n\n\n\n\nIs the effect large or small compared with how much grades vary between students?\nWould you bet on this prediction for any one student? Think back to the scatter plot."
+  },
+  {
     "objectID": "slides/DATA100-F26-Lecture-16.html#exercise",
     "href": "slides/DATA100-F26-Lecture-16.html#exercise",
     "title": "DATA100 Introduction to Data Analytics",
@@ -3248,39 +3192,18 @@
     "text": "Exercise\n\n\n\n\n\n\n\nFind the effect of study time on grades\n\n\n\nFit avg_grade ~ study_hours_week.\nDoes the slope and intercept make sense in real life?\nPlot a scatterplot with a linear regression line to check it yourself."
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-16.html#reading-output-of-linear-models",
-    "href": "slides/DATA100-F26-Lecture-16.html#reading-output-of-linear-models",
+    "objectID": "slides/DATA100-F26-Lecture-16.html#summary-of-lm",
+    "href": "slides/DATA100-F26-Lecture-16.html#summary-of-lm",
     "title": "DATA100 Introduction to Data Analytics",
-    "section": "Reading Output of Linear Models",
-    "text": "Reading Output of Linear Models\n\nsummary(sleep.lm)\n\n\nCall:\nlm(formula = avg_grade ~ sleep_hours, data = survey)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-36.133  -6.140   0.276   6.233  24.279 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)  54.7180     3.4165  16.016  &lt; 2e-16 ***\nsleep_hours   2.7945     0.5083   5.498 8.28e-08 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 8.881 on 298 degrees of freedom\nMultiple R-squared:  0.09208,   Adjusted R-squared:  0.08903 \nF-statistic: 30.22 on 1 and 298 DF,  p-value: 8.283e-08\n\n\n\n\n\n\n\n\n\nUgh. R is lazy! ٩(ˋᗣˊ*)و\n\n\nlm() computes only the minimum. The coefficient table is not built until you ask for it with summary()."
+    "section": "Summary of lm()",
+    "text": "Summary of lm()\n\n\n\n\n\n\n\nUgh. R is so lazy!!! ٩(ˋᗣˊ*)و\n\n\nThe lm() output only gives you minimal information. The coefficient table is not built until you ask for it with summary().\n\n\n\n\n\nsummary(sleep.lm)\n\n\nCall:\nlm(formula = avg_grade ~ sleep_hours, data = survey)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-36.133  -6.140   0.276   6.233  24.279 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)  54.7180     3.4165  16.016  &lt; 2e-16 ***\nsleep_hours   2.7945     0.5083   5.498 8.28e-08 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 8.881 on 298 degrees of freedom\nMultiple R-squared:  0.09208,   Adjusted R-squared:  0.08903 \nF-statistic: 30.22 on 1 and 298 DF,  p-value: 8.283e-08"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-16.html#the-coefficient-table",
     "href": "slides/DATA100-F26-Lecture-16.html#the-coefficient-table",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "The coefficient table",
-    "text": "The coefficient table\n\n\n\n\n\n\n\nColumn\nWhat it tells you\n\n\n\n\nEstimate\nthe fitted value of the intercept or slope\n\n\nStd. Error\nhow much that estimate would wobble across similar datasets\n\n\nt value\nthe estimate divided by its standard error\n\n\nPr(&gt;|t|)\nthe p-value for the null hypothesis that the true coefficient is 0\n\n\n\nA small p-value on the sleep_hours row is evidence against the null hypothesis that sleep has no relationship with grades."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-16.html#concluding-statement",
-    "href": "slides/DATA100-F26-Lecture-16.html#concluding-statement",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Concluding statement",
-    "text": "Concluding statement\n\n\n\n\n\n\n\nBased on the inference:\n\n\n“For every extra hour of sleep per night, a student’s predicted average grade changes by 2.7945 percentage points.”\n\n\n\n\n\nIs the effect large or small compared with how much grades vary between students?\nWould you bet on this prediction for any one student? Think back to the scatter plot."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-16.html#what-a-p-value-does-not-say",
-    "href": "slides/DATA100-F26-Lecture-16.html#what-a-p-value-does-not-say",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "What a p-value does not say",
-    "text": "What a p-value does not say\n\n\n\n\n\n\n\nCareful\n\n\nA small p-value does not mean the model fits well, and it does not mean the relationship is causal. It is only trustworthy if the model’s assumptions look reasonable.\n\n\n\n\n\n\n\n\n\n\n\nDoes sleeping more cause higher grades?\n\n\nStudents who sleep more may also differ in other ways: their program, their workload, their stress. The slope describes how grades and sleep move together, not why sleep affects grades.\n\n\n\n\nWe check the model’s assumptions with residual plots. That is next class."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Lecture-16.html#residuals-the-leftovers",
-    "href": "slides/DATA100-F26-Lecture-16.html#residuals-the-leftovers",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Residuals: the leftovers",
-    "text": "Residuals: the leftovers\nA residual is the gap between an observed value and the model’s fitted value. Points above zero have a higher grade than the line predicts, points below have a lower one."
+    "text": "The coefficient table\n\n\n\n\n\n\n\nColumn\nWhat it tells you\n\n\n\n\nEstimate\nthe fitted value of the intercept or slope\n\n\nStd. Error\nhow much that estimate would wobble across similar datasets\n\n\nt value\nthe estimate divided by its standard error\n\n\nPr(&gt;|t|)\nthe p-value for the null hypothesis that the true coefficient is 0\n\n\n\n\nA small p-value on the sleep_hours row is evidence against the null hypothesis that sleep has no relationship with grades.\nNormally when we read a summary table of regression model, a low p-value using has “”, ””, ,or ”” next to it as an indication."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-16.html#modelling-predictions",
@@ -3311,11 +3234,18 @@
     "text": "Exercise\n\n\n\n\n\n\n\nDoes studying more imply better grades?\n\n\n\nUse range() to find the lowest and highest study_hours_week in survey.\nPredict the average grade at 0, 10, 20, and 30 hours.\nShould you trust these numbers?\nPredict how many hours do you have to study in a week in order to get 80%+ average."
   },
   {
+    "objectID": "slides/DATA100-F26-Lecture-16.html#residuals-the-leftovers",
+    "href": "slides/DATA100-F26-Lecture-16.html#residuals-the-leftovers",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Residuals: the leftovers",
+    "text": "Residuals: the leftovers\nA residual is the gap between an observed value and the model’s fitted value. Points above zero have a higher grade than the line predicts, points below have a lower one."
+  },
+  {
     "objectID": "slides/DATA100-F26-Lecture-16.html#summary",
     "href": "slides/DATA100-F26-Lecture-16.html#summary",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Summary",
-    "text": "Summary\n\nA model is a simplified description of how an outcome changes with a predictor\nThe formula y ~ x names the outcome on the left and the predictor on the right\nlm() fits the line. But we need summary() to gives estimates, standard errors and p-values\nSay the slope in words and units: the change in predicted y for a 1-unit increase in x\nA small p-value is not proof of a good fit, and not proof of cause\nDo not extrapolate beyond the observed range\n\n\n\n\n\n\n\n\nNext Class\n\n\nWe are going to look at multiple effects. Do all programs look the same? Is one line enough? Can we find out if variables that related to each other can be used for the same model? What are the other values printed underneath in the summary(lm(...))?"
+    "text": "Summary\n\nA model is a simplified description of how an outcome changes with a predictor\nThe formula y ~ x names the outcome on the left and the predictor on the right\nlm() fits the line. But we need summary() to gives estimates, standard errors and p-values\nHow to interpret the slope?: The change in predicted y for a 1-unit increase in x\n\n\n\n\n\n\n\n\nNext Class\n\n\nWe are going to look at multiple effects. Do all programs look the same? Is one line enough? Can we find out if variables that related to each other can be used for the same model? What are the other values printed underneath in the summary(lm(...))?"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-2.html#the-whole-game",
@@ -4536,17 +4466,17 @@
     "text": "Lecture 15: Data Science in Practice\n\nLecture 15 Slides"
   },
   {
-    "objectID": "slides.html#lecture-16-importing-databases",
-    "href": "slides.html#lecture-16-importing-databases",
+    "objectID": "slides.html#lecture-16-relationship-between-variables",
+    "href": "slides.html#lecture-16-relationship-between-variables",
     "title": "Lecture Slides",
-    "section": "Lecture 16: Importing Databases",
-    "text": "Lecture 16: Importing Databases\n\nLecture 16 Slides"
+    "section": "Lecture 16: Relationship Between Variables",
+    "text": "Lecture 16: Relationship Between Variables\n\nLecture 16 Slides"
   },
   {
-    "objectID": "slides.html#lecture-17-importing-databases",
-    "href": "slides.html#lecture-17-importing-databases",
+    "objectID": "slides.html#lecture-17-structured-relationship-between-variables",
+    "href": "slides.html#lecture-17-structured-relationship-between-variables",
     "title": "Lecture Slides",
-    "section": "Lecture 17: Importing Databases",
-    "text": "Lecture 17: Importing Databases\n\nLecture 17 Slides"
+    "section": "Lecture 17: Structured Relationship Between Variables",
+    "text": "Lecture 17: Structured Relationship Between Variables\n\nLecture 17 Slides"
   }
 ]

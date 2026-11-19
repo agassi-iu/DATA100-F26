@@ -64,11 +64,11 @@ title: "Lecture Slides"
 - [Lecture 15 Slides](slides/DATA100-F26-Lecture-15.html)
 
 
-## Lecture 16: Importing Databases
+## Lecture 16: Relationship Between Variables
 - [Lecture 16 Slides](slides/DATA100-F26-Lecture-16.html)
 
 
-## Lecture 17: Importing Databases
+## Lecture 17: Structured Relationship Between Variables
 - [Lecture 17 Slides](slides/DATA100-F26-Lecture-17.html)
 
 
