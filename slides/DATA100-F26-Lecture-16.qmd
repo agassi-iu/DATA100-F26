@@ -67,7 +67,7 @@ Today we turn that idea into something we can write down, fit, and check: a mode
 - Lecture 16 (today): one outcome, one predictor
 - Lecture 17 (next Tuesday): adding structure (categories and interactions)
 
-## Model
+## Model {.smaller}
 
 ::: {.callout-note title="What is a model?"}
 A simplified, written-down description of how one variable changes with another. It is never the whole truth, but it can be useful.

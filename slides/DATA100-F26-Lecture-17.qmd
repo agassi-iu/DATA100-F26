@@ -29,7 +29,7 @@ webr:
     - ggrepel
     - patchwork
   resources:
-    - sleep_survey.csv
+    - data/sleep_survey.csv
 execute:
   echo: true
   warning: false   # Hides warnings and package loading messages
@@ -46,7 +46,10 @@ execute:
 #| echo: false
 library(tidyverse)
 theme_set(theme_gray(base_size = 14))
-survey <- read_csv("data/sleep_survey.csv")
+survey <- read_csv("data/sleep_survey.csv") |>
+  mutate(
+    study_hours_days = round(study_hours_week / 7, 1)  # same information, in hours per day
+  )
 program_fit <- lm(avg_grade ~ study_hours_week + program, data = survey)
 ```
 
@@ -56,29 +59,34 @@ program_fit <- lm(avg_grade ~ study_hours_week + program, data = survey)
 #| echo: false
 library(tidyverse)
 theme_set(theme_gray(base_size = 14))
-survey <- read_csv("data/sleep_survey.csv")
+survey <- read_csv("data/sleep_survey.csv") |>
+  mutate(
+    study_hours_days = round(study_hours_week / 7, 1)  # same information, in hours per day
+  )
 ```
 
-## Where we left off
+## Where we left off {.smaller}
 
-::: {.callout-important title="Recall from Lecture 15"}
-A model with one predictor gives a **slope**: the change in the predicted `y` when `x` goes up by 1 unit. We also learned to stay inside the **observed range** when predicting.
+::: {.callout-important title="Recall from last class"}
+A model with one predictor gives a slope: the change in the predicted `y` when `x` goes up by 1 unit. 
 :::
 
-At the end of last class, you fit `avg_grade ~ study_hours_week`. Did the result surprise you?
+At the end of last class, we fit the simple linear model `avg_grade ~ study_hours_week` in an exercise. 
 
 Today we give the model more **structure**:
 
-- add a categorical predictor
-- check the fit with residuals
-- use more than one numeric predictor, and watch out for **multicollinearity**
+- recap a model with one numeric predictor
+- add a second numeric predictor
+- add a categorical predictor and check the fit with residuals
+- see what the p-value in the output is telling us
+- return to two numeric predictors and watch out for multicollinearity
 
 
-# The puzzle
+# Recap: one numeric predictor
 
 ## Does studying help?
 
-```{r}
+```{r echo=FALSE}
 #| fig-height: 3.6
 ggplot(survey, aes(x = study_hours_week, y = avg_grade)) +
   geom_point(size = 2, alpha = 0.6) +
@@ -86,11 +94,76 @@ ggplot(survey, aes(x = study_hours_week, y = avg_grade)) +
   labs(x = "Study (hours per week)", y = "Average grade (%)")
 ```
 
-The line is flat, or even slightly downward. Does studying not help?
+The line is flat, or even slightly downward. Does that mean studying will not help you improve your grades?
+
+## The simple model in numbers
+
+```r
+avg_grade ~ study_hours_week
+```
+
+```{r echo=FALSE}
+coef(lm(avg_grade ~ study_hours_week, data = survey))
+```
+
+::: {.callout-caution title="Checkpoint"}
+In words, what do the intercept and the slope mean here? Is 0 hours of study a realistic value?
+:::
+
+
+# Two numeric predictors
+
+## More than one numeric predictor
+
+A model can use more than one numeric predictor. List them with `+`:
+
+```r
+avg_grade ~ study_hours_week + sleep_hours
+```
+
+::: {.callout-warning title="The `+` is not arithmetic operation"}
+`study_hours_week + sleep_hours` does not add the two values together. It lists two separate predictors, each with its own coefficient.
+:::
+
+::: {.callout-note title="Holding the others fixed"}
+Each slope now means: the change in predicted `y` for a 1-unit increase in that predictor, with the other predictors held fixed.
+:::
+
+## Fitting two numeric predictors
+
+Model 1:
+```{r}
+fit.model1 <- lm(avg_grade ~ study_hours_week, data = survey)
+coef(fit.model1)
+```
+
+Model 2:
+```{r}
+fit.model2 <- lm(avg_grade ~ study_hours_week + sleep_hours, data = survey)
+coef(fit.model2)
+```
+
+::: {.callout-caution title="Checkpoint"}
+Compare the `study_hours_week` slope in the two models. Did it change much? How would you describe the `sleep_hours` slope in words?
+:::
+
+
+# One numeric and one categorical predictor
+
+## Original Plot
+
+```{r echo=FALSE}
+#| fig-height: 3.8
+ggplot(survey, aes(x = study_hours_week, y = avg_grade)) +
+  geom_point(size = 2, alpha = 0.6) +
+  geom_smooth(method = lm, se = FALSE) +
+  labs(x = "Study (hours per week)", y = "Average grade (%)")
+```
+
 
 ## Look at the subgroups
 
-```{r}
+```{r echo=FALSE}
 #| fig-height: 3.8
 ggplot(survey, aes(x = study_hours_week, y = avg_grade, color = program)) +
   geom_point(size = 2, alpha = 0.5) +
@@ -100,13 +173,8 @@ ggplot(survey, aes(x = study_hours_week, y = avg_grade, color = program)) +
   labs(x = "Study (hours per week)", y = "Average grade (%)")
 ```
 
-The dashed black line is the pooled fit from the last slide. The coloured lines are **one per program**.
 
-::: {.callout-caution title="Checkpoint"}
-Within each program, which way does the line go? Why does the dashed line disagree?
-:::
-
-## Why the disagreement? {.smaller}
+## Why are the slopes different? {.smaller}
 
 ```{r}
 survey |>
@@ -116,15 +184,12 @@ survey |>
             n = n())
 ```
 
-- Programs that study **more** tend to have **lower** average grades.
+- Programs that study more tend to have lower average grades.
 - Across all students, that between-program difference hides the within-program pattern.
 
-::: {.callout-important title="Confounding"}
-A **third variable** (here, `program`) is linked to both the predictor and the outcome. Ignoring it can hide a relationship, exaggerate one, or even flip its direction.
+::: {.callout-important title="A third-party"}
+A third variable (in this case, `program`) is linked to both the predictor and the outcome. Ignoring it can hide a relationship, exaggerate one, or even flip its direction.
 :::
-
-
-# Adding a categorical predictor
 
 ## A categorical predictor
 
@@ -133,11 +198,11 @@ class(survey$program)
 unique(survey$program)
 ```
 
-`program` is text with five possible values. Most model functions cannot use text directly, so R turns it into numbers behind the scenes.
+`program` is text with five possible values. Most model functions cannot use text directly, so *R* turns it into numbers behind the scenes.
 
 ## Indicator (dummy) variables {.smaller}
 
-R creates a 0/1 column for each program **except one**:
+R creates a 0/1 column for each program except for one:
 
 | program | Business | Engineering | Health Sci | Science |
 |---|---|---|---|---|
@@ -148,11 +213,11 @@ R creates a 0/1 column for each program **except one**:
 | Science | 0 | 0 | 0 | 1 |
 
 ::: {.callout-note title="Reference level"}
-The left-out program is the **reference level**. R uses the first one alphabetically, here Arts. Every other program is compared with it.
+The left-out program is the reference level. *R* uses the first one alphabetically, which is `Arts` in this example. Every other program is used to compared with it.
 :::
 
 ::: {.callout-caution title="Checkpoint"}
-If a variable had **eight** categories, how many indicator columns would R create?
+If a variable had eight categories, how many indicator columns would *R* create?
 :::
 
 ## Adding `program` to the formula
@@ -161,20 +226,25 @@ If a variable had **eight** categories, how many indicator columns would R creat
 avg_grade ~ study_hours_week + program
 ```
 
-::: {.callout-warning title="The + is not arithmetic"}
-`study_hours_week + program` does **not** add the two values together. It lists two separate predictors, each with its own coefficient.
-:::
+The `+` works the same way as before: it lists two separate predictors, each with its own coefficient. Here one is numeric and one is categorical.
 
-## Fit it
+## Fitting with `program`
 
 ```{r}
 program_fit <- lm(avg_grade ~ study_hours_week + program, data = survey)
 program_fit
 ```
 
-Compare the `study_hours_week` slope with the pooled one from earlier.
+::: {.callout-caution title="Checkpoint"}
+How does the regression output from above compare to the `study_hours_week` slope from previous example without using `program` as an explanatory variable?
+:::
 
 ## Reading the coefficients {.smaller}
+
+
+::: {.callout-warning title="What has changed?"}
+Previously the slope for `avg_grade ~ study_hours_week` corresponds to the amount of change in average grades for every additional hours of studying. The intercept represents the average grade a student would get if they studied for 0 hours. What about now with a model such as `avg_grade ~ study_hours_week + program`?
+:::
 
 ::: {.callout-tip title="The study slope"}
 For two students **in the same program**, each extra hour of weekly study goes with this much change in predicted average grade. The comparison is "other things held fixed".
@@ -185,10 +255,32 @@ Each one (for example `programEngineering`) is the **difference from the referen
 :::
 
 ::: {.callout-important title="Recall: the intercept"}
-The intercept is the predicted grade for an **Arts** student who studies **0 hours**. Check whether 0 is a realistic value before reading too much into it.
+The intercept is the predicted grade for an `Arts` student who studies 0 hours. You might want to check whether 0 is a realistic value before reading too much into it.
 :::
 
-## One slope, parallel lines
+## Interpreting the numbers {.smaller}
+
+```r
+avg_grade ~ study_hours_week + program
+```
+
+::: {.callout-note title="Intercept: 70.08"}
+The predicted average grade for an `Arts` student (the reference level) who studies 0 hours. Nobody studies 0 hours in this data, so treat it as the line's starting point, not a realistic prediction.
+:::
+
+::: {.callout-tip title="`study_hours_week`: 1.05"}
+For two students in the same program, each extra hour of weekly study goes with a predicted average grade about **1.05 points higher**.
+:::
+
+::: {.callout-important title="`programBusiness`: -4.94"}
+For a Business student and an Arts student with the **same study hours**, the Business student's predicted grade is about **4.9 points lower**. It is not a slope: it shifts the whole line down.
+:::
+
+::: {.callout-caution title="Put it together: Business student that studies 15 hours per week"}
+70.08 + (1.05 × 15) + (-4.94) = **about 80.9**
+:::
+
+## What this model looks like
 
 ```{r}
 #| fig-height: 3.8
@@ -200,160 +292,44 @@ survey |>
   labs(x = "Study (hours per week)", y = "Average grade (%)")
 ```
 
-Every program shares the **same slope** but has its **own starting point**. Is that a realistic structure?
 
-## Your turn: pooled vs. adjusted {.smaller}
+## Exercise {.smaller}
 
-::: {.callout-tip}
-## Try it yourself
+::: {.callout-tip title="Try it yourself"}
 1. Fit `avg_grade ~ study_hours_week`. Write down the slope.
 2. Fit `avg_grade ~ study_hours_week + program`. Write down the slope.
-3. Why did the slope change? Explain it in one sentence using the word *confounding*.
+3. Why did the slope change? 
 :::
 
 ```{webr}
 #| exercise: pooled_vs_adjusted
+fit_lm_1   <- lm(..., data = survey)
+fit_lm_2 <- lm(..., data = survey)
 
-pooled_fit   <- lm(avg_grade ~ study_hours_week, data = survey)
-adjusted_fit <- lm(avg_grade ~ study_hours_week + program, data = survey)
-
-coef(pooled_fit)
-coef(adjusted_fit)
+coef(fit_lm_1)
+coef(fit_lm_2)
 ```
-
-## A p-value, in plain words
-
-If you run `summary()` on a model, you will see a p-value column.
-
-```{r}
-summary(program_fit)
-```
-
-::: {.callout-note title="How to read it, without the maths"}
-A small p-value means a pattern this clear would be **unlikely to appear by pure chance**. It does not tell you the model fits well, and it does not tell you the relationship is causal.
-:::
-
-
-# Checking the fit
-
-## Why check the fit?
-
-A model gives you numbers whether or not the model is a good description. **Residual plots** help us see whether the structure we chose fits the data.
-
-::: {.callout-caution title="Checkpoint"}
-What would a *bad* residual plot look like? Think about curves, funnels, and isolated points.
-:::
-
-## Residuals vs. fitted values
-
-```{r}
-#| fig-height: 3.4
-survey |>
-  mutate(fitted = fitted(program_fit), resid = resid(program_fit)) |>
-  ggplot(aes(x = fitted, y = resid)) +
-  geom_point(size = 2, alpha = 0.6) +
-  geom_hline(yintercept = 0, linetype = "dashed") +
-  labs(x = "Fitted value (predicted grade)", y = "Residual")
-```
-
-We want a shapeless cloud around zero: no curve, no funnel. Which points look unusual?
-
-
-# Several numeric predictors
-
-## More than one numeric predictor
-
-Predictors do not have to be categorical. You can add as many as you like:
-
-```r
-avg_grade ~ sleep_hours + sleep_quality
-```
-
-::: {.callout-note title="Holding the others fixed"}
-Each slope now means: the change in predicted `y` for a 1-unit increase in that predictor, **with the other predictors held fixed**.
-:::
-
-But what if two predictors measure almost the same thing?
-
-## Multicollinearity {.smaller}
-
-::: {.callout-note title="Multicollinearity"}
-Two or more predictors that **move closely together**. Because they carry overlapping information, the model cannot tell which one deserves the credit.
-:::
-
-Think of two friends who always give you the **same advice**. If a decision turns out well, who gets the credit?
-
-When predictors overlap a lot:
-
-- the **individual slopes** become unstable and hard to interpret
-- a slope can even change **size or sign** when you add or drop another predictor
-- the model's overall **predictions** can still be fine
-
-## Spot it before you model
-
-```{r}
-#| fig-height: 3.4
-cor(survey$sleep_hours, survey$sleep_quality)
-
-ggplot(survey, aes(x = sleep_hours, y = sleep_quality)) +
-  geom_jitter(width = 0.1, height = 0.15, alpha = 0.5) +
-  labs(x = "Sleep (hours per night)", y = "Sleep quality (1 to 5)")
-```
-
-Students who sleep longer also rate their sleep as better. The two predictors **overlap**.
-
-## Watch the coefficients
-
-```{r}
-coef(lm(avg_grade ~ sleep_hours, data = survey))
-coef(lm(avg_grade ~ sleep_quality, data = survey))
-coef(lm(avg_grade ~ sleep_hours + sleep_quality, data = survey))
-```
-
-::: {.callout-caution title="Checkpoint"}
-Compare each predictor's slope **alone** with its slope **together**. What happened to `sleep_quality`? Is the new value easy to explain?
-:::
-
-## What to do about it {.smaller}
-
-- **Check** how strongly your predictors correlate with each other *before* modelling
-- **Choose one** of the overlapping predictors, or **combine** them into a single measure
-- **Be careful** reading individual slopes when predictors overlap
-- Remember: multicollinearity is about the **predictors**, not the outcome
-
-::: {.callout-warning title="Not the same as confounding"}
-Confounding is a third variable tied to both the predictor and the outcome. Multicollinearity is two **predictors** tied to each other. Both make slopes harder to read.
-:::
-
-## Your turn {.smaller}
-
-::: {.callout-tip}
-## Try it yourself
-1. Look at the correlations among the numeric columns: `sleep_hours`, `sleep_quality`, `stress_level`, `study_hours_week`, `num_courses`, `work_hours_week`. Which pairs overlap the most?
-2. Fit `avg_grade ~ sleep_hours + stress_level`. Compare the slopes with those from the models using each predictor alone.
-3. Would you worry about multicollinearity here?
-:::
 
 ```{webr}
-#| exercise: collinearity
+#| exercise: pooled_vs_adjusted
+#| solution: true
 
-survey |>
-  select(sleep_hours, sleep_quality, stress_level,
-         study_hours_week, num_courses, work_hours_week) |>
-  cor() |>
-  round(2)
+fit_lm_1   <- lm(avg_grade ~ study_hours_week, data = survey)
+fit_lm_2 <- lm(avg_grade ~ study_hours_week + program, data = survey)
 
-coef(lm(avg_grade ~ sleep_hours, data = survey))
-coef(lm(avg_grade ~ stress_level, data = survey))
-coef(lm(avg_grade ~ sleep_hours + stress_level, data = survey))
+coef(fit_lm_1)     # study slope is about -0.08
+coef(fit_lm_2)   # study slope is about +1.05
+
+# Programs that study more also have lower average grades,
+# which hides the positive within-program relationship.
 ```
 
 
-# Predicting with structure
+
+
 
 ## `predict()` with a categorical predictor
 
-Pass the program as **text**, matching the original names. R builds the indicator columns for you.
 
 ```{r}
 new_students <- data.frame(
@@ -367,27 +343,27 @@ predict(program_fit, new_students)
 The formula applies the same encoding to new data as it did to the data we used to fit the model.
 :::
 
-## Stay inside the range
 
-```{r}
-range(survey$study_hours_week)
-```
-
-::: {.callout-important title="Recall: extrapolation"}
-Predictions are only as trustworthy as new data is similar to the data used to fit the model. Most students study between about 12 and 19 hours a week. The few students far beyond that deserve a second look.
-:::
-
-## Your turn {.smaller}
+## Exercise {.smaller}
 
 ::: {.callout-tip}
 ## Try it yourself
-1. Predict the average grade for a **Science** student who studies 15 hours a week.
-2. Predict it for a **Business** student with the same study hours.
+1. Predict the average grade for a `Science` student who studies 15 hours a week.
+2. Predict it for a `Business` student with the same study hours.
 3. How much do the two predictions differ? Where in the model output could you have found that?
 :::
 
 ```{webr}
 #| exercise: structured_predict
+program_fit <- lm(..., data = survey)
+
+new_students <- data.frame(...)
+predict(program_fit, new_students)
+```
+
+```{webr}
+#| exercise: structured_predict
+#| solution: true
 
 program_fit <- lm(avg_grade ~ study_hours_week + program, data = survey)
 
@@ -396,28 +372,192 @@ new_students <- data.frame(
   program = c("Science", "Business")
 )
 predict(program_fit, new_students)
+# Science about 72.3, Business about 80.9: a gap of about 8.5 points.
+# It equals the difference between the programBusiness and programScience coefficients.
+```
+
+## Why check the fit of the model?
+
+A model gives you numbers whether or not the model is a good description. Last time we looked at p-values and residual plots to help us see whether the structure we chose fits the data.
+
+::: {.callout-caution title="Checkpoint"}
+What would a *bad* residual plot look like?
+:::
+
+
+## Revisiting p-value {.smaller}
+
+If you run `summary()` on a model, you will see a p-value column.
+
+```{r}
+summary(program_fit)
+```
+
+::: {.callout-note title="How to read it, without the maths"}
+A small p-value means a pattern this clear would be *unlikely to appear by pure chance*. But it does not tell you the model fits well, and it does not tell you the relationship is causal.
+:::
+
+
+
+## Residuals vs. fitted values
+
+```{r}
+#| fig-height: 3.4
+survey |>
+  mutate(fitted = fitted(program_fit), resid = resid(program_fit)) |>
+  ggplot(aes(x = fitted, y = resid)) +
+  geom_point(size = 2, alpha = 0.6) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  labs(x = "Fitted value (predicted grade)", y = "Residual")
 ```
 
 
-# The formula as structure
+## The biggest residuals?
 
-## What does the formula do?
+```{r echo=FALSE}
+#| fig-height: 3.6
+diag_data <- survey |>
+  mutate(id = row_number(),
+         fitted = fitted(program_fit),
+         resid = resid(program_fit))
 
-The R formula usually does **three jobs** at once:
+outliers <- diag_data |> slice_max(abs(resid), n = 4, with_ties = FALSE)
 
-1. It defines **which columns** the model uses
-2. It **encodes** those columns into numbers (for example, indicator columns)
-3. It defines each column's **role** (outcome or predictor)
+ggplot(diag_data, aes(x = fitted, y = resid)) +
+  geom_point(size = 2, alpha = 0.5) +
+  geom_point(data = outliers, color = "red", size = 3.5) +
+  ggrepel::geom_text_repel(data = outliers, aes(label = id), color = "red") +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  labs(x = "Fitted value (predicted grade)", y = "Residual")
+```
 
-When you write `avg_grade ~ study_hours_week + program`, you are mostly thinking about job 3. The formula also quietly did job 2: it created the four indicator columns for `program`.
+```{r echo=FALSE}
+outliers |> select(id, program, study_hours_week, avg_grade, fitted, resid)
+```
+
+## Code for previous slide
+
+```
+diag_data <- survey |>
+  mutate(id = row_number(),
+         fitted = fitted(program_fit),
+         resid = resid(program_fit))
+
+outliers <- diag_data |> slice_max(abs(resid), n = 4, with_ties = FALSE)
+
+ggplot(diag_data, aes(x = fitted, y = resid)) +
+  geom_point(size = 2, alpha = 0.5) +
+  geom_point(data = outliers, color = "red", size = 3.5) +
+  ggrepel::geom_text_repel(data = outliers, aes(label = id), color = "red") +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  labs(x = "Fitted value (predicted grade)", y = "Residual")
+```
+
+
+## Where do they sit in the data?
+
+```{r echo=FALSE}
+#| fig-height: 3.8
+ggplot(diag_data, aes(x = study_hours_week, y = avg_grade)) +
+  geom_point(aes(color = program), size = 2, alpha = 0.4) +
+  geom_line(aes(y = fitted, color = program), linewidth = 0.8) +
+  geom_point(data = outliers, shape = 21, color = "red", fill = NA,
+             size = 5, stroke = 1.5) +
+  ggrepel::geom_text_repel(data = outliers, aes(label = id), color = "red") +
+  labs(x = "Study (hours per week)", y = "Average grade (%)")
+```
+
+
+
+# Multicollinearity
+
+## Multicollinearity {.smaller}
+
+Earlier we added two numeric predictors to one model. But what if two predictors measure almost the same thing?
+
+::: {.callout-note title="Multicollinearity"}
+Two or more predictors that **move closely together**. Because they carry overlapping information, the model cannot tell which one deserves the credit.
+:::
+
+Think of two friends who always give you the **same advice**. If a decision turns out well, who gets the credit?
+
+:::{.callout-important title="When predictors overlap"}
+
+- the individual slopes become unstable and hard to interpret
+- a slope can even change size or sign when you add or drop another predictor
+:::
+
+
+## Spot it before you model
+
+The correlation between `sleep_hours` and `sleep_quality` is
+```{r}
+cor(survey$sleep_hours, survey$sleep_quality)
+```
+
+```{r echo=FALSE}
+#| fig-height: 3.4
+ggplot(survey, aes(x = sleep_hours, y = sleep_quality)) +
+  geom_jitter(width = 0.1, height = 0.15, alpha = 0.5) +
+  labs(x = "Sleep (hours per night)", y = "Sleep quality (1 to 5)")
+```
+
+
+## Watch the coefficients
+
+```{r}
+coef(lm(avg_grade ~ sleep_hours, data = survey))
+coef(lm(avg_grade ~ sleep_quality, data = survey))
+coef(lm(avg_grade ~ sleep_hours + sleep_quality, data = survey))
+```
+
+::: {.callout-caution title="Checkpoint"}
+Compare each predictor's slope **alone** with its slope **together**. What happened to `sleep_quality`? Is the new value easy to explain?
+:::
+
+## A more extreme example {.smaller}
+
+Suppose there is another survey question that recorded study time per **day**.
+
+```{r}
+cor(survey$study_hours_week, survey$study_hours_days)
+```
+
+```{r}
+coef(summary(lm(avg_grade ~ study_hours_week, data = survey)))
+coef(summary(lm(avg_grade ~ study_hours_week + study_hours_days, data = survey)))
+```
+
+::: {.callout-caution title="Checkpoint"}
+Compare the slope and the `Std. Error` of `study_hours_week` in the two models. What changed? Which version would you trust?
+:::
+
+## Why does this happen? {.smaller}
+
+With both predictors, each slope means: the change in predicted grade when one predictor goes up by 1 unit and the other stays **fixed**.
+
+- But when weekly hours go up, daily hours go up too
+- The data almost never show one changing while the other stays still
+- With nothing else in this model, the model cannot split the credit: slopes become *unstable*.
+
+::: {.callout-warning title="What to do about it"}
+- Check how strongly your predictors correlate with each other *before* modelling
+- Choose one of the overlapping predictors, or combine them into a single measure
+
+:::
+
+
+
+# Summary
 
 ## Summary {.smaller}
 
-- A **confounding** variable can hide or flip a relationship, so check subgroups
-- A categorical predictor becomes **indicator columns**; the first level is the **reference level**
-- With several predictors, each slope means "other things held fixed"
-- **Residual plots** help us check whether the structure fits
-- **Multicollinearity**: overlapping predictors make individual slopes unstable
-- Stay inside the **observed range** when predicting
+- A simple model with one numeric predictor gives a slope: the change in predicted `y` per 1-unit change in `x`
+- With several predictors, each slope means "other parameters held fixed"
+- A categorical predictor becomes indicator columns with the first level is the reference level
+- Residual plots help us check whether the structure fits
+- Multicollinearity: overlapping predictors make individual slopes unstable
 
+:::{.callout-caution title="Next class"}
+More on predictive modelling.
 Next: how do we know a model works on data it has not seen?

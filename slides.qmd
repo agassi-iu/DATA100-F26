@@ -72,5 +72,9 @@ title: "Lecture Slides"
 - [Lecture 17 Slides](slides/DATA100-F26-Lecture-17.html)
 
 
+## Lecture 18: Predictive Modelling
+- [Lecture 18 Slides](slides/DATA100-F26-Lecture-18.html)
+
+
 
 

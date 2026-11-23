@@ -1,0 +1,435 @@
+---
+title: "DATA100 Introduction to Data Analytics"
+subtitle: "Lecture 18: Predictive Modelling"
+author: "Agassi Iu"
+institute: "Wilfrid Laurier University"
+date: today
+format:
+  live-revealjs:
+    resources:
+      - data/sleep_survey.csv
+    theme: sky
+    slide-number: true
+    transition: slide
+    incremental: true
+    embed-resources: true # Embeds figures and libraries into a single portable HTML file
+filters:
+  - live
+webr:
+  packages:
+    - ggplot2
+    - dplyr
+    - tidyr
+    - tibble
+    - readr
+    - stringr
+    - forcats
+    - purrr
+    - scales
+    - ggrepel
+    - patchwork
+  resources:
+    - data/sleep_survey.csv
+execute:
+  echo: true
+  warning: false   # Hides warnings and package loading messages
+  message: false
+  fig-width: 7
+  fig-height: 4
+  fig-align: center
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+```{r}
+#| label: setup
+#| echo: false
+library(tidyverse)
+theme_set(theme_gray(base_size = 14))
+survey <- read_csv("data/sleep_survey.csv") |>
+  mutate(early_class = if_else(has_early_class == "Yes", 1, 0))  # 1 = has an early class
+```
+
+```{webr}
+#| context: setup
+#| autorun: true
+#| echo: false
+library(tidyverse)
+theme_set(theme_gray(base_size = 14))
+survey <- read_csv("data/sleep_survey.csv") |>
+  mutate(early_class = if_else(has_early_class == "Yes", 1, 0))  # 1 = has an early class
+```
+
+## Where we left off
+
+::: {.callout-important title="Recall from last class"}
+We added structure to a linear model (i.e. categories, several predictors).
+:::
+
+Last class ended with a question: *how do we know a model works on data it has not seen?*
+
+:::{.callout-caution title="Today's Agenda:"}
+
+- split our data into a **training set** and a **test set**
+- measure how well a model predicts, against a simple *baseline*
+- predict a binary outcome with **logistic regression**
+
+:::
+
+## Motivation: Studying
+
+::: {.callout-caution title="How do you prepare for an exam?"}
+Suppose that a resourceful student got their hands on last year's exam, they memorized all of the answers word-for-word. Do you think if they would do well on a **new** exam?
+:::
+
+::: {.callout-tip title="A model can do the same"}
+Basically it fit the data it learned from very closely (like past exam questions), and there is a possibility that it still miss on **new** cases (new exam questions).
+:::
+
+To find out whether the model is good, we need to test the model on data it has **never seen**.
+
+
+## What is predictive modelling?
+
+Models do different jobs:
+
+- Descriptive: summarize a pattern in the data
+- Inferential: test a claim about the world
+- **Predictive:** estimate values for cases we have **not observed**
+
+::: {.callout-note title="Today's goal"}
+Predict the outcome for a **new** student. What matters is not how well the model fits the students we already have, but how well it does on the next ones.
+:::
+
+
+# Look before you model
+
+## The outcome
+
+```{r echo=FALSE}
+#| fig-height: 3.4
+ggplot(survey, aes(x = avg_grade)) +
+  geom_histogram(binwidth = 2.5, color = "white") +
+  labs(x = "Average grade (%)", y = "Number of students")
+```
+
+Roughly bell-shaped and centred in the low 70s, with a few unusual grades at either end.
+
+
+## A checklist before modelling
+
+::: {.callout-caution title="Before you fit anything, ask"}
+1. What does the outcome look like? Is it skewed or oddly shaped?
+2. Are there unusual values in the outcome or the predictors?
+3. Do any predictors overlap a lot (multicollinearity)?
+4. How do the predictors relate to the outcome?
+:::
+
+Exploring first is what tells you which modelling choices make sense.
+
+
+# Spending our data
+
+## Training set and test set {.smaller}
+
+We have a limited amount of data, so we split it in two.
+
+| | Training set | Test set |
+|---|-----|-----|
+| **What it is** | The data we use to **build** the model | Data we put aside for later|
+| **Used for** | Fitting the model | Checking how well it predicts **new** cases |
+| **How often** | As many times as we like | Once at the end |
+
+## The basic rule 
+
+::: {.callout-tip title="A common split: 80% / 20%"}
+Put about **80%** of the data in the training set and about **20%** in the test set, chosen **at random**.
+:::
+
+- Too little training data: the model learns poorly
+- Too little test data: the score is unreliable
+- There is no perfect ratio, and 80/20 is a sensible default
+
+
+## Example: splitting the survey
+
+```{r}
+set.seed(18)   # makes the random split reproducible
+
+n <- nrow(survey)
+train_rows <- sample(n, size = round(0.8 * n))
+
+train <- survey[train_rows, ]    # 80% of students
+test  <- survey[-train_rows, ]   # the other 20%
+
+c(train = nrow(train), test = nrow(test))
+```
+
+::: {.callout-note title="What does set.seed() do?"}
+The split is random every time you run the code, but `set.seed()` makes it so that it repeats the **same** random choice every time, so everyone with the same seed gets the same answer.
+:::
+
+## Fancier splits (out of scope)
+
+::: {.callout-note title="You know what? You can do more than this, but it is out of scope"}
+- **Stratified splits:** keep the mix of groups (or outcome values) the same in both sets
+- **Time-based splits:** train on the past, test on the most recent data
+- **Validation sets and resampling:** a third set, or repeated splits, for choosing between models
+- **Grouped data:** keep all rows from one person or unit together
+:::
+
+If you're curious, read [Tidy Modeling with R, Chapter 5](https://www.tmwr.org/splitting).
+
+
+# Predicting a grade
+
+## The baseline: guess the average
+
+The simplest "model" gives every student the average grade of the training set.
+
+```{r}
+baseline <- mean(train$avg_grade)
+baseline
+```
+
+::: {.callout-important title="A model has to beat the baseline"}
+If a model cannot do better than guessing the average, then it is not worth using.
+:::
+
+## Measuring the error
+
+For each student, the **error** is the gap between the actual grade and the prediction.
+
+::: {.callout-note title="Root mean squared error (RMSE)"}
+It is a statistical tool that we use to measure the "typical size of an error", in the same units as the outcome (grade points). A model with smaller RMSE is better.
+:::
+
+```{r}
+rmse <- function(actual, predicted) sqrt(mean((actual - predicted)^2))
+```
+
+The baseline's typical error is about the standard deviation of the grades.
+
+## Three models
+
+Recall from last time, we used `lm()` to formulate our linear regression model.
+
+```{r}
+# 1. Simple: study hours and program
+fit_simple <- lm(avg_grade ~ study_hours_week + program, data = train)
+
+# 2. Flexible: everything, plus interactions with program
+fit_flex <- lm(
+  avg_grade ~ (study_hours_week + sleep_hours + sleep_quality +
+               stress_level + num_courses + work_hours_week) * program +
+              favourite_drink + has_early_class,
+  data = train
+)
+```
+
+The flexible model has many more coefficients, so it can bend itself closely around the training data.
+
+## Errors on the training data
+
+```{r}
+train_error <- tibble(
+  model = c("Baseline standard deviation", "Study hours + program", "Everything + interactions"),
+  train_error = c(
+    rmse(train$avg_grade, baseline),
+    rmse(train$avg_grade, fitted(fit_simple)),
+    rmse(train$avg_grade, fitted(fit_flex))
+  )
+)
+train_error
+```
+
+
+## Now the test set
+
+```{r}
+results <- train_error |>
+  mutate(test_error = c(
+    rmse(test$avg_grade, baseline),
+    rmse(test$avg_grade, predict(fit_simple, test)),
+    rmse(test$avg_grade, predict(fit_flex, test))
+  ))
+results
+```
+
+
+## Training vs. test error
+
+```{r}
+#| fig-height: 3.6
+results |>
+  pivot_longer(c(train_error, test_error), names_to = "set", values_to = "error") |>
+  mutate(set = str_remove(set, "_error"), model = fct_inorder(model)) |>
+  ggplot(aes(x = model, y = error, fill = set)) +
+  geom_col(position = "dodge") +
+  scale_x_discrete(guide = guide_axis(n.dodge = 2)) +
+  labs(x = NULL, y = "Typical miss (grade points)", fill = NULL)
+```
+
+## What do we see?
+
+- The baseline scores about the same on both sets: it learned almost nothing
+- Adding study hours and program helps a lot
+- A more flexible model always fits its training data a little better. The question is whether that carries over to the test set
+
+::: {.callout-important title="Overfitting"}
+A model that follows the quirks of its training data too closely, and then does worse on new data. Training error alone cannot show it.
+:::
+
+
+
+# Predicting binary variables
+
+## A yes/no outcome
+
+So far the outcome has been a number. What if the question is yes or no? For example: can I predict whether a student has an early class in the morning?
+
+```{r}
+train |>
+  count(has_early_class) |>
+  mutate(share = n / sum(n))
+```
+
+`early_class` is **1** for yes and **0** for no. Roughly six in ten students have no early class, so our baseline is to **always guess "No"**.
+
+## Why not a straight line?
+
+```{r}
+#| fig-height: 3.6
+ggplot(train, aes(x = sleep_hours, y = early_class)) +
+  geom_jitter(height = 0.03, alpha = 0.3) +
+  geom_smooth(method = lm, se = FALSE, color = "firebrick") +
+  geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
+  labs(x = "Sleep (hours per night)", y = "Has an early class (1 = yes)")
+```
+
+
+## Logistic regression {.smaller}
+
+::: {.callout-note title="Logistic regression"}
+A model for a binary outcome. The `glm()` is like `lm()` with `family = binomial` says the outcome is yes/no. We are going to skip the inference for logistic regression in this course. The interpretation for the coefficients are very different. Take ST494 if you are interested :D
+:::
+
+```{r}
+logit_fit <- glm(early_class ~ sleep_hours, data = train, family = binomial)
+summary(logit_fit)
+```
+
+## From probabilities to predictions
+
+```{r}
+test_results <- test |>
+  mutate(
+    probability = predict(logit_fit, test, type = "response"),
+    predicted   = if_else(probability > 0.5, 1, 0)
+  )
+
+test_results |>
+  select(sleep_hours, probability, predicted, early_class) |>
+  head(6)
+```
+
+
+To get a yes or no, pick a **cutoff**. A common choice is **0.5**: predict yes when the probability is above it.
+
+## Model Accuracy
+
+```{r}
+mean(test_results$predicted == test_results$early_class)   # model accuracy
+
+table(actual = test_results$early_class, predicted = test_results$predicted)
+```
+
+::: {.callout-note title="Accuracy"}
+The share of predictions that are correct. The table counts correct and incorrect predictions for each actual answer.
+:::
+
+
+
+## Exercise {.smaller}
+
+::: {.callout-tip}
+## Try it yourself
+1. Split `survey` 80/20 with a seed of your choice.
+2. Fit a logistic model for `early_class` using `sleep_hours` and `stress_level` on the training set.
+3. Compute the test accuracy, and compare it with always guessing "No".
+4. Change the seed and run it again. Does the accuracy change?
+:::
+
+```{webr}
+#| exercise: logistic_split
+
+set.seed(...)
+n <- nrow(survey)
+train_rows <- sample(n, size = round(0.8 * n))
+train <- survey[train_rows, ]
+test  <- survey[-train_rows, ]
+
+fit <- glm(early_class ~ ..., data = train, family = binomial)
+
+prob <- predict(fit, test, type = "response")
+pred <- if_else(prob > 0.5, 1, 0)
+
+mean(pred == test$early_class)    # model accuracy
+```
+
+```{webr}
+#| exercise: logistic_split
+#| solution: true
+
+set.seed(18)
+n <- nrow(survey)
+train_rows <- sample(n, size = round(0.8 * n))
+train <- survey[train_rows, ]
+test  <- survey[-train_rows, ]
+
+fit <- glm(early_class ~ sleep_hours + stress_level, data = train, family = binomial)
+
+prob <- predict(fit, test, type = "response")
+pred <- if_else(prob > 0.5, 1, 0)
+
+mean(pred == test$early_class)    # model accuracy
+
+```
+
+## More than two categories
+
+What if the outcome has **several** categories, such as `program`?
+
+- One idea: fit one yes/no model per program ("is it Arts or not?"), then pick the program with the **highest probability**
+- `multinom()` does this in one step, and the probabilities across programs add up to 1
+
+```{r}
+library(nnet)
+
+program_fit <- multinom(program ~ avg_grade + study_hours_week,
+                        data = train, trace = FALSE)
+
+program_pred <- predict(program_fit, test)   # predicted program for each test student
+```
+
+## Can I guess someone's program?
+
+```{r}
+mean(program_pred == test$program)     # accuracy
+
+table(actual = test$program, predicted = program_pred)
+```
+
+
+::: {.callout-caution title="A slightly artificial question"}
+In real life we would rarely predict a student's program from their grade. It is just a convenient example of more than two categories.
+:::
+
+
+## Summary
+
+- Predictive modelling cares about new data, not just the data we have
+- Training set builds the model; test set validates it.  
+- A flexible model can look great on training data and overfit
+- Logistic regression predicts a probability for a binary outcome
+
