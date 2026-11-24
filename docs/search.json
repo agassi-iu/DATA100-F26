@@ -3252,7 +3252,7 @@
     "href": "slides/DATA100-F26-Lecture-17.html#where-we-left-off",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Where we left off",
-    "text": "Where we left off\n\n\n\n\n\n\n\nRecall from last class\n\n\nA model with one predictor gives a slope: the change in the predicted y when x goes up by 1 unit.\n\n\n\n\nAt the end of last class, we fit the simple linear model avg_grade ~ study_hours_week in an exercise.\nToday we give the model more structure:\n\nrecap a model with one numeric predictor\nadd a second numeric predictor\nadd a categorical predictor and check the fit with residuals\nsee what the p-value in the output is telling us\nreturn to two numeric predictors and watch out for multicollinearity"
+    "text": "Where we left off\n\n\n\n\n\n\n\nRecall from last class\n\n\nWe learned about a simple linear model given by the formula y ~ x. In this case, a model with one predictor gives a slope an interpretation of: the change in the predicted y when x goes up by 1 unit. We also applied the linear model to make predicitons using predict().\n\n\n\n\nToday we give the model more structure:\n\nrecap a model with one numeric predictor\nadd a second numeric predictor\nadd a categorical predictor and check the fit with residuals\nsee what the p-value in the output is telling us\nreturn to two numeric predictors and watch out for multicollinearity"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-17.html#does-studying-help",
@@ -3280,7 +3280,14 @@
     "href": "slides/DATA100-F26-Lecture-17.html#fitting-two-numeric-predictors",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Fitting two numeric predictors",
-    "text": "Fitting two numeric predictors\nModel 1:\n\nfit.model1 &lt;- lm(avg_grade ~ study_hours_week, data = survey)\ncoef(fit.model1)\n\n     (Intercept) study_hours_week \n     74.54353601      -0.07871815 \n\n\nModel 2:\n\nfit.model2 &lt;- lm(avg_grade ~ study_hours_week + sleep_hours, data = survey)\ncoef(fit.model2)\n\n     (Intercept) study_hours_week      sleep_hours \n     53.51629898       0.04796112       2.86022513 \n\n\n\n\n\n\n\n\n\nCheckpoint\n\n\nCompare the study_hours_week slope in the two models. Did it change much? How would you describe the sleep_hours slope in words?"
+    "text": "Fitting two numeric predictors\nModel 1:\n\nfit.model1 &lt;- lm(avg_grade ~ study_hours_week, data = survey)\ncoef(fit.model1)\n\n     (Intercept) study_hours_week \n     74.54353601      -0.07871815 \n\n\nModel 2:\n\nfit.model2 &lt;- lm(avg_grade ~ study_hours_week + sleep_hours, data = survey)\ncoef(fit.model2)\n\n     (Intercept) study_hours_week      sleep_hours \n     53.51629898       0.04796112       2.86022513 \n\n\n\n\n\n\n\n\n\nCheckpoint\n\n\nCompare the study_hours_week slope in the two models. Did it change much? How would you describe the sleep_hours slope in words?\n\n\n\n\n\n\n\n\n\n\n\nSome thoughts\n\n\nCould it be that this average grades cannot be solely explained by the number of hours a student spent studying in a week?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Lecture-17.html#exercise",
+    "href": "slides/DATA100-F26-Lecture-17.html#exercise",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Exercise",
+    "text": "Exercise\n\n\n\n\n\n\n\nTry it yourself\n\n\n\nVerify that study_hour_week on its own is not a good predictor, even with the addition of sleep_hours to the original model.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nfit_lm_1   &lt;- lm(avg_grade ~ study_hours_week, data = survey)\nfit_lm_2 &lt;- lm(avg_grade ~ study_hours_week + sleep_hours, data = survey)\n\nsummary(fit_lm_1)   \nsummary(fit_lm_2)   \n\nfit_lm_1   &lt;- lm(avg_grade ~ study_hours_week, data = survey)\nfit_lm_2 &lt;- lm(avg_grade ~ study_hours_week + sleep_hours, data = survey)\n\nsummary(fit_lm_1)   \nsummary(fit_lm_2)"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-17.html#original-plot",
@@ -3301,14 +3308,14 @@
     "href": "slides/DATA100-F26-Lecture-17.html#why-are-the-slopes-different",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Why are the slopes different?",
-    "text": "Why are the slopes different?\n\nsurvey |&gt;\n  group_by(program) |&gt;\n  summarise(mean_study = mean(study_hours_week),\n            mean_grade = mean(avg_grade),\n            n = n())\n\n# A tibble: 5 × 4\n  program     mean_study mean_grade     n\n  &lt;chr&gt;            &lt;dbl&gt;      &lt;dbl&gt; &lt;int&gt;\n1 Arts              11.1       81.7    60\n2 Business          12.7       78.5    60\n3 Engineering       20.2       64.9    60\n4 Health Sci        19.2       67.3    60\n5 Science           16.6       74.0    60\n\n\n\nPrograms that study more tend to have lower average grades.\nAcross all students, that between-program difference hides the within-program pattern.\n\n\n\n\n\n\n\n\nA third-party\n\n\nA third variable (in this case, program) is linked to both the predictor and the outcome. Ignoring it can hide a relationship, exaggerate one, or even flip its direction."
+    "text": "Why are the slopes different?\n\nsurvey |&gt;\n  group_by(program) |&gt;\n  summarise(mean_study = mean(study_hours_week),\n            mean_grade = mean(avg_grade),\n            n = n())\n\n# A tibble: 5 × 4\n  program     mean_study mean_grade     n\n  &lt;chr&gt;            &lt;dbl&gt;      &lt;dbl&gt; &lt;int&gt;\n1 Arts              11.1       81.7    60\n2 Business          12.7       78.5    60\n3 Engineering       20.2       64.9    60\n4 Health Sci        19.2       67.3    60\n5 Science           16.6       74.0    60\n\n\n\nPrograms that study more tend to have lower average grades (a-hem Hello???).\nAcross all students, that between-program difference hides the within-program pattern.\n\nLooking at the overall average may mask what is actually happening inside individual programs"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-17.html#a-categorical-predictor",
     "href": "slides/DATA100-F26-Lecture-17.html#a-categorical-predictor",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "A categorical predictor",
-    "text": "A categorical predictor\n\nclass(survey$program)\n\n[1] \"character\"\n\nunique(survey$program)\n\n[1] \"Engineering\" \"Health Sci\"  \"Science\"     \"Arts\"        \"Business\"   \n\n\nprogram is text with five possible values. Most model functions cannot use text directly, so R turns it into numbers behind the scenes."
+    "text": "A categorical predictor\n\n\n\n\n\n\n\nA third-party\n\n\nA third variable (in this case, program) is linked to both the predictor and the outcome. Ignoring it can hide a relationship, exaggerate one, or even flip its direction.\n\n\n\n\n\nclass(survey$program)\n\n[1] \"character\"\n\nunique(survey$program)\n\n[1] \"Engineering\" \"Health Sci\"  \"Science\"     \"Arts\"        \"Business\"   \n\n\nprogram is text with five possible values. Most model functions cannot use text directly, so R turns it into numbers behind the scenes."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-17.html#indicator-dummy-variables",
@@ -3353,11 +3360,11 @@
     "text": "What this model looks like\n\nsurvey |&gt;\n  mutate(fitted = fitted(program_fit)) |&gt;\n  ggplot(aes(x = study_hours_week, y = avg_grade, color = program)) +\n  geom_point(size = 2, alpha = 0.4) +\n  geom_line(aes(y = fitted), linewidth = 1) +\n  labs(x = \"Study (hours per week)\", y = \"Average grade (%)\")"
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-17.html#exercise",
-    "href": "slides/DATA100-F26-Lecture-17.html#exercise",
+    "objectID": "slides/DATA100-F26-Lecture-17.html#exercise-1",
+    "href": "slides/DATA100-F26-Lecture-17.html#exercise-1",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Exercise",
-    "text": "Exercise\n\n\n\n\n\n\n\nTry it yourself\n\n\n\nFit avg_grade ~ study_hours_week. Write down the slope.\nFit avg_grade ~ study_hours_week + program. Write down the slope.\nWhy did the slope change?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nfit_lm_1   &lt;- lm(avg_grade ~ study_hours_week, data = survey)\nfit_lm_2 &lt;- lm(avg_grade ~ study_hours_week + program, data = survey)\n\ncoef(fit_lm_1)     # study slope is about -0.08\ncoef(fit_lm_2)   # study slope is about +1.05\n\n# Programs that study more also have lower average grades,\n# which hides the positive within-program relationship.\n\nfit_lm_1   &lt;- lm(avg_grade ~ study_hours_week, data = survey)\nfit_lm_2 &lt;- lm(avg_grade ~ study_hours_week + program, data = survey)\n\ncoef(fit_lm_1)     # study slope is about -0.08\ncoef(fit_lm_2)   # study slope is about +1.05\n\n# Programs that study more also have lower average grades,\n# which hides the positive within-program relationship."
+    "text": "Exercise\n\n\n\n\n\n\n\nMore Study = Less Sleep?\n\n\nSuppose that we are interested in finding out if students have more sleep based on the amount of time they study. Would their favourite beverages (favourite_drink) have an influence on this answer? Complete the following tasks: 1. Fit sleep_hours ~ study_hours_week. Write down the slope. 2. Fit sleep_hours ~ study_hours_week + favourite_drink. Write down the slope. 3. Why did the slope change?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nfit_lm_1   &lt;- lm(sleep_hours ~ study_hours_week, data = survey)\nfit_lm_2 &lt;- lm(sleep_hours ~ study_hours_week + favourite_drink, data = survey)\n\nsummary(fit_lm_1)   \nsummary(fit_lm_2)   \n\nfit_lm_1   &lt;- lm(sleep_hours ~ study_hours_week, data = survey)\nfit_lm_2 &lt;- lm(sleep_hours ~ study_hours_week + favourite_drink, data = survey)\n\nsummary(fit_lm_1)   \nsummary(fit_lm_2)"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-17.html#predict-with-a-categorical-predictor",
@@ -3367,8 +3374,8 @@
     "text": "predict() with a categorical predictor\n\nnew_students &lt;- data.frame(\n  study_hours_week = c(10, 10, 20, 20),\n  program = c(\"Arts\", \"Engineering\", \"Arts\", \"Engineering\")\n)\npredict(program_fit, new_students)\n\n       1        2        3        4 \n80.56268 54.22462 91.04119 64.70313 \n\n\n\n\n\n\n\n\n\nSame machinery for new data\n\n\nThe formula applies the same encoding to new data as it did to the data we used to fit the model."
   },
   {
-    "objectID": "slides/DATA100-F26-Lecture-17.html#exercise-1",
-    "href": "slides/DATA100-F26-Lecture-17.html#exercise-1",
+    "objectID": "slides/DATA100-F26-Lecture-17.html#exercise-2",
+    "href": "slides/DATA100-F26-Lecture-17.html#exercise-2",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Exercise",
     "text": "Exercise\n\n\n\n\n\n\nTry it yourself\n\n\n\nPredict the average grade for a Science student who studies 15 hours a week.\nPredict it for a Business student with the same study hours.\nHow much do the two predictions differ? Where in the model output could you have found that?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nprogram_fit &lt;- lm(avg_grade ~ study_hours_week + program, data = survey)\n\nnew_students &lt;- data.frame(\n  study_hours_week = c(15, 15),\n  program = c(\"Science\", \"Business\")\n)\npredict(program_fit, new_students)\n# Science about 72.3, Business about 80.9: a gap of about 8.5 points.\n# It equals the difference between the programBusiness and programScience coefficients.\n\nprogram_fit &lt;- lm(avg_grade ~ study_hours_week + program, data = survey)\n\nnew_students &lt;- data.frame(\n  study_hours_week = c(15, 15),\n  program = c(\"Science\", \"Business\")\n)\npredict(program_fit, new_students)\n# Science about 72.3, Business about 80.9: a gap of about 8.5 points.\n# It equals the difference between the programBusiness and programScience coefficients."

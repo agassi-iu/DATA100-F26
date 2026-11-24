@@ -68,10 +68,9 @@ survey <- read_csv("data/sleep_survey.csv") |>
 ## Where we left off {.smaller}
 
 ::: {.callout-important title="Recall from last class"}
-A model with one predictor gives a slope: the change in the predicted `y` when `x` goes up by 1 unit. 
+We learned about a simple linear model given by the formula `y ~ x`. In this case, a model with one predictor gives a slope an interpretation of: the change in the predicted `y` when `x` goes up by 1 unit. We also applied the linear model to make predicitons using `predict()`.
 :::
 
-At the end of last class, we fit the simple linear model `avg_grade ~ study_hours_week` in an exercise. 
 
 Today we give the model more **structure**:
 
@@ -147,6 +146,37 @@ coef(fit.model2)
 Compare the `study_hours_week` slope in the two models. Did it change much? How would you describe the `sleep_hours` slope in words?
 :::
 
+::: {.callout-important title="Some thoughts"}
+Could it be that this *average grades* cannot be solely explained by the *number of hours a student spent studying in a week*?
+:::
+
+## Exercise 
+
+::: {.callout-tip title="Try it yourself"}
+1. Verify that `study_hour_week` on its own is not a good predictor, even with the addition of `sleep_hours` to the original model.
+:::
+
+```{webr}
+#| exercise: pooled_vs_adjusted
+fit_lm_1   <- lm(..., data = survey)
+fit_lm_2 <- lm(..., data = survey)
+
+summary(fit_lm_1)
+summary(fit_lm_2)
+```
+
+```{webr}
+#| exercise: pooled_vs_adjusted
+#| solution: true
+
+fit_lm_1   <- lm(avg_grade ~ study_hours_week, data = survey)
+fit_lm_2 <- lm(avg_grade ~ study_hours_week + sleep_hours, data = survey)
+
+summary(fit_lm_1)   
+summary(fit_lm_2)   
+```
+
+
 
 # One numeric and one categorical predictor
 
@@ -184,14 +214,17 @@ survey |>
             n = n())
 ```
 
-- Programs that study more tend to have lower average grades.
+- Programs that study more tend to have lower average grades (*a-hem Hello???*).
 - Across all students, that between-program difference hides the within-program pattern.
+    - Looking at the overall average may mask what is actually happening inside individual programs
+
+
+## A categorical predictor
+
 
 ::: {.callout-important title="A third-party"}
 A third variable (in this case, `program`) is linked to both the predictor and the outcome. Ignoring it can hide a relationship, exaggerate one, or even flip its direction.
 :::
-
-## A categorical predictor
 
 ```{r}
 class(survey$program)
@@ -295,9 +328,10 @@ survey |>
 
 ## Exercise {.smaller}
 
-::: {.callout-tip title="Try it yourself"}
-1. Fit `avg_grade ~ study_hours_week`. Write down the slope.
-2. Fit `avg_grade ~ study_hours_week + program`. Write down the slope.
+::: {.callout-tip title="More Study = Less Sleep?"}
+Suppose that we are interested in finding out if students have more sleep based on the amount of time they study. Would their favourite beverages (`favourite_drink`) have an influence on this answer? Complete the following tasks:
+1. Fit `sleep_hours ~ study_hours_week`. Write down the slope.
+2. Fit `sleep_hours ~ study_hours_week + favourite_drink`. Write down the slope.
 3. Why did the slope change? 
 :::
 
@@ -306,22 +340,20 @@ survey |>
 fit_lm_1   <- lm(..., data = survey)
 fit_lm_2 <- lm(..., data = survey)
 
-coef(fit_lm_1)
-coef(fit_lm_2)
+summary(fit_lm_1)
+summary(fit_lm_2)
 ```
 
 ```{webr}
 #| exercise: pooled_vs_adjusted
 #| solution: true
 
-fit_lm_1   <- lm(avg_grade ~ study_hours_week, data = survey)
-fit_lm_2 <- lm(avg_grade ~ study_hours_week + program, data = survey)
+fit_lm_1   <- lm(sleep_hours ~ study_hours_week, data = survey)
+fit_lm_2 <- lm(sleep_hours ~ study_hours_week + favourite_drink, data = survey)
 
-coef(fit_lm_1)     # study slope is about -0.08
-coef(fit_lm_2)   # study slope is about +1.05
+summary(fit_lm_1)   
+summary(fit_lm_2)   
 
-# Programs that study more also have lower average grades,
-# which hides the positive within-program relationship.
 ```
 
 
