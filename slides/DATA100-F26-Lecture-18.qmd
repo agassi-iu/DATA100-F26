@@ -28,6 +28,7 @@ webr:
     - scales
     - ggrepel
     - patchwork
+    - rsample
   resources:
     - data/sleep_survey.csv
 execute:
@@ -45,6 +46,7 @@ execute:
 #| label: setup
 #| echo: false
 library(tidyverse)
+library(rsample)   # initial_split(), training(), testing()
 theme_set(theme_gray(base_size = 14))
 survey <- read_csv("data/sleep_survey.csv") |>
   mutate(early_class = if_else(has_early_class == "Yes", 1, 0))  # 1 = has an early class
@@ -55,6 +57,7 @@ survey <- read_csv("data/sleep_survey.csv") |>
 #| autorun: true
 #| echo: false
 library(tidyverse)
+library(rsample)   # initial_split(), training(), testing()
 theme_set(theme_gray(base_size = 14))
 survey <- read_csv("data/sleep_survey.csv") |>
   mutate(early_class = if_else(has_early_class == "Yes", 1, 0))  # 1 = has an early class
@@ -151,19 +154,35 @@ Put about **80%** of the data in the training set and about **20%** in the test 
 - There is no perfect ratio, and 80/20 is a sensible default
 
 
-## Example: splitting the survey
+## Example: splitting the survey {.smaller}
 
-```{r}
+```{r echo=FALSE, include=FALSE}
 set.seed(18)   # makes the random split reproducible
 
-n <- nrow(survey)
-train_rows <- sample(n, size = round(0.8 * n))
+survey_split <- initial_split(survey, prop = 0.80)   # decide which rows go where
 
-train <- survey[train_rows, ]    # 80% of students
-test  <- survey[-train_rows, ]   # the other 20%
+train <- training(survey_split)    # 80% of students
+test  <- testing(survey_split)     # the other 20%
 
 c(train = nrow(train), test = nrow(test))
 ```
+
+
+```{webr}
+set.seed(18)   # makes the random split reproducible
+
+survey_split <- initial_split(survey, prop = 0.80)   # decide which rows go where
+
+train <- training(survey_split)    # 80% of students
+test  <- testing(survey_split)     # the other 20%
+
+c(train = nrow(train), test = nrow(test))
+```
+
+::: {.callout-note title="The tidymodels split functions"}
+- `initial_split()` randomly decides which rows belong to the training set and which to the test set. `prop = 0.80` is the share that goes to training.
+- `training()` pulls out the training rows, and `testing()` pulls out the test rows.
+:::
 
 ::: {.callout-note title="What does set.seed() do?"}
 The split is random every time you run the code, but `set.seed()` makes it so that it repeats the **same** random choice every time, so everyone with the same seed gets the same answer.
@@ -172,8 +191,8 @@ The split is random every time you run the code, but `set.seed()` makes it so th
 ## Fancier splits (out of scope)
 
 ::: {.callout-note title="You know what? You can do more than this, but it is out of scope"}
-- **Stratified splits:** keep the mix of groups (or outcome values) the same in both sets
-- **Time-based splits:** train on the past, test on the most recent data
+- **Stratified splits:** keep the mix of groups (or outcome values) the same in both sets, with `initial_split(..., strata = )`
+- **Time-based splits:** train on the past, test on the most recent data, with `initial_time_split()`
 - **Validation sets and resampling:** a third set, or repeated splits, for choosing between models
 - **Grouped data:** keep all rows from one person or unit together
 :::
@@ -364,10 +383,9 @@ The share of predictions that are correct. The table counts correct and incorrec
 #| exercise: logistic_split
 
 set.seed(...)
-n <- nrow(survey)
-train_rows <- sample(n, size = round(0.8 * n))
-train <- survey[train_rows, ]
-test  <- survey[-train_rows, ]
+survey_split <- initial_split(survey, prop = 0.80)
+train <- training(survey_split)
+test  <- testing(survey_split)
 
 fit <- glm(early_class ~ ..., data = train, family = binomial)
 
@@ -382,10 +400,9 @@ mean(pred == test$early_class)    # model accuracy
 #| solution: true
 
 set.seed(18)
-n <- nrow(survey)
-train_rows <- sample(n, size = round(0.8 * n))
-train <- survey[train_rows, ]
-test  <- survey[-train_rows, ]
+survey_split <- initial_split(survey, prop = 0.80)
+train <- training(survey_split)
+test  <- testing(survey_split)
 
 fit <- glm(early_class ~ sleep_hours + stress_level, data = train, family = binomial)
 
@@ -432,4 +449,3 @@ In real life we would rarely predict a student's program from their grade. It is
 - Training set builds the model; test set validates it.  
 - A flexible model can look great on training data and overfit
 - Logistic regression predicts a probability for a binary outcome
-

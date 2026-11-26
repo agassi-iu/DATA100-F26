@@ -1,0 +1,399 @@
+---
+title: "DATA100 Introduction to Data Analytics"
+subtitle: "Mini-Project: Predictive Modelling"
+author: "Agassi Iu"
+institute: "Wilfrid Laurier University"
+date: December 1, 2026
+format:
+  live-revealjs:
+    resources:
+      - data/sleep_survey.csv
+    theme: sky
+    slide-number: true
+    transition: slide
+    incremental: true
+    embed-resources: true # Embeds figures and libraries into a single portable HTML file
+filters:
+  - live
+webr:
+  packages:
+    - dplyr
+    - tidyr
+    - readr
+    - forcats
+    - rsample
+    - nnet
+  resources:
+    - data/sleep_survey.csv
+execute:
+  echo: true
+  warning: false   # Hides warnings and package loading messages
+  message: false
+  fig-width: 7
+  fig-height: 4
+  fig-align: center
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+<!-- webr setup -->
+```{webr}
+#| include: false
+#| autorun: true
+library(dplyr)
+library(tidyr)
+library(readr)
+library(forcats)
+library(rsample)
+library(nnet)
+
+survey <- read.csv("data/sleep_survey.csv") |>
+  mutate(early_class = if_else(has_early_class == "Yes", 1, 0))
+
+rmse <- function(actual, predicted) sqrt(mean((actual - predicted)^2))
+
+# Same split as the "Prepare and split" slide, so later slides run on their own
+model_data <- survey |>
+  select(avg_grade, early_class, program, study_hours_week,
+         sleep_hours, stress_level, work_hours_week) |>
+  drop_na()
+
+set.seed(100)
+data_split <- initial_split(model_data, prop = 0.80)
+train <- training(data_split)
+test  <- testing(data_split)
+```
+
+
+## Today's Agenda
+
+::: {.callout-tip title="Exercise"}
+You will do the **predictive modelling** part of the group project, using **your own data**. Then you will see how an AI does the same job.
+:::
+
+::: {.callout-caution title="Expectations"}
+
+- This counts for our weekly participation, and it is a head start on your project.
+
+- First I will show you a toolbox using the sleep survey. Your job is to do the same with your data.
+
+- A model that does not beat the baseline is still a result. I care more about your reasoning than your score.
+
+:::
+
+
+# Today's Exercise
+
+## Plan for today
+
+| Minutes | What happens |
+|---|---|
+| 0 to 5 | The goal: choose two responses |
+| 5 to 20 | The toolbox: sleep survey examples |
+| 20 to 38 | **Part A:** predict a numeric response |
+| 38 to 56 | **Part B:** predict a categorical response |
+| 56 to 72 | **Part C:** you vs. AI |
+| 72 to 80 | (Group) Submission |
+
+
+## Today's Participation Credit
+
+1. Sit with your project group.
+2. Choose **one numeric** and **one categorical** response from your data.
+3. For each response, compare a **baseline** with at least **two models**.
+4. Ask an AI to do the same analysis, then compare it with yours.
+5. Knit into a *pdf* and submit to Gradescope (make sure that everyone's name is in the submission).
+
+
+## Choosing your two responses {.smaller}
+
+| | Part A | Part B |
+|---|---|---|
+| **Response** | Numeric | Categorical |
+| **Model** | `lm()` | `glm()` (2 categories) or `multinom()` (3 or more) |
+| **Baseline** | Training average | Most common training category |
+| **Score** | RMSE (smaller is better) | Accuracy (bigger is better) |
+
+::: {.callout-note title="Write one sentence for each"}
+"We want to predict ___ for a new ___ because ___."
+:::
+
+::: {.callout-tip title="No categorical column?"}
+Make one, such as high / low from a numeric column. Then do **not** use that numeric column as a predictor.
+:::
+
+
+## Choosing your predictors {.smaller}
+
+You may use **as many explanatory variables as you like**, but:
+
+- No ID numbers or names
+- Nothing that gives away the answer
+- Nothing you would not know at the time of prediction (this includes your other response)
+- Avoid predictors that carry almost the same information (multicollinearity)
+- Be able to give a short reason for your choices
+
+::: {.callout-important title="More is not always better"}
+A model with many predictors can fit the training data closely and still do worse on new data (**overfitting**).
+:::
+
+
+# The toolbox
+
+## How the toolbox works
+
+::: {.callout-note title="These use the sleep survey, not your data"}
+Click **Run Code**, then change the predictors and see what happens.
+:::
+
+::: {.callout-tip title="Your job"}
+Replace the data and column names with your own.
+:::
+
+
+## Prepare and split {.smaller}
+
+::: {.callout-note title="`select()`, `drop_na()`, `initial_split()`"}
+Keep the columns you need, drop incomplete rows, then split **once**. All models use the same split.
+:::
+
+```{webr}
+model_data <- survey |>
+  select(avg_grade, early_class, program, study_hours_week,
+         sleep_hours, stress_level, work_hours_week) |>
+  drop_na()
+
+set.seed(100)
+data_split <- initial_split(model_data, prop = 0.80)
+train <- training(data_split)
+test  <- testing(data_split)
+
+c(train = nrow(train), test = nrow(test))
+```
+
+
+## Part A: the baseline
+
+::: {.callout-note title="`rmse()`"}
+The typical size of an error, in the same units as the response. The baseline guesses the training average for everyone.
+:::
+
+```{webr}
+rmse <- function(actual, predicted) sqrt(mean((actual - predicted)^2))
+
+baseline <- mean(train$avg_grade)
+
+rmse(train$avg_grade, baseline)    # training score
+rmse(test$avg_grade, baseline)     # test score
+```
+
+
+## Part A: two linear models {.smaller}
+
+::: {.callout-note title="`lm()` and `predict()`"}
+Fit on the **training** set only. Then score on both sets.
+:::
+
+```{webr}
+fit1 <- lm(avg_grade ~ study_hours_week + program, data = train)
+fit2 <- lm(avg_grade ~ study_hours_week + program + sleep_hours +
+             stress_level + work_hours_week, data = train)
+
+rmse(train$avg_grade, predict(fit1, train))
+rmse(test$avg_grade,  predict(fit1, test))
+
+rmse(train$avg_grade, predict(fit2, train))
+rmse(test$avg_grade,  predict(fit2, test))
+
+coef(fit1)    # pick one slope and explain it in words
+```
+
+
+## Part B: the baseline
+
+::: {.callout-note title="Always guess the most common category"}
+Find it using the **training** set, then check how often that guess is right.
+:::
+
+```{webr}
+train |> count(early_class)
+
+most_common <- names(which.max(table(train$early_class)))
+most_common
+
+mean(train$early_class == most_common)    # training accuracy
+mean(test$early_class == most_common)     # test accuracy
+```
+
+
+## Part B: two categories {.smaller}
+
+::: {.callout-note title="`glm(..., family = binomial)`"}
+Logistic regression. The response must be **0 or 1**. Predict 1 when the probability is above 0.5.
+:::
+
+```{webr}
+logit_fit <- glm(early_class ~ sleep_hours + stress_level,
+                 data = train, family = binomial)
+
+prob_train <- predict(logit_fit, train, type = "response")
+prob_test  <- predict(logit_fit, test,  type = "response")
+
+pred_train <- if_else(prob_train > 0.5, 1, 0)
+pred_test  <- if_else(prob_test > 0.5, 1, 0)
+
+mean(pred_train == train$early_class)    # training accuracy
+mean(pred_test == test$early_class)      # test accuracy
+
+table(actual = test$early_class, predicted = pred_test)
+```
+
+- Text such as "Yes" / "No"? Convert it **before** splitting: `if_else(x == "Yes", 1, 0)`
+
+
+## Part B: three or more categories {.smaller}
+
+::: {.callout-note title="`multinom()` from the `nnet` package"}
+`predict()` gives the predicted category directly. No cutoff needed.
+:::
+
+```{webr}
+multi_fit <- multinom(program ~ avg_grade + study_hours_week,
+                      data = train, trace = FALSE)
+
+mean(predict(multi_fit, train) == train$program)    # training accuracy
+mean(predict(multi_fit, test) == test$program)      # test accuracy
+
+table(actual = test$program, predicted = predict(multi_fit, test))
+
+# The baseline for this response
+top_program <- names(which.max(table(train$program)))
+mean(test$program == top_program)
+```
+
+
+## Common problems {.smaller}
+
+| What you see | What to try |
+|---|---|
+| `could not find function "initial_split"` | `library(rsample)` |
+| `object not found` | Check the spelling, and that you kept the column in `select()` |
+| `y values must be 0 <= y <= 1` | Convert your response to 0 / 1 |
+| `factor ... has new levels` | Combine rare categories **before** splitting, e.g. `fct_lump_min(x, min = 10)` |
+| Very few rows left | `drop_na()` is using a column with many missing values. Do you need it? |
+
+
+# Time to work
+
+## Getting started
+
+::: {.callout-note title="Groups"}
+Sit with your project group (4 to 5 students).
+:::
+
+1. Download `DATA100_F26_Group_Project_Exercise_3.Rmd` from the *MyLearningSpace*
+2. Put it in the *same folder* as **your** data, then open it in *RStudio*.
+3. Run `install.packages("rsample")` once in the *Console*, if you have not already.
+
+
+## Parts A and B {.smaller}
+
+For **each** response:
+
+1. State your goal in one sentence
+2. List your predictors and why you chose them
+3. Compute the baseline
+4. Fit at least two models on the training set
+5. Fill in the table
+6. Which model would you choose, and why? Name **one limitation**.
+
+| Model | Predictors | Training score | Test score |
+|---|---|---|---|
+| Baseline | None | | |
+| Model 1 | | | |
+| Model 2 | | | |
+
+::: {.callout-warning title="Timing"}
+Move on to Part B at **minute 38**, even if Part A is unfinished. Try knitting once before you move on.
+:::
+
+
+## Part A and B checkpoints
+
+::: {.callout-caution title="Before you move on"}
+- Does your model beat the baseline? If not, can you say why that might be?
+- Is the test score much worse than the training score?
+- Would you really know every predictor when making a prediction?
+- (Part A) Can you explain one slope, "holding the others fixed"?
+:::
+
+- Do not keep changing your model just to improve the test score.
+
+
+# Part C: You vs. AI
+
+## Lock in your work first
+
+::: {.callout-important title="Before opening any AI"}
+Your predictors, tables and chosen models from Parts A and B must be written down. **Do not change them afterwards.**
+:::
+
+- Use any AI chatbot (e.g. ChatGPT, Claude, Gemini or Copilot). One per group is enough.
+- Share **column names, types and a short description** only. Do **not** upload your data or any personal information.
+- If you cannot or prefer not to use AI, ask me for a sample AI response to critique.
+
+
+## The prompt
+
+Copy this, fill in the blanks, and paste it into the AI:
+
+::: {.callout-note title="Starter prompt" icon="false"}
+I have a dataset about ___. The columns are ___ (with types). In R, predict ___ (numeric) and ___ (categorical). Use `initial_split()` with an 80/20 split and `set.seed(100)`. Compare your models with a baseline, report training and test scores, and explain your choices.
+:::
+
+- You may ask follow-up questions. Keep a copy of what you typed.
+
+
+## Do not take its word for it
+
+1. **Run the AI's code** in your Rmd. Report the scores that *R* gives you.
+2. Did it use the same rows, seed and split as you? If not, can you compare the scores fairly?
+3. Look for anything questionable:
+    - an ID column or a give-away predictor
+    - judging a model on training data only
+    - claims that one variable *causes* another
+    - methods or functions you do not understand
+
+
+## Your comparison {.smaller}
+
+| | Ours | AI's |
+|---|---|---|
+| Predictors (Part A) | | |
+| Predictors (Part B) | | |
+| Test RMSE | | |
+| Test accuracy | | |
+
+::: {.callout-tip title="Answer these"}
+1. **One thing the AI did better** than you
+2. **One thing the AI did worse** than you
+3. **One thing you would change** in your own analysis, or why you would not
+:::
+
+::: {.callout-important title="Show your evidence"}
+Point to a specific line of code, number or sentence. "The AI was more detailed" is not enough.
+
+You are marked on your comparison, **not** on whether you beat the AI.
+:::
+
+
+## Wrap-up and submit
+
+1. Include your **prompt** and the **name of the AI** you used
+2. Knit your Rmd to PDF
+3. Upload the PDF to Gradescope *(one per group, add all members)*
+4. Submit what you have by the end of class.
+
+::: {.callout-note title="What comes next"}
+Today's work can go into the modelling section of your final report.
+:::

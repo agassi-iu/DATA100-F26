@@ -1012,14 +1012,14 @@
     "href": "slides/DATA100-F26-Lecture-18.html#example-splitting-the-survey",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Example: splitting the survey",
-    "text": "Example: splitting the survey\n\nset.seed(18)   # makes the random split reproducible\n\nn &lt;- nrow(survey)\ntrain_rows &lt;- sample(n, size = round(0.8 * n))\n\ntrain &lt;- survey[train_rows, ]    # 80% of students\ntest  &lt;- survey[-train_rows, ]   # the other 20%\n\nc(train = nrow(train), test = nrow(test))\n\ntrain  test \n  240    60 \n\n\n\n\n\n\n\n\n\nWhat does set.seed() do?\n\n\nThe split is random every time you run the code, but set.seed() makes it so that it repeats the same random choice every time, so everyone with the same seed gets the same answer."
+    "text": "Example: splitting the survey\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe tidymodels split functions\n\n\n\ninitial_split() randomly decides which rows belong to the training set and which to the test set. prop = 0.80 is the share that goes to training.\ntraining() pulls out the training rows, and testing() pulls out the test rows.\n\n\n\n\n\n\n\n\n\n\n\n\nWhat does set.seed() do?\n\n\nThe split is random every time you run the code, but set.seed() makes it so that it repeats the same random choice every time, so everyone with the same seed gets the same answer."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-18.html#fancier-splits-out-of-scope",
     "href": "slides/DATA100-F26-Lecture-18.html#fancier-splits-out-of-scope",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Fancier splits (out of scope)",
-    "text": "Fancier splits (out of scope)\n\n\n\n\n\n\n\nYou know what? You can do more than this, but it is out of scope\n\n\n\nStratified splits: keep the mix of groups (or outcome values) the same in both sets\nTime-based splits: train on the past, test on the most recent data\nValidation sets and resampling: a third set, or repeated splits, for choosing between models\nGrouped data: keep all rows from one person or unit together\n\n\n\n\n\nIf you’re curious, read Tidy Modeling with R, Chapter 5."
+    "text": "Fancier splits (out of scope)\n\n\n\n\n\n\n\nYou know what? You can do more than this, but it is out of scope\n\n\n\nStratified splits: keep the mix of groups (or outcome values) the same in both sets, with initial_split(..., strata = )\nTime-based splits: train on the past, test on the most recent data, with initial_time_split()\nValidation sets and resampling: a third set, or repeated splits, for choosing between models\nGrouped data: keep all rows from one person or unit together\n\n\n\n\n\nIf you’re curious, read Tidy Modeling with R, Chapter 5."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-18.html#the-baseline-guess-the-average",
@@ -1110,7 +1110,7 @@
     "href": "slides/DATA100-F26-Lecture-18.html#exercise",
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Exercise",
-    "text": "Exercise\n\n\n\n\n\n\nTry it yourself\n\n\n\nSplit survey 80/20 with a seed of your choice.\nFit a logistic model for early_class using sleep_hours and stress_level on the training set.\nCompute the test accuracy, and compare it with always guessing “No”.\nChange the seed and run it again. Does the accuracy change?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nset.seed(18)\nn &lt;- nrow(survey)\ntrain_rows &lt;- sample(n, size = round(0.8 * n))\ntrain &lt;- survey[train_rows, ]\ntest  &lt;- survey[-train_rows, ]\n\nfit &lt;- glm(early_class ~ sleep_hours + stress_level, data = train, family = binomial)\n\nprob &lt;- predict(fit, test, type = \"response\")\npred &lt;- if_else(prob &gt; 0.5, 1, 0)\n\nmean(pred == test$early_class)    # model accuracy\n\nset.seed(18)\nn &lt;- nrow(survey)\ntrain_rows &lt;- sample(n, size = round(0.8 * n))\ntrain &lt;- survey[train_rows, ]\ntest  &lt;- survey[-train_rows, ]\n\nfit &lt;- glm(early_class ~ sleep_hours + stress_level, data = train, family = binomial)\n\nprob &lt;- predict(fit, test, type = \"response\")\npred &lt;- if_else(prob &gt; 0.5, 1, 0)\n\nmean(pred == test$early_class)    # model accuracy"
+    "text": "Exercise\n\n\n\n\n\n\nTry it yourself\n\n\n\nSplit survey 80/20 with a seed of your choice.\nFit a logistic model for early_class using sleep_hours and stress_level on the training set.\nCompute the test accuracy, and compare it with always guessing “No”.\nChange the seed and run it again. Does the accuracy change?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nset.seed(18)\nsurvey_split &lt;- initial_split(survey, prop = 0.80)\ntrain &lt;- training(survey_split)\ntest  &lt;- testing(survey_split)\n\nfit &lt;- glm(early_class ~ sleep_hours + stress_level, data = train, family = binomial)\n\nprob &lt;- predict(fit, test, type = \"response\")\npred &lt;- if_else(prob &gt; 0.5, 1, 0)\n\nmean(pred == test$early_class)    # model accuracy\n\nset.seed(18)\nsurvey_split &lt;- initial_split(survey, prop = 0.80)\ntrain &lt;- training(survey_split)\ntest  &lt;- testing(survey_split)\n\nfit &lt;- glm(early_class ~ sleep_hours + stress_level, data = train, family = binomial)\n\nprob &lt;- predict(fit, test, type = \"response\")\npred &lt;- if_else(prob &gt; 0.5, 1, 0)\n\nmean(pred == test$early_class)    # model accuracy"
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-18.html#more-than-two-categories",
@@ -2058,6 +2058,398 @@
     "text": "Dates and times: other tools (iii)\n\n\n\n\n\n\n\n\n\nTool\nWhat it does\nTiny example\nRead the section on\n\n\n\n\nint_length()\nThe length of an interval in seconds\nint_length(sleeping)\nIntervals\n\n\nSys.timezone()\nYour computer’s time zone\nSys.timezone()\nTime zones\n\n\n\n\n\n\n\n\n\n\nEverything has a time zone\n\n\nDate-times without an explicit time zone are treated as UTC. Always check with tz() before you compute hours."
   },
   {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-3.html#todays-agenda",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-3.html#todays-agenda",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Today’s Agenda",
+    "text": "Today’s Agenda\n\n\n\n\n\n\n\nExercise\n\n\nYou will do the predictive modelling part of the group project, using your own data. Then you will see how an AI does the same job.\n\n\n\n\n\n\n\n\n\n\n\nExpectations\n\n\n\nThis counts for our weekly participation, and it is a head start on your project.\nFirst I will show you a toolbox using the sleep survey. Your job is to do the same with your data.\nA model that does not beat the baseline is still a result. I care more about your reasoning than your score."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-3.html#plan-for-today",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-3.html#plan-for-today",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Plan for today",
+    "text": "Plan for today\n\n\n\nMinutes\nWhat happens\n\n\n\n\n0 to 5\nThe goal: choose two responses\n\n\n5 to 20\nThe toolbox: sleep survey examples\n\n\n20 to 38\nPart A: predict a numeric response\n\n\n38 to 56\nPart B: predict a categorical response\n\n\n56 to 72\nPart C: you vs. AI\n\n\n72 to 80\n(Group) Submission"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-3.html#todays-participation-credit",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-3.html#todays-participation-credit",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Today’s Participation Credit",
+    "text": "Today’s Participation Credit\n\nSit with your project group.\nChoose one numeric and one categorical response from your data.\nFor each response, compare a baseline with at least two models.\nAsk an AI to do the same analysis, then compare it with yours.\nKnit into a pdf and submit to Gradescope (make sure that everyone’s name is in the submission)."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-3.html#choosing-your-two-responses",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-3.html#choosing-your-two-responses",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Choosing your two responses",
+    "text": "Choosing your two responses\n\n\n\n\n\n\n\n\n\nPart A\nPart B\n\n\n\n\nResponse\nNumeric\nCategorical\n\n\nModel\nlm()\nglm() (2 categories) or multinom() (3 or more)\n\n\nBaseline\nTraining average\nMost common training category\n\n\nScore\nRMSE (smaller is better)\nAccuracy (bigger is better)\n\n\n\n\n\n\n\n\n\n\nWrite one sentence for each\n\n\n“We want to predict ___ for a new ___ because ___.”\n\n\n\n\n\n\n\n\n\n\n\nNo categorical column?\n\n\nMake one, such as high / low from a numeric column. Then do not use that numeric column as a predictor."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-3.html#choosing-your-predictors",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-3.html#choosing-your-predictors",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Choosing your predictors",
+    "text": "Choosing your predictors\nYou may use as many explanatory variables as you like, but:\n\nNo ID numbers or names\nNothing that gives away the answer\nNothing you would not know at the time of prediction (this includes your other response)\nAvoid predictors that carry almost the same information (multicollinearity)\nBe able to give a short reason for your choices\n\n\n\n\n\n\n\n\nMore is not always better\n\n\nA model with many predictors can fit the training data closely and still do worse on new data (overfitting)."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-3.html#how-the-toolbox-works",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-3.html#how-the-toolbox-works",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "How the toolbox works",
+    "text": "How the toolbox works\n\n\n\n\n\n\n\nThese use the sleep survey, not your data\n\n\nClick Run Code, then change the predictors and see what happens.\n\n\n\n\n\n\n\n\n\n\n\nYour job\n\n\nReplace the data and column names with your own."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-3.html#prepare-and-split",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-3.html#prepare-and-split",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Prepare and split",
+    "text": "Prepare and split\n\n\n\n\n\n\n\nselect(), drop_na(), initial_split()\n\n\nKeep the columns you need, drop incomplete rows, then split once. All models use the same split."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-3.html#part-a-the-baseline",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-3.html#part-a-the-baseline",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Part A: the baseline",
+    "text": "Part A: the baseline\n\n\n\n\n\n\n\nrmse()\n\n\nThe typical size of an error, in the same units as the response. The baseline guesses the training average for everyone."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-3.html#part-a-two-linear-models",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-3.html#part-a-two-linear-models",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Part A: two linear models",
+    "text": "Part A: two linear models\n\n\n\n\n\n\n\nlm() and predict()\n\n\nFit on the training set only. Then score on both sets."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-3.html#part-b-the-baseline",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-3.html#part-b-the-baseline",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Part B: the baseline",
+    "text": "Part B: the baseline\n\n\n\n\n\n\n\nAlways guess the most common category\n\n\nFind it using the training set, then check how often that guess is right."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-3.html#part-b-two-categories",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-3.html#part-b-two-categories",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Part B: two categories",
+    "text": "Part B: two categories\n\n\n\n\n\n\n\nglm(..., family = binomial)\n\n\nLogistic regression. The response must be 0 or 1. Predict 1 when the probability is above 0.5.\n\n\n\n\n\n\n\n\n\n\n\n\n\nText such as “Yes” / “No”? Convert it before splitting: if_else(x == \"Yes\", 1, 0)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-3.html#part-b-three-or-more-categories",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-3.html#part-b-three-or-more-categories",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Part B: three or more categories",
+    "text": "Part B: three or more categories\n\n\n\n\n\n\n\nmultinom() from the nnet package\n\n\npredict() gives the predicted category directly. No cutoff needed."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-3.html#common-problems",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-3.html#common-problems",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Common problems",
+    "text": "Common problems\n\n\n\n\n\n\n\nWhat you see\nWhat to try\n\n\n\n\ncould not find function \"initial_split\"\nlibrary(rsample)\n\n\nobject not found\nCheck the spelling, and that you kept the column in select()\n\n\ny values must be 0 &lt;= y &lt;= 1\nConvert your response to 0 / 1\n\n\nfactor ... has new levels\nCombine rare categories before splitting, e.g. fct_lump_min(x, min = 10)\n\n\nVery few rows left\ndrop_na() is using a column with many missing values. Do you need it?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-3.html#getting-started",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-3.html#getting-started",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Getting started",
+    "text": "Getting started\n\n\n\n\n\n\n\nGroups\n\n\nSit with your project group (4 to 5 students).\n\n\n\n\n\nDownload DATA100_F26_Group_Project_Exercise_3.Rmd from the MyLearningSpace\nPut it in the same folder as your data, then open it in RStudio.\nRun install.packages(\"rsample\") once in the Console, if you have not already."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-3.html#parts-a-and-b",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-3.html#parts-a-and-b",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Parts A and B",
+    "text": "Parts A and B\nFor each response:\n\nState your goal in one sentence\nList your predictors and why you chose them\nCompute the baseline\nFit at least two models on the training set\nFill in the table\nWhich model would you choose, and why? Name one limitation.\n\n\n\n\nModel\nPredictors\nTraining score\nTest score\n\n\n\n\nBaseline\nNone\n\n\n\n\nModel 1\n\n\n\n\n\nModel 2\n\n\n\n\n\n\n\n\n\n\n\n\n\nTiming\n\n\nMove on to Part B at minute 38, even if Part A is unfinished. Try knitting once before you move on."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-3.html#part-a-and-b-checkpoints",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-3.html#part-a-and-b-checkpoints",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Part A and B checkpoints",
+    "text": "Part A and B checkpoints\n\n\n\n\n\n\n\nBefore you move on\n\n\n\nDoes your model beat the baseline? If not, can you say why that might be?\nIs the test score much worse than the training score?\nWould you really know every predictor when making a prediction?\n(Part A) Can you explain one slope, “holding the others fixed”?\n\n\n\n\n\n\nDo not keep changing your model just to improve the test score."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-3.html#lock-in-your-work-first",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-3.html#lock-in-your-work-first",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Lock in your work first",
+    "text": "Lock in your work first\n\n\n\n\n\n\n\nBefore opening any AI\n\n\nYour predictors, tables and chosen models from Parts A and B must be written down. Do not change them afterwards.\n\n\n\n\n\nUse any AI chatbot (e.g. ChatGPT, Claude, Gemini or Copilot). One per group is enough.\nShare column names, types and a short description only. Do not upload your data or any personal information.\nIf you cannot or prefer not to use AI, ask me for a sample AI response to critique."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-3.html#the-prompt",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-3.html#the-prompt",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "The prompt",
+    "text": "The prompt\nCopy this, fill in the blanks, and paste it into the AI:\n\n\n\n\nStarter prompt\n\n\nI have a dataset about . The columns are  (with types). In R, predict ___ (numeric) and ___ (categorical). Use initial_split() with an 80/20 split and set.seed(100). Compare your models with a baseline, report training and test scores, and explain your choices.\n\n\n\n\n\nYou may ask follow-up questions. Keep a copy of what you typed."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-3.html#do-not-take-its-word-for-it",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-3.html#do-not-take-its-word-for-it",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Do not take its word for it",
+    "text": "Do not take its word for it\n\nRun the AI’s code in your Rmd. Report the scores that R gives you.\nDid it use the same rows, seed and split as you? If not, can you compare the scores fairly?\nLook for anything questionable:\n\nan ID column or a give-away predictor\njudging a model on training data only\nclaims that one variable causes another\nmethods or functions you do not understand"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-3.html#your-comparison",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-3.html#your-comparison",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Your comparison",
+    "text": "Your comparison\n\n\n\n\nOurs\nAI’s\n\n\n\n\nPredictors (Part A)\n\n\n\n\nPredictors (Part B)\n\n\n\n\nTest RMSE\n\n\n\n\nTest accuracy\n\n\n\n\n\n\n\n\n\n\n\n\nAnswer these\n\n\n\nOne thing the AI did better than you\nOne thing the AI did worse than you\nOne thing you would change in your own analysis, or why you would not\n\n\n\n\n\n\n\n\n\n\n\n\nShow your evidence\n\n\nPoint to a specific line of code, number or sentence. “The AI was more detailed” is not enough.\nYou are marked on your comparison, not on whether you beat the AI."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-3.html#wrap-up-and-submit",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-3.html#wrap-up-and-submit",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Wrap-up and submit",
+    "text": "Wrap-up and submit\n\nInclude your prompt and the name of the AI you used\nKnit your Rmd to PDF\nUpload the PDF to Gradescope (one per group, add all members)\nSubmit what you have by the end of class.\n\n\n\n\n\n\n\n\nWhat comes next\n\n\nToday’s work can go into the modelling section of your final report."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#todays-agenda",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#todays-agenda",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Today’s Agenda",
+    "text": "Today’s Agenda\n\n\n\n\n\n\n\nExercise\n\n\nYou will do a mini version of a small part of the group project, from questioning to exploration, in about 60 minutes of the class.\n\n\n\n\n\n\n\n\n\n\n\nExpectations\n\n\nYou are not expected to know everything yet.\n\nThis is only for practice, and it counts for our weekly participation.\nMy goal is for you all to attempt creating your own plots. I genuinely don’t care if you can create a stellar plot and/or analysis with time constraints.\nI care more about your effort and creativity! Surprise me!"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#midterm-review",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#midterm-review",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Midterm Review",
+    "text": "Midterm Review\nI finished marking your exams! :)\n\n\n\n\n\n\n\nMultiple Choice\n\n\n\nProblematic MC’s: Q2, Q5, Q10, Q13\nThe rest: pretty well-done.\n\n\n\n\n\n\n\n\n\n\n\n\nShort Answers\n\n\n\nEverything looks great except for Q18-b."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#the-tentative-deadlines",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#the-tentative-deadlines",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "The tentative deadlines",
+    "text": "The tentative deadlines\n\n\n\nCheckpoint\nWhat it is\n\n\n\n\n1. Project proposal\nResearch question and data choice\n\n\n2. EDA report\nWhat is the data telling you?\n\n\n3. Peer review\nGive feedback on another team’s report\n\n\n4. Final report\nYour full-complete analysis\n\n\n\nDetails and rubric will be released soon."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#todays-participation-credit",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#todays-participation-credit",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Today’s Participation Credit",
+    "text": "Today’s Participation Credit\n\nGet into groups and set up.\nRead the data description and come up with two interesting questions.\nMake two plots to explore them.\nPropose one new variable for your analysis.\nKnit into a pdf and submit to Gradescope.\nIf you are done early, come up and show me your results before you go."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#meet-the-data",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#meet-the-data",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Meet the data:",
+    "text": "Meet the data:\n\n\n\n\n\n\n\nSurvey Results\n\n\nA survey of university students about their sleep and study habits.\n\n\n\n\n\n\n\n\n\n\n\nDisclaimer\n\n\nThe data is totally simulated for this class. Don’t treat the findings as real facts about students or sleep. I have nothing do with all the claims that you might make about these students!\n\n\n\n\nEach row is one student. Each column is one variable."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#data-description-i",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#data-description-i",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Data description (i)",
+    "text": "Data description (i)\n\n\n\n\n\n\n\n\nVariable\nType\nDescription\n\n\n\n\nprogram\nCategorical\nArts, Business, Science, Health Sci, Engineering\n\n\nnum_courses\nNumeric (count)\nCourses this term (3 to 6)\n\n\nstudy_hours_week\nNumeric\nAverage study hours per week\n\n\nsleep_hours\nNumeric\nAverage hours of sleep per night\n\n\nfavourite_drink\nCategorical\nCoffee, Tea, Energy drink, Pop, Water"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#data-description-ii",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#data-description-ii",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Data description (ii)",
+    "text": "Data description (ii)\n\n\n\n\n\n\n\n\nVariable\nType\nDescription\n\n\n\n\nhas_early_class\nBinary\nAny 8:30 am class? (Yes / No)\n\n\nwork_hours_week\nNumeric\nPaid work hours per week (0 = no job)\n\n\nstress_level\nOrdinal (1-5)\nSelf-rated stress (1 = low, 5 = high)\n\n\nsleep_quality\nOrdinal (1-5)\nSelf-rated sleep quality (1 = poor, 5 = great)\n\n\navg_grade\nNumeric\nAverage grade (%)"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#two-kinds-of-questions",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#two-kinds-of-questions",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Two kinds of questions",
+    "text": "Two kinds of questions\n\n\n\n\n\n\n\nTask\n\n\nI want you to generate two questions for this mini-project.\n\n\n\n\n\n\n\n\n\n\n\nNumeric x Numeric\n\n\nChoices of numeric variables: number of courses, number of study hours per week, average hours of sleep per night, number of work hours per week, and average grades.\n\n\n\n\n\n\n\n\n\n\n\nNumeric x Categorical\n\n\nChoices of categorical variables: program type, favourite drinks, early classes?, stress level, and sleep quality."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#numeric-x-numeric",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#numeric-x-numeric",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Numeric x Numeric",
+    "text": "Numeric x Numeric\n\n\n\n\n\n\n\nPurpose\n\n\nIs one number related to another?\n\n\n\n\n\n\n\n\n\n\n\nPlots\n\n\nE.g. scatterplots, jitter, geom_smooth, colouring points by a categorical variable (aes(colour = ...)), etc.\nExample: “Is the relationship between sleep hours and average grades the same across programs?”"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#example-plot",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#example-plot",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Example plot",
+    "text": "Example plot\n\nDoes the pattern look the same in every program?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#numeric-x-categorical",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#numeric-x-categorical",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Numeric x Categorical",
+    "text": "Numeric x Categorical\n\n\n\n\n\n\n\nPurpose\n\n\nDoes a number differ across groups?\n\n\n\n\n\n\n\n\n\n\n\nPlots\n\n\nE.g. boxplots, bar plots, histograms with facet grids, etc.\nExample: “How does the distribution of weekly study hours differ across programs?”"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#example-plot-1",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#example-plot-1",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Example plot",
+    "text": "Example plot\n\nHow do the centre and spread differ across programs?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#weak-vs.-strong-questions",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#weak-vs.-strong-questions",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Weak vs. strong questions",
+    "text": "Weak vs. strong questions\n\n\n\n\n\n\n\nWeak Questions\n\n\nA weak question is vague. It doesn’t say which variables to use, what to compare, or what a plot or table would show.\n\nIs sleep related to anything?\nAnalyze and see which undergraduate program is the best.\n\n\n\n\n\n\n\n\n\n\n\n\nStrong Questions\n\n\nA strong question is specific enough that the reader could make the plot without asking you anything.\n\nDo students with more courses study more hours per week?\nDoes average stress level of students differ by their program?"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#careful-with-your-wording",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#careful-with-your-wording",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Careful with your wording",
+    "text": "Careful with your wording\n\n\n\n\n\n\n\nInstead of\nTry\n\n\n\n\n“Energy drinks cause less sleep.”\n“Energy drink drinkers tend to sleep less.”\n\n\n“Working makes students study less.”\n“More work hours is associated with fewer study hours.”\n\n\n\nData like this shows patterns, not proof of cause."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#getting-started",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#getting-started",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Getting started",
+    "text": "Getting started\n\n\n\n\n\n\n\nGroups\n\n\nForm a group with your neighbours. Maximum group of four.\n\n\n\n\n\nDownload sleep_survey.csv and mini_project_template.Rmd from the MyLearningSpace\nPut them in the same folder, then open the .Rmd in RStudio."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#step-1-write-two-questions",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#step-1-write-two-questions",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Step 1: Write two questions",
+    "text": "Step 1: Write two questions\nRead the data description in the lecture slides, then fill in Part 1 of the Rmd:\n\nOne numeric × numeric question\nOne categorical × numeric question\n\nName your variables and say what you’d compare."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#step-2-plots",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#step-2-plots",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Step 2: Plots",
+    "text": "Step 2: Plots\n1 (numeric × numeric) and 1 (categorical × numeric)\n\nMake a scatterplot for your first question\nAdd appropriate axis labels\nWrite 2 to 3 sentences on what you observe for each plot"
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#step-3-one-new-variable",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#step-3-one-new-variable",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Step 3: One new variable",
+    "text": "Step 3: One new variable\nWhat one variable could you add to this survey that would make the analysis more interesting?\n\nExplain what it would let you ask or change how you read an existing pattern.\n\nA variable that changes how you read a pattern beats just another column.\n\nExample: year_of_study. Upper-year students might both study more and earn higher grades, so year could change how we read the study hours vs. grades pattern."
+  },
+  {
+    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#wrap-up-and-submit",
+    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#wrap-up-and-submit",
+    "title": "DATA100 Introduction to Data Analytics",
+    "section": "Wrap-up and submit",
+    "text": "Wrap-up and submit\n\nKnit your Rmd to PDF\nUpload the PDF to Gradescope (one per group, add all members)\nUnfinished is okay. Submit what you have.\n\n\n\n\n\n\n\n\nNext Project Guidance\n\n\nTuesday, November 10. More details will come!\n\n\n\n\n\n\n\n\n\n\n\nHomework for Reading Week\n\n\nMake a group of 4-5 students among yourselves. Think about the type of data that you want to work with for your final project."
+  },
+  {
+    "objectID": "courses.html",
+    "href": "courses.html",
+    "title": "Teaching Experience",
+    "section": "",
+    "text": "DATA100 (Introduction to Data Analytics)\nST230 (Introduction to Probability and Statistics in Sciences)"
+  },
+  {
+    "objectID": "courses.html#current-courses",
+    "href": "courses.html#current-courses",
+    "title": "Teaching Experience",
+    "section": "",
+    "text": "DATA100 (Introduction to Data Analytics)\nST230 (Introduction to Probability and Statistics in Sciences)"
+  },
+  {
+    "objectID": "courses.html#past-courses",
+    "href": "courses.html#past-courses",
+    "title": "Teaching Experience",
+    "section": "Past Courses",
+    "text": "Past Courses\n\nST474/674 (Monte Carlo Methods)"
+  },
+  {
+    "objectID": "courses.html#graduate-ta-experience",
+    "href": "courses.html#graduate-ta-experience",
+    "title": "Teaching Experience",
+    "section": "Graduate TA Experience",
+    "text": "Graduate TA Experience\n\nWilfrid Laurier Univesrity\n\nMA307/507 (Numerical Analysis)\nMA451/651 (Stochastic Calculus)\nMA477/677 (Quantitative Financial Risk Management)\nST359/559 (Probability II)\nST462/662 (Advanced Regression)\nST473/674 (Financial Data Analysis)\nST494/694 (Statistical Learning)"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation:\n\nPhD in Mathematical and Statistical Modelling at Wilfrid Laurier University | 2026\nMMath in Statistics at University of Waterloo | 2020\nBBA/BA Financial Mathematics at Wilfrid Laurier University | 2019\n\nTeaching Experience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nFall 2026: Wednesdays 14:00–16:00 in room LH3073, or by appointment."
+  },
+  {
+    "objectID": "about.html#bio",
+    "href": "about.html#bio",
+    "title": "About",
+    "section": "",
+    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation:\n\nPhD in Mathematical and Statistical Modelling at Wilfrid Laurier University | 2026\nMMath in Statistics at University of Waterloo | 2020\nBBA/BA Financial Mathematics at Wilfrid Laurier University | 2019\n\nTeaching Experience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nFall 2026: Wednesdays 14:00–16:00 in room LH3073, or by appointment."
+  },
+  {
+    "objectID": "assignments.html",
+    "href": "assignments.html",
+    "title": "Assignments",
+    "section": "",
+    "text": "All labs and the capstone project are submitted through MyLearningSpace. This page tracks what’s due and when."
+  },
+  {
+    "objectID": "assignments.html#labs",
+    "href": "assignments.html#labs",
+    "title": "Assignments",
+    "section": "Labs",
+    "text": "Labs\n\n\n\nLab\nTopic\nDate\n\n\n\n\nLab 0\nIntroduction\nSep 14\n\n\nLab 1\n—\nSep 21\n\n\nLab 2\n—\nSep 28\n\n\nLab 3\n—\nOct 05\n\n\nLab 4\n—\nOct 19\n\n\nLab 5\n—\nOct 26\n\n\nLab 6\n—\nNov 02\n\n\nLab 7\n—\nNov 16\n\n\nLab 8\n—\nNov 23\n\n\nLab 9\n—\nNov 30\n\n\nLab 10\n—\nDec 02\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nLabs are worth 30% of your final grade, to be submitted during labs weekly on Mondays. See the Syllabus for full grading breakdown."
+  },
+  {
+    "objectID": "assignments.html#capstone-project",
+    "href": "assignments.html#capstone-project",
+    "title": "Assignments",
+    "section": "Capstone Project",
+    "text": "Capstone Project\nThe capstone project (15%) has multiple checkpoints across the term. Details and rubric will be posted here as each checkpoint approaches.\n\n\n\nCheckpoint\nDescription\nDue\n\n\n\n\nProposal\nDataset + research question\nTBD\n\n\nProgress Check\nDraft analysis\nTBD\n\n\nFinal Submission\nReport + presentation\nDec 3"
+  },
+  {
+    "objectID": "assignments.html#group-project-guidance-slides",
+    "href": "assignments.html#group-project-guidance-slides",
+    "title": "Assignments",
+    "section": "Group Project Guidance Slides",
+    "text": "Group Project Guidance Slides\n\nVisualization\nData Tidying and Transformation"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "DATA100: Introduction to Data Analytics",
+    "section": "",
+    "text": "Welcome to DATA100 — Introduction to Data Analytics! This course introduces you to the fundamentals of data analysis using R, covering everything from R basics and data types to R Markdown/Quarto reporting, data wrangling, and communicating results.\n\n\n\n\n\n\nNoteInstructor\n\n\n\nAgassi Iu · Wilfrid Laurier University Office Hours: Wednesdays 14:00–16:00, LH3073 (or by appointment)"
+  },
+  {
+    "objectID": "index.html#welcome",
+    "href": "index.html#welcome",
+    "title": "DATA100: Introduction to Data Analytics",
+    "section": "",
+    "text": "Welcome to DATA100 — Introduction to Data Analytics! This course introduces you to the fundamentals of data analysis using R, covering everything from R basics and data types to R Markdown/Quarto reporting, data wrangling, and communicating results.\n\n\n\n\n\n\nNoteInstructor\n\n\n\nAgassi Iu · Wilfrid Laurier University Office Hours: Wednesdays 14:00–16:00, LH3073 (or by appointment)"
+  },
+  {
+    "objectID": "index.html#quick-links",
+    "href": "index.html#quick-links",
+    "title": "DATA100: Introduction to Data Analytics",
+    "section": "Quick Links",
+    "text": "Quick Links\n\n👋 About — more about your instructor\n📄 Syllabus — grading breakdown, policies, and expectations\n🗓️ Schedule — weekly topics and readings\n📊 Slides — lecture slide decks\n📝 Assignments — labs, capstone project, and due dates\n🎯 Midterms — midterm, information, practices"
+  },
+  {
+    "objectID": "index.html#course-hub",
+    "href": "index.html#course-hub",
+    "title": "DATA100: Introduction to Data Analytics",
+    "section": "Course Hub",
+    "text": "Course Hub\nAnnouncements, submissions, and discussions happen on MyLearningSpace — this site is your reference hub for slides, schedule, and syllabus details.\n\n\n\n\n\n\nTipBefore the first class\n\n\n\nPlease install R and RStudio before our first lab. See the Slides page for the Lecture 1 walkthrough on installation."
+  },
+  {
+    "objectID": "schedule.html",
+    "href": "schedule.html",
+    "title": "Schedule",
+    "section": "",
+    "text": "Note\n\n\n\nThis schedule is a tentative schedule. It may subject to change depending on the speed or circumstances of our lectures."
+  },
+  {
+    "objectID": "schedule.html#course-schedule",
+    "href": "schedule.html#course-schedule",
+    "title": "Schedule",
+    "section": "Course Schedule",
+    "text": "Course Schedule\n\n\n\n\n\n\n\n\n\nWeek\nDay 1 (Tuesdays)\nDay 2 (Thursdays)\nAssessment\n\n\n\n\n1\n–\nIntroduction\nL0\n\n\n2\nWhole Game 1\nWhole Game 2\nL1\n\n\n3\nVisualization 1\nVisualization 2\nL2\n\n\n4\nVisualization 3\nVisualization recap\nL3\n\n\n5\nMidterm 1\nGroup project guidance 1\nM1\n\n\n6\nLogical vectors\nWords and numbers\nL4\n\n\n7\nFancy words and numbers\nMissing values and joins\nL5\n\n\n8\nPivot and Midterm 2 Review\nCase study\nL6\n\n\n9\nGroup project guidance 2\nImport: Excel, databases, and beyond\nM2\n\n\n10\nData science in practice\nRelationship between variables\nL7 , GP1\n\n\n11\nStructured relationships\nPredictive modelling\nL8 , GP 2\n\n\n12\nGroup project guidance 3\nModelling workflow\nL9\n\n\n13\nReview\n–\nL10 , GP3"
+  },
+  {
     "objectID": "slides/DATA100-F26-Group-Project-Guidance-2.html#todays-agenda",
     "href": "slides/DATA100-F26-Group-Project-Guidance-2.html#todays-agenda",
     "title": "DATA100 Introduction to Data Analytics",
@@ -2203,251 +2595,6 @@
     "title": "DATA100 Introduction to Data Analytics",
     "section": "Wrap-up and submit",
     "text": "Wrap-up and submit\n\nKnit your Rmd to PDF\nUpload the PDF to Gradescope (one per group, add all members)\nSubmit what you have by the end of class.\n\nIf a chunk has an error, the PDF still knits. The error just shows up in the PDF.\n\n\n\n\n\n\n\nNext Project Guidance\n\n\nPredictive analysis. Details to be announced soon."
-  },
-  {
-    "objectID": "schedule.html",
-    "href": "schedule.html",
-    "title": "Schedule",
-    "section": "",
-    "text": "Note\n\n\n\nThis schedule is a tentative schedule. It may subject to change depending on the speed or circumstances of our lectures."
-  },
-  {
-    "objectID": "schedule.html#course-schedule",
-    "href": "schedule.html#course-schedule",
-    "title": "Schedule",
-    "section": "Course Schedule",
-    "text": "Course Schedule\n\n\n\n\n\n\n\n\n\nWeek\nDay 1 (Tuesdays)\nDay 2 (Thursdays)\nAssessment\n\n\n\n\n1\n–\nIntroduction\nL0\n\n\n2\nWhole Game 1\nWhole Game 2\nL1\n\n\n3\nVisualization 1\nVisualization 2\nL2\n\n\n4\nVisualization 3\nVisualization recap\nL3\n\n\n5\nMidterm 1\nGroup project guidance 1\nM1\n\n\n6\nLogical vectors\nWords and numbers\nL4\n\n\n7\nFancy words and numbers\nMissing values and joins\nL5\n\n\n8\nPivot and Midterm 2 Review\nCase study\nL6\n\n\n9\nGroup project guidance 2\nImport: Excel, databases, and beyond\nM2\n\n\n10\nData science in practice\nRelationship between variables\nL7 , GP1\n\n\n11\nStructured relationships\nPredictive modelling\nL8 , GP 2\n\n\n12\nGroup project guidance 3\nModelling workflow\nL9\n\n\n13\nReview\n–\nL10 , GP3"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "DATA100: Introduction to Data Analytics",
-    "section": "",
-    "text": "Welcome to DATA100 — Introduction to Data Analytics! This course introduces you to the fundamentals of data analysis using R, covering everything from R basics and data types to R Markdown/Quarto reporting, data wrangling, and communicating results.\n\n\n\n\n\n\nNoteInstructor\n\n\n\nAgassi Iu · Wilfrid Laurier University Office Hours: Wednesdays 14:00–16:00, LH3073 (or by appointment)"
-  },
-  {
-    "objectID": "index.html#welcome",
-    "href": "index.html#welcome",
-    "title": "DATA100: Introduction to Data Analytics",
-    "section": "",
-    "text": "Welcome to DATA100 — Introduction to Data Analytics! This course introduces you to the fundamentals of data analysis using R, covering everything from R basics and data types to R Markdown/Quarto reporting, data wrangling, and communicating results.\n\n\n\n\n\n\nNoteInstructor\n\n\n\nAgassi Iu · Wilfrid Laurier University Office Hours: Wednesdays 14:00–16:00, LH3073 (or by appointment)"
-  },
-  {
-    "objectID": "index.html#quick-links",
-    "href": "index.html#quick-links",
-    "title": "DATA100: Introduction to Data Analytics",
-    "section": "Quick Links",
-    "text": "Quick Links\n\n👋 About — more about your instructor\n📄 Syllabus — grading breakdown, policies, and expectations\n🗓️ Schedule — weekly topics and readings\n📊 Slides — lecture slide decks\n📝 Assignments — labs, capstone project, and due dates\n🎯 Midterms — midterm, information, practices"
-  },
-  {
-    "objectID": "index.html#course-hub",
-    "href": "index.html#course-hub",
-    "title": "DATA100: Introduction to Data Analytics",
-    "section": "Course Hub",
-    "text": "Course Hub\nAnnouncements, submissions, and discussions happen on MyLearningSpace — this site is your reference hub for slides, schedule, and syllabus details.\n\n\n\n\n\n\nTipBefore the first class\n\n\n\nPlease install R and RStudio before our first lab. See the Slides page for the Lecture 1 walkthrough on installation."
-  },
-  {
-    "objectID": "assignments.html",
-    "href": "assignments.html",
-    "title": "Assignments",
-    "section": "",
-    "text": "All labs and the capstone project are submitted through MyLearningSpace. This page tracks what’s due and when."
-  },
-  {
-    "objectID": "assignments.html#labs",
-    "href": "assignments.html#labs",
-    "title": "Assignments",
-    "section": "Labs",
-    "text": "Labs\n\n\n\nLab\nTopic\nDate\n\n\n\n\nLab 0\nIntroduction\nSep 14\n\n\nLab 1\n—\nSep 21\n\n\nLab 2\n—\nSep 28\n\n\nLab 3\n—\nOct 05\n\n\nLab 4\n—\nOct 19\n\n\nLab 5\n—\nOct 26\n\n\nLab 6\n—\nNov 02\n\n\nLab 7\n—\nNov 16\n\n\nLab 8\n—\nNov 23\n\n\nLab 9\n—\nNov 30\n\n\nLab 10\n—\nDec 02\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nLabs are worth 30% of your final grade, to be submitted during labs weekly on Mondays. See the Syllabus for full grading breakdown."
-  },
-  {
-    "objectID": "assignments.html#capstone-project",
-    "href": "assignments.html#capstone-project",
-    "title": "Assignments",
-    "section": "Capstone Project",
-    "text": "Capstone Project\nThe capstone project (15%) has multiple checkpoints across the term. Details and rubric will be posted here as each checkpoint approaches.\n\n\n\nCheckpoint\nDescription\nDue\n\n\n\n\nProposal\nDataset + research question\nTBD\n\n\nProgress Check\nDraft analysis\nTBD\n\n\nFinal Submission\nReport + presentation\nDec 3"
-  },
-  {
-    "objectID": "assignments.html#group-project-guidance-slides",
-    "href": "assignments.html#group-project-guidance-slides",
-    "title": "Assignments",
-    "section": "Group Project Guidance Slides",
-    "text": "Group Project Guidance Slides\n\nVisualization\nData Tidying and Transformation"
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation:\n\nPhD in Mathematical and Statistical Modelling at Wilfrid Laurier University | 2026\nMMath in Statistics at University of Waterloo | 2020\nBBA/BA Financial Mathematics at Wilfrid Laurier University | 2019\n\nTeaching Experience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nFall 2026: Wednesdays 14:00–16:00 in room LH3073, or by appointment."
-  },
-  {
-    "objectID": "about.html#bio",
-    "href": "about.html#bio",
-    "title": "About",
-    "section": "",
-    "text": "Agassi Iu Wilfrid Laurier University\n\nEducation:\n\nPhD in Mathematical and Statistical Modelling at Wilfrid Laurier University | 2026\nMMath in Statistics at University of Waterloo | 2020\nBBA/BA Financial Mathematics at Wilfrid Laurier University | 2019\n\nTeaching Experience: Previously taught ST474/674 Monte Carlo Methods in Spring 2025.\n\n\n\n\n\n\n\nImportantOffice Hours\n\n\n\nFall 2026: Wednesdays 14:00–16:00 in room LH3073, or by appointment."
-  },
-  {
-    "objectID": "courses.html",
-    "href": "courses.html",
-    "title": "Teaching Experience",
-    "section": "",
-    "text": "DATA100 (Introduction to Data Analytics)\nST230 (Introduction to Probability and Statistics in Sciences)"
-  },
-  {
-    "objectID": "courses.html#current-courses",
-    "href": "courses.html#current-courses",
-    "title": "Teaching Experience",
-    "section": "",
-    "text": "DATA100 (Introduction to Data Analytics)\nST230 (Introduction to Probability and Statistics in Sciences)"
-  },
-  {
-    "objectID": "courses.html#past-courses",
-    "href": "courses.html#past-courses",
-    "title": "Teaching Experience",
-    "section": "Past Courses",
-    "text": "Past Courses\n\nST474/674 (Monte Carlo Methods)"
-  },
-  {
-    "objectID": "courses.html#graduate-ta-experience",
-    "href": "courses.html#graduate-ta-experience",
-    "title": "Teaching Experience",
-    "section": "Graduate TA Experience",
-    "text": "Graduate TA Experience\n\nWilfrid Laurier Univesrity\n\nMA307/507 (Numerical Analysis)\nMA451/651 (Stochastic Calculus)\nMA477/677 (Quantitative Financial Risk Management)\nST359/559 (Probability II)\nST462/662 (Advanced Regression)\nST473/674 (Financial Data Analysis)\nST494/694 (Statistical Learning)"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#todays-agenda",
-    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#todays-agenda",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Today’s Agenda",
-    "text": "Today’s Agenda\n\n\n\n\n\n\n\nExercise\n\n\nYou will do a mini version of a small part of the group project, from questioning to exploration, in about 60 minutes of the class.\n\n\n\n\n\n\n\n\n\n\n\nExpectations\n\n\nYou are not expected to know everything yet.\n\nThis is only for practice, and it counts for our weekly participation.\nMy goal is for you all to attempt creating your own plots. I genuinely don’t care if you can create a stellar plot and/or analysis with time constraints.\nI care more about your effort and creativity! Surprise me!"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#midterm-review",
-    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#midterm-review",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Midterm Review",
-    "text": "Midterm Review\nI finished marking your exams! :)\n\n\n\n\n\n\n\nMultiple Choice\n\n\n\nProblematic MC’s: Q2, Q5, Q10, Q13\nThe rest: pretty well-done.\n\n\n\n\n\n\n\n\n\n\n\n\nShort Answers\n\n\n\nEverything looks great except for Q18-b."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#the-tentative-deadlines",
-    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#the-tentative-deadlines",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "The tentative deadlines",
-    "text": "The tentative deadlines\n\n\n\nCheckpoint\nWhat it is\n\n\n\n\n1. Project proposal\nResearch question and data choice\n\n\n2. EDA report\nWhat is the data telling you?\n\n\n3. Peer review\nGive feedback on another team’s report\n\n\n4. Final report\nYour full-complete analysis\n\n\n\nDetails and rubric will be released soon."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#todays-participation-credit",
-    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#todays-participation-credit",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Today’s Participation Credit",
-    "text": "Today’s Participation Credit\n\nGet into groups and set up.\nRead the data description and come up with two interesting questions.\nMake two plots to explore them.\nPropose one new variable for your analysis.\nKnit into a pdf and submit to Gradescope.\nIf you are done early, come up and show me your results before you go."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#meet-the-data",
-    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#meet-the-data",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Meet the data:",
-    "text": "Meet the data:\n\n\n\n\n\n\n\nSurvey Results\n\n\nA survey of university students about their sleep and study habits.\n\n\n\n\n\n\n\n\n\n\n\nDisclaimer\n\n\nThe data is totally simulated for this class. Don’t treat the findings as real facts about students or sleep. I have nothing do with all the claims that you might make about these students!\n\n\n\n\nEach row is one student. Each column is one variable."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#data-description-i",
-    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#data-description-i",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Data description (i)",
-    "text": "Data description (i)\n\n\n\n\n\n\n\n\nVariable\nType\nDescription\n\n\n\n\nprogram\nCategorical\nArts, Business, Science, Health Sci, Engineering\n\n\nnum_courses\nNumeric (count)\nCourses this term (3 to 6)\n\n\nstudy_hours_week\nNumeric\nAverage study hours per week\n\n\nsleep_hours\nNumeric\nAverage hours of sleep per night\n\n\nfavourite_drink\nCategorical\nCoffee, Tea, Energy drink, Pop, Water"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#data-description-ii",
-    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#data-description-ii",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Data description (ii)",
-    "text": "Data description (ii)\n\n\n\n\n\n\n\n\nVariable\nType\nDescription\n\n\n\n\nhas_early_class\nBinary\nAny 8:30 am class? (Yes / No)\n\n\nwork_hours_week\nNumeric\nPaid work hours per week (0 = no job)\n\n\nstress_level\nOrdinal (1-5)\nSelf-rated stress (1 = low, 5 = high)\n\n\nsleep_quality\nOrdinal (1-5)\nSelf-rated sleep quality (1 = poor, 5 = great)\n\n\navg_grade\nNumeric\nAverage grade (%)"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#two-kinds-of-questions",
-    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#two-kinds-of-questions",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Two kinds of questions",
-    "text": "Two kinds of questions\n\n\n\n\n\n\n\nTask\n\n\nI want you to generate two questions for this mini-project.\n\n\n\n\n\n\n\n\n\n\n\nNumeric x Numeric\n\n\nChoices of numeric variables: number of courses, number of study hours per week, average hours of sleep per night, number of work hours per week, and average grades.\n\n\n\n\n\n\n\n\n\n\n\nNumeric x Categorical\n\n\nChoices of categorical variables: program type, favourite drinks, early classes?, stress level, and sleep quality."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#numeric-x-numeric",
-    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#numeric-x-numeric",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Numeric x Numeric",
-    "text": "Numeric x Numeric\n\n\n\n\n\n\n\nPurpose\n\n\nIs one number related to another?\n\n\n\n\n\n\n\n\n\n\n\nPlots\n\n\nE.g. scatterplots, jitter, geom_smooth, colouring points by a categorical variable (aes(colour = ...)), etc.\nExample: “Is the relationship between sleep hours and average grades the same across programs?”"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#example-plot",
-    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#example-plot",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Example plot",
-    "text": "Example plot\n\nDoes the pattern look the same in every program?"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#numeric-x-categorical",
-    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#numeric-x-categorical",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Numeric x Categorical",
-    "text": "Numeric x Categorical\n\n\n\n\n\n\n\nPurpose\n\n\nDoes a number differ across groups?\n\n\n\n\n\n\n\n\n\n\n\nPlots\n\n\nE.g. boxplots, bar plots, histograms with facet grids, etc.\nExample: “How does the distribution of weekly study hours differ across programs?”"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#example-plot-1",
-    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#example-plot-1",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Example plot",
-    "text": "Example plot\n\nHow do the centre and spread differ across programs?"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#weak-vs.-strong-questions",
-    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#weak-vs.-strong-questions",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Weak vs. strong questions",
-    "text": "Weak vs. strong questions\n\n\n\n\n\n\n\nWeak Questions\n\n\nA weak question is vague. It doesn’t say which variables to use, what to compare, or what a plot or table would show.\n\nIs sleep related to anything?\nAnalyze and see which undergraduate program is the best.\n\n\n\n\n\n\n\n\n\n\n\n\nStrong Questions\n\n\nA strong question is specific enough that the reader could make the plot without asking you anything.\n\nDo students with more courses study more hours per week?\nDoes average stress level of students differ by their program?"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#careful-with-your-wording",
-    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#careful-with-your-wording",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Careful with your wording",
-    "text": "Careful with your wording\n\n\n\n\n\n\n\nInstead of\nTry\n\n\n\n\n“Energy drinks cause less sleep.”\n“Energy drink drinkers tend to sleep less.”\n\n\n“Working makes students study less.”\n“More work hours is associated with fewer study hours.”\n\n\n\nData like this shows patterns, not proof of cause."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#getting-started",
-    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#getting-started",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Getting started",
-    "text": "Getting started\n\n\n\n\n\n\n\nGroups\n\n\nForm a group with your neighbours. Maximum group of four.\n\n\n\n\n\nDownload sleep_survey.csv and mini_project_template.Rmd from the MyLearningSpace\nPut them in the same folder, then open the .Rmd in RStudio."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#step-1-write-two-questions",
-    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#step-1-write-two-questions",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Step 1: Write two questions",
-    "text": "Step 1: Write two questions\nRead the data description in the lecture slides, then fill in Part 1 of the Rmd:\n\nOne numeric × numeric question\nOne categorical × numeric question\n\nName your variables and say what you’d compare."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#step-2-plots",
-    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#step-2-plots",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Step 2: Plots",
-    "text": "Step 2: Plots\n1 (numeric × numeric) and 1 (categorical × numeric)\n\nMake a scatterplot for your first question\nAdd appropriate axis labels\nWrite 2 to 3 sentences on what you observe for each plot"
-  },
-  {
-    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#step-3-one-new-variable",
-    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#step-3-one-new-variable",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Step 3: One new variable",
-    "text": "Step 3: One new variable\nWhat one variable could you add to this survey that would make the analysis more interesting?\n\nExplain what it would let you ask or change how you read an existing pattern.\n\nA variable that changes how you read a pattern beats just another column.\n\nExample: year_of_study. Upper-year students might both study more and earn higher grades, so year could change how we read the study hours vs. grades pattern."
-  },
-  {
-    "objectID": "slides/DATA100-F26-Group-Project-Guidance-1.html#wrap-up-and-submit",
-    "href": "slides/DATA100-F26-Group-Project-Guidance-1.html#wrap-up-and-submit",
-    "title": "DATA100 Introduction to Data Analytics",
-    "section": "Wrap-up and submit",
-    "text": "Wrap-up and submit\n\nKnit your Rmd to PDF\nUpload the PDF to Gradescope (one per group, add all members)\nUnfinished is okay. Submit what you have.\n\n\n\n\n\n\n\n\nNext Project Guidance\n\n\nTuesday, November 10. More details will come!\n\n\n\n\n\n\n\n\n\n\n\nHomework for Reading Week\n\n\nMake a group of 4-5 students among yourselves. Think about the type of data that you want to work with for your final project."
   },
   {
     "objectID": "slides/DATA100-F26-Lecture-1.html#outline",
